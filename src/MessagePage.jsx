@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const MessagePage = () => {
   const navigate = useNavigate();
@@ -24,15 +24,8 @@ const MessagePage = () => {
   };
 
   return (
-    // 생략된 JSX
-  );
-};
-
-export default MessagePage;
-
-  return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-pink-50">
-      <h1 className="text-3xl font-bold mb-4">✨감성 메시지를 입력해보세요✨</h1>
+      <h1 className="text-3xl font-bold mb-4">✨ 감성 메시지를 입력해보세요 ✨</h1>
 
       <div className="w-full max-w-md bg-white p-6 rounded-2xl shadow-md">
         <label className="block mb-2 text-lg font-semibold">카테고리 선택</label>
@@ -69,5 +62,3 @@ export default MessagePage;
 };
 
 export default MessagePage;
-
-
