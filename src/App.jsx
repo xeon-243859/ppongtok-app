@@ -7,7 +7,7 @@ import ThankYouPage from './pages/ThankYouPage';
 import MemoryMakingPage from './pages/MemoryMakingPage';
 
 // ⬇️ 여기에 새로 추가!
-import MemoryPage from './pages/MemoryPage';
+
 
 // (추가로 기존에 네가 쓰던 관리자페이지 import가 더 있을 수도 있어)
 // import AdminPage from './pages/AdminPage'; 이런 것도 있을 거야.
