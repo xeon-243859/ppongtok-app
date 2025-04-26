@@ -6,7 +6,6 @@ import IntroPage from './IntroPage';
 import EmotionPage from './EmotionPage';
 import MessagePage from './MessagePage';
 import PreviewPage from './PreviewPage';
-import VideoPage from './VideoPage';
 import App from './App';
 
 
@@ -25,7 +24,6 @@ root.render(
         <Route path="/emotion" element={<EmotionPage />} />
         <Route path="/message" element={<MessagePage />} />
         <Route path="/preview" element={<PreviewPage />} /> {/* ✅ 이거 추가 */}
-        <Route path="/video" element={<VideoPage />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
