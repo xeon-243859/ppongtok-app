@@ -9,7 +9,7 @@ function MessagePage() {
     { title: '사과 메시지', desc: '진심 어린 사과로 마음을 열어보세요.', path: '/apology' },
     { title: '축하 메시지', desc: '기쁜 순간을 함께 축하해요.', path: '/celebration' },
     { title: '감사 메시지', desc: '고마운 마음을 따뜻하게 전하세요.', path: '/thankyou' },
-    { title: '추억 만들기', desc: '소중한 순간을 함께 기록해요.', path: '/memory' },
+    { title: '추억 만들기', desc: '소중한 순간을 함께 기록해요.', path: '/memory' }, // 그대로 memory 경로 사용
   ];
 
   return (

@@ -2,6 +2,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MessagePage from './pages/MessagePage';
 import LoveConfessionPage from './pages/LoveConfessionPage';
 import CelebrationPage from './pages/CelebrationPage';
+import ApologyPage from './pages/ApologyPage';
+import ThankYouPage from './pages/ThankYouPage';
+import MemoryMakingPage from './pages/MemoryMakingPage';
 
 // ⬇️ 여기에 새로 추가!
 import ApologyPage from './pages/ApologyPage';
@@ -25,7 +28,7 @@ function App() {
         {/* ⬇️ 새로 추가하는 3개 메시지용 페이지 */}
         <Route path="/apology" element={<ApologyPage />} />
         <Route path="/thankyou" element={<ThankYouPage />} />
-        <Route path="/memory" element={<MemoryPage />} />
+        <Route path="/memory" element={<MemoryMakingPage />} />
 
         {/* (기존에 네가 만들었던 /admin, /votes, /candidates, /preview 이런 관리자 라우트들도 여기에 같이 있음) */}
         {/* 예를 들면: */}
