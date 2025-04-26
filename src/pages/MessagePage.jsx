@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
+console.log('✅ MessagePage 렌더링 됨');
+
 function MessagePage() {
   const navigate = useNavigate();
 
@@ -32,29 +34,28 @@ function MessagePage() {
         gap: '1.5rem',
         overflow: 'visible'
       }}>
+        console.log('messages:', messages);
+
         {messages.map((item, idx) => (
-          <div
-            key={idx}
-            onClick={() => navigate(item.path)}
-            style={{
-              padding: '1.5rem',
-              width: '90%',
-              maxWidth: '400px',
-              backgroundColor: 'white',
-              borderRadius: '1rem',
-              boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
-              textAlign: 'center',
-              cursor: 'pointer'
-            }}
-          >
-            <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>
-              {item.title}
-            </h3>
-            <p style={{ fontSize: '1rem', color: '#666' }}>
-              {item.desc}
-            </p>
-          </div>
-        ))}
+  <div
+    key={idx}
+    onClick={() => navigate(item.path)}
+    style={{
+      padding: '1.5rem',
+      width: '90%',
+      maxWidth: '400px',
+      backgroundColor: 'white',
+      borderRadius: '1rem',
+      boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+      textAlign: 'center',
+      cursor: 'pointer'
+    }}
+  >
+    <h3 style={{ marginBottom: '0.5rem' }}>{item.title}</h3>
+    <p style={{ color: '#555' }}>{item.desc}</p>
+  </div>
+))}
+
       </div>
     </div>
   );
