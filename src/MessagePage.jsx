@@ -1,12 +1,15 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function MessagePage() {
+  const navigate = useNavigate();
+
   const messages = [
-    { title: '사랑 고백', desc: '마음을 담아 진심을 전해보세요.' },
-    { title: '사과 메시지', desc: '진심 어린 사과로 마음을 열어보세요.' },
-    { title: '축하 메시지', desc: '기쁜 순간을 함께 축하해요.' },
-    { title: '감사 메시지', desc: '고마운 마음을 따뜻하게 전하세요.' },
-    { title: '추억 만들기', desc: '소중한 순간을 함께 기록해요.' },
+    { title: '사랑 고백', desc: '마음을 담아 진심을 전해보세요.', path: '/love' },
+    { title: '사과 메시지', desc: '진심 어린 사과로 마음을 열어보세요.', path: '/apology' },
+    { title: '축하 메시지', desc: '기쁜 순간을 함께 축하해요.', path: '/celebration' },
+    { title: '감사 메시지', desc: '고마운 마음을 따뜻하게 전하세요.', path: '/thankyou' },
+    { title: '추억 만들기', desc: '소중한 순간을 함께 기록해요.', path: '/memory' },
   ];
 
   return (
@@ -32,6 +35,7 @@ function MessagePage() {
         {messages.map((item, idx) => (
           <div
             key={idx}
+            onClick={() => navigate(item.path)}
             style={{
               padding: '1.5rem',
               width: '90%',
@@ -42,7 +46,6 @@ function MessagePage() {
               textAlign: 'center',
               cursor: 'pointer'
             }}
-            onClick={() => alert(`${item.title} 선택!`)} // 클릭 이벤트 추가
           >
             <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>
               {item.title}
