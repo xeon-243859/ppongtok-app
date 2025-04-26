@@ -7,9 +7,17 @@ import EmotionPage from './EmotionPage';
 import MessagePage from './MessagePage';
 import PreviewPage from './PreviewPage';
 import VideoPage from './VideoPage';
+import App from './App';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
@@ -21,6 +29,6 @@ root.render(
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
-);
+;
 
 
