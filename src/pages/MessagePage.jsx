@@ -1,8 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-console.log('✅ MessagePage 렌더링 됨');
-
 function MessagePage() {
   const navigate = useNavigate();
 
@@ -11,51 +9,30 @@ function MessagePage() {
     { title: '사과 메시지', desc: '진심 어린 사과로 마음을 열어보세요.', path: '/apology' },
     { title: '축하 메시지', desc: '기쁜 순간을 함께 축하해요.', path: '/celebration' },
     { title: '감사 메시지', desc: '고마운 마음을 따뜻하게 전하세요.', path: '/thankyou' },
-    { title: '추억 만들기', desc: '소중한 순간을 함께 기록해요.', path: '/memory' }, // 그대로 memory 경로 사용
+    { title: '추억 만들기', desc: '소중한 순간을 함께 기록해요.', path: '/memory' },
   ];
 
   return (
-    <div style={{
-      fontFamily: 'Arial, sans-serif',
-      backgroundColor: '#f0f9ff',
-      minHeight: '100vh',
-      padding: '2rem'
-    }}>
-      <section style={{ textAlign: 'center', marginBottom: '3rem' }}>
-        <h2 style={{ fontSize: '2rem', marginBottom: '1rem', wordBreak: 'keep-all' }}>
-          🎉 뿅!톡을 시작해볼까요?
-        </h2>
-      </section>
-
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '1.5rem',
-        overflow: 'visible'
-      }}>
-        console.log('messages:', messages);
-
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '2rem' }}>
+      <h2 style={{ marginBottom: '2rem' }}>🎉 뿅!톡을 시작해볼까요?</h2>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', width: '100%', maxWidth: '400px' }}>
         {messages.map((item, idx) => (
-  <div
-    key={idx}
-    onClick={() => navigate(item.path)}
-    style={{
-      padding: '1.5rem',
-      width: '90%',
-      maxWidth: '400px',
-      backgroundColor: 'white',
-      borderRadius: '1rem',
-      boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
-      textAlign: 'center',
-      cursor: 'pointer'
-    }}
-  >
-    <h3 style={{ marginBottom: '0.5rem' }}>{item.title}</h3>
-    <p style={{ color: '#555' }}>{item.desc}</p>
-  </div>
-))}
-
+          <div
+            key={idx}
+            onClick={() => navigate(item.path)}
+            style={{
+              padding: '1.5rem',
+              backgroundColor: 'white',
+              borderRadius: '1rem',
+              boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+              textAlign: 'center',
+              cursor: 'pointer',
+            }}
+          >
+            <h3 style={{ marginBottom: '0.5rem' }}>{item.title}</h3>
+            <p style={{ color: '#555' }}>{item.desc}</p>
+          </div>
+        ))}
       </div>
     </div>
   );

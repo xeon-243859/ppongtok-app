@@ -1,6 +1,12 @@
+import React from 'react';
+
 function CelebrationPage() {
-    return <div>Celebration Page</div>;
-  }
-  
-  export default CelebrationPage;
-  
+  return (
+    <div style={{ padding: '2rem' }}>
+      <h1>🎉 축하 메시지 페이지</h1>
+      <p>기쁜 순간을 함께 축하해요!</p>
+    </div>
+  );
+}
+
+export default CelebrationPage;
