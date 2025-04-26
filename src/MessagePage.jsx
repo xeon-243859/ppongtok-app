@@ -27,7 +27,7 @@ function MessagePage() {
         flexDirection: 'column',
         alignItems: 'center',
         gap: '1.5rem',
-        overflow: 'visible' // 혹시 몰라 추가
+        overflow: 'visible'
       }}>
         {messages.map((item, idx) => (
           <div
@@ -39,8 +39,10 @@ function MessagePage() {
               backgroundColor: 'white',
               borderRadius: '1rem',
               boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
-              textAlign: 'center'
+              textAlign: 'center',
+              cursor: 'pointer'
             }}
+            onClick={() => alert(`${item.title} 선택!`)} // 클릭 이벤트 추가
           >
             <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>
               {item.title}
