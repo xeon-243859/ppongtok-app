@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import IntroPage from './IntroPage';
 import EmotionPage from './EmotionPage';
-import MessagePage from './MessagePage';
+import MessagePage from './pages/MessagePage';
 import PreviewPage from './PreviewPage';
 import App from './App';
 
