@@ -1,72 +1,67 @@
-import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React from 'react';
 
-const MessagePage = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { emotion } = location.state || {};
-
-  const [category, setCategory] = useState("사랑 고백");
-  const [message, setMessage] = useState("");
-
-  const handleSubmit = () => {
-    if (message.trim()) {
-      // ✅ localStorage에 상태 백업 저장
-      localStorage.setItem("previewState", JSON.stringify({
-        emotion,
-        category,
-        message,
-      }));
-
-      // ✅ 정상 navigate
-      navigate("/preview", {
-        state: {
-          emotion,
-          category,
-          message,
-        },
-      });
-    } else {
-      alert("메시지를 입력해주세요!");
-    }
-  };
+function MessagePage() {
+  const messages = [
+    { title: '📩 사랑 고백', desc: '마음을 담아 진심을 전해보세요.' },
+    { title: '🙏 사과하기', desc: '진심 어린 사과로 마음을 열어보세요.' },
+    { title: '🎉 축하하기', desc: '기쁜 순간을 함께 축하해요.' },
+    { title: '💌 감사 인사', desc: '고마운 마음을 따뜻하게 전하세요.' },
+    { title: '🌈 추억 만들기', desc: '소중한 순간을 함께 기록해요.' },
+  ];
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-pink-50">
-      <h1 className="text-3xl font-bold mb-4">✨ 감성 메시지를 입력해보세요 ✨</h1>
-
-      <div className="w-full max-w-md bg-white p-6 rounded-2xl shadow-md">
-        <label className="block mb-2 text-lg font-semibold">카테고리 선택</label>
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="w-full p-2 border rounded mb-4"
-        >
-          <option>사랑 고백</option>
-          <option>사과</option>
-          <option>축하</option>
-          <option>추억 만들기</option>
-          <option>감사 인사</option>
-        </select>
-
-        <label className="block mb-2 text-lg font-semibold">메시지 입력</label>
-        <textarea
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          rows={6}
-          placeholder="당신의 마음을 담아 메시지를 써보세요..."
-          className="w-full p-3 border rounded resize-none mb-6"
-        />
-
-        <button
-          onClick={handleSubmit}
-          className="w-full py-3 bg-pink-500 text-white font-bold rounded hover:bg-pink-600 transition"
-        >
-          미리보기 & 다음 단계로 →
-        </button>
+    <div style={{ fontFamily: 'Arial, sans-serif', backgroundColor: '#f0f9ff', minHeight: '100vh', padding: '2rem' }}>
+      <section style={{ textAlign: 'center', marginBottom: '3rem' }}>
+        <h2 style={{ fontSize: '2rem', marginBottom: '1rem', wordBreak: 'keep-all' }}>🎉 뿅!톡을 시작해볼까요?</h2>
+      </section>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem' }}>
+        {messages.map((item, idx) => (
+          <div
+            key={idx}
+            style={{
+              padding: '1.5rem',
+              width: '90%',
+              maxWidth: '400px',
+              backgroundColor: '#ffffff',
+              borderRadius: '12px',
+              boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+              transition: 'transform 0.3s, background-color 0.3s',
+              cursor: 'pointer',
+            }}
+            onMouseOver={e => {
+              e.currentTarget.style.transform = 'scale(1.05)';
+              e.currentTarget.style.backgroundColor = '#e0f7fa';
+            }}
+            onMouseOut={e => {
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.backgroundColor = '#ffffff';
+            }}
+          >
+            <h3 style={{ marginBottom: '0.5rem', fontSize: '1.4rem' }}>{item.title}</h3>
+            <p style={{ color: '#555', fontSize: '1rem' }}>{item.desc}</p>
+          </div>
+        ))}
       </div>
+
+      {/* 반응형 글자 크기 조정 */}
+      <style>
+        {`
+          @media (max-width: 600px) {
+            h2 {
+              font-size: 1.7rem;
+              line-height: 1.4;
+            }
+            h3 {
+              font-size: 1.2rem;
+            }
+            p {
+              font-size: 0.95rem;
+            }
+          }
+        `}
+      </style>
     </div>
   );
-};
+}
 
 export default MessagePage;
