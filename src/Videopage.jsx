@@ -69,4 +69,5 @@ const VideoPage = () => {
       link.href = canvas.toDataURL('image/png');
       link.click();
     });
-  };
+  } }
+  export default VideoPage;

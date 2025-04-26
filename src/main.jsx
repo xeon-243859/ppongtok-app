@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import IntroPage from './IntroPage';
 import EmotionPage from './EmotionPage';
 import MessagePage from './MessagePage';
-import PreviewPage from './pages/PreviewPage';
+import PreviewPage from './PreviewPage';
 import VideoPage from './VideoPage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
