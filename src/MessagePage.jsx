@@ -11,6 +11,14 @@ const MessagePage = () => {
 
   const handleSubmit = () => {
     if (message.trim()) {
+      // ✅ localStorage에 상태 백업 저장
+      localStorage.setItem("previewState", JSON.stringify({
+        emotion,
+        category,
+        message,
+      }));
+
+      // ✅ 정상 navigate
       navigate("/preview", {
         state: {
           emotion,

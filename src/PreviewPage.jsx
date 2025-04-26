@@ -5,16 +5,13 @@ const PreviewPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { emotion, category, message } = location.state || {};
+  // location.state 또는 localStorage fallback 사용
+  const fallback = JSON.parse(localStorage.getItem("previewState") || "{}");
+  const { emotion, category, message } = location.state || fallback;
 
-  // 전달받은 값 확인
   useEffect(() => {
-    console.log("🧩 감정:", emotion);
-    console.log("🧩 카테고리:", category);
-    console.log("🧩 메시지:", message);
-
     if (!emotion || !category || !message) {
-      alert("정보가 누락되어 처음으로 돌아갑니다.");
+      alert("정보가 누락되었습니다. 처음부터 다시 시작할게요.");
       navigate("/");
     }
   }, [emotion, category, message, navigate]);
