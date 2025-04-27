@@ -4,38 +4,34 @@ import { useNavigate } from 'react-router-dom';
 function MessagePage() {
   const navigate = useNavigate();
 
-  return (
-    <div
-      style={{
-        minHeight: '100vh',
-        backgroundColor: '#f0f9ff',
-        padding: '2rem',
-        position: 'relative'
-      }}
-    >
-      {/* 뒤로가기 버튼 추가 */}
-      <button
-        onClick={() => navigate(-1)}
-        style={{
-          position: 'absolute',
-          top: '1rem',
-          left: '1rem',
-          backgroundColor: 'white',
-          border: '1px solid #ccc',
-          borderRadius: '50%',
-          width: '40px',
-          height: '40px',
-          fontSize: '1.5rem',
-          cursor: 'pointer'
-        }}
-      >
-        🔙
-      </button>
+  console.log('✅ 메시지 갯수:', messages.length);
+  const messages = [
+    { title: '사랑 고백', desc: '마음을 전하는 순간을 특별하게 만들어봐요.', path: '/love' },
+    // ✨ 여기 **하나만** 있어야 해
+  ];
 
-      <section style={{ textAlign: 'center', marginTop: '5rem' }}>
-        <h2 style={{ fontSize: '2rem' }}>🎉 뿅!톡을 시작해볼까요?</h2>
-        {/* 메시지 카드들은 여기에 계속 */}
-      </section>
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '2rem', overflow: 'visible' }}>
+      <h2 style={{ marginBottom: '2rem' }}>🎉 뿅!톡을 시작해볼까요?</h2>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', width: '100%', maxWidth: '400px' }}>
+        {messages.map((item, idx) => (
+          <div
+            key={idx}
+            onClick={() => navigate(item.path)}
+            style={{
+              padding: '1.5rem',
+              backgroundColor: 'white',
+              borderRadius: '1rem',
+              boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+              textAlign: 'center',
+              cursor: 'pointer',
+            }}
+          >
+            <h3 style={{ marginBottom: '0.5rem' }}>{item.title}</h3>
+            <p style={{ color: '#555' }}>{item.desc}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
