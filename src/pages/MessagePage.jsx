@@ -20,14 +20,18 @@ function MessagePage() {
       padding: '2rem',
       textAlign: 'center'
     }}>
-      <h2 style={{ fontSize: '1.5rem', marginBottom: '2rem', wordBreak: 'keep-all' }}>
+      <h2 style={{
+        fontSize: '1.5rem',
+        marginBottom: '2rem',
+        wordBreak: 'keep-all'
+      }}>
         어떤 메시지를 만들까요?
       </h2>
 
       <div style={{
         display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
         gap: '1rem'
       }}>
         {messages.map((item, idx) => (
@@ -35,20 +39,38 @@ function MessagePage() {
             key={idx}
             onClick={() => navigate(item.path)}
             style={{
-              width: '90%',
-              maxWidth: '300px',
-              padding: '1rem 1.5rem',
+              width: '240px', // 카드 폭 줄였음
+              height: '120px', // 카드 높이도 작게
               backgroundColor: 'white',
               borderRadius: '1rem',
-              boxShadow: '0 8px 20px rgba(0,0,0,0.1)',
+              boxShadow: '0 6px 15px rgba(0,0,0,0.1)',
               cursor: 'pointer',
+              padding: '1rem',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
               transition: 'transform 0.2s',
             }}
             onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.02)'}
             onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
           >
-            <h3 style={{ margin: '0.5rem 0', fontSize: '1.2rem', fontWeight: 'bold' }}>{item.title}</h3>
-            <p style={{ fontSize: '0.9rem', color: '#666' }}>{item.desc}</p>
+            <h3 style={{
+              margin: '0.5rem 0',
+              fontSize: '1.2rem',
+              fontWeight: 'bold',
+              wordBreak: 'keep-all'
+            }}>
+              {item.title}
+            </h3>
+            <p style={{
+              fontSize: '0.9rem',
+              color: '#555',
+              margin: 0,
+              wordBreak: 'keep-all'
+            }}>
+              {item.desc}
+            </p>
           </div>
         ))}
       </div>

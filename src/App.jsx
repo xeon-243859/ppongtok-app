@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import MessagePage from './pages/MessagePage';
 
-// 각 메시지별 페이지 (현재는 임시로 간단하게 연결만)
+// 각 메시지별 개별 페이지들 (간단한 임시 버전)
 function LoveConfessionPage() {
   return <h2 style={{ textAlign: 'center', marginTop: '5rem' }}>❤️ 사랑고백 페이지 ❤️</h2>;
 }

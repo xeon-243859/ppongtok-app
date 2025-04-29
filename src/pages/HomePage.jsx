@@ -9,15 +9,15 @@ function HomePage() {
   };
 
   return (
-    <div style={{ 
-      textAlign: 'center', 
-      marginTop: '4rem', 
-      fontFamily: 'Arial, sans-serif' 
+    <div style={{
+      textAlign: 'center',
+      marginTop: '5rem',
+      fontFamily: 'Arial, sans-serif',
     }}>
       <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', wordBreak: 'keep-all' }}>
         🎉 뿅!톡에 오신것을
       </h1>
-      <h1 style={{ fontSize: '2.5rem', marginBottom: '2rem' }}>
+      <h1 style={{ fontSize: '2.5rem', marginBottom: '3rem' }}>
         환영합니다 🎉
       </h1>
 
@@ -30,7 +30,7 @@ function HomePage() {
           backgroundColor: '#4fc3f7',
           color: 'white',
           border: 'none',
-          boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
           cursor: 'pointer',
           marginTop: '2rem'
         }}
