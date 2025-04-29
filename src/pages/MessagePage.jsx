@@ -4,31 +4,51 @@ import { useNavigate } from 'react-router-dom';
 function MessagePage() {
   const navigate = useNavigate();
 
-  console.log('✅ 메시지 갯수:', messages.length);
   const messages = [
-    { title: '사랑 고백', desc: '마음을 전하는 순간을 특별하게 만들어봐요.', path: '/love' },
-    // ✨ 여기 **하나만** 있어야 해
+    { title: '사랑고백', desc: '마음을 전하는 순간을 특별하게', path: '/love' },
+    { title: '축하하기', desc: '소중한 순간을 함께 축하해요', path: '/celebration' },
+    { title: '사과하기', desc: '진심 어린 사과를 전해요', path: '/apology' },
+    { title: '감사하기', desc: '고마운 마음을 전해봐요', path: '/thankyou' },
+    { title: '추억만들기', desc: '소중한 추억을 함께해요', path: '/memory' },
   ];
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '2rem', overflow: 'visible' }}>
-      <h2 style={{ marginBottom: '2rem' }}>🎉 뿅!톡을 시작해볼까요?</h2>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', width: '100%', maxWidth: '400px' }}>
+    <div style={{
+      fontFamily: 'Arial, sans-serif',
+      backgroundColor: '#f0f9ff',
+      minHeight: '100vh',
+      padding: '2rem',
+      textAlign: 'center'
+    }}>
+      <h2 style={{ fontSize: '1.5rem', marginBottom: '2rem', wordBreak: 'keep-all' }}>
+        어떤 메시지를 만들까요?
+      </h2>
+
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '1rem'
+      }}>
         {messages.map((item, idx) => (
           <div
             key={idx}
             onClick={() => navigate(item.path)}
             style={{
-              padding: '1.5rem',
+              width: '90%',
+              maxWidth: '300px',
+              padding: '1rem 1.5rem',
               backgroundColor: 'white',
               borderRadius: '1rem',
-              boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
-              textAlign: 'center',
+              boxShadow: '0 8px 20px rgba(0,0,0,0.1)',
               cursor: 'pointer',
+              transition: 'transform 0.2s',
             }}
+            onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.02)'}
+            onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
           >
-            <h3 style={{ marginBottom: '0.5rem' }}>{item.title}</h3>
-            <p style={{ color: '#555' }}>{item.desc}</p>
+            <h3 style={{ margin: '0.5rem 0', fontSize: '1.2rem', fontWeight: 'bold' }}>{item.title}</h3>
+            <p style={{ fontSize: '0.9rem', color: '#666' }}>{item.desc}</p>
           </div>
         ))}
       </div>
