@@ -4,38 +4,37 @@ import { useNavigate } from 'react-router-dom';
 function HomePage() {
   const navigate = useNavigate();
 
-  const handleStart = () => {
-    navigate('/messages');
-  };
-
   return (
     <div style={{
-      textAlign: 'center',
-      marginTop: '5rem',
       fontFamily: 'Arial, sans-serif',
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      backgroundColor: '#ffffff',
+      paddingTop: '20%',
     }}>
-      <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', wordBreak: 'keep-all' }}>
-        🎉 뿅!톡에 오신것을
-      </h1>
-      <h1 style={{ fontSize: '2.5rem', marginBottom: '3rem' }}>
-        환영합니다 🎉
-      </h1>
-
+      <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🎉 뿅!톡에 오신것을</h1>
+      <h1 style={{ fontSize: '2rem', marginBottom: '2rem' }}>환영합니다 🎉</h1>
       <button
-        onClick={handleStart}
+        onClick={() => navigate('/messages')}
         style={{
-          fontSize: '1.2rem',
-          padding: '0.8rem 2.5rem',
-          borderRadius: '2rem',
-          backgroundColor: '#4fc3f7',
-          color: 'white',
+          backgroundColor: '#4FC3F7',
           border: 'none',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+          borderRadius: '25px',
+          padding: '0.8rem 2rem',
+          fontSize: '1rem',
+          color: '#fff',
           cursor: 'pointer',
-          marginTop: '2rem'
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+          marginTop: '2rem',
+          transition: 'background-color 0.3s ease'
         }}
+        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#42a5f5'}
+        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#4FC3F7'}
       >
-        시작하기
+        시작하기 🚀
       </button>
     </div>
   );
