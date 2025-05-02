@@ -12,6 +12,14 @@ const LovePreviewPage = () => {
 
   const handleStart = () => {
     setStarted(true);
+
+    // 🎵 사용자 클릭 후 강제 재생 → 브라우저 autoplay 허용 우회
+    const audio = document.querySelector("audio");
+    if (audio) {
+      audio.play().catch((e) => {
+        console.warn("브라우저가 자동 재생을 차단했습니다:", e);
+      });
+    }
   };
 
   const handleFinish = () => {
@@ -41,8 +49,8 @@ const LovePreviewPage = () => {
 
   return (
     <div className="love-preview-container" ref={previewRef}>
-      {/* ✅ 항상 로딩되도록 오디오 코드 따로 삽입 */}
-      <audio autoPlay loop>
+      {/* 🎵 오디오: 사용자 클릭 후 play()로 재생 */}
+      <audio loop>
         <source src="/music/mueon1.mp3" type="audio/mpeg" />
         브라우저가 오디오를 지원하지 않습니다.
       </audio>
