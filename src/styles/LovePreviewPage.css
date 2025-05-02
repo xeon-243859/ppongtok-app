@@ -1,7 +1,7 @@
 .love-preview-container {
     width: 100%;
     height: 100vh;
-    background-image: url('/images/lovesky.jpg'); /* ✅ 여기! */
+    background-image: url('/images/lovesky.jpg'); /* 🌄 배경 이미지 */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

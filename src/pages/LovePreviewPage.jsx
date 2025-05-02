@@ -41,8 +41,10 @@ const LovePreviewPage = () => {
 
   return (
     <div className="love-preview-container" ref={previewRef}>
+      {/* 🎵 배경음악: 무언의 봄 */}
       <audio autoPlay loop>
-        <source src="/music/love-theme.mp3" type="audio/mpeg" />
+        <source src="/music/무언의 봄.mp3" type="audio/mpeg" />
+        브라우저가 오디오를 지원하지 않습니다.
       </audio>
 
       {!started && (
