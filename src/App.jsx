@@ -1,22 +1,18 @@
-// src/App.jsx
-import { Routes, Route } from "react-router-dom";
-import WelcomePage from "./pages/WelcomePage";       // 🎉 뿅!톡에 오신 것을 환영합니다
-import IntroPage from "./pages/introPage";         // 🦊 지갑 연결 or 수동입력
-import LovePreviewPage from "./pages/LovePreviewPage"; // 💌 메시지 템플릿/입력/공유
-import TestAudioPage from "./pages/TestAudioPage";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LovePreviewPage from "./pages/LovePreviewPage";
+import TestAudioPage from "./pages/TestAudioPage"; // 🎧 음악 테스트 페이지
 
-export default function App() {
+function App() {
   return (
-    <Routes>
-      {/* 1. 앱 첫 진입 시 환영화면 */}
-      <Route path="/" element={<WelcomePage />} />
-
-      {/* 2. 지갑 연결 or 수동입력 페이지 */}
-      <Route path="/intro" element={<IntroPage />} />
-
-      {/* 3. 템플릿 선택, 메시지 작성, 공유 등 전체 흐름 */}
-      <Route path="/love/preview" element={<LovePreviewPage />} />
-      <Route path="/test-audio" element={<TestAudioPage />} />
-    </Routes>
+    <Router>
+      <Routes>
+        <Route path="/" element={<div style={{ padding: "2rem", textAlign: "center" }}><h1>뿅!톡 메인 페이지</h1></div>} />
+        <Route path="/love/preview" element={<LovePreviewPage />} />
+        <Route path="/test-audio" element={<TestAudioPage />} />
+      </Routes>
+    </Router>
   );
 }
+
+export default App;
