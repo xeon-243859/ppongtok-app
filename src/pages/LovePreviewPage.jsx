@@ -1,75 +1,81 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useRef } from "react";
+import "./LovePreviewPage.css";
+import TypewriterText from "../components/TypewriterText";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
-function LovePreviewPage() {
-  const navigate = useNavigate();
-  const [name, setName] = useState('');
-  const [message, setMessage] = useState('');
+const LovePreviewPage = () => {
+  const [started, setStarted] = useState(false);
+  const [text, setText] = useState("");
+  const [showPreview, setShowPreview] = useState(false);
+  const previewRef = useRef();
 
-  useEffect(() => {
-    const savedName = localStorage.getItem('love_name') || '이름 없음';
-    const savedMessage = localStorage.getItem('love_message') || '메시지 없음';
-    setName(savedName);
-    setMessage(savedMessage);
-  }, []);
+  const handleStart = () => {
+    setStarted(true);
+  };
+
+  const handleFinish = () => {
+    if (text.trim()) {
+      setShowPreview(true);
+    }
+  };
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    alert("링크가 복사되었습니다!");
+  };
+
+  const handleDownloadPDF = async () => {
+    const element = previewRef.current;
+    const canvas = await html2canvas(element);
+    const imgData = canvas.toDataURL("image/png");
+
+    const pdf = new jsPDF();
+    const imgProps = pdf.getImageProperties(imgData);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.save("love-message.pdf");
+  };
 
   return (
-    <div style={{ textAlign: 'center', padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
-      <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>✨ 당신의 고백 메시지 ✨</h2>
-      <div style={{
-        marginBottom: '2rem',
-        padding: '1rem',
-        border: '1px solid #ccc',
-        borderRadius: '10px',
-        backgroundColor: '#f9f9f9',
-        width: '90%',
-        maxWidth: '400px',
-        margin: '0 auto',
-        lineHeight: '1.6'
-      }}>
-        <strong>{name}</strong>님이 보낸 메시지:<br />
-        <em>{message}</em>
-      </div>
+    <div className="love-preview-container" ref={previewRef}>
+      <audio autoPlay loop>
+        <source src="/music/love-theme.mp3" type="audio/mpeg" />
+      </audio>
 
-      <div style={{ marginTop: '2rem' }}>
-        <button
-          onClick={() => navigate('/love/final')}
-          style={{
-            backgroundColor: '#4FC3F7',
-            border: 'none',
-            borderRadius: '25px',
-            padding: '0.8rem 2rem',
-            fontSize: '1rem',
-            color: '#fff',
-            cursor: 'pointer',
-            margin: '0 1rem',
-            boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
-            transition: 'background-color 0.3s ease'
-          }}
-        >
-          확정하기 💖
+      {!started && (
+        <button className="start-button" onClick={handleStart}>
+          시작하기
         </button>
+      )}
 
-        <button
-          onClick={() => navigate('/love/write')}
-          style={{
-            backgroundColor: '#ffb74d',
-            border: 'none',
-            borderRadius: '25px',
-            padding: '0.8rem 2rem',
-            fontSize: '1rem',
-            color: '#fff',
-            cursor: 'pointer',
-            margin: '0 1rem',
-            boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
-            transition: 'background-color 0.3s ease'
-          }}
-        >
-          다시쓰기 🔄
-        </button>
-      </div>
+      {started && !showPreview && (
+        <div className="input-box">
+          <textarea
+            placeholder="자막 내용을 입력해 주세요"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+          />
+          <button className="finish-button" onClick={handleFinish}>
+            완료
+          </button>
+        </div>
+      )}
+
+      {showPreview && (
+        <>
+          <h1 className="title">너를 위한 사랑 고백</h1>
+          <TypewriterText text={text} speed={80} />
+          <div className="button-group">
+            <button onClick={handleCopyLink}>🔗 공유하기</button>
+            <button onClick={handleDownloadPDF}>📄 PDF 저장</button>
+          </div>
+        </>
+      )}
     </div>
   );
-}
+};
 
 export default LovePreviewPage;

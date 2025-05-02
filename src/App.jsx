@@ -1,27 +1,20 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import MessagePage from './pages/MessagePage';
-import LoveConfessionPage from './pages/LoveConfessionPage';
-import CelebrationPage from './pages/CelebrationPage';
-import ApologyPage from './pages/ApologyPage';
-import ThankYouPage from './pages/ThankYouPage';
-import MemoryMakingPage from './pages/MemoryMakingPage';
+// src/App.jsx
+import { Routes, Route } from "react-router-dom";
+import WelcomePage from "./pages/WelcomePage";       // 🎉 뿅!톡에 오신 것을 환영합니다
+import IntroPage from "./pages/introPage";         // 🦊 지갑 연결 or 수동입력
+import LovePreviewPage from "./pages/LovePreviewPage"; // 💌 메시지 템플릿/입력/공유
 
-function App() {
+export default function App() {
   return (
-    <BrowserRouter basename="/ppongtok-app">
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/messages" element={<MessagePage />} />
-        <Route path="/love" element={<LoveConfessionPage />} />
-        <Route path="/celebration" element={<CelebrationPage />} />
-        <Route path="/apology" element={<ApologyPage />} />
-        <Route path="/thankyou" element={<ThankYouPage />} />
-        <Route path="/memory" element={<MemoryMakingPage />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      {/* 1. 앱 첫 진입 시 환영화면 */}
+      <Route path="/" element={<WelcomePage />} />
+
+      {/* 2. 지갑 연결 or 수동입력 페이지 */}
+      <Route path="/intro" element={<IntroPage />} />
+
+      {/* 3. 템플릿 선택, 메시지 작성, 공유 등 전체 흐름 */}
+      <Route path="/love/preview" element={<LovePreviewPage />} />
+    </Routes>
   );
 }
-
-export default App;
