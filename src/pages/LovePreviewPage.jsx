@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import "../styles/LovePreviewPage.css";
 
 const LovePreviewPage = () => {
@@ -7,24 +7,23 @@ const LovePreviewPage = () => {
   const [showAnimation, setShowAnimation] = useState(false);
   const audioRef = useRef(null);
 
-  // 음악 재생 핸들러
   const handleStart = () => {
     if (!text.trim()) return;
     setStarted(true);
     setShowAnimation(true);
 
-    // 오디오 수동 재생 (브라우저 autoplay 우회)
+    // 🎵 사용자 상호작용 후 재생 시도 (autoplay 우회)
     const audio = audioRef.current;
     if (audio) {
       audio.play().catch((e) => {
-        console.warn("🎵 브라우저가 자동 재생을 차단했습니다:", e);
+        console.warn("브라우저가 자동 재생을 차단했습니다:", e);
       });
     }
   };
 
   return (
     <div className="preview-container">
-      {/* 🎵 음악은 DOM 상단에 고정 */}
+      {/* 🎵 오디오 고정 위치 */}
       <audio ref={audioRef} loop>
         <source src="/music/mueon1.mp3" type="audio/mpeg" />
         브라우저가 오디오를 지원하지 않습니다.
