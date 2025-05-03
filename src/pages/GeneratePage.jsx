@@ -1,27 +1,24 @@
 // src/pages/GeneratePage.jsx
 import React, { useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import './GeneratePage.css';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const GeneratePage = () => {
-  const navigate = useNavigate();
   const location = useLocation();
-  const { message, emotion } = location.state || {};
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
       navigate('/love/preview', {
-        state: { message, emotion },
+        state: location.state
       });
-    }, 2000);
+    }, 2000); // 2초 후 이동
 
     return () => clearTimeout(timer);
-  }, [navigate, message, emotion]);
+  }, [location, navigate]);
 
   return (
-    <div className="generate-container">
-      <h2>사랑 메시지를 준비 중입니다...</h2>
-      <p>잠시만 기다려 주세요 💖</p>
+    <div className="generate-page">
+      <h2>사랑 메시지를 준비 중입니다... 💗</h2>
     </div>
   );
 };

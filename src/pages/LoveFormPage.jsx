@@ -3,6 +3,21 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LoveFormPage.css';
 
+const emotionThemes = {
+  '잔잔한 마음': {
+    music: '/audio/spring.mp3',
+    background: '/images/lovesky.jpg'
+  },
+  '설레는 마음': {
+    music: '/audio/mueon1.mp3',
+    background: '/images/lovelove.png'
+  },
+  '따뜻한 기억': {
+    music: '/audio/mueon.mp3',
+    background: '/images/likeyou.png'
+  }
+};
+
 function LoveFormPage() {
   const navigate = useNavigate();
   const [message, setMessage] = useState('');
@@ -13,9 +28,16 @@ function LoveFormPage() {
   const handleSubmit = () => {
     const customImage = imageFile ? URL.createObjectURL(imageFile) : null;
     const customAudio = audioFile ? URL.createObjectURL(audioFile) : null;
+    const theme = emotionThemes[emotion];
 
     navigate('/love/generate', {
-      state: { message, emotion, customImage, customAudio },
+      state: {
+        message,
+        emotion,
+        customImage,
+        customAudio,
+        theme
+      }
     });
   };
 
@@ -29,7 +51,7 @@ function LoveFormPage() {
         placeholder="사랑하는 사람에게 전하고 싶은 말을 써보세요"
         rows={5}
         style={{
-          fontSize: '36px',
+          fontSize: '24px',
           fontWeight: 'bold',
           lineHeight: '1.6',
           padding: '20px',

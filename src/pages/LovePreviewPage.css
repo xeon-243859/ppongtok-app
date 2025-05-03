@@ -1,45 +1,50 @@
 /* src/pages/LovePreviewPage.css */
 .preview-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 30px;
+    padding: 20px;
+    text-align: center;
+    background-color: #fff8fb;
+    min-height: 100vh;
   }
   
   .preview-box {
-    width: 100%;
+    border: 3px solid #ff99bb;
+    border-radius: 16px;
+    margin: 0 auto 20px;
     max-width: 700px;
-    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    position: relative;
   }
   
-  .preview-box p {
-    white-space: pre-wrap;
-    line-height: 1.6;
+  .preview-message {
+    font-size: 24px;
     font-weight: bold;
+    color: white;
+    background-color: rgba(0,0,0,0.4);
+    padding: 20px;
+    border-radius: 12px;
   }
   
   .button-box {
-    margin-top: 20px;
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
     justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
   }
   
-  .button-box button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 12px;
-    background-color: #ff85a2;
-    color: white;
-    cursor: pointer;
+  .button-box button,
+  .mute-toggle {
+    padding: 12px 20px;
     font-size: 16px;
-    transition: background-color 0.3s;
+    background-color: #ff6699;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
   }
   
-  .button-box button:hover {
-    background-color: #ff658f;
+  .button-box button:hover,
+  .mute-toggle:hover {
+    background-color: #ff3366;
   }
   
