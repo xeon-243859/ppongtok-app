@@ -1,31 +1,39 @@
 /* src/pages/IntroPage.css */
 .intro-container {
+    text-align: center;
+    padding: 100px 20px;
+    background: linear-gradient(135deg, #ffe6f0, #ffffff);
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    height: 100vh;
-    background-color: #fffafc;
-    text-align: center;
+    align-items: center;
   }
   
   .intro-container h1 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
+    font-size: 36px;
+    color: #ff6699;
+    margin-bottom: 20px;
   }
   
-  .intro-container button {
-    padding: 0.8rem 1.5rem;
-    font-size: 1rem;
-    border: none;
-    border-radius: 10px;
-    background-color: #ff69b4;
+  .intro-container p {
+    font-size: 20px;
+    color: #666;
+    margin-bottom: 40px;
+  }
+  
+  .start-button {
+    padding: 15px 30px;
+    background-color: #ff85a2;
     color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
     cursor: pointer;
     transition: background-color 0.3s;
   }
   
-  .intro-container button:hover {
-    background-color: #ff85c1;
+  .start-button:hover {
+    background-color: #ff658f;
   }
   

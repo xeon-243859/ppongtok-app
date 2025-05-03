@@ -1,22 +1,7 @@
 /* src/pages/GeneratePage.css */
 .generate-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #fff0f5;
-    font-family: Arial, sans-serif;
     text-align: center;
-  }
-  
-  .generate-container h2 {
-    font-size: 1.8rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .generate-container p {
-    font-size: 1.2rem;
-    color: #555;
+    padding: 100px 20px;
+    font-size: 20px;
   }
   

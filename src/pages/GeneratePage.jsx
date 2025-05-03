@@ -1,16 +1,22 @@
+// src/pages/GeneratePage.jsx
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './GeneratePage.css';
 
 const GeneratePage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { message, emotion } = location.state || {};
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate('/love/preview');
+      navigate('/love/preview', {
+        state: { message, emotion },
+      });
     }, 2000);
+
     return () => clearTimeout(timer);
-  }, [navigate]);
+  }, [navigate, message, emotion]);
 
   return (
     <div className="generate-container">

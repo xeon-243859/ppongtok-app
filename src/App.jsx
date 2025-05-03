@@ -1,12 +1,12 @@
+// src/App.jsx
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import IntroPage from './pages/IntroPage_TEMP'; // ✅ 이대로!
-
+import IntroPage from './pages/IntroPage';
 import LoveFormPage from './pages/LoveFormPage';
 import GeneratePage from './pages/GeneratePage';
 import LovePreviewPage from './pages/LovePreviewPage';
 
-const App = () => {
+function App() {
   return (
     <Routes>
       <Route path="/" element={<IntroPage />} />
@@ -15,6 +15,6 @@ const App = () => {
       <Route path="/love/preview" element={<LovePreviewPage />} />
     </Routes>
   );
-};
+}
 
 export default App;
