@@ -4,7 +4,7 @@ const TestAudioPage = () => {
   const playAudio = () => {
     const audio = document.getElementById("test-audio");
     if (audio) {
-      audio.play().catch(e => {
+      audio.play().catch((e) => {
         console.warn("재생 실패:", e);
         alert("브라우저가 자동 재생을 차단했어요. 버튼을 다시 눌러주세요.");
       });

@@ -1,6 +1,6 @@
 // src/pages/IntroPage.jsx
 import { useEffect, useState } from "react";
-import { useMetaMask } from "../hooks/useMetaMask";
+import { useMetaMask } from "../../hooks/useMetaMask";
 import { useNavigate } from "react-router-dom";
 import ManualWalletInput from "../components/ManualWalletInput";
 

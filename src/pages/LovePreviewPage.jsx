@@ -1,58 +1,98 @@
-import React, { useState, useRef } from "react";
-import "../styles/LovePreviewPage.css";
+import React, { useState, useEffect, useRef } from 'react';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import './LovePreviewPage.css';
 
 const LovePreviewPage = () => {
-  const [started, setStarted] = useState(false);
-  const [text, setText] = useState("");
-  const [showAnimation, setShowAnimation] = useState(false);
-  const audioRef = useRef(null);
+  const [lines, setLines] = useState([]);
+  const [currentLine, setCurrentLine] = useState(0);
+  const [showText, setShowText] = useState('');
+  const previewRef = useRef(null);
 
-  const handleStart = () => {
-    if (!text.trim()) return;
-    setStarted(true);
-    setShowAnimation(true);
+  useEffect(() => {
+    const storedMessage = localStorage.getItem('message') || '';
+    setLines(storedMessage.split('\n'));
+  }, []);
 
-    // 🎵 사용자 상호작용 후 재생 시도 (autoplay 우회)
-    const audio = audioRef.current;
-    if (audio) {
-      audio.play().catch((e) => {
-        console.warn("브라우저가 자동 재생을 차단했습니다:", e);
-      });
+  useEffect(() => {
+    if (currentLine < lines.length) {
+      let index = 0;
+      const interval = setInterval(() => {
+        setShowText(lines[currentLine].substring(0, index + 1));
+        index++;
+        if (index >= lines[currentLine].length) {
+          clearInterval(interval);
+          setTimeout(() => {
+            setCurrentLine((prev) => prev + 1);
+            setShowText('');
+          }, 1500);
+        }
+      }, 50);
+      return () => clearInterval(interval);
+    }
+  }, [currentLine, lines]);
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    alert('링크가 복사되었어요!');
+  };
+
+  const handleFacebookShare = () => {
+    const url = encodeURIComponent(window.location.href);
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+  };
+
+  const handleTwitterShare = () => {
+    const url = encodeURIComponent(window.location.href);
+    window.open(`https://twitter.com/intent/tweet?url=${url}`, '_blank');
+  };
+
+  const handleDownloadImage = async () => {
+    if (previewRef.current) {
+      const canvas = await html2canvas(previewRef.current);
+      const imgData = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.href = imgData;
+      link.download = 'love-preview.png';
+      link.click();
     }
   };
 
+  const handleDownloadPDF = async () => {
+    if (previewRef.current) {
+      const canvas = await html2canvas(previewRef.current);
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF();
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save('love-preview.pdf');
+    }
+  };
+
+  const handleRestart = () => {
+    window.location.href = '/love/form';
+  };
+
+  const background = localStorage.getItem('background') || 'love-background.jpg';
+  const music = localStorage.getItem('music') || 'love-theme.mp3';
+
   return (
-    <div className="preview-container">
-      {/* 🎵 오디오 고정 위치 */}
-      <audio ref={audioRef} loop>
-        <source src="/music/mueon1.mp3" type="audio/mpeg" />
-        브라우저가 오디오를 지원하지 않습니다.
-      </audio>
-
-      {/* 🌄 배경 이미지 */}
-      <img src="/images/lovesky.jpg" alt="배경" className="background-image" />
-
-      {!started ? (
-        <div className="input-box">
-          <h2>💌 고백할 메시지를 입력하세요</h2>
-          <textarea
-            rows="4"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder="예: 보리야, 너를 만나고 나의 하루가 달라졌어"
-          />
-          <button onClick={handleStart}>고백 메시지 영상처럼 보기 💖</button>
+    <div className="preview-container" ref={previewRef}>
+      <img src={`/images/${background}`} alt="배경" className="background-image" />
+      <div className="overlay">
+        <p className="love-text">{showText}</p>
+        <div className="button-group">
+          <button onClick={handleCopyLink}>🔗 링크 복사</button>
+          <button onClick={handleFacebookShare}>📘 페이스북 공유</button>
+          <button onClick={handleTwitterShare}>🐦 트위터 공유</button>
+          <button onClick={handleDownloadImage}>🖼 이미지 저장</button>
+          <button onClick={handleDownloadPDF}>📄 PDF 저장</button>
+          <button onClick={handleRestart}>🔄 다시 만들기</button>
         </div>
-      ) : (
-        <div className="animated-text">
-          {showAnimation &&
-            [...text].map((char, index) => (
-              <span key={index} style={{ animationDelay: `${index * 0.05}s` }}>
-                {char}
-              </span>
-            ))}
-        </div>
-      )}
+      </div>
+      <audio autoPlay loop src={`/audio/${music}`} />
     </div>
   );
 };
