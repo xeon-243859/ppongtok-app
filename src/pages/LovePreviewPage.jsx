@@ -11,13 +11,23 @@ function LovePreviewPage() {
   const previewRef = useRef();
   const [muted, setMuted] = useState(false);
 
+  // ✅ location.state 없을 경우 처리
+  if (!location.state) {
+    return (
+      <div className="preview-container">
+        <h2>잘못된 접근입니다. 홈으로 돌아가 주세요.</h2>
+        <button onClick={() => navigate('/')}>🏠 홈으로</button>
+      </div>
+    );
+  }
+
   const {
     message = '',
     emotion = '잔잔한 마음',
     customImage = null,
     customAudio = null,
     theme = {}
-  } = location.state || {};
+  } = location.state;
 
   const backgroundImage = customImage || theme.background || '/images/lovesky.jpg';
   const music = customAudio || theme.music || '/audio/spring.mp3';
