@@ -9,8 +9,8 @@ function App() {
       <Routes>
         <Route path="/" element={
           <div style={{ padding: "2rem", textAlign: "center" }}>
-            <h1>뿅!톡 메인 페이지</h1>
-            <p>아래 경로로 테스트할 수 있어요:</p>
+            <h1>🎈 뿅!톡 메인 페이지</h1>
+            <p>테스트 경로:</p>
             <ul>
               <li><a href="/love/preview">/love/preview</a></li>
               <li><a href="/test-audio">/test-audio</a></li>
