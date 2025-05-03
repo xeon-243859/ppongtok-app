@@ -1,76 +1,66 @@
-.love-preview-container {
-    width: 100%;
-    height: 100vh;
-    background-image: url('/images/lovesky.jpg'); /* 🌄 배경 이미지 */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
-    font-family: 'Arial', sans-serif;
-    padding: 20px;
-    box-sizing: border-box;
+.preview-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  font-family: "Arial", sans-serif;
+}
+
+.background-image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  filter: brightness(0.75);
+}
+
+.input-box {
+  position: relative;
+  padding: 2rem;
+  text-align: center;
+  z-index: 1;
+  color: white;
+}
+
+textarea {
+  width: 90%;
+  max-width: 600px;
+  font-size: 1.1rem;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  resize: none;
+}
+
+button {
+  padding: 12px 24px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  background-color: #ff7f7f;
+  color: white;
+  cursor: pointer;
+}
+
+.animated-text {
+  font-size: 2rem;
+  padding: 2rem;
+  white-space: pre-wrap;
+  color: white;
+  text-shadow: 1px 1px 4px black;
+}
+
+.animated-text span {
+  display: inline-block;
+  opacity: 0;
+  animation: typing 0.5s forwards;
+}
+
+@keyframes typing {
+  to {
+    opacity: 1;
   }
-  
-  .start-button,
-  .finish-button,
-  .button-group button {
-    padding: 12px 24px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 8px;
-    margin: 10px;
-    cursor: pointer;
-    background-color: rgba(255, 255, 255, 0.9);
-    color: #333;
-    font-weight: bold;
-    transition: transform 0.2s;
-  }
-  
-  .start-button:hover,
-  .finish-button:hover,
-  .button-group button:hover {
-    transform: scale(1.05);
-  }
-  
-  .input-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .input-box textarea {
-    width: 300px;
-    height: 120px;
-    border-radius: 12px;
-    padding: 10px;
-    font-size: 1rem;
-    resize: none;
-    margin-bottom: 10px;
-  }
-  
-  .title {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    text-align: center;
-  }
-  
-  .typewriter {
-    font-size: 1.5rem;
-    max-width: 80%;
-    text-align: center;
-    white-space: pre-wrap;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
-    margin-top: 1rem;
-  }
-  
-  .button-group {
-    margin-top: 2rem;
-    display: flex;
-    gap: 20px;
-  }
-  
+}
