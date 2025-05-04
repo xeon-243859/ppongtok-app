@@ -1,46 +1,38 @@
-import React, { useEffect } from 'react';
-import { useNavigate, useLocation, Navigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './LoveFormPage.css';
 
-const GeneratePage = () => {
-  const location = useLocation();
+const LoveFormPage = () => {
+  const [message, setMessage] = useState('');
+  const [emotion, setEmotion] = useState('잔잔한 마음');
   const navigate = useNavigate();
 
-  // location.state에서 데이터 안전하게 구조분해
-  const {
-    message,
-    emotion,
-    customImage,
-    customAudio,
-    theme
-  } = location.state || {};
-
-  // 필수 데이터 없으면 홈으로 리다이렉트
-  if (!message || !emotion) {
-    return <Navigate to="/" />;
-  }
-
-  useEffect(() => {
-    // 2초 후 자동 이동
-    const timer = setTimeout(() => {
-      navigate('/love/preview', {
-        state: {
-          message,
-          emotion,
-          customImage,
-          customAudio,
-          theme
-        }
-      });
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, [navigate, message, emotion, customImage, customAudio, theme]);
+  const handleSubmit = () => {
+    navigate('/love/generate', { state: { message, emotion } });
+  };
 
   return (
-    <div className="preview-container">
-      <h2>💌 사랑 메시지를 준비 중입니다...</h2>
+    <div className="form-container">
+      <h2>사랑 고백 메시지를 입력하세요</h2>
+      <textarea
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        placeholder="당신의 진심을 적어보세요..."
+        className="message-input"
+      />
+      <div className="emotion-select">
+        <label>감정 선택: </label>
+        <select value={emotion} onChange={(e) => setEmotion(e.target.value)}>
+          <option>잔잔한 마음</option>
+          <option>설레는 마음</option>
+          <option>따뜻한 기억</option>
+        </select>
+      </div>
+      <button className="submit-button" onClick={handleSubmit}>
+        사랑 영상 만들기
+      </button>
     </div>
   );
 };
 
-export default GeneratePage;
+export default LoveFormPage;
