@@ -1,20 +1,27 @@
-import React, { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import "./GeneratePage.css";
 
 const GeneratePage = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      navigate('/love/preview', { state: location.state });
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, [location, navigate]);
+    const storedMessage = localStorage.getItem("loveMessage");
+    if (storedMessage) {
+      setMessage(storedMessage);
+    }
+  }, []);
 
   return (
-    <div className="generate-container">
-      <h2>사랑 메시지를 준비 중입니다...</h2>
+    <div className="preview-container">
+      <img className="background-image" src="/backgrounds/love-bg1.jpg" alt="배경" />
+      <audio autoPlay loop src="/audio/love-theme.mp3" />
+      <div className="animated-message">
+        {message.split("\n").map((line, index) => (
+          <p key={index} className="animated-line">
+            {line}
+          </p>
+        ))}
+      </div>
     </div>
   );
 };

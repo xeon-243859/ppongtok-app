@@ -1,21 +1,18 @@
-import React from 'react';
-import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
-
-import IntroPage from './pages/IntroPage';
-import LoveFormPage from './pages/LoveFormPage';
-import GeneratePage from './pages/GeneratePage';
-import LovePreviewPage from './pages/LovePreviewPage';
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import IntroPage from "./pages/IntroPage";
+import LoveFormPage from "./pages/LoveFormPage";
+import GeneratePage from "./pages/GeneratePage";
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
         <Route path="/" element={<IntroPage />} />
         <Route path="/love/form" element={<LoveFormPage />} />
-        <Route path="/love/generate" element={<GeneratePage />} />
-        <Route path="/love/preview" element={<LovePreviewPage />} />
+        <Route path="/love/preview" element={<GeneratePage />} />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
 
