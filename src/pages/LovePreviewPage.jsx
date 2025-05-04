@@ -1,98 +1,34 @@
-// src/pages/LovePreviewPage.jsx
-import React, { useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
-import './LovePreviewPage.css';
+import React, { useEffect, useRef } from 'react';
 
 function LovePreviewPage() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const previewRef = useRef();
-  const [muted, setMuted] = useState(false);
+  const canvasRef = useRef(null);
 
-  // ✅ location.state 없을 경우 처리
-  if (!location.state) {
-    return (
-      <div className="preview-container">
-        <h2>잘못된 접근입니다. 홈으로 돌아가 주세요.</h2>
-        <button onClick={() => navigate('/')}>🏠 홈으로</button>
-      </div>
-    );
-  }
-
-  const {
-    message = '',
-    emotion = '잔잔한 마음',
-    customImage = null,
-    customAudio = null,
-    theme = {}
-  } = location.state;
-
-  const backgroundImage = customImage || theme.background || '/images/lovesky.jpg';
-  const music = customAudio || theme.music || '/audio/spring.mp3';
-
-  const handleImageDownload = () => {
-    html2canvas(previewRef.current).then((canvas) => {
-      const link = document.createElement('a');
-      link.download = 'love_message.png';
-      link.href = canvas.toDataURL();
-      link.click();
-    });
-  };
-
-  const handlePdfDownload = () => {
-    html2canvas(previewRef.current).then((canvas) => {
-      const pdf = new jsPDF();
-      const imgData = canvas.toDataURL('image/png');
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      pdf.save('love_message.pdf');
-    });
-  };
-
-  const copyLink = async () => {
-    await navigator.clipboard.writeText(window.location.href);
-    alert('링크가 복사되었습니다!');
-  };
+  useEffect(() => {
+    // 브라우저 환경에서만 실행되도록 설정
+    if (typeof window !== 'undefined') {
+      import('html2canvas').then((html2canvas) => {
+        const target = document.getElementById('captureTarget');
+        if (target) {
+          html2canvas.default(target).then((canvas) => {
+            if (canvasRef.current) {
+              canvasRef.current.innerHTML = ''; // 기존 캔버스 제거
+              canvasRef.current.appendChild(canvas);
+            }
+          });
+        }
+      });
+    }
+  }, []);
 
   return (
-    <div className="preview-container">
-      <audio autoPlay loop src={music} muted={muted} style={{ display: 'none' }} />
-      <div
-        className="preview-box"
-        ref={previewRef}
-        style={{
-          backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          height: '400px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '20px',
-          textAlign: 'center',
-        }}
-      >
-        <p style={{ fontSize: '24px', fontWeight: 'bold', color: 'white' }}>{message}</p>
+    <div>
+      <div id="captureTarget">
+        <h2>💕 사랑의 메시지를 담아...</h2>
+        <p>이 영역이 캡처됩니다.</p>
       </div>
 
-      <button className="mute-toggle" onClick={() => setMuted(!muted)}>
-        {muted ? '🔇 음악 켜기' : '🔊 음악 끄기'}
-      </button>
-
-      <div className="button-box">
-        <button onClick={copyLink}>🔗 링크 복사</button>
-        <button onClick={() =>
-          window.open(`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`)
-        }>📱 페이스북 공유</button>
-        <button onClick={() =>
-          window.open(`https://twitter.com/intent/tweet?url=${window.location.href}`)
-        }>🐦 트위터 공유</button>
-        <button onClick={handleImageDownload}>🖼 이미지 저장</button>
-        <button onClick={handlePdfDownload}>📄 PDF 저장</button>
-        <button onClick={() => navigate('/love/form')}>🔄 다시 만들기</button>
+      <div ref={canvasRef} style={{ marginTop: '20px' }}>
+        {/* html2canvas로 생성된 캔버스가 여기에 붙어요 */}
       </div>
     </div>
   );
