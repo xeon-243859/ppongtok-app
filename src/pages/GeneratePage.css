@@ -1,7 +1,71 @@
 /* src/pages/GeneratePage.css */
-.generate-container {
-    text-align: center;
-    padding: 100px 20px;
-    font-size: 20px;
+
+.preview-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background-color: black;
+}
+
+.background-image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  filter: brightness(0.7);
+}
+
+.animated-message {
+  position: relative;
+  z-index: 1;
+  color: white;
+  font-size: 2rem;
+  line-height: 1.8;
+  text-align: center;
+  padding: 2rem;
+  white-space: pre-wrap;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  animation: fadeIn 2s ease-in-out;
+}
+
+.animated-line {
+  margin: 0.5rem 0;
+  animation: slideUp 1s ease forwards;
+  opacity: 0;
+}
+
+.animated-line:nth-child(1) {
+  animation-delay: 0.5s;
+}
+.animated-line:nth-child(2) {
+  animation-delay: 1s;
+}
+.animated-line:nth-child(3) {
+  animation-delay: 1.5s;
+}
+/* 더 많은 줄이 필요한 경우 계속 추가 가능 */
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
   }
-  
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
