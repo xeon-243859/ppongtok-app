@@ -55,7 +55,8 @@ const ImageSelectPage = () => {
 
       <div className="nav-buttons">
         <button onClick={() => navigate(-1)}>뒤로가기</button>
-        <button onClick={() => navigate("/love/video")}>다음으로</button>
+        <button onClick={() => navigate("/video/select")}>다음으로</button>
+
       </div>
     </div>
   );
