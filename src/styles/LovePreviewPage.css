@@ -1,74 +1,66 @@
-/* 💫 전체 미리보기 영역 */
-.preview-page {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-  background-color: black;
-}
-
-/* 🎨 배경 이미지 / 영상 스타일 */
-.preview-bg {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 0;
-}
-
-/* 💌 자막 스타일 */
-.subtitle {
-  position: absolute;
-  bottom: 12%;
-  width: 100%;
+.preview-wrapper {
+  padding: 40px 20px;
   text-align: center;
-  font-size: 2rem;
-  color: white;
-  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
-  z-index: 1;
-  padding: 0 20px;
-  animation: fadeIn 3s ease-in-out;
-  font-family: "Noto Sans KR", sans-serif;
+  background-color: #fffafc;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
-/* 🌟 자막 애니메이션 */
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.preview-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 24px;
+  color: #333;
 }
 
-/* 🧁 버튼 영역 */
-.button-group {
-  position: absolute;
-  bottom: 5%;
-  width: 100%;
+.preview-video-container {
   display: flex;
   justify-content: center;
-  gap: 1rem;
-  z-index: 2;
+  margin-bottom: 30px;
 }
 
-/* 🍬 버튼 공통 스타일 */
-.button-group button {
-  padding: 0.6rem 1.2rem;
-  font-size: 1rem;
-  background: rgba(255, 255, 255, 0.9);
-  border: none;
+.preview-video {
+  width: 320px;
+  height: 180px;
   border-radius: 12px;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  transition: transform 0.2s ease, background 0.2s ease;
-  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  object-fit: cover;
 }
 
-/* 🍓 호버 효과 */
-.button-group button:hover {
-  transform: translateY(-3px);
-  background: #ffeef0;
+.preview-message {
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+.preview-message .line {
+  font-size: 16px;
+  margin: 4px 0;
+  color: #444;
+}
+
+.preview-message .line.highlight {
+  font-size: 20px;
+  font-weight: bold;
+  color: #e91e63;
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.nav-buttons button {
+  background-color: #9b59b6;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 999px;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nav-buttons button:hover {
+  opacity: 0.9;
 }

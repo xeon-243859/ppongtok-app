@@ -1,26 +1,27 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import IntroPage from "./pages/IntroPage";
 import LoveFormPage from "./pages/LoveFormPage";
 import StyleSelectPage from "./pages/StyleSelectPage";
-import ImageSelectPage from "./pages/ImageSelectPage"; // ✅ 추가
-import VideoSelectPage from "./pages/VideoSelectPage"; // ✅ 추가
-import GeneratePage from "./pages/GeneratePage";
+import ImageSelectPage from "./pages/ImageSelectPage";
+import VideoSelectPage from "./pages/VideoSelectPage";
+import LovePreviewPage from "./pages/LovePreviewPage";
+import ShareCompletePage from "./pages/ShareCompletePage";
 
-const App = () => {
+function App() {
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
         <Route path="/" element={<IntroPage />} />
-        <Route path="/love" element={<LoveFormPage />} />
-        <Route path="/style" element={<StyleSelectPage />} />
-        <Route path="/select/image" element={<ImageSelectPage />} /> {/* ✅ */}
-        <Route path="/select/video" element={<VideoSelectPage />} /> {/* ✅ */}
-        <Route path="/generate" element={<GeneratePage />} />
         <Route path="/love/form" element={<LoveFormPage />} />
+        <Route path="/style" element={<StyleSelectPage />} />
+        <Route path="/image/select" element={<ImageSelectPage />} />
+        <Route path="/video/select" element={<VideoSelectPage />} />
+        <Route path="/preview" element={<LovePreviewPage />} />
+        <Route path="/complete" element={<ShareCompletePage />} />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
-};
+}
 
 export default App;
