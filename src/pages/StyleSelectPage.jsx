@@ -1,16 +1,18 @@
+// src/pages/StyleSelectPage.jsx
+
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "./StyleSelectPage.css";
+import "../styles/StyleSelectPage.css"; // CSS 경로는 프로젝트 구조에 따라 조정
 
 const StyleSelectPage = () => {
   const navigate = useNavigate();
 
   const goToImageSelect = () => {
-    navigate("/select/image"); // ✅ 여기에 연결된 페이지가 있어야 해!
+    navigate("/image/select"); // ✅ 올바른 경로
   };
 
   const goToVideoSelect = () => {
-    navigate("/select/video"); // ✅ 여기도
+    navigate("/video/select"); // ✅ 올바른 경로
   };
 
   const goBack = () => {
