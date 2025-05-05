@@ -1,40 +1,25 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import IntroPage from './pages/IntroPage';
-import LoveFormPage from './pages/LoveFormPage';
-import StyleSelectPage from './pages/StyleSelectPage';
-import ImageBackgroundPage from './pages/ImageBackgroundPage';
-import VideoBackgroundPage from './pages/VideoBackgroundPage';
-import MusicSelectPage from './pages/MusicSelectPage';
-import GeneratePage from './pages/GeneratePage';
-import './App.css';
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import IntroPage from "./pages/IntroPage";
+import LoveFormPage from "./pages/LoveFormPage";
+import StyleSelectPage from "./pages/StyleSelectPage";
+import ImageSelectPage from "./pages/ImageSelectPage"; // ✅ 추가
+import VideoSelectPage from "./pages/VideoSelectPage"; // ✅ 추가
+import GeneratePage from "./pages/GeneratePage";
 
-function App() {
-  const [message, setMessage] = useState('');
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [selectedVideo, setSelectedVideo] = useState(null);
-  const [selectedMusic, setSelectedMusic] = useState(null);
-
+const App = () => {
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
         <Route path="/" element={<IntroPage />} />
-        <Route path="/love/form" element={<LoveFormPage message={message} setMessage={setMessage} />} />
-        <Route path="/love/style" element={<StyleSelectPage />} />
-        <Route path="/love/image" element={<ImageBackgroundPage setSelectedImage={setSelectedImage} />} />
-        <Route path="/love/video" element={<VideoBackgroundPage setSelectedVideo={setSelectedVideo} />} />
-        <Route path="/love/music" element={<MusicSelectPage setSelectedMusic={setSelectedMusic} />} />
-        <Route path="/love/generate" element={
-          <GeneratePage
-            message={message}
-            selectedImage={selectedImage}
-            selectedVideo={selectedVideo}
-            selectedMusic={selectedMusic}
-          />
-        } />
+        <Route path="/love" element={<LoveFormPage />} />
+        <Route path="/style" element={<StyleSelectPage />} />
+        <Route path="/select/image" element={<ImageSelectPage />} /> {/* ✅ */}
+        <Route path="/select/video" element={<VideoSelectPage />} /> {/* ✅ */}
+        <Route path="/generate" element={<GeneratePage />} />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
