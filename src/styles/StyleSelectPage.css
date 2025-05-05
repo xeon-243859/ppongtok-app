@@ -1,5 +1,5 @@
-/* 💯 화면 정중앙에 배치 (flex 기준) */
 .style-select-wrapper {
+    position: relative; /* 📌 버튼 위치 제어용 */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -7,7 +7,6 @@
     background-color: #ffffff;
   }
   
-  /* 📦 내부 콘텐츠 중앙 정렬 */
   .style-select-container {
     display: flex;
     flex-direction: column;
@@ -15,7 +14,6 @@
     text-align: center;
   }
   
-  /* 📝 제목 텍스트 */
   .title-text {
     font-size: 24px;
     font-weight: bold;
@@ -25,7 +23,6 @@
     white-space: pre-line;
   }
   
-  /* 🔘 버튼들을 세로 2줄로 고정 */
   .select-buttons {
     display: flex;
     flex-direction: column;
@@ -34,7 +31,6 @@
     margin-bottom: 40px;
   }
   
-  /* ▶️ 버튼 공통 스타일 */
   .select-buttons button {
     min-width: 220px;
     font-size: 18px;
@@ -52,10 +48,13 @@
     transform: scale(1.05);
   }
   
-  /* ⬅️ 뒤로가기 버튼은 그대로 유지 */
+  /* ✅ 뒤로가기: 우하단 + 보라색 */
   .back-button {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
     padding: 10px 20px;
-    background-color: #ff9db5;
+    background-color: #9b59b6; /* 보라색 */
     color: white;
     border: none;
     border-radius: 999px;
