@@ -2,98 +2,60 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/ImageSelectPage.css";
 
-const categories = ["따뜻한", "설레임", "그리움", "감성적인", "내파일선택"];
-
-const sampleImages = {
-  따뜻한: ["warm1.jpg", "warm2.jpg", "warm3.jpg", "warm4.jpg"],
-  설레임: ["love1.jpg", "love2.jpg", "love3.jpg", "love4.jpg"],
-  그리움: ["miss1.jpg", "miss2.jpg", "miss3.jpg", "miss4.jpg"],
-  감성적인: ["emo1.jpg", "emo2.jpg", "emo3.jpg", "emo4.jpg"],
-};
-
 const ImageSelectPage = () => {
-  const [activeTab, setActiveTab] = useState("따뜻한");
-  const [selectedImages, setSelectedImages] = useState([]);
   const navigate = useNavigate();
+  const [selectedImages, setSelectedImages] = useState([null, null, null, null]);
 
-  const handleImageClick = (img) => {
-    if (selectedImages.includes(img)) return;
-    if (selectedImages.length < 4) {
-      setSelectedImages([...selectedImages, img]);
-    }
-  };
+  const dummyImages = [
+    "/backgrounds/warm1.jpg",
+    "/backgrounds/warm2.jpg",
+    "/backgrounds/warm3.jpg",
+    "/backgrounds/warm4.jpg",
+  ];
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file && selectedImages.length < 4) {
-      const url = URL.createObjectURL(file);
-      setSelectedImages([...selectedImages, url]);
-    }
-  };
-
-  const handleBack = () => window.history.back();
-
-  const handleNext = () => {
-    if (selectedImages.length === 4) {
-      navigate("/video/select"); // ✅ 여기 수정됨!
-    } else {
-      alert("4개의 이미지를 선택해 주세요!");
+  const handleSelect = (img) => {
+    const index = selectedImages.findIndex((item) => item === null);
+    if (index !== -1) {
+      const newSelection = [...selectedImages];
+      newSelection[index] = img;
+      setSelectedImages(newSelection);
     }
   };
 
   return (
     <div className="image-select-wrapper">
+      <h2 className="title">네번째 화면 · 이미지 배경화면</h2>
       <div className="tabs">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            className={activeTab === cat ? "tab active" : "tab"}
-            onClick={() => setActiveTab(cat)}
-          >
-            {cat}
-          </button>
-        ))}
-        {activeTab === "내파일선택" && (
-          <input type="file" accept="image/*" onChange={handleFileChange} />
-        )}
+        <button className="tab">따뜻한</button>
+        <button className="tab">설레임</button>
+        <button className="tab">그리움</button>
+        <button className="tab">감성적인</button>
+        <button className="tab">내파일선택</button>
       </div>
 
-      {activeTab !== "내파일선택" && (
-        <div className="image-grid">
-          {sampleImages[activeTab].map((img) => (
-            <img
-              key={img}
-              src={`/backgrounds/${img}`}
-              alt={img}
-              className={selectedImages.includes(img) ? "selected" : ""}
-              onClick={() => handleImageClick(img)}
-            />
-          ))}
-        </div>
-      )}
+      <div className="image-grid">
+        {dummyImages.map((img, idx) => (
+          <img
+            key={idx}
+            src={img}
+            alt={`배경 ${idx + 1}`}
+            className="bg-img"
+            onClick={() => handleSelect(img)}
+          />
+        ))}
+      </div>
 
-      <div className="selected-box">
-        {Array(4)
-          .fill(null)
-          .map((_, idx) => (
-            <div key={idx} className="box-slot">
-              {selectedImages[idx] && (
-                <img
-                  src={
-                    selectedImages[idx].startsWith("blob")
-                      ? selectedImages[idx]
-                      : `/backgrounds/${selectedImages[idx]}`
-                  }
-                  alt="selected"
-                />
-              )}
-            </div>
-          ))}
+      <div className="selected-preview">
+        {selectedImages.map((img, idx) => (
+          <div key={idx} className="preview-box">
+            {img ? <img src={img} alt="선택됨" /> : <span>{idx + 1}번</span>}
+          </div>
+        ))}
       </div>
 
       <div className="nav-buttons">
-        <button onClick={handleBack}>뒤로가기</button>
-        <button onClick={handleNext}>다음으로</button>
+        <button onClick={() => navigate(-1)}>뒤로가기</button>
+        <button onClick={() => navigate("/love/video")}>다음으로</button>
       </div>
     </div>
   );
