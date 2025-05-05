@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import html2canvas from 'html2canvas';
+import "../styles/LovePreviewPage.css";
 
 function LovePreviewPage() {
   const captureRef = useRef(null);

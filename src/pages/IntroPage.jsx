@@ -1,23 +1,22 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import "./IntroPage.css";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import './IntroPage.css';
 
-const IntroPage = () => {
+function IntroPage() {
   const navigate = useNavigate();
 
-  const handleStartClick = () => {
-    navigate("/love/form");
+  const handleStart = () => {
+    navigate('/love/form');
   };
 
   return (
     <div className="intro-container">
-      <h1 className="intro-title">💌 뿅!톡에 오신 걸 환영해요!</h1>
-      <p className="intro-description">사랑 고백, 진심을 담아 전해볼까요?</p>
-      <button className="start-button" onClick={handleStartClick}>
-        시작하기
-      </button>
+      <h1 className="slide-down">❤️ 뿅!톡에 오신 것을</h1>
+      <h2 className="slide-right">환영합니다.</h2>
+      <p className="typewriter">따뜻한 마음을 여기에 담아주세요.</p>
+      <button onClick={handleStart}>시작하기</button>
     </div>
   );
-};
+}
 
 export default IntroPage;

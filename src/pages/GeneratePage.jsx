@@ -1,41 +1,61 @@
-import React, { useEffect, useState } from "react";
-import "./GeneratePage.css";
+import React, { useEffect, useState } from 'react';
+import './GeneratePage.css';
 
-const GeneratePage = () => {
-  const [message, setMessage] = useState("");
+function GeneratePage() {
+  const message = localStorage.getItem('loveMessage') || '';
+  const images = JSON.parse(localStorage.getItem('selectedImages') || '[]');
+  const video = localStorage.getItem('selectedVideo');
+  const audio = localStorage.getItem('selectedAudio');
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const messageLines = message.split(/[.!?]\s*/).filter(Boolean);
 
   useEffect(() => {
-    try {
-      const storedMessage = localStorage.getItem("loveMessage");
-      if (storedMessage && storedMessage.trim() !== "") {
-        setMessage(storedMessage);
-      } else {
-        setMessage("💌 고백 메시지가 아직 작성되지 않았어요!");
-      }
-    } catch (error) {
-      console.error("localStorage 접근 에러:", error);
-      setMessage("⚠️ 메시지를 불러오는 데 문제가 발생했어요.");
+    if (images.length > 0) {
+      const interval = setInterval(() => {
+        setCurrentImageIndex((prev) => (prev + 1) % images.length);
+      }, 5000); // 5초 간격으로 슬라이드
+      return () => clearInterval(interval);
     }
-  }, []);
+  }, [images]);
 
   return (
-    <div className="preview-container">
-      <img
-        className="background-image"
-        src="/backgrounds/love-bg1.jpg"
-        alt="배경 이미지"
-      />
-      <audio autoPlay loop src="/audio/love-theme.mp3" />
-      <div className="animated-message">
-        {message &&
-          message.split("\n").map((line, index) => (
-            <p key={index} className="animated-line">
+    <div className="generate-container">
+      {audio && <audio src={audio} autoPlay loop />}
+
+      <div className="media-box">
+        {video ? (
+          <video src={video} autoPlay muted loop />
+        ) : (
+          images.length > 0 && (
+            <img src={images[currentImageIndex]} alt={`배경${currentImageIndex}`} />
+          )
+        )}
+
+        <div className="subtitle-box">
+          {messageLines.map((line, index) => (
+            <span
+              key={index}
+              className="subtitle"
+              style={{ animationDelay: `${index * (20 / messageLines.length)}s` }}
+            >
               {line}
-            </p>
+            </span>
           ))}
+        </div>
+      </div>
+
+      <div className="share-buttons">
+        <button onClick={() => navigator.clipboard.writeText(window.location.href)}>🔗 링크 복사</button>
+        <button onClick={() => window.print()}>📄 PDF 저장</button>
+        <button onClick={() => alert('이미지 저장 준비 중입니다')}>🖼 이미지 저장</button>
+        <button onClick={() => alert('페이스북 공유')}>📘 페이스북</button>
+        <button onClick={() => alert('트위터 공유')}>🐦 트위터</button>
+        <button onClick={() => window.history.back()}>🔙 뒤로가기</button>
+        <button onClick={() => window.location.href = '/'}>🔄 다시 만들기</button>
       </div>
     </div>
   );
-};
+}
 
 export default GeneratePage;

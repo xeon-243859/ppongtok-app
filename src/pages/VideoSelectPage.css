@@ -1,0 +1,66 @@
+.video-select-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    background: linear-gradient(#f2f7ff, #fceeff);
+    min-height: 100vh;
+    text-align: center;
+  }
+  
+  .title {
+    font-size: 1.8rem;
+    margin: 1.5rem 0;
+    color: #444;
+  }
+  
+  .video-options, .music-options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .video-options button,
+  .music-options button {
+    padding: 0.7rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 10px;
+    background-color: #6c5ce7;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .video-options button:hover,
+  .music-options button:hover {
+    background-color: #341f97;
+  }
+  
+  .video-options .selected,
+  .music-options .selected {
+    background-color: #ff6b81;
+  }
+  
+  .button-group {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1.2rem;
+  }
+  
+  .button-group button {
+    padding: 0.9rem 2rem;
+    font-size: 1.1rem;
+    border-radius: 10px;
+    border: none;
+    background-color: #1e90ff;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .button-group button:hover {
+    background-color: #1c7ed6;
+  }
+  

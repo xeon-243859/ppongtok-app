@@ -1,71 +1,68 @@
-/* src/pages/GeneratePage.css */
-
-.preview-container {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-  background-color: black;
-}
-
-.background-image {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 0;
-  filter: brightness(0.7);
-}
-
-.animated-message {
-  position: relative;
-  z-index: 1;
-  color: white;
-  font-size: 2rem;
-  line-height: 1.8;
+.generate-container {
   text-align: center;
-  padding: 2rem;
-  white-space: pre-wrap;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-  animation: fadeIn 2s ease-in-out;
+  padding: 40px 20px;
+  font-family: 'Arial', sans-serif;
 }
 
-.animated-line {
-  margin: 0.5rem 0;
-  animation: slideUp 1s ease forwards;
+.media-box {
+  position: relative;
+  width: 90%;
+  max-width: 720px;
+  margin: 0 auto 30px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.media-box img,
+.media-box video {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+}
+
+.subtitle-box {
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px #000;
+}
+
+.subtitle {
+  position: absolute;
   opacity: 0;
+  animation: fadeInOut 20s linear forwards;
 }
 
-.animated-line:nth-child(1) {
-  animation-delay: 0.5s;
-}
-.animated-line:nth-child(2) {
-  animation-delay: 1s;
-}
-.animated-line:nth-child(3) {
-  animation-delay: 1.5s;
-}
-/* 더 많은 줄이 필요한 경우 계속 추가 가능 */
-
-@keyframes slideUp {
-  from {
-    transform: translateY(30px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0px);
-    opacity: 1;
-  }
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; }
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+.share-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.share-buttons button {
+  background-color: #ffe0e0;
+  border: none;
+  padding: 10px 18px;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.share-buttons button:hover {
+  background-color: #ffb3b3;
 }
