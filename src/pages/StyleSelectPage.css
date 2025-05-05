@@ -1,46 +1,29 @@
-.style-select-container {
+.style-container {
   text-align: center;
   padding: 80px 20px;
-  font-family: 'Arial', sans-serif;
+  background-color: #fffafc;
+  min-height: 100vh;
 }
-
-.typewriter {
-  font-size: 20px;
+.style-container h2 {
+  font-size: 24px;
+  color: #333;
   margin-bottom: 40px;
-  white-space: nowrap;
-  overflow: hidden;
-  border-right: 2px solid #333;
-  animation: typing 3s steps(30, end), blink 0.8s step-end infinite;
-  display: inline-block;
-  color: #444;
 }
-
-@keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
-}
-
-@keyframes blink {
-  50% { border-color: transparent }
-}
-
-.style-options {
+.button-group {
   display: flex;
   justify-content: center;
-  gap: 40px;
+  gap: 30px;
   flex-wrap: wrap;
 }
-
-.style-option {
-  background-color: #ffe3ec;
-  padding: 20px 40px;
-  border-radius: 12px;
-  cursor: pointer;
+.button-group button {
   font-size: 18px;
-  transition: transform 0.2s, background-color 0.3s;
+  padding: 14px 28px;
+  border-radius: 10px;
+  background-color: #ff8aa0;
+  color: white;
+  border: none;
+  transition: background-color 0.3s;
 }
-
-.style-option:hover {
-  background-color: #ffb6c1;
-  transform: scale(1.05);
+.button-group button:hover {
+  background-color: #ff5c85;
 }

@@ -1,68 +1,45 @@
-.music-select-container {
+/* MusicSelectPage.css */
+.music-container {
     text-align: center;
-    padding: 40px;
+    padding: 40px 20px;
     background-color: #fffafc;
     min-height: 100vh;
   }
   
-  .music-select-container h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .music-buttons {
+  .music-options {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    gap: 15px;
-    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 30px;
   }
   
-  .music-buttons button {
-    background-color: #ffe6ea;
+  .music-options button {
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 10px;
+    background-color: #ff8aa0;
+    color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
     cursor: pointer;
+  }
+  
+  .music-options button.selected {
+    background-color: #ff5c85;
     font-weight: bold;
-    transition: 0.3s;
+    box-shadow: 0 0 10px #ff5c85;
   }
   
-  .music-buttons button:hover {
-    background-color: #ffccd5;
-  }
-  
-  input[type="file"] {
-    margin-top: 10px;
-  }
-  
-  .music-preview {
-    margin: 20px auto;
-  }
-  
-  .music-preview audio {
-    width: 300px;
+  audio {
+    margin-top: 20px;
   }
   
   .navigation-buttons {
     margin-top: 30px;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
   }
   
-  .navigation-buttons button {
-    background-color: #ff7a9e;
-    border: none;
-    padding: 10px 20px;
-    color: white;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .navigation-buttons button:hover {
-    background-color: #ff5c85;
+  .navigation-buttons button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
   }
   
