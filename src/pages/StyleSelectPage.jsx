@@ -1,39 +1,33 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+// src/pages/StyleSelectPage.jsx
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./StyleSelectPage.css";
-import { FaImage, FaVideo } from 'react-icons/fa';
 
 const StyleSelectPage = () => {
   const navigate = useNavigate();
 
-  const handleImageSelect = () => {
-    navigate('/love/background-image');
+  const goToImageSelect = () => {
+    navigate("/select/image");
   };
 
-  const handleVideoSelect = () => {
-    navigate('/love/background-video');
+  const goToVideoSelect = () => {
+    navigate("/select/video");
   };
 
-  const handleGoBack = () => {
+  const goBack = () => {
     navigate(-1);
   };
 
   return (
-    <div className="page-container">
-      <div className="question">어떤 배경으로 사랑을 담아볼까요?</div>
-
-      <div className="selection-buttons">
-        <button className="selection-button" onClick={handleImageSelect}>
-          <FaImage size={24} />
-          <span className="button-label">이미지 배경</span>
-        </button>
-        <button className="selection-button" onClick={handleVideoSelect}>
-          <FaVideo size={24} />
-          <span className="button-label">영상 배경</span>
-        </button>
+    <div className="style-select-container">
+      <h2 className="title-text">
+        어떤 배경으로<br />사랑을 담아볼까?
+      </h2>
+      <div className="select-buttons">
+        <button onClick={goToImageSelect}>🖼 이미지 배경</button>
+        <button onClick={goToVideoSelect}>🎞 영상 배경</button>
       </div>
-
-      <button className="back-button" onClick={handleGoBack}>뒤로가기</button>
+      <button className="back-button" onClick={goBack}>뒤로가기</button>
     </div>
   );
 };
