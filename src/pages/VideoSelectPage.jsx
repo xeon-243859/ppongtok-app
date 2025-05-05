@@ -1,20 +1,26 @@
 // src/pages/VideoSelectPage.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/VideoSelectPage.css";
+import "./VideoSelectPage.css";
+
+const videos = [
+  { name: "flower", file: "flower.mp4", thumbnail: "flower.jpg" },
+  { name: "river", file: "river.mp4", thumbnail: "river.jpg" },
+  { name: "sky", file: "sky.mp4", thumbnail: "sky.jpg" },
+  { name: "sunset", file: "sunset.mp4", thumbnail: "sunset.jpg" },
+];
 
 const VideoSelectPage = () => {
   const navigate = useNavigate();
   const [selectedVideo, setSelectedVideo] = useState(null);
 
-  const videos = ["flower.mp4", "river.mp4", "sky.mp4", "sunset.mp4"];
-
-  const handleSelect = (video) => {
-    setSelectedVideo(video);
+  const handleSelect = (videoFile) => {
+    setSelectedVideo(videoFile);
   };
 
   const handleNext = () => {
     if (selectedVideo) {
+      localStorage.setItem("selectedVideo", selectedVideo);
       navigate("/preview");
     } else {
       alert("배경 영상을 선택해주세요.");
@@ -22,29 +28,29 @@ const VideoSelectPage = () => {
   };
 
   return (
-    <div className="video-select-wrapper">
-      <h2 className="title">네번째 화면 · 영상 배경화면 선택</h2>
-
-      <div className="video-grid">
+    <div className="video-select-container">
+      <h2>배경 영상을 선택하세요</h2>
+      <div className="video-thumbnails">
         {videos.map((video) => (
-          <video
-            key={video}
-            src={`/videos/${video}`}
-            className={selectedVideo === video ? "selected" : ""}
-            onClick={() => handleSelect(video)}
-            width="160"
-            height="90"
-            muted
-            loop
-            preload="metadata" // ✅ autoPlay 제거, preload 추가
-          />
+          <div
+            key={video.name}
+            className={`thumbnail-wrapper ${
+              selectedVideo === video.file ? "selected" : ""
+            }`}
+            onClick={() => handleSelect(video.file)}
+          >
+            <img
+              src={`/videos/${video.thumbnail}`}
+              alt={video.name}
+              className="thumbnail-image"
+            />
+            <p>{video.name}</p>
+          </div>
         ))}
       </div>
-
-      <div className="nav-buttons">
-        <button onClick={() => navigate(-1)}>뒤로가기</button>
-        <button onClick={handleNext}>다음으로</button>
-      </div>
+      <button className="next-button" onClick={handleNext}>
+        다음으로
+      </button>
     </div>
   );
 };

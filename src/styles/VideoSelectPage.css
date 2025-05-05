@@ -1,60 +1,47 @@
-.video-select-wrapper {
-    padding: 40px 20px;
+.video-select-container {
     text-align: center;
-    background-color: #fffafc;
-    min-height: 100vh;
-    box-sizing: border-box;
+    padding: 2rem;
   }
   
-  .video-title {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 24px;
-    color: #333;
-  }
-  
-  .video-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+  .video-thumbnails {
+    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    margin-bottom: 40px;
+    gap: 1rem;
+    margin: 2rem 0;
   }
   
-  .video-grid video {
-    width: 160px;
-    height: 90px;
-    border-radius: 12px;
+  .thumbnail-wrapper {
+    border: 2px solid transparent;
+    border-radius: 10px;
     cursor: pointer;
-    border: 3px solid transparent;
-    object-fit: cover;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    transition: border 0.2s ease, transform 0.2s ease;
+    transition: transform 0.2s, border-color 0.2s;
   }
   
-  .video-grid video.selected {
-    border: 3px solid #ff9db5;
+  .thumbnail-wrapper.selected {
+    border-color: #ff69b4;
     transform: scale(1.05);
   }
   
-  .nav-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
+  .thumbnail-image {
+    width: 240px;
+    height: 135px;
+    object-fit: cover;
+    border-radius: 10px;
   }
   
-  .nav-buttons button {
-    background-color: #9b59b6;
+  .next-button {
+    padding: 0.8rem 2rem;
+    font-size: 1.2rem;
+    background-color: #ff69b4;
     color: white;
-    padding: 12px 24px;
     border: none;
-    border-radius: 999px;
-    font-size: 14px;
+    border-radius: 8px;
     cursor: pointer;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
   }
   
-  .nav-buttons button:hover {
-    opacity: 0.9;
+  .next-button:hover {
+    background-color: #e055a0;
   }
   
