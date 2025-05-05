@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/ImageSelectPage.css";
 
 const categories = ["따뜻한", "설레임", "그리움", "감성적인", "내파일선택"];
@@ -13,6 +14,7 @@ const sampleImages = {
 const ImageSelectPage = () => {
   const [activeTab, setActiveTab] = useState("따뜻한");
   const [selectedImages, setSelectedImages] = useState([]);
+  const navigate = useNavigate();
 
   const handleImageClick = (img) => {
     if (selectedImages.includes(img)) return;
@@ -30,10 +32,10 @@ const ImageSelectPage = () => {
   };
 
   const handleBack = () => window.history.back();
+
   const handleNext = () => {
     if (selectedImages.length === 4) {
-      // navigate to next page
-      window.location.href = "/video/select";
+      navigate("/video/select"); // ✅ 여기 수정됨!
     } else {
       alert("4개의 이미지를 선택해 주세요!");
     }
@@ -71,11 +73,22 @@ const ImageSelectPage = () => {
       )}
 
       <div className="selected-box">
-        {Array(4).fill(null).map((_, idx) => (
-          <div key={idx} className="box-slot">
-            {selectedImages[idx] && <img src={selectedImages[idx].startsWith("blob") ? selectedImages[idx] : `/backgrounds/${selectedImages[idx]}`} alt="selected" />}
-          </div>
-        ))}
+        {Array(4)
+          .fill(null)
+          .map((_, idx) => (
+            <div key={idx} className="box-slot">
+              {selectedImages[idx] && (
+                <img
+                  src={
+                    selectedImages[idx].startsWith("blob")
+                      ? selectedImages[idx]
+                      : `/backgrounds/${selectedImages[idx]}`
+                  }
+                  alt="selected"
+                />
+              )}
+            </div>
+          ))}
       </div>
 
       <div className="nav-buttons">
