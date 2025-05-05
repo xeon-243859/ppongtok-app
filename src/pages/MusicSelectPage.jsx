@@ -1,68 +1,57 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './MusicSelectPage.css';
+// src/pages/MusicSelectPage.jsx
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./MusicSelectPage.css";
 
-const defaultAudios = [
-  '/audio/mueon.mp3',
-  '/audio/mueon1.mp3',
-  '/audio/spring.mp3',
-  '/audio/spring1.mp3',
+const musicList = [
+  "/audio/mueon.mp3",
+  "/audio/mueon1.mp3",
+  "/audio/spring.mp3",
+  "/audio/spring1.mp3"
 ];
 
-function MusicSelectPage() {
-  const [selectedAudio, setSelectedAudio] = useState(null);
+function MusicSelectPage({ setSelectedMusic }) {
   const navigate = useNavigate();
+  const [previewMusic, setPreviewMusic] = useState("");
 
-  const handleSelectAudio = (src) => {
-    setSelectedAudio(src);
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const audioUrl = URL.createObjectURL(file);
-      setSelectedAudio(audioUrl);
-    }
-  };
-
-  const handleNext = () => {
-    if (selectedAudio) {
-      localStorage.setItem('selectedAudio', selectedAudio);
-      navigate('/love/generate');
-    } else {
-      alert('배경 음악을 선택해주세요.');
-    }
-  };
-
-  const handleBack = () => {
-    navigate('/love/video');
+  const handleSelect = (music) => {
+    setSelectedMusic(music);
+    setPreviewMusic(music);
   };
 
   return (
-    <div className="music-page-container">
-      <h2>배경음악선택하기</h2>
-
-      <div className="style-buttons">
-        <button onClick={() => handleSelectAudio(defaultAudios[0])}>팝스타일</button>
-        <button onClick={() => handleSelectAudio(defaultAudios[1])}>클래식</button>
-        <button onClick={() => handleSelectAudio(defaultAudios[2])}>상송</button>
-        <button onClick={() => handleSelectAudio(defaultAudios[3])}>코리아쏭</button>
+    <div className="music-select-container">
+      <h2>배경 음악을 선택해 주세요</h2>
+      <div className="music-buttons">
+        {musicList.map((music, index) => (
+          <button
+            key={index}
+            onClick={() => handleSelect(music)}
+          >
+            {`음악 ${index + 1}`}
+          </button>
+        ))}
+        <input
+          type="file"
+          accept="audio/*"
+          onChange={(e) => {
+            const file = e.target.files[0];
+            if (file) {
+              const musicUrl = URL.createObjectURL(file);
+              setSelectedMusic(musicUrl);
+              setPreviewMusic(musicUrl);
+            }
+          }}
+        />
       </div>
-
-      <label className="upload-box">
-        내 파일 선택
-        <input type="file" accept="audio/*" onChange={handleFileChange} hidden />
-      </label>
-
-      <div className="audio-preview-box">
-        {selectedAudio && (
-          <audio controls src={selectedAudio} />
-        )}
-      </div>
-
-      <div className="button-group">
-        <button onClick={handleBack}>뒤로가기</button>
-        <button onClick={handleNext}>다음으로</button>
+      {previewMusic && (
+        <div className="music-preview">
+          <audio src={previewMusic} controls autoPlay />
+        </div>
+      )}
+      <div className="navigation-buttons">
+        <button onClick={() => navigate("/style/select")}>뒤로가기</button>
+        <button onClick={() => navigate("/love/generate")}>다음으로</button>
       </div>
     </div>
   );
