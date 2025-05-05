@@ -1,19 +1,25 @@
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../styles/LovePreviewPage.css";
 
 const LovePreviewPage = () => {
-  const location = useLocation();
   const navigate = useNavigate();
-  const { video } = location.state || {};
+  const selectedVideo = localStorage.getItem("selectedVideo");
 
   return (
     <div className="preview-wrapper">
       <h2 className="preview-title">💖 완성된 고백을 미리보기 해보세요</h2>
 
       <div className="preview-video-container">
-        {video ? (
-          <video src={`/videos/${video}`} controls autoPlay loop muted className="preview-video" />
+        {selectedVideo ? (
+          <video
+            src={`/videos/${selectedVideo}`}
+            controls
+            autoPlay
+            loop
+            muted
+            className="preview-video"
+          />
         ) : (
           <p>선택된 영상이 없습니다.</p>
         )}
