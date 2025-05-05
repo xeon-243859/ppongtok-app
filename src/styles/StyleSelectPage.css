@@ -1,27 +1,32 @@
-.style-select-container {
+.style-select-wrapper {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    padding: 20px;
     background-color: #ffffff;
+  }
+  
+  .style-select-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
   }
   
   .title-text {
     font-size: 24px;
     font-weight: bold;
-    text-align: center;
-    line-height: 1.5;
+    line-height: 1.6;
     margin-bottom: 40px;
+    white-space: pre-line;
   }
   
   .select-buttons {
     display: flex;
-    flex-direction: column;
     gap: 20px;
-    width: 80%;
-    max-width: 300px;
+    flex-wrap: wrap;
+    justify-content: center;
   }
   
   .select-buttons button {
@@ -29,16 +34,15 @@
     padding: 12px 24px;
     border: none;
     border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    background-color: #ff9db5;
+    color: white;
     cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     transition: all 0.2s ease;
-    background-color: #f8f8f8;
-    color: #333;
   }
   
   .select-buttons button:hover {
     transform: scale(1.05);
-    background-color: #eee;
   }
   
   .back-button {
