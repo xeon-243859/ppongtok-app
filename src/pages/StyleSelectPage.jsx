@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/StyleSelectPage.css';
+import "./StyleSelectPage.css";
 import { FaImage, FaVideo } from 'react-icons/fa';
 
 const StyleSelectPage = () => {
