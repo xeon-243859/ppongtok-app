@@ -28,7 +28,7 @@ const LovePreviewPage = () => {
 
       <div className="nav-buttons">
         <button onClick={() => navigate(-1)}>뒤로가기</button>
-        <button onClick={() => alert("공유 기능은 곧 추가됩니다")}>공유하기</button>
+        <button onClick={() => navigate("/complete")}>공유하기</button>
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+// src/App.jsx
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import IntroPage from "./pages/IntroPage";
@@ -8,7 +9,7 @@ import VideoSelectPage from "./pages/VideoSelectPage";
 import LovePreviewPage from "./pages/LovePreviewPage";
 import ShareCompletePage from "./pages/ShareCompletePage";
 
-function App() {
+const App = () => {
   return (
     <Router>
       <Routes>
@@ -22,6 +23,6 @@ function App() {
       </Routes>
     </Router>
   );
-}
+};
 
 export default App;
