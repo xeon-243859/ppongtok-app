@@ -39,7 +39,10 @@ export default function VideoBackgroundPage({ setSelectedVideo }) {
       </div>
       <div className="navigation-buttons">
         <button onClick={() => navigate('/love/style')}>뒤로가기</button>
-        <button onClick={() => navigate('/love/music')} disabled={!selected}>다음으로</button>
+        <button onClick={() => navigate('/preview')} disabled={!selected}>
+  다음으로
+</button>
+
       </div>
     </div>
   );

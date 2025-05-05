@@ -20,6 +20,8 @@ const App = () => {
         <Route path="/video/select" element={<VideoSelectPage />} />
         <Route path="/preview" element={<LovePreviewPage />} />
         <Route path="/complete" element={<ShareCompletePage />} />
+        <Route path="/love/music" element={<MusicSelectPage />} />
+
       </Routes>
     </Router>
   );
