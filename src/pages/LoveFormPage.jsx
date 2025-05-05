@@ -7,7 +7,7 @@ const LoveFormPage = () => {
   const navigate = useNavigate();
 
   const handleNext = () => {
-    navigate("/style"); // 다음 단계로 이동
+    navigate("/love/style"); 
   };
 
   const goBack = () => {
