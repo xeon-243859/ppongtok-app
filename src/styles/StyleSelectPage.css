@@ -1,3 +1,4 @@
+/* 화면 전체 중앙 정렬 */
 .style-select-wrapper {
     display: flex;
     align-items: center;
@@ -6,6 +7,7 @@
     background-color: #ffffff;
   }
   
+  /* 컨테이너 세로 정렬 + 가운데 */
   .style-select-container {
     display: flex;
     flex-direction: column;
@@ -14,6 +16,7 @@
     padding: 20px;
   }
   
+  /* 타이틀 문장 */
   .title-text {
     font-size: 24px;
     font-weight: bold;
@@ -22,13 +25,15 @@
     white-space: pre-line;
   }
   
+  /* 버튼들 세로 방향으로 나열 */
   .select-buttons {
     display: flex;
+    flex-direction: column;
     gap: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
+    margin-bottom: 40px;
   }
   
+  /* 각 버튼 스타일 */
   .select-buttons button {
     font-size: 18px;
     padding: 12px 24px;
@@ -39,14 +44,15 @@
     cursor: pointer;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     transition: all 0.2s ease;
+    min-width: 200px;
   }
   
   .select-buttons button:hover {
     transform: scale(1.05);
   }
   
+  /* 뒤로가기 버튼 */
   .back-button {
-    margin-top: 50px;
     padding: 10px 20px;
     background-color: #ff9db5;
     color: white;
