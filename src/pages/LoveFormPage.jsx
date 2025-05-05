@@ -1,20 +1,26 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import './LoveFormPage.css';
+// src/pages/LoveFormPage.jsx
+import React from "react";
 
-export default function LoveFormPage({ message, setMessage }) {
-  const navigate = useNavigate();
+const LoveFormPage = () => {
   return (
-    <div className="form-container">
-      <h2>💌 마음속 사랑을 살며시 남겨보세요.</h2>
+    <div style={{ padding: "40px", textAlign: "center" }}>
+      <h1>💌 사랑 고백 메시지를 작성해 주세요</h1>
+      <p>당신의 진심을 담은 메시지를 입력해보세요!</p>
       <textarea
-        placeholder="당신의 진심을 담은 고백을 여기에 적어주세요…"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
+        rows={6}
+        cols={40}
+        placeholder="예: 너를 처음 만난 그날부터 내 마음은 너에게..."
+        style={{
+          marginTop: "20px",
+          padding: "12px",
+          fontSize: "16px",
+          borderRadius: "8px",
+          border: "1px solid #ccc",
+          resize: "none",
+        }}
       />
-      <button onClick={() => navigate('/love/style')} disabled={!message.trim()}>
-        다음으로
-      </button>
     </div>
   );
-}
+};
+
+export default LoveFormPage;

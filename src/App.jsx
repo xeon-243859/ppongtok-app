@@ -17,6 +17,7 @@ const App = () => {
         <Route path="/select/image" element={<ImageSelectPage />} /> {/* ✅ */}
         <Route path="/select/video" element={<VideoSelectPage />} /> {/* ✅ */}
         <Route path="/generate" element={<GeneratePage />} />
+        <Route path="/love/form" element={<LoveFormPage />} />
       </Routes>
     </BrowserRouter>
   );
