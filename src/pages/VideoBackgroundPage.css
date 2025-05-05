@@ -1,71 +1,72 @@
-.video-bg-container {
-    text-align: center;
-    padding: 60px 20px;
-    font-family: 'Arial', sans-serif;
-  }
-  
-  .style-buttons {
+.video-background-container {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
+    text-align: center;
+    padding: 30px;
+    background-color: #fffafc;
+    min-height: 100vh;
   }
   
-  .style-buttons button {
-    padding: 10px 20px;
-    background-color: #e0f7fa;
-    border: none;
-    border-radius: 10px;
+  .video-question {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .video-subtitle {
     font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .style-buttons button:hover {
-    background-color: #80deea;
-  }
-  
-  .upload-box {
-    display: inline-block;
     margin-bottom: 20px;
-    padding: 10px 20px;
-    border: 2px dashed #aaa;
-    border-radius: 10px;
+  }
+  
+  .video-style-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .style-button, .upload-button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    background-color: #ffd3dd;
+    color: black;
+    font-size: 15px;
     cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .style-button:hover, .upload-button:hover {
+    background-color: #ffbdd0;
   }
   
   .video-preview-box {
-    margin: 20px auto;
-    width: 90%;
-    max-width: 600px;
-    border: 2px solid #ddd;
-    border-radius: 12px;
-    padding: 10px;
-  }
-  
-  video {
-    width: 100%;
+    width: 300px;
+    height: 180px;
+    border: 2px dashed #ccc;
     border-radius: 8px;
+    margin-bottom: 20px;
   }
   
-  .button-group {
-    margin-top: 30px;
+  .nav-buttons {
     display: flex;
-    justify-content: center;
     gap: 20px;
   }
   
-  .button-group button {
-    font-size: 16px;
-    padding: 10px 24px;
+  .nav-button {
+    padding: 10px 20px;
+    background-color: #ccc;
+    color: #000;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
-    background-color: #4db6ac;
-    color: white;
   }
   
-  .button-group button:hover {
-    background-color: #00897b;
+  .nav-button.next {
+    background-color: #ff6b8b;
+    color: white;
   }
   
