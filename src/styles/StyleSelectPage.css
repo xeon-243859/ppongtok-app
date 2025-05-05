@@ -1,9 +1,9 @@
-/* 💡 전체를 화면 정중앙에 배치 (수직 + 수평) */
+/* 💯 화면 정중앙에 배치 (flex 기준) */
 .style-select-wrapper {
     display: flex;
-    justify-content: center;
     align-items: center;
-    height: 100vh; /* 뷰포트 전체 높이 */
+    justify-content: center;
+    height: 100vh;
     background-color: #ffffff;
   }
   
@@ -12,29 +12,31 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     text-align: center;
   }
   
-  /* 📝 제목 텍스트 (두 줄 + 가운데) */
+  /* 📝 제목 텍스트 */
   .title-text {
     font-size: 24px;
     font-weight: bold;
-    line-height: 1.6;
+    line-height: 1.5;
+    text-align: center;
     margin-bottom: 40px;
     white-space: pre-line;
   }
   
-  /* 🎯 버튼 세로 배치 (두 줄) */
+  /* 🔘 버튼들을 세로 2줄로 고정 */
   .select-buttons {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    align-items: center;
+    gap: 16px;
     margin-bottom: 40px;
   }
   
-  /* 🔘 버튼 공통 스타일 */
+  /* ▶️ 버튼 공통 스타일 */
   .select-buttons button {
+    min-width: 220px;
     font-size: 18px;
     padding: 12px 24px;
     border: none;
@@ -42,16 +44,15 @@
     background-color: #ff9db5;
     color: white;
     cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     transition: all 0.2s ease;
-    min-width: 240px;
   }
   
   .select-buttons button:hover {
     transform: scale(1.05);
   }
   
-  /* ⬅️ 뒤로가기 버튼 (기존 그대로 유지) */
+  /* ⬅️ 뒤로가기 버튼은 그대로 유지 */
   .back-button {
     padding: 10px 20px;
     background-color: #ff9db5;
@@ -60,6 +61,6 @@
     border-radius: 999px;
     font-size: 14px;
     cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
   }
   

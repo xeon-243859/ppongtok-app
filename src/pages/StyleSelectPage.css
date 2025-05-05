@@ -1,88 +1,65 @@
-.page-container {
+/* 💯 화면 정중앙에 배치 (flex 기준) */
+.style-select-wrapper {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
-  padding: 20px;
-  background-color: #fefefe;
-  position: relative;
+  background-color: #ffffff;
 }
 
-.question {
-  font-size: 1.8rem;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 40px;
-  animation: typing 2s steps(30, end), blink-caret 0.75s step-end infinite;
-  white-space: nowrap;
-  overflow: hidden;
-  border-right: 2px solid #333;
-  max-width: 100%;
-}
-
-@keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
-}
-
-@keyframes blink-caret {
-  from, to { border-color: transparent }
-  50% { border-color: #333; }
-}
-
-.selection-buttons {
+/* 📦 내부 콘텐츠 중앙 정렬 */
+.style-select-container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
   align-items: center;
-  justify-content: center;
-  width: 100%;
-  margin-top: 20px;
+  text-align: center;
 }
 
-.selection-button {
+/* 📝 제목 텍스트 */
+.title-text {
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 1.5;
+  text-align: center;
+  margin-bottom: 40px;
+  white-space: pre-line;
+}
+
+/* 🔘 버튼들을 세로 2줄로 고정 */
+.select-buttons {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  width: 80%;
-  max-width: 300px;
-  height: 60px;
-  background-color: white;
-  border: 2px solid #eee;
-  border-radius: 20px;
-  font-size: 1.5rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  gap: 16px;
+  margin-bottom: 40px;
 }
 
-.selection-button:hover {
+/* ▶️ 버튼 공통 스타일 */
+.select-buttons button {
+  min-width: 220px;
+  font-size: 18px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  background-color: #ff9db5;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: all 0.2s ease;
+}
+
+.select-buttons button:hover {
   transform: scale(1.05);
-  background-color: #fff0f5;
 }
 
-.button-label {
-  margin-left: 10px;
-  font-size: 1.2rem;
-  font-weight: 600;
-}
-
+/* ⬅️ 뒤로가기 버튼은 그대로 유지 */
 .back-button {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  padding: 12px 20px;
-  background-color: #ff80ab;
+  padding: 10px 20px;
+  background-color: #ff9db5;
   color: white;
   border: none;
-  border-radius: 30px;
-  font-size: 1rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 999px;
+  font-size: 14px;
   cursor: pointer;
-  z-index: 100;
-  transition: background-color 0.3s;
-}
-
-.back-button:hover {
-  background-color: #ff4f87;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
