@@ -1,7 +1,7 @@
 // src/pages/VideoSelectPage.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./VideoSelectPage.css";
+import "../styles/VideoSelectPage.css";
 
 const videos = [
   { name: "flower", file: "flower.mp4", thumbnail: "flower.jpg" },
