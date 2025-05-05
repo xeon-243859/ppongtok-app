@@ -1,59 +1,46 @@
-.love-form-container {
-  padding: 60px 20px;
+/* LoveFormPage.css */
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
   text-align: center;
-  font-family: 'Arial', sans-serif;
+  padding: 2rem;
+  background-color: #fffdfd;
 }
 
-.typewriter {
-  width: fit-content;
-  margin: 0 auto 30px;
-  overflow: hidden;
-  border-right: 2px solid #333;
-  white-space: nowrap;
-  animation: typing 3s steps(30, end), blink 0.8s step-end infinite;
-  font-size: 20px;
-  color: #444;
+.form-container h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #333;
 }
 
-@keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
-}
-
-@keyframes blink {
-  50% { border-color: transparent }
-}
-
-textarea {
+.form-container textarea {
   width: 90%;
   max-width: 600px;
-  height: 200px;
-  padding: 16px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  resize: none;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
-}
-
-.button-group {
-  margin-top: 30px;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-.button-group button {
-  font-size: 16px;
-  padding: 10px 24px;
-  border: none;
+  height: 150px;
+  padding: 1rem;
+  font-size: 1rem;
   border-radius: 8px;
-  cursor: pointer;
-  background-color: #ff6384;
-  color: white;
-  transition: background-color 0.3s;
+  border: 1px solid #ccc;
+  resize: none;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
-.button-group button:hover {
-  background-color: #ff3b69;
+.next-button {
+  background-color: #ff5e8e;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.6rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.next-button:hover {
+  background-color: #ff3e6c;
 }
