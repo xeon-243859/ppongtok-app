@@ -13,11 +13,12 @@
   font-size: 1.8rem;
   font-weight: 700;
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   animation: typing 2s steps(30, end), blink-caret 0.75s step-end infinite;
-  white-space: pre-wrap; /* 줄바꿈 허용 */
+  white-space: nowrap;
   overflow: hidden;
   border-right: 2px solid #333;
+  max-width: 100%;
 }
 
 @keyframes typing {
@@ -37,7 +38,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 .selection-button {
@@ -50,8 +51,7 @@
   background-color: white;
   border: 2px solid #eee;
   border-radius: 20px;
-  font-size: 1.3rem;
-  font-weight: 600;
+  font-size: 1.5rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
@@ -59,6 +59,12 @@
 .selection-button:hover {
   transform: scale(1.05);
   background-color: #fff0f5;
+}
+
+.button-label {
+  margin-left: 10px;
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 
 .back-button {
