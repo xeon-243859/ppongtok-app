@@ -1,27 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/IntroPage.css";
+import "./intropage.css";
 
-const IntroPage = () => {
+function IntroPage() {
   const navigate = useNavigate();
-  const [showWelcome, setShowWelcome] = useState(false);
+  const [showTitle, setShowTitle] = useState(false);
   const [typedText, setTypedText] = useState("");
 
+  const fullText = "따뜻한 마음을 여기에 담아주세요";
+
   useEffect(() => {
-    setShowWelcome(true);
-
-    const message = "따뜻한 마음을 여기에 담아주세요";
+    setShowTitle(true);
     let index = 0;
-
     const typingInterval = setInterval(() => {
-      if (index < message.length) {
-        setTypedText((prev) => prev + message[index]);
+      if (index < fullText.length) {
+        setTypedText((prev) => prev + fullText[index]);
         index++;
       } else {
         clearInterval(typingInterval);
       }
-    }, 100); // 글자당 100ms 간격
-
+    }, 100);
     return () => clearInterval(typingInterval);
   }, []);
 
@@ -31,15 +29,17 @@ const IntroPage = () => {
 
   return (
     <div className="intro-page">
-      <h1 className={`welcome-message ${showWelcome ? "slide-down" : ""}`}>
-        🎉 뿅!톡에 오신 것을 환영합니다
-      </h1>
-      <p className="typing-text">{typedText}</p>
+      {showTitle && (
+        <>
+          <h1 className="intro-title">🎉 뿅!톡에 오신 것을 환영합니다</h1>
+          <p className="intro-text">{typedText}</p>
+        </>
+      )}
       <button className="start-button" onClick={handleStart}>
         시작하기
       </button>
     </div>
   );
-};
+}
 
 export default IntroPage;
