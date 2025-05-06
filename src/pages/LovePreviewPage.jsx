@@ -1,60 +1,40 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "./LovePreviewPage.css";
 
-function LovePreviewPage() {
-  const [message, setMessage] = useState("");
-  const [selectedImages, setSelectedImages] = useState([]);
-  const [selectedVideo, setSelectedVideo] = useState(null);
-  const [selectedMusic, setSelectedMusic] = useState(null);
-  const navigate = useNavigate();
+export default function LovePreviewPage() {
+  const location = useLocation();
+  const { backgroundImage, backgroundVideo, backgroundMusic, loveMessage } = location.state || {};
+  const [showMessage, setShowMessage] = useState(false);
 
   useEffect(() => {
-    const storedMessage = localStorage.getItem("loveMessage") || "당신을 사랑합니다.";
-    const images = JSON.parse(localStorage.getItem("selectedImages") || "[]");
-    const video = localStorage.getItem("selectedVideo") || null;
-    const music = localStorage.getItem("selectedMusic") || null;
-
-    setMessage(storedMessage);
-    setSelectedImages(images);
-    setSelectedVideo(video);
-    setSelectedMusic(music);
+    // 텍스트 애니메이션처럼 등장
+    const timer = setTimeout(() => setShowMessage(true), 1000);
+    return () => clearTimeout(timer);
   }, []);
-
-  const handleBack = () => {
-    navigate("/music/select");
-  };
 
   return (
     <div className="preview-container">
-      <h2 className="preview-title">당신만을 위한 사랑 고백 💌</h2>
-
-      {selectedMusic && (
-        <audio src={selectedMusic} autoPlay loop />
+      {/* 배경 출력 */}
+      {backgroundVideo ? (
+        <video className="background-media" src={backgroundVideo} autoPlay loop muted />
+      ) : backgroundImage ? (
+        <img className="background-media" src={backgroundImage} alt="배경 이미지" />
+      ) : (
+        <div className="background-placeholder">배경이 선택되지 않았습니다</div>
       )}
 
-      <div className="preview-content">
-        {selectedVideo ? (
-          <video src={selectedVideo} controls autoPlay loop className="preview-media" />
-        ) : selectedImages.length > 0 ? (
-          <div className="image-preview">
-            {selectedImages.map((img, idx) => (
-              <img key={idx} src={img} alt={`img-${idx}`} className="preview-image" />
-            ))}
-          </div>
-        ) : null}
+      {/* 음악 재생 */}
+      {backgroundMusic && <audio src={backgroundMusic} autoPlay loop />}
 
-        <div className="preview-caption">
-          <p>{message}</p>
+      {/* 자막 또는 고백 메시지 출력 */}
+      {showMessage && loveMessage && (
+        <div className="love-message">
+          {loveMessage}
         </div>
-      </div>
-
-      <div className="button-group">
-        <button onClick={handleBack} className="back">뒤로가기</button>
-        <button className="share">공유하기</button>
-      </div>
+      )}
     </div>
   );
 }
 
-export default LovePreviewPage;
+

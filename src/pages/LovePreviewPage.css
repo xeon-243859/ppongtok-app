@@ -1,80 +1,59 @@
 .preview-container {
-    text-align: center;
-    padding: 30px;
-    font-family: 'Pretendard', sans-serif;
-    background-color: #fffafc;
-  }
-  
-  .preview-title {
-    font-size: 2rem;
-    margin-bottom: 20px;
-  }
-  
-  .preview-content {
-    margin-top: 20px;
     position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    font-family: 'Pretendard', sans-serif;
   }
   
-  .preview-media {
-    width: 90%;
-    max-width: 600px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  }
-  
-  .image-preview {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 16px;
-  }
-  
-  .preview-image {
-    width: 250px;
-    height: auto;
-    border-radius: 10px;
+  .background-media {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
+    z-index: 1;
   }
   
-  .preview-caption {
-    margin-top: 20px;
+  .background-placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: #222;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    z-index: 1;
+  }
+  
+  .love-message {
+    position: absolute;
+    bottom: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 1rem 1.5rem;
+    border-radius: 20px;
     font-size: 1.2rem;
     font-weight: bold;
-    color: #d81b60;
-    animation: typing 2.5s steps(30, end) 1;
-    white-space: nowrap;
-    overflow: hidden;
-    border-right: 3px solid #d81b60;
-    display: inline-block;
-  }
-  
-  @keyframes typing {
-    from { width: 0 }
-    to { width: 100% }
-  }
-  
-  .button-group {
-    margin-top: 30px;
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-  }
-  
-  .back, .share {
-    padding: 10px 20px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-  
-  .back {
-    background-color: #ccc;
     color: #333;
+    text-align: center;
+    max-width: 80%;
+    animation: fadeIn 2s ease-in-out;
+    backdrop-filter: blur(5px);
   }
   
-  .share {
-    background-color: #f06292;
-    color: white;
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateX(-50%) translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
   }
   
