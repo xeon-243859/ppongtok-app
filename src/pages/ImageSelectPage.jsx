@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../ImageSelectPage.css";
+import "./ImageSelectPage.css";
 
 const images = [
   "/backgrounds/cosmos.jpg",
