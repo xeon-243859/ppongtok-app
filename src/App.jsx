@@ -16,13 +16,13 @@ const App = () => {
       <Routes>
         <Route path="/" element={<IntroPage />} />
         <Route path="/love/form" element={<LoveFormPage />} />
-        <Route path="/style" element={<StyleSelectPage />} />
+        <Route path="/love/style" element={<StyleSelectPage />} />
         <Route path="/image/select" element={<ImageSelectPage />} />
         <Route path="/video/select" element={<VideoSelectPage />} />
         <Route path="/preview" element={<LovePreviewPage />} />
         <Route path="/complete" element={<ShareCompletePage />} />
         <Route path="/complete" element={<CompletePage />} />
-        
+
       </Routes>
     </Router>
   );
