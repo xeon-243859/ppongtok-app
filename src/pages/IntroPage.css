@@ -1,68 +1,59 @@
-.container {
+.intro-page {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #fffdfd;
-  text-align: center;
+  background-color: #fff;
+  font-family: 'Noto Sans KR', sans-serif;
   padding: 20px;
   box-sizing: border-box;
 }
 
 .welcome-message {
-  font-size: 2rem;
+  font-size: 24px;
   font-weight: bold;
-  color: #f24e7e;
-  margin-bottom: 20px;
-  animation: slideDown 1s ease-out;
+  color: #ff4f8b;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.8s ease-out;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.welcome-message.slide-down {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .typing-text {
-  font-size: 1.2rem;
-  color: #555;
+  font-size: 18px;
+  color: #444;
   margin-bottom: 40px;
-  white-space: nowrap;
-  overflow: hidden;
-  border-right: 2px solid #f24e7e;
-  width: 0;
-  animation: typing 3.5s steps(40, end) forwards, blink 0.75s step-end infinite;
-}
-
-.start-button {
-  background-color: #f24e7e;
-  color: white;
-  font-size: 1.2rem;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.start-button:hover {
-  background-color: #d93c6e;
-}
-
-/* 타자 애니메이션 */
-@keyframes typing {
-  from { width: 0; }
-  to { width: 300px; } /* 글자 수에 맞춰 조절 가능 */
+  white-space: pre-wrap;
+  text-align: center;
+  min-height: 24px;
+  border-right: 2px solid #ccc;
+  animation: blink 0.8s steps(1) infinite;
 }
 
 @keyframes blink {
-  0%, 100% { border-color: transparent; }
-  50% { border-color: #f24e7e; }
+  50% {
+    border-color: transparent;
+  }
 }
 
-/* 슬라이드 다운 애니메이션 */
-@keyframes slideDown {
-  from {
-    transform: translateY(-30px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+.start-button {
+  padding: 12px 28px;
+  font-size: 18px;
+  background-color: #ff7faa;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.start-button:hover {
+  background-color: #ff4f8b;
 }
