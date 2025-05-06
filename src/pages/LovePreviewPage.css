@@ -1,0 +1,80 @@
+.preview-container {
+    text-align: center;
+    padding: 30px;
+    font-family: 'Pretendard', sans-serif;
+    background-color: #fffafc;
+  }
+  
+  .preview-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .preview-content {
+    margin-top: 20px;
+    position: relative;
+  }
+  
+  .preview-media {
+    width: 90%;
+    max-width: 600px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .image-preview {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+  }
+  
+  .preview-image {
+    width: 250px;
+    height: auto;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+  
+  .preview-caption {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #d81b60;
+    animation: typing 2.5s steps(30, end) 1;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 3px solid #d81b60;
+    display: inline-block;
+  }
+  
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }
+  
+  .button-group {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+  }
+  
+  .back, .share {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .back {
+    background-color: #ccc;
+    color: #333;
+  }
+  
+  .share {
+    background-color: #f06292;
+    color: white;
+  }
+  
