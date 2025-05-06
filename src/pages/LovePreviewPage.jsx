@@ -1,6 +1,6 @@
 // src/pages/LovePreviewPage.jsx
 import React, { useEffect, useRef, useState } from "react";
-import "./LovePreviewPage.css";
+import "./LoveFormPage.css";
 
 function LovePreviewPage() {
   const videoRef = useRef(null);
