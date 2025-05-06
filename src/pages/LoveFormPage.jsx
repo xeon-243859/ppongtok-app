@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../LoveFormPage.css";
+import "./LoveFormPage.css";
 
 function LoveFormPage() {
   const navigate = useNavigate();
