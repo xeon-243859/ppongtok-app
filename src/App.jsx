@@ -6,6 +6,7 @@ import LoveFormPage from "./pages/LoveFormPage";
 import StyleSelectPage from "./pages/StyleSelectPage";
 import ImageSelectPage from "./pages/ImageSelectPage";
 import VideoSelectPage from "./pages/VideoSelectPage";
+import MusicSelectPage from "./pages/MusicSelectPage";
 import LovePreviewPage from "./pages/LovePreviewPage";
 import ShareCompletePage from "./pages/ShareCompletePage";
 import CompletePage from "./pages/CompletePage";
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/love/style" element={<StyleSelectPage />} />
         <Route path="/image/select" element={<ImageSelectPage />} />
         <Route path="/video/select" element={<VideoSelectPage />} />
+        <Route path="/music/select" element={<MusicSelectPage />} />
         <Route path="/preview" element={<LovePreviewPage />} />
         <Route path="/complete" element={<ShareCompletePage />} />
         <Route path="/complete" element={<CompletePage />} />
