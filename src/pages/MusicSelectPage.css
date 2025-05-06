@@ -1,67 +1,73 @@
-.music-select-page {
-  padding: 2rem;
-  font-family: 'Pretendard', sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.typing-text {
-  font-size: 1.4rem;
+.music-container {
   text-align: center;
-  margin-bottom: 1.5rem;
-  white-space: pre-line;
+  padding: 2rem;
 }
 
-.music-list {
+.typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 0.15em solid orange;
+  animation: typing 3s steps(30, end), blink-caret 0.75s step-end infinite;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: orange; }
+}
+
+.music-grid {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1rem;
-  width: 100%;
-  max-width: 400px;
   margin-bottom: 2rem;
 }
 
-.music-item {
-  background-color: #f0f0f0;
-  padding: 1rem;
+.music-card {
+  border: 2px solid #ccc;
   border-radius: 10px;
-  border: 2px solid transparent;
-  transition: border 0.3s ease;
+  padding: 1rem;
+  width: 180px;
+  background-color: #f9f9f9;
   cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  transition: all 0.3s ease;
 }
 
-.music-item.selected {
-  border-color: #ff88cc;
+.music-card.selected {
+  border-color: #ff6699;
   background-color: #fff0f5;
 }
 
-.music-item p {
-  margin: 0 0 0.5rem 0;
+.music-card p {
+  margin-bottom: 0.5rem;
   font-weight: bold;
-  color: #333;
 }
 
-.button-row {
+.button-group {
   display: flex;
   justify-content: center;
   gap: 2rem;
 }
 
-.button-row button {
-  padding: 0.6rem 1.2rem;
+.back-button,
+.next-button {
+  padding: 0.8rem 1.5rem;
   font-size: 1rem;
-  background-color: #ff88cc;
-  color: white;
   border: none;
   border-radius: 10px;
   cursor: pointer;
+  background-color: #ffccdd;
   transition: background-color 0.3s ease;
 }
 
-.button-row button:hover {
-  background-color: #ff66aa;
+.back-button:hover,
+.next-button:hover {
+  background-color: #ff99bb;
 }
