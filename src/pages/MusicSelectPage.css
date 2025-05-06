@@ -1,18 +1,16 @@
-.music-select-container {
+.music-select-page {
+  padding: 2rem;
+  font-family: 'Pretendard', sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem;
-  max-width: 600px;
-  margin: 0 auto;
-  font-family: 'Pretendard', sans-serif;
 }
 
-.title-text {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 1.5rem;
+.typing-text {
+  font-size: 1.4rem;
   text-align: center;
+  margin-bottom: 1.5rem;
+  white-space: pre-line;
 }
 
 .music-list {
@@ -20,67 +18,50 @@
   flex-direction: column;
   gap: 1rem;
   width: 100%;
+  max-width: 400px;
   margin-bottom: 2rem;
 }
 
-.music-button {
-  width: 100%;
-  padding: 0.8rem 1rem;
+.music-item {
   background-color: #f0f0f0;
+  padding: 1rem;
+  border-radius: 10px;
   border: 2px solid transparent;
+  transition: border 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.music-item.selected {
+  border-color: #ff88cc;
+  background-color: #fff0f5;
+}
+
+.music-item p {
+  margin: 0 0 0.5rem 0;
+  font-weight: bold;
+  color: #333;
+}
+
+.button-row {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.button-row button {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  background-color: #ff88cc;
+  color: white;
+  border: none;
   border-radius: 10px;
   cursor: pointer;
-  font-size: 1rem;
-  text-align: center;
-  transition: all 0.2s ease;
+  transition: background-color 0.3s ease;
 }
 
-.music-button:hover {
-  background-color: #e0e0e0;
-}
-
-.music-button.selected {
-  border: 3px solid #ff99cc;
-  background-color: #fff0f5;
-  font-weight: bold;
-}
-
-.upload-section {
-  margin-bottom: 2rem;
-}
-
-.upload-button {
-  background-color: #ffd1e1;
-  color: #333;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.2s ease;
-}
-
-.upload-button:hover {
-  background-color: #ffb6c1;
-}
-
-.button-group {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  width: 100%;
-}
-
-.button-group button {
-  padding: 0.6rem 1.2rem;
-  border: none;
-  background-color: #ff6699;
-  color: white;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.button-group button:hover {
-  background-color: #ff3366;
+.button-row button:hover {
+  background-color: #ff66aa;
 }
