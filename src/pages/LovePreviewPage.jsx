@@ -1,52 +1,57 @@
-// src/pages/LovePreviewPage.jsx
-import React, { useEffect, useRef, useState } from "react";
-import "./LoveFormPage.css";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./LovePreviewPage.css";
 
 function LovePreviewPage() {
-  const videoRef = useRef(null);
-  const audioRef = useRef(null);
-  const [background, setBackground] = useState(null);
-  const [music, setMusic] = useState(null);
   const [message, setMessage] = useState("");
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedMusic, setSelectedMusic] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const bgImage = localStorage.getItem("selectedBackground");
-    const bgVideo = localStorage.getItem("selectedVideo");
-    const bgMusic = localStorage.getItem("selectedMusic");
-    const msg = history.state?.usr?.message || localStorage.getItem("message") || "";
+    const storedMessage = localStorage.getItem("loveMessage") || "당신을 사랑합니다.";
+    const images = JSON.parse(localStorage.getItem("selectedImages") || "[]");
+    const video = localStorage.getItem("selectedVideo") || null;
+    const music = localStorage.getItem("selectedMusic") || null;
 
-    if (bgImage) setBackground({ type: "image", src: bgImage });
-    else if (bgVideo) setBackground({ type: "video", src: bgVideo });
-    if (bgMusic) setMusic(bgMusic);
-    setMessage(msg);
+    setMessage(storedMessage);
+    setSelectedImages(images);
+    setSelectedVideo(video);
+    setSelectedMusic(music);
   }, []);
+
+  const handleBack = () => {
+    navigate("/music/select");
+  };
 
   return (
     <div className="preview-container">
-      {background?.type === "image" && (
-        <img src={background.src} alt="Preview" className="preview-media" />
-      )}
-      {background?.type === "video" && (
-        <video
-          ref={videoRef}
-          src={background.src}
-          className="preview-media"
-          autoPlay
-          muted
-          loop
-        />
+      <h2 className="preview-title">당신만을 위한 사랑 고백 💌</h2>
+
+      {selectedMusic && (
+        <audio src={selectedMusic} autoPlay loop />
       )}
 
-      {music && <audio ref={audioRef} src={music} autoPlay loop />}
+      <div className="preview-content">
+        {selectedVideo ? (
+          <video src={selectedVideo} controls autoPlay loop className="preview-media" />
+        ) : selectedImages.length > 0 ? (
+          <div className="image-preview">
+            {selectedImages.map((img, idx) => (
+              <img key={idx} src={img} alt={`img-${idx}`} className="preview-image" />
+            ))}
+          </div>
+        ) : null}
 
-      <div className="preview-message">{message}</div>
+        <div className="preview-caption">
+          <p>{message}</p>
+        </div>
+      </div>
 
-      <div className="preview-buttons">
-        <button onClick={() => navigator.clipboard.writeText(window.location.href)}>
-          링크 복사
-        </button>
-        <button onClick={() => window.print()}>PDF 저장</button>
-        <button onClick={() => window.location.href = "/"}>처음으로</button>
+      <div className="button-group">
+        <button onClick={handleBack} className="back">뒤로가기</button>
+        <button className="share">공유하기</button>
       </div>
     </div>
   );

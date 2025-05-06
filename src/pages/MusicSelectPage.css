@@ -1,81 +1,62 @@
-/* src/MusicSelectPage.css */
-
 .music-select-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 20px;
-  background-color: #fffafc;
-  min-height: 100vh;
+  text-align: center;
+  padding: 20px;
   font-family: 'Pretendard', sans-serif;
 }
 
-.music-select-title {
+.title {
   font-size: 1.5rem;
-  color: #e91e63;
-  margin-bottom: 30px;
-  text-align: center;
+  margin-bottom: 24px;
 }
 
-.music-list {
+.music-options {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  width: 100%;
-  max-width: 500px;
-  margin-bottom: 30px;
+  align-items: center;
+  gap: 20px;
 }
 
 .music-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 20px;
-  background-color: #fce4ec;
-  border-radius: 10px;
+  width: 80%;
+  padding: 15px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background-color: #fdfdfd;
+  transition: border 0.3s;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  font-size: 1rem;
-  font-weight: 500;
-  color: #444;
-}
-
-.music-item:hover {
-  background-color: #f8bbd0;
 }
 
 .music-item.selected {
-  border: 2px solid #f06292;
-  background-color: #f8bbd0;
+  border-color: #f06292;
+  background-color: #fff0f5;
 }
 
-.preview-button {
-  padding: 6px 12px;
-  font-size: 0.9rem;
-  background-color: #ba68c8;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+.music-item audio {
+  width: 100%;
+  margin-top: 8px;
 }
 
-.preview-button:hover {
-  background-color: #ab47bc;
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
 }
 
-.next-button {
-  padding: 12px 24px;
+.back, .next {
+  padding: 10px 20px;
   font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.back {
+  background-color: #ccc;
+  color: #333;
+}
+
+.next {
   background-color: #f06292;
   color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.next-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
 }

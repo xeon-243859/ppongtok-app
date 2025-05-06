@@ -1,61 +1,79 @@
-/* src/LovePreviewPage.css */
-
 .preview-container {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-  background-color: black;
+  text-align: center;
+  padding: 30px;
   font-family: 'Pretendard', sans-serif;
+  background-color: #fffafc;
+}
+
+.preview-title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.preview-content {
+  margin-top: 20px;
+  position: relative;
 }
 
 .preview-media {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-}
-
-.preview-message {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-  color: white;
-  font-size: 1.6rem;
-  text-align: center;
-  background-color: rgba(0, 0, 0, 0.4);
-  padding: 20px;
+  width: 90%;
+  max-width: 600px;
   border-radius: 12px;
-  max-width: 90%;
-  white-space: pre-wrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.preview-buttons {
-  position: absolute;
-  bottom: 20px;
-  width: 100%;
+.image-preview {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+
+.preview-image {
+  width: 250px;
+  height: auto;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.preview-caption {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #d81b60;
+  animation: typing 2.5s steps(30, end) 1;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 3px solid #d81b60;
+  display: inline-block;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+.button-group {
+  margin-top: 30px;
   display: flex;
   justify-content: center;
   gap: 16px;
-  z-index: 3;
 }
 
-.preview-buttons button {
+.back, .share {
   padding: 10px 20px;
   font-size: 1rem;
-  background-color: #f06292;
-  color: white;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-.preview-buttons button:hover {
-  background-color: #ec407a;
+.back {
+  background-color: #ccc;
+  color: #333;
+}
+
+.share {
+  background-color: #f06292;
+  color: white;
 }

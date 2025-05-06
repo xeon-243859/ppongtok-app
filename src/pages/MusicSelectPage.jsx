@@ -1,62 +1,56 @@
-// src/pages/MusicSelectPage.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../MusicSelectPage.css";
+import "./MusicSelectPage.css";
 
-const audios = [
-  { src: "/audio/mueon.mp3", name: "무언1" },
-  { src: "/audio/mueon1.mp3", name: "무언2" },
-  { src: "/audio/spring.mp3", name: "봄의 느낌1" },
-  { src: "/audio/spring1.mp3", name: "봄의 느낌2" },
+const musicOptions = [
+  "/audio/mueon.mp3",
+  "/audio/mueon1.mp3",
+  "/audio/spring.mp3",
+  "/audio/spring1.mp3",
 ];
 
 function MusicSelectPage() {
+  const [selectedMusic, setSelectedMusic] = useState(null);
   const navigate = useNavigate();
-  const [selected, setSelected] = useState(null);
-  const [preview, setPreview] = useState(null);
 
-  const handleSelect = (audio) => {
-    setSelected(audio);
-    localStorage.setItem("selectedMusic", audio);
-  };
-
-  const handlePreview = (src) => {
-    if (preview) preview.pause();
-    const audio = new Audio(src);
-    audio.play();
-    setPreview(audio);
+  const handleSelectMusic = (music) => {
+    setSelectedMusic(music);
   };
 
   const handleNext = () => {
-    if (selected) navigate("/preview");
+    if (selectedMusic) {
+      localStorage.setItem("selectedMusic", selectedMusic);
+      navigate("/preview");
+    } else {
+      alert("음악을 선택해주세요.");
+    }
+  };
+
+  const handleBack = () => {
+    navigate("/image/select"); // 또는 "/video/select" → 조건부 처리도 가능
   };
 
   return (
     <div className="music-select-container">
-      <h2 className="music-select-title">배경 음악을 선택해주세요</h2>
-      <div className="music-list">
-        {audios.map((audio, idx) => (
+      <h2 className="title">배경 음악을 선택해주세요</h2>
+
+      <div className="music-options">
+        {musicOptions.map((music, index) => (
           <div
-            key={idx}
-            className={`music-item ${selected === audio.src ? "selected" : ""}`}
-            onClick={() => handleSelect(audio.src)}
+            key={index}
+            className={`music-item ${selectedMusic === music ? "selected" : ""}`}
+            onClick={() => handleSelectMusic(music)}
           >
-            <span>{audio.name}</span>
-            <button
-              className="preview-button"
-              onClick={(e) => {
-                e.stopPropagation();
-                handlePreview(audio.src);
-              }}
-            >
-              ▶ 미리듣기
-            </button>
+            <p>음악 {index + 1}</p>
+            <audio src={music} controls />
           </div>
         ))}
       </div>
-      <button className="next-button" onClick={handleNext} disabled={!selected}>
-        다음으로
-      </button>
+
+      <div className="button-group">
+        <button onClick={handleBack} className="back">뒤로가기</button>
+        <button onClick={handleNext} className="next">다음으로</button>
+      </div>
     </div>
   );
 }
