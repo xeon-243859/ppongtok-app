@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MusicSelectPage.css";
 
@@ -11,7 +11,22 @@ const musicList = [
 
 function MusicSelectPage() {
   const [selectedMusic, setSelectedMusic] = useState(null);
+  const [typedTitle, setTypedTitle] = useState("");
   const navigate = useNavigate();
+
+  // 타자 효과
+  useEffect(() => {
+    const title = "배경음악을 선택해주세요";
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i < title.length) {
+        setTypedTitle((prev) => prev + title[i]);
+        i++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 50);
+  }, []);
 
   const handleSelect = (file) => {
     setSelectedMusic(file);
@@ -22,7 +37,7 @@ function MusicSelectPage() {
     if (selectedMusic) {
       navigate("/preview");
     } else {
-      alert("배경음악을 선택해주세요!");
+      alert("음악을 선택해주세요!");
     }
   };
 
@@ -32,28 +47,22 @@ function MusicSelectPage() {
 
   return (
     <div className="music-container">
-      <h2 className="typewriter">배경음악을 선택해주세요</h2>
+      <h2 className="music-title">{typedTitle}</h2>
       <div className="music-grid">
         {musicList.map((music, idx) => (
           <div
             key={idx}
-            className={`music-card ${
-              selectedMusic === music.file ? "selected" : ""
-            }`}
+            className={`music-card ${selectedMusic === music.file ? "selected" : ""}`}
             onClick={() => handleSelect(music.file)}
           >
             <p>{music.name}</p>
-            <audio controls src={music.file}></audio>
+            <audio controls src={music.file} preload="metadata" />
           </div>
         ))}
       </div>
       <div className="button-group">
-        <button className="back-button" onClick={handleBack}>
-          뒤로가기
-        </button>
-        <button className="next-button" onClick={handleNext}>
-          다음으로
-        </button>
+        <button onClick={handleBack}>뒤로가기</button>
+        <button onClick={handleNext}>다음으로</button>
       </div>
     </div>
   );

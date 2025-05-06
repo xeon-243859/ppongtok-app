@@ -10,26 +10,21 @@ function PreviewPage() {
   const previewRef = useRef(null);
 
   useEffect(() => {
-    const bg = localStorage.getItem("selectedBackground");
-    const video = localStorage.getItem("selectedVideo");
-    const musicFile = localStorage.getItem("selectedMusic");
-    const text = localStorage.getItem("subtitle");
+    const selectedImage = localStorage.getItem("selectedBackground");
+    const selectedVideo = localStorage.getItem("selectedVideo");
+    const selectedMusic = localStorage.getItem("selectedMusic");
+    const savedSubtitle = localStorage.getItem("subtitle");
 
-    if (video) {
-      setBackground(video);
+    if (selectedVideo) {
+      setBackground(selectedVideo);
       setIsVideo(true);
-    } else if (bg) {
-      setBackground(bg);
+    } else if (selectedImage) {
+      setBackground(selectedImage);
       setIsVideo(false);
     }
 
-    if (musicFile) setMusic(musicFile);
-    if (text) setSubtitle(text);
-
-    // ✅ 카카오 SDK 초기화
-    if (window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.init("여기에_카카오_Javascript_키"); // 여기에 본인 키 입력!
-    }
+    if (selectedMusic) setMusic(selectedMusic);
+    if (savedSubtitle) setSubtitle(savedSubtitle);
   }, []);
 
   const handleCopyLink = () => {
@@ -43,27 +38,27 @@ function PreviewPage() {
   };
 
   const handleFacebookShare = () => {
-    const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
-    window.open(shareUrl, "_blank");
+    const url = encodeURIComponent(window.location.href);
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, "_blank");
   };
 
   const handleTwitterShare = () => {
-    const shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=이 사랑 메시지 너무 감동이에요!`;
-    window.open(shareUrl, "_blank");
+    const url = encodeURIComponent(window.location.href);
+    window.open(`https://twitter.com/intent/tweet?url=${url}&text=이 사랑 메시지 너무 감동이에요!`, "_blank");
   };
 
   const handleKakaoShare = () => {
     if (!window.Kakao || !window.Kakao.isInitialized()) {
-      alert("카카오 공유 초기화 오류입니다.");
+      alert("카카오톡 공유를 사용할 수 없습니다.");
       return;
     }
 
     window.Kakao.Link.sendDefault({
-      objectType: 'feed',
+      objectType: "feed",
       content: {
-        title: '당신에게 전하는 사랑 메시지 💌',
-        description: '뿅!톡에서 만든 감성 메시지예요',
-        imageUrl: 'https://ppongtok-app.vercel.app/default-thumbnail.jpg', // 실제 썸네일 경로로 교체
+        title: "당신에게 전하는 사랑 메시지 💌",
+        description: "뿅!톡에서 만든 감성 메시지예요",
+        imageUrl: "https://ppongtok-app.vercel.app/default-thumbnail.jpg", // 썸네일 이미지 수정 가능
         link: {
           mobileWebUrl: window.location.href,
           webUrl: window.location.href,
@@ -71,7 +66,7 @@ function PreviewPage() {
       },
       buttons: [
         {
-          title: '메시지 보러가기',
+          title: "메시지 보러가기",
           link: {
             mobileWebUrl: window.location.href,
             webUrl: window.location.href,
@@ -84,10 +79,14 @@ function PreviewPage() {
   return (
     <div className="preview-container">
       <div className="preview-box" ref={previewRef}>
-        {isVideo ? (
-          <video className="preview-media" src={background} autoPlay loop muted />
+        {background ? (
+          isVideo ? (
+            <video className="preview-media" src={background} autoPlay loop muted playsInline />
+          ) : (
+            <img className="preview-media" src={background} alt="배경 이미지" />
+          )
         ) : (
-          <img className="preview-media" src={background} alt="배경 이미지" />
+          <p>배경이 설정되지 않았습니다.</p>
         )}
         <div className="subtitle-overlay">{subtitle}</div>
       </div>
