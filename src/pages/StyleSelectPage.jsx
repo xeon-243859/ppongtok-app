@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../StyleSelectPage.css";
+import "./StyleSelectPage.css";
 
 function StyleSelectPage() {
   const navigate = useNavigate();
