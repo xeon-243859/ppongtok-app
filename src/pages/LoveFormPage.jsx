@@ -14,10 +14,7 @@ const LoveFormPage = () => {
       return;
     }
 
-    // 메시지를 localStorage에 저장
     localStorage.setItem("loveMessage", message);
-
-    // 다음 페이지로 이동
     navigate("/love/style");
   };
 

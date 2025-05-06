@@ -1,64 +1,57 @@
-.style-select-wrapper {
-  position: relative; /* 📌 버튼 위치 제어용 */
+.style-wrapper {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  background-color: #ffffff;
-}
-
-.style-select-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding: 2rem;
+  min-height: 100vh;
+  background-color: #fffdfd;
   text-align: center;
 }
 
-.title-text {
-  font-size: 24px;
+.style-title {
+  font-size: 1.6rem;
+  color: #f24e7e;
+  margin-bottom: 2rem;
   font-weight: bold;
-  line-height: 1.5;
-  text-align: center;
-  margin-bottom: 40px;
-  white-space: pre-line;
 }
 
-.select-buttons {
+.style-buttons {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 40px;
+  gap: 1.2rem;
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 2rem;
 }
 
-.select-buttons button {
-  min-width: 220px;
-  font-size: 18px;
-  padding: 12px 24px;
+.style-buttons button {
+  padding: 1rem;
+  font-size: 1.1rem;
   border: none;
-  border-radius: 12px;
-  background-color: #ff9db5;
-  color: white;
+  border-radius: 10px;
   cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  transition: all 0.2s ease;
+  background-color: #f24e7e;
+  color: white;
+  transition: background-color 0.3s;
 }
 
-.select-buttons button:hover {
-  transform: scale(1.05);
+.style-buttons button:hover {
+  background-color: #d93c6e;
 }
 
-/* ✅ 뒤로가기: 우하단 + 보라색 */
 .back-button {
-  position: absolute;
-  right: 20px;
-  bottom: 20px;
-  padding: 10px 20px;
-  background-color: #9b59b6; /* 보라색 */
-  color: white;
+  font-size: 1rem;
+  background: transparent;
+  color: #555;
   border: none;
-  border-radius: 999px;
-  font-size: 14px;
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  text-decoration: underline;
+}
+
+@media (min-width: 600px) {
+  .style-buttons {
+    flex-direction: row;
+    justify-content: center;
+  }
 }

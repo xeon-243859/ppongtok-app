@@ -1,55 +1,74 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './MusicSelectPage.css';
+// src/pages/MusicSelectPage.jsx
 
-const audios = [
-  '/audio/mueon.mp3',
-  '/audio/mueon1.mp3',
-  '/audio/spring.mp3',
-  '/audio/spring1.mp3'
+import React, { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import "../styles/MusicSelectPage.css";
+
+const audioList = [
+  "mueon.mp3",
+  "mueon1.mp3",
+  "spring.mp3",
+  "spring1.mp3",
 ];
 
-export default function MusicSelectPage({ setSelectedMusic }) {
+const MusicSelectPage = () => {
   const navigate = useNavigate();
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState("");
   const audioRef = useRef(null);
 
   const handleSelect = (music) => {
     setSelected(music);
-    setSelectedMusic(music);
+    localStorage.setItem("selectedMusic", music);
   };
 
-  useEffect(() => {
-    if (audioRef.current && selected) {
-      audioRef.current.load();
-      audioRef.current.play();
+  const playMusic = (music) => {
+    if (audioRef.current) {
+      audioRef.current.pause();
     }
-  }, [selected]);
+    const newAudio = new Audio(`/audio/${music}`);
+    audioRef.current = newAudio;
+    newAudio.play();
+  };
+
+  const goNext = () => {
+    if (!selected) {
+      alert("음악을 선택해주세요!");
+      return;
+    }
+    navigate("/preview");
+  };
 
   return (
-    <div className="music-container">
-      <h2>배경 음악을 선택해 주세요</h2>
-      <div className="music-options">
-        {audios.map((src, idx) => (
-          <button
-            key={idx}
-            className={selected === src ? 'selected' : ''}
-            onClick={() => handleSelect(src)}
+    <div className="music-select-wrapper">
+      <h2 className="music-title">분위기에 어울리는 음악을 선택해주세요</h2>
+
+      <div className="music-list">
+        {audioList.map((music) => (
+          <div
+            key={music}
+            className={`music-item ${selected === music ? "selected" : ""}`}
+            onClick={() => handleSelect(music)}
           >
-            음악 {idx + 1}
-          </button>
+            🎵 {music.replace(".mp3", "")}
+            <button
+              className="play-button"
+              onClick={(e) => {
+                e.stopPropagation();
+                playMusic(music);
+              }}
+            >
+              ▶ 미리듣기
+            </button>
+          </div>
         ))}
       </div>
-      {selected && (
-        <audio ref={audioRef} controls>
-          <source src={selected} type="audio/mp3" />
-          브라우저가 오디오 태그를 지원하지 않습니다.
-        </audio>
-      )}
-      <div className="navigation-buttons">
-        <button onClick={() => navigate('/love/video')}>뒤로가기</button>
-        <button onClick={() => navigate('/love/generate')} disabled={!selected}>다음으로</button>
+
+      <div className="music-buttons">
+        <button onClick={() => navigate(-1)}>← 뒤로가기</button>
+        <button onClick={goNext}>다음으로</button>
       </div>
     </div>
   );
-}
+};
+
+export default MusicSelectPage;

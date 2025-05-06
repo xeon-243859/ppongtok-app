@@ -1,98 +1,69 @@
 .image-select-wrapper {
-  padding: 40px 20px;
-  text-align: center;
-  background-color: #fffafc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
   min-height: 100vh;
+  background-color: #fffafc;
+  text-align: center;
   box-sizing: border-box;
 }
 
-.tabs {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 20px;
+.image-select-title {
+  font-size: 1.5rem;
+  color: #f24e7e;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
 }
 
-.tab {
-  background-color: #f3f3f3;
-  border: 1px solid #ccc;
-  padding: 10px 16px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: 0.2s;
-}
-
-.tab.active {
-  background-color: #ff9db5;
-  color: white;
-  border-color: #ff9db5;
-}
-
-.image-grid {
+.thumbnail-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  justify-content: center;
-  margin-bottom: 30px;
+  gap: 1rem;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 2rem;
 }
 
-.image-grid img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 10px;
+.thumbnail {
+  width: 100%;
+  border-radius: 12px;
   cursor: pointer;
   border: 3px solid transparent;
   transition: border 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
-.image-grid img.selected {
-  border: 3px solid #ff9db5;
+.thumbnail.selected {
+  border: 3px solid #f24e7e;
 }
 
-.selected-box {
+.image-select-buttons {
   display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 40px;
-}
-
-.box-slot {
-  width: 80px;
-  height: 80px;
-  background-color: #eee;
-  border-radius: 10px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.box-slot img {
+  gap: 1rem;
+  flex-direction: column;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-width: 300px;
 }
 
-.nav-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-.nav-buttons button {
-  background-color: #9b59b6;
-  color: white;
-  padding: 12px 24px;
+.image-select-buttons button {
+  padding: 0.9rem 1.3rem;
+  font-size: 1rem;
   border: none;
-  border-radius: 999px;
-  font-size: 14px;
+  border-radius: 10px;
+  background-color: #f24e7e;
+  color: white;
   cursor: pointer;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease;
 }
 
-.nav-buttons button:hover {
-  opacity: 0.9;
+.image-select-buttons button:hover {
+  background-color: #e03b6e;
+}
+
+@media (min-width: 600px) {
+  .image-select-buttons {
+    flex-direction: row;
+    justify-content: center;
+  }
 }

@@ -1,32 +1,68 @@
-.intro-container {
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #fffdfd;
   text-align: center;
-  padding: 100px 20px;
-  background-color: #fffafc;
-  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
 }
-.intro-container h1 {
-  font-size: 32px;
-  color: #ff4d6d;
+
+.welcome-message {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #f24e7e;
+  margin-bottom: 20px;
+  animation: slideDown 1s ease-out;
 }
-.intro-container h2 {
-  font-size: 28px;
-  color: #333;
+
+.typing-text {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 40px;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid #f24e7e;
+  width: 0;
+  animation: typing 3.5s steps(40, end) forwards, blink 0.75s step-end infinite;
 }
-.intro-container p {
-  font-size: 18px;
-  margin-top: 20px;
-  color: #666;
-}
-.intro-container button {
-  margin-top: 40px;
-  font-size: 20px;
-  padding: 12px 28px;
-  background-color: #ff7a9e;
+
+.start-button {
+  background-color: #f24e7e;
   color: white;
+  font-size: 1.2rem;
+  padding: 12px 24px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
-.intro-container button:hover {
-  background-color: #ff5c85;
+
+.start-button:hover {
+  background-color: #d93c6e;
+}
+
+/* 타자 애니메이션 */
+@keyframes typing {
+  from { width: 0; }
+  to { width: 300px; } /* 글자 수에 맞춰 조절 가능 */
+}
+
+@keyframes blink {
+  0%, 100% { border-color: transparent; }
+  50% { border-color: #f24e7e; }
+}
+
+/* 슬라이드 다운 애니메이션 */
+@keyframes slideDown {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }

@@ -1,40 +1,78 @@
-import React from "react";
+// src/pages/LovePreviewPage.jsx
+
+import React, { useEffect, useState } from "react";
+import html2pdf from "html2pdf.js";
 import { useNavigate } from "react-router-dom";
 import "../styles/LovePreviewPage.css";
 
 const LovePreviewPage = () => {
   const navigate = useNavigate();
-  const selectedVideo = localStorage.getItem("selectedVideo");
+  const [message, setMessage] = useState("");
+  const [backgroundType, setBackgroundType] = useState("");
+  const [background, setBackground] = useState("");
+  const [music, setMusic] = useState("");
+
+  useEffect(() => {
+    const msg = localStorage.getItem("loveMessage") || "";
+    const type = localStorage.getItem("backgroundType");
+    const bg = type === "video"
+      ? localStorage.getItem("selectedVideo")
+      : localStorage.getItem("selectedImage");
+    const mus = localStorage.getItem("selectedMusic");
+
+    setMessage(msg);
+    setBackgroundType(type);
+    setBackground(bg);
+    setMusic(mus);
+  }, []);
+
+  const handleCopyLink = () => {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url);
+    alert("링크가 복사되었습니다!");
+  };
+
+  const handleDownloadPDF = () => {
+    const element = document.getElementById("preview-area");
+    html2pdf().from(element).save("ppongtok-love.pdf");
+  };
+
+  const handleReset = () => {
+    localStorage.clear();
+    navigate("/");
+  };
 
   return (
     <div className="preview-wrapper">
-      <h2 className="preview-title">💖 완성된 고백을 미리보기 해보세요</h2>
-
-      <div className="preview-video-container">
-        {selectedVideo ? (
+      <div id="preview-area" className="preview-content">
+        {backgroundType === "video" ? (
           <video
-            src={`/videos/${selectedVideo}`}
-            controls
+            src={`/videos/${background}`}
             autoPlay
             loop
             muted
             className="preview-video"
           />
         ) : (
-          <p>선택된 영상이 없습니다.</p>
+          <img
+            src={`/backgrounds/${background}`}
+            alt="preview background"
+            className="preview-image"
+          />
         )}
+        <div className="preview-message">
+          {message.split("\n").map((line, idx) => (
+            <p key={idx}>{line}</p>
+          ))}
+        </div>
       </div>
 
-      <div className="preview-message">
-        <p className="line">너를 처음 만난 그날부터</p>
-        <p className="line">내 마음은 온통 너로 가득했어</p>
-        <p className="line">이제는 말할게</p>
-        <p className="line highlight">널 사랑해</p>
-      </div>
+      <audio src={`/audio/${music}`} autoPlay loop />
 
-      <div className="nav-buttons">
-        <button onClick={() => navigate(-1)}>뒤로가기</button>
-        <button onClick={() => navigate("/complete")}>공유하기</button>
+      <div className="preview-buttons">
+        <button onClick={handleCopyLink}>🔗 링크 복사</button>
+        <button onClick={handleDownloadPDF}>📄 PDF 저장</button>
+        <button onClick={handleReset}>↩ 다시 만들기</button>
       </div>
     </div>
   );

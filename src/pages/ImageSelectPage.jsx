@@ -1,62 +1,53 @@
+// src/pages/ImageSelectPage.jsx
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/ImageSelectPage.css";
 
+const images = [
+  "cosmos.jpg",
+  "leaves.jpg",
+  "road.jpg",
+  "water.jpg",
+];
+
 const ImageSelectPage = () => {
   const navigate = useNavigate();
-  const [selectedImages, setSelectedImages] = useState([null, null, null, null]);
-
-  const dummyImages = [
-    "/backgrounds/warm1.jpg",
-    "/backgrounds/warm2.jpg",
-    "/backgrounds/warm3.jpg",
-    "/backgrounds/warm4.jpg",
-  ];
+  const [selected, setSelected] = useState("");
 
   const handleSelect = (img) => {
-    const index = selectedImages.findIndex((item) => item === null);
-    if (index !== -1) {
-      const newSelection = [...selectedImages];
-      newSelection[index] = img;
-      setSelectedImages(newSelection);
+    setSelected(img);
+    localStorage.setItem("selectedImage", img);
+    localStorage.setItem("backgroundType", "image");
+  };
+
+  const goNext = () => {
+    if (!selected) {
+      alert("이미지를 선택해주세요!");
+      return;
     }
+    navigate("/music/select");
   };
 
   return (
     <div className="image-select-wrapper">
-      <h2 className="title">네번째 화면 · 이미지 배경화면</h2>
-      <div className="tabs">
-        <button className="tab">따뜻한</button>
-        <button className="tab">설레임</button>
-        <button className="tab">그리움</button>
-        <button className="tab">감성적인</button>
-        <button className="tab">내파일선택</button>
-      </div>
+      <h2 className="image-select-title">배경으로 사용할 이미지를 선택해주세요</h2>
 
-      <div className="image-grid">
-        {dummyImages.map((img, idx) => (
+      <div className="thumbnail-grid">
+        {images.map((img) => (
           <img
-            key={idx}
-            src={img}
-            alt={`배경 ${idx + 1}`}
-            className="bg-img"
+            key={img}
+            src={`/backgrounds/${img}`}
+            alt={img}
+            className={`thumbnail ${selected === img ? "selected" : ""}`}
             onClick={() => handleSelect(img)}
           />
         ))}
       </div>
 
-      <div className="selected-preview">
-        {selectedImages.map((img, idx) => (
-          <div key={idx} className="preview-box">
-            {img ? <img src={img} alt="선택됨" /> : <span>{idx + 1}번</span>}
-          </div>
-        ))}
-      </div>
-
-      <div className="nav-buttons">
-        <button onClick={() => navigate(-1)}>뒤로가기</button>
-        <button onClick={() => navigate("/video/select")}>다음으로</button>
-
+      <div className="image-select-buttons">
+        <button onClick={() => navigate(-1)}>← 뒤로가기</button>
+        <button onClick={goNext}>다음으로</button>
       </div>
     </div>
   );
