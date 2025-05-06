@@ -8,6 +8,7 @@ import ImageSelectPage from "./pages/ImageSelectPage";
 import VideoSelectPage from "./pages/VideoSelectPage";
 import LovePreviewPage from "./pages/LovePreviewPage";
 import ShareCompletePage from "./pages/ShareCompletePage";
+import CompletePage from "./pages/CompletePage";
 
 const App = () => {
   return (
@@ -20,7 +21,8 @@ const App = () => {
         <Route path="/video/select" element={<VideoSelectPage />} />
         <Route path="/preview" element={<LovePreviewPage />} />
         <Route path="/complete" element={<ShareCompletePage />} />
-
+        <Route path="/complete" element={<CompletePage />} />
+        
       </Routes>
     </Router>
   );
