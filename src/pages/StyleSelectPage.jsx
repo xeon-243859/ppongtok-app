@@ -1,24 +1,42 @@
-// src/pages/StyleSelectPage.jsx
-
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/StyleSelectPage.css";
+import "../StyleSelectPage.css";
 
-const StyleSelectPage = () => {
+function StyleSelectPage() {
   const navigate = useNavigate();
+  const [typedText, setTypedText] = useState("");
+  const fullText = "어떤 배경으로 사랑을 담아볼까요?";
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const typing = setTimeout(() => {
+      if (index < fullText.length) {
+        setTypedText((prev) => prev + fullText[index]);
+        setIndex(index + 1);
+      }
+    }, 100);
+    return () => clearTimeout(typing);
+  }, [index]);
 
   return (
-    <div className="style-wrapper">
-      <h2 className="style-title">원하는 배경 스타일을 선택해주세요</h2>
-
+    <div className="style-container">
+      <h2 className="style-title">{typedText}</h2>
       <div className="style-buttons">
-        <button onClick={() => navigate("/image/select")}>🖼 이미지 배경</button>
-        <button onClick={() => navigate("/video/select")}>🎥 영상 배경</button>
+        <button
+          className="style-button"
+          onClick={() => navigate("/image/select")}
+        >
+          이미지 배경 선택
+        </button>
+        <button
+          className="style-button"
+          onClick={() => navigate("/video/select")}
+        >
+          영상 배경 선택
+        </button>
       </div>
-
-      <button className="back-button" onClick={() => navigate(-1)}>← 뒤로가기</button>
     </div>
   );
-};
+}
 
 export default StyleSelectPage;

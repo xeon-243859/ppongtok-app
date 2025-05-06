@@ -1,59 +1,45 @@
-.intro-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: #fff;
-  font-family: 'Noto Sans KR', sans-serif;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-.welcome-message {
-  font-size: 24px;
-  font-weight: bold;
-  color: #ff4f8b;
-  opacity: 0;
-  transform: translateY(-20px);
-  transition: all 0.8s ease-out;
+/* src/pages/intropage.css */
+.intro-container {
   text-align: center;
-  margin-bottom: 16px;
+  padding-top: 20%;
+  background-color: #fffafc;
+  height: 100vh;
+  font-family: 'Arial', sans-serif;
 }
 
-.welcome-message.slide-down {
-  opacity: 1;
-  transform: translateY(0);
+.intro-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 20px;
 }
 
-.typing-text {
-  font-size: 18px;
+.intro-typing {
+  font-size: 1.2rem;
   color: #444;
+  min-height: 40px;
   margin-bottom: 40px;
   white-space: pre-wrap;
-  text-align: center;
-  min-height: 24px;
-  border-right: 2px solid #ccc;
-  animation: blink 0.8s steps(1) infinite;
+  word-break: keep-all;
+  animation: fadeIn 1s ease-in-out;
 }
 
-@keyframes blink {
-  50% {
-    border-color: transparent;
-  }
-}
-
-.start-button {
-  padding: 12px 28px;
-  font-size: 18px;
-  background-color: #ff7faa;
+.intro-button {
+  padding: 12px 24px;
+  font-size: 1rem;
+  background-color: #ff7da9;
   color: white;
   border: none;
-  border-radius: 12px;
+  border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.start-button:hover {
-  background-color: #ff4f8b;
+.intro-button:hover {
+  background-color: #e96490;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

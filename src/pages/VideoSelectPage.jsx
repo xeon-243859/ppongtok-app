@@ -1,58 +1,54 @@
 // src/pages/VideoSelectPage.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/VideoSelectPage.css";
+import "../VideoSelectPage.css";
 
 const videos = [
-  { name: "flower", file: "flower.mp4", thumbnail: "flower.jpg" },
-  { name: "river", file: "river.mp4", thumbnail: "river.jpg" },
-  { name: "sky", file: "sky.mp4", thumbnail: "sky.jpg" },
-  { name: "sunset", file: "sunset.mp4", thumbnail: "sunset.jpg" },
+  { src: "/videos/flower.mp4", thumbnail: "/videos/flower.jpg" },
+  { src: "/videos/river.mp4", thumbnail: "/videos/river.jpg" },
+  { src: "/videos/sky.mp4", thumbnail: "/videos/sky.jpg" },
+  { src: "/videos/sunset.mp4", thumbnail: "/videos/sunset.jpg" },
 ];
 
-const VideoSelectPage = () => {
+function VideoSelectPage() {
   const navigate = useNavigate();
-  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selected, setSelected] = useState(null);
 
-  const handleSelect = (videoFile) => {
-    setSelectedVideo(videoFile);
+  const handleSelect = (video) => {
+    setSelected(video);
   };
 
   const handleNext = () => {
-    if (selectedVideo) {
-      localStorage.setItem("selectedVideo", selectedVideo);
-      navigate("/preview");
-    } else {
-      alert("배경 영상을 선택해주세요.");
+    if (selected) {
+      localStorage.setItem("selectedVideo", selected);
+      navigate("/music/select");
     }
   };
 
   return (
     <div className="video-select-container">
-      <h2>배경 영상을 선택하세요</h2>
-      <div className="video-thumbnails">
-        {videos.map((video) => (
-          <div
-            key={video.name}
-            className={`thumbnail-wrapper ${
-              selectedVideo === video.file ? "selected" : ""
-            }`}
-            onClick={() => handleSelect(video.file)}
-          >
-            <img
-              src={`/videos/${video.thumbnail}`}
-              alt={video.name}
-              className="thumbnail-image"
-            />
-            <p>{video.name}</p>
-          </div>
+      <h2 className="video-select-title">배경으로 사용할 영상을 선택해주세요</h2>
+      <div className="video-grid">
+        {videos.map((video, idx) => (
+          <img
+            key={idx}
+            src={video.thumbnail}
+            alt={`video-${idx}`}
+            className={`video-thumb ${selected === video.src ? "selected" : ""}`}
+            onClick={() => handleSelect(video.src)}
+          />
         ))}
       </div>
-      <button className="next-button" onClick={handleNext}>
-        다음으로
-      </button>
+      <div className="video-buttons">
+        <button className="back-button" onClick={() => navigate(-1)}>
+          뒤로가기
+        </button>
+        <button className="next-button" onClick={handleNext} disabled={!selected}>
+          다음으로
+        </button>
+      </div>
     </div>
   );
-};
+}
 
 export default VideoSelectPage;

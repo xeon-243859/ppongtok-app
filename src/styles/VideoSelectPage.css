@@ -1,47 +1,80 @@
+/* src/VideoSelectPage.css */
+
 .video-select-container {
-    text-align: center;
-    padding: 2rem;
-  }
-  
-  .video-thumbnails {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem;
-    margin: 2rem 0;
-  }
-  
-  .thumbnail-wrapper {
-    border: 2px solid transparent;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: transform 0.2s, border-color 0.2s;
-  }
-  
-  .thumbnail-wrapper.selected {
-    border-color: #ff69b4;
-    transform: scale(1.05);
-  }
-  
-  .thumbnail-image {
-    width: 240px;
-    height: 135px;
-    object-fit: cover;
-    border-radius: 10px;
-  }
-  
-  .next-button {
-    padding: 0.8rem 2rem;
-    font-size: 1.2rem;
-    background-color: #ff69b4;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .next-button:hover {
-    background-color: #e055a0;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  background-color: #fffafc;
+  min-height: 100vh;
+  font-family: 'Pretendard', sans-serif;
+}
+
+.video-select-title {
+  font-size: 1.5rem;
+  color: #e91e63;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.video-thumb {
+  width: 160px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: border 0.3s ease, transform 0.2s ease;
+}
+
+.video-thumb:hover {
+  transform: scale(1.05);
+}
+
+.video-thumb.selected {
+  border: 3px solid #f06292;
+}
+
+.video-buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.next-button,
+.back-button {
+  padding: 12px 24px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.next-button {
+  background-color: #f06292;
+}
+
+.next-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.back-button {
+  background-color: #ba68c8;
+}
+
+.back-button:hover {
+  background-color: #ab47bc;
+}

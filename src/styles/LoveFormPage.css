@@ -1,65 +1,65 @@
-.loveform-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    min-height: 100vh;
-    background-color: #fff8fa;
-    text-align: center;
-    box-sizing: border-box;
-  }
-  
-  .title-text {
-    font-size: 1.6rem;
-    color: #f24e7e;
-    margin-bottom: 1.5rem;
-    line-height: 1.5;
-    font-weight: bold;
-  }
-  
-  .message-input {
-    width: 90%;
-    max-width: 600px;
-    height: 160px;
-    padding: 1rem;
-    font-size: 1.1rem;
-    border: 2px solid #f5c3d9;
-    border-radius: 10px;
-    resize: none;
-    background-color: #fff;
-    color: #333;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    margin-bottom: 2rem;
-  }
-  
-  .form-buttons {
-    display: flex;
-    gap: 1rem;
-    flex-direction: column;
-    width: 100%;
-    max-width: 300px;
-  }
-  
-  .form-buttons button {
-    padding: 0.9rem 1.5rem;
-    font-size: 1.1rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    background-color: #f24e7e;
-    color: white;
-    transition: background-color 0.3s ease;
-  }
-  
-  .form-buttons button:hover {
-    background-color: #e0396e;
-  }
-  
-  @media (min-width: 600px) {
-    .form-buttons {
-      flex-direction: row;
-      justify-content: center;
-    }
-  }
-  
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  background-color: #fff0f5;
+  min-height: 100vh;
+  font-family: 'Pretendard', sans-serif;
+}
+
+.form-title {
+  font-size: 1.5rem;
+  color: #e91e63;
+  margin-bottom: 20px;
+  text-align: center;
+  min-height: 2.5em; /* 타자 애니메이션 영역 확보 */
+  white-space: pre-line;
+}
+
+.form-textarea {
+  width: 90%;
+  max-width: 500px;
+  height: 180px;
+  padding: 16px;
+  font-size: 1.1rem;
+  border: 3px solid #ffb74d;
+  border-radius: 10px;
+  resize: none;
+  margin-bottom: 30px;
+  background-color: white;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.05);
+}
+
+.form-buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.form-button {
+  padding: 12px 28px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  color: white;
+  background-color: #f06292;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.15s ease;
+}
+
+.form-button:hover {
+  transform: scale(1.05);
+  background-color: #ec407a;
+}
+
+.form-button.back {
+  background-color: #ba68c8;
+}
+
+.form-button.back:hover {
+  background-color: #ab47bc;
+}

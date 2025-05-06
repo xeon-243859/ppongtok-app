@@ -1,56 +1,48 @@
-// src/pages/ImageSelectPage.jsx
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/ImageSelectPage.css";
+import "../ImageSelectPage.css";
 
 const images = [
-  "cosmos.jpg",
-  "leaves.jpg",
-  "road.jpg",
-  "water.jpg",
+  "/backgrounds/cosmos.jpg",
+  "/backgrounds/leaves.jpg",
+  "/backgrounds/road.jpg",
+  "/backgrounds/water.jpg",
 ];
 
-const ImageSelectPage = () => {
+function ImageSelectPage() {
   const navigate = useNavigate();
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState(null);
 
-  const handleSelect = (img) => {
-    setSelected(img);
-    localStorage.setItem("selectedImage", img);
-    localStorage.setItem("backgroundType", "image");
+  const handleSelect = (image) => {
+    setSelected(image);
   };
 
-  const goNext = () => {
-    if (!selected) {
-      alert("이미지를 선택해주세요!");
-      return;
+  const handleNext = () => {
+    if (selected) {
+      localStorage.setItem("selectedBackground", selected);
+      navigate("/music/select");
     }
-    navigate("/music/select");
   };
 
   return (
-    <div className="image-select-wrapper">
+    <div className="image-select-container">
       <h2 className="image-select-title">배경으로 사용할 이미지를 선택해주세요</h2>
-
-      <div className="thumbnail-grid">
-        {images.map((img) => (
+      <div className="image-grid">
+        {images.map((src, idx) => (
           <img
-            key={img}
-            src={`/backgrounds/${img}`}
-            alt={img}
-            className={`thumbnail ${selected === img ? "selected" : ""}`}
-            onClick={() => handleSelect(img)}
+            key={idx}
+            src={src}
+            alt={`background-${idx}`}
+            className={`thumbnail ${selected === src ? "selected" : ""}`}
+            onClick={() => handleSelect(src)}
           />
         ))}
       </div>
-
-      <div className="image-select-buttons">
-        <button onClick={() => navigate(-1)}>← 뒤로가기</button>
-        <button onClick={goNext}>다음으로</button>
-      </div>
+      <button className="next-button" onClick={handleNext} disabled={!selected}>
+        다음으로
+      </button>
     </div>
   );
-};
+}
 
 export default ImageSelectPage;

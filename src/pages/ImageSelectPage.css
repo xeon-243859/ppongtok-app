@@ -1,69 +1,58 @@
-.image-select-wrapper {
+.image-select-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem;
-  min-height: 100vh;
+  padding: 40px 20px;
   background-color: #fffafc;
-  text-align: center;
-  box-sizing: border-box;
+  min-height: 100vh;
+  font-family: 'Pretendard', sans-serif;
 }
 
 .image-select-title {
   font-size: 1.5rem;
-  color: #f24e7e;
-  font-weight: bold;
-  margin-bottom: 1.5rem;
+  color: #e91e63;
+  margin-bottom: 30px;
+  text-align: center;
 }
 
-.thumbnail-grid {
+.image-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-  width: 100%;
-  max-width: 400px;
-  margin-bottom: 2rem;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 30px;
 }
 
 .thumbnail {
-  width: 100%;
+  width: 160px;
+  height: 100px;
+  object-fit: cover;
   border-radius: 12px;
-  cursor: pointer;
   border: 3px solid transparent;
-  transition: border 0.2s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: border 0.3s ease, transform 0.2s ease;
+}
+
+.thumbnail:hover {
+  transform: scale(1.05);
 }
 
 .thumbnail.selected {
-  border: 3px solid #f24e7e;
+  border: 3px solid #f06292;
 }
 
-.image-select-buttons {
-  display: flex;
-  gap: 1rem;
-  flex-direction: column;
-  width: 100%;
-  max-width: 300px;
-}
-
-.image-select-buttons button {
-  padding: 0.9rem 1.3rem;
+.next-button {
+  padding: 12px 24px;
   font-size: 1rem;
+  background-color: #f06292;
+  color: white;
   border: none;
   border-radius: 10px;
-  background-color: #f24e7e;
-  color: white;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.3s ease;
 }
 
-.image-select-buttons button:hover {
-  background-color: #e03b6e;
-}
-
-@media (min-width: 600px) {
-  .image-select-buttons {
-    flex-direction: row;
-    justify-content: center;
-  }
+.next-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
