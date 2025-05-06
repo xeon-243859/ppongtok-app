@@ -2,39 +2,33 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import "./LovePreviewPage.css";
 
-export default function LovePreviewPage() {
+const LovePreviewPage = () => {
   const location = useLocation();
-  const { backgroundImage, backgroundVideo, backgroundMusic, loveMessage } = location.state || {};
-  const [showMessage, setShowMessage] = useState(false);
+  const { backgroundType, selected, music } = location.state || {};
+  const [showText, setShowText] = useState(false);
 
   useEffect(() => {
-    // 텍스트 애니메이션처럼 등장
-    const timer = setTimeout(() => setShowMessage(true), 1000);
+    const timer = setTimeout(() => setShowText(true), 1000);
     return () => clearTimeout(timer);
   }, []);
 
   return (
     <div className="preview-container">
-      {/* 배경 출력 */}
-      {backgroundVideo ? (
-        <video className="background-media" src={backgroundVideo} autoPlay loop muted />
-      ) : backgroundImage ? (
-        <img className="background-media" src={backgroundImage} alt="배경 이미지" />
+      {backgroundType === "video" ? (
+        <video src={`/videos/${selected}`} autoPlay loop muted className="background-media" />
       ) : (
-        <div className="background-placeholder">배경이 선택되지 않았습니다</div>
+        <img src={selected} alt="배경 이미지" className="background-media" />
       )}
 
-      {/* 음악 재생 */}
-      {backgroundMusic && <audio src={backgroundMusic} autoPlay loop />}
+      {music && <audio src={`/audio/${music}`} autoPlay loop />}
 
-      {/* 자막 또는 고백 메시지 출력 */}
-      {showMessage && loveMessage && (
+      {showText && (
         <div className="love-message">
-          {loveMessage}
+          당신에게 꼭 전하고 싶은 말이 있어요
         </div>
       )}
     </div>
   );
-}
+};
 
-
+export default LovePreviewPage;

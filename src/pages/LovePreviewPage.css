@@ -16,34 +16,22 @@
     z-index: 1;
   }
   
-  .background-placeholder {
-    width: 100%;
-    height: 100%;
-    background-color: #222;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.5rem;
-    z-index: 1;
-  }
-  
   .love-message {
     position: absolute;
-    bottom: 12%;
+    bottom: 10%;
     left: 50%;
     transform: translateX(-50%);
     z-index: 2;
     background-color: rgba(255, 255, 255, 0.6);
-    padding: 1rem 1.5rem;
+    padding: 1rem 2rem;
     border-radius: 20px;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     font-weight: bold;
     color: #333;
     text-align: center;
     max-width: 80%;
     animation: fadeIn 2s ease-in-out;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(4px);
   }
   
   @keyframes fadeIn {

@@ -1,85 +1,73 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ImageSelectPage.css";
-import { Typewriter } from "react-simple-typewriter";
 
-const imageList = [
-  "/backgrounds/cosmos.jpg",
-  "/backgrounds/leaves.jpg",
-  "/backgrounds/road.jpg",
-  "/backgrounds/water.jpg"
-];
-
-export default function ImageSelectPage() {
-  const [selectedImage, setSelectedImage] = useState("");
+const ImageSelectPage = () => {
   const navigate = useNavigate();
+  const [selectedImages, setSelectedImages] = useState({});
 
-  const handleImageClick = (image) => {
-    setSelectedImage(image);
+  const images = [
+    "/backgrounds/cosmos.jpg",
+    "/backgrounds/leaves.jpg",
+    "/backgrounds/road.jpg",
+    "/backgrounds/water.jpg",
+  ];
+
+  const handleImageClick = (index) => {
+    setSelectedImages((prev) => ({
+      ...prev,
+      [`img-${index}`]: images[index],
+    }));
   };
 
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imageURL = URL.createObjectURL(file);
-      setSelectedImage(imageURL);
+  const handleNextClick = () => {
+    // 선택된 이미지 중 첫 번째 이미지만 사용하여 이동
+    const firstSelected = Object.values(selectedImages)[0];
+    if (firstSelected) {
+      localStorage.setItem("selectedBackground", firstSelected);
+      navigate("/music/select");
+    } else {
+      alert("이미지를 선택해주세요.");
     }
-  };
-
-  const handleNext = () => {
-    if (!selectedImage) {
-      alert("배경 이미지를 선택해주세요.");
-      return;
-    }
-    navigate("/music/select", { state: { backgroundImage: selectedImage } });
   };
 
   return (
-    <div className="image-select-container">
-      <div className="title-text">
-        <span>
-          <Typewriter
-            words={["배경으로 사용할 이미지 4개를", "선택해주세요"]}
-            loop={1}
-            cursor
-            typeSpeed={50}
-            deleteSpeed={0}
-            delaySpeed={1000}
-          />
-        </span>
-      </div>
-
-      <div className="image-thumbnails">
-        {imageList.map((img, idx) => (
+    <div className="image-select-page">
+      <h2 className="typewriter">
+        배경으로 사용할 이미지 4개를<br />선택해 주세요
+      </h2>
+      <div className="image-grid">
+        {images.map((src, index) => (
           <img
-            key={idx}
-            src={img}
-            alt={`img-${idx}`}
-            className={`thumbnail ${selectedImage === img ? "selected" : ""}`}
-            onClick={() => handleImageClick(img)}
+            key={index}
+            src={src}
+            alt={`이미지${index + 1}`}
+            className={
+              selectedImages[`img-${index}`] ? "selected" : "thumbnail"
+            }
+            onClick={() => handleImageClick(index)}
           />
         ))}
       </div>
-
-      <div className="preview-slot">
-        {selectedImage ? (
-          <img src={selectedImage} alt="선택된 이미지" className="preview-img" />
-        ) : (
-          <div className="empty-slot">img-0 (선택된 이미지가 여기에 나타납니다)</div>
-        )}
+      <div className="selection-slots">
+        {[0, 1, 2, 3].map((num) => (
+          <div key={num} className="image-slot">
+            {selectedImages[`img-${num}`] && (
+              <img src={selectedImages[`img-${num}`]} alt={`선택${num}`} />
+            )}
+          </div>
+        ))}
       </div>
-
-      <div className="upload-section">
-        <label className="upload-button">
-          내 파일에서 선택
-          <input type="file" accept="image/*" onChange={handleFileUpload} hidden />
-        </label>
-      </div>
-
       <div className="button-group">
-        <button onClick={() => navigate("/style")}>뒤로가기</button>
-        <button onClick={handleNext}>다음으로</button>
+        <button className="back-button" onClick={() => navigate(-1)}>
+          뒤로가기
+        </button>
+        <button className="next-button" onClick={handleNextClick}>
+          다음으로
+        </button>
       </div>
     </div>
   );
-}
+};
+
+export default ImageSelectPage;
