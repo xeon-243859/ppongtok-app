@@ -5,89 +5,135 @@
   flex-direction: column;
   align-items: center;
   padding: 2rem;
-  background-color: #fffafc;
+  background-color: #fff0f5;
   min-height: 100vh;
-  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
 }
 
 .image-select-title {
   font-size: 1.5rem;
   font-weight: bold;
-  animation: typing 1.5s steps(20, end);
-  white-space: nowrap;
-  overflow: hidden;
-  border-right: 2px solid #d63384;
   margin-bottom: 0.5rem;
+  color: #333;
 }
 
 .image-select-sub {
-  font-size: 1.5rem;
-  animation: typing 1.5s steps(20, end);
-  white-space: nowrap;
-  overflow: hidden;
-  border-right: 2px solid #d63384;
-  margin-bottom: 2rem;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: #666;
 }
 
-@keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
+.button-row {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.button-row button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background-color: #ffffff;
+  border: 2px solid #999;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.theme-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.theme-buttons button {
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  background-color: #fff;
+  cursor: pointer;
 }
 
 .image-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 1rem;
-  width: 100%;
-  max-width: 500px;
   margin-bottom: 2rem;
+  width: 100%;
+  max-width: 600px;
 }
 
 .image-option {
-  border: 3px solid transparent;
-  border-radius: 10px;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid transparent;
+  padding: 0.5rem;
+  border-radius: 8px;
   cursor: pointer;
-  text-align: center;
-  background-color: #f8f9fa;
-  transition: border-color 0.3s;
+  background-color: #f9f9f9;
+  transition: border 0.3s;
+}
+
+.image-option:hover,
+.image-option.selected {
+  border: 2px solid #ff69b4;
 }
 
 .image-option img {
   width: 100%;
-  height: 120px;
+  border-radius: 6px;
   object-fit: cover;
-  border-bottom: 1px solid #ccc;
 }
 
 .image-option span {
-  display: block;
-  padding: 0.5rem;
-  font-weight: 500;
-  color: #333;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #444;
 }
 
-.image-option.selected {
-  border-color: #ff69b4;
-  box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+.slot-row {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.slot-box {
+  width: 80px;
+  height: 80px;
+  border: 2px dashed #bbb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  background-color: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.slot-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .image-select-footer {
   display: flex;
-  gap: 1rem;
   justify-content: center;
+  gap: 1rem;
 }
 
 .image-select-footer button {
-  padding: 0.8rem 1.5rem;
+  padding: 0.6rem 1.2rem;
   font-size: 1rem;
-  font-weight: bold;
+  border: none;
   background-color: #ff69b4;
   color: white;
-  border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
 .image-select-footer button:hover {
