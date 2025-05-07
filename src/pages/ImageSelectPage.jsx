@@ -17,24 +17,25 @@ const imageThemes = {
 
 const ImageSelectPage = () => {
   const navigate = useNavigate();
-  const [showThemes, setShowThemes] = useState(false);
   const [selectedImages, setSelectedImages] = useState([null, null, null, null]);
   const [currentThemeImages, setCurrentThemeImages] = useState([]);
+  const [isThemeOpen, setIsThemeOpen] = useState(false);
 
   const handleImageFileClick = () => {
-    setShowThemes(true);
+    setIsThemeOpen(true);
   };
 
   const handleThemeClick = (theme) => {
     setCurrentThemeImages(imageThemes[theme] || []);
+    setIsThemeOpen(false); // 테마 클릭 후 테마 버튼 숨김
   };
 
   const handleImageSelect = (img) => {
     const index = selectedImages.findIndex((slot) => slot === null);
     if (index !== -1) {
-      const newSelected = [...selectedImages];
-      newSelected[index] = img;
-      setSelectedImages(newSelected);
+      const updated = [...selectedImages];
+      updated[index] = img;
+      setSelectedImages(updated);
     }
   };
 
@@ -45,10 +46,10 @@ const ImageSelectPage = () => {
 
       <div className="button-row">
         <button onClick={handleImageFileClick}>이미지파일</button>
-        <button>내파일선택</button>
+        <button onClick={() => alert('내파일선택은 아직 구현되지 않았어요.')}>내파일선택</button>
       </div>
 
-      {showThemes && (
+      {isThemeOpen && (
         <div className="theme-buttons">
           {Object.keys(imageThemes).map((theme) => (
             <button key={theme} onClick={() => handleThemeClick(theme)}>
@@ -57,6 +58,14 @@ const ImageSelectPage = () => {
           ))}
         </div>
       )}
+
+      <div className="slot-row">
+        {selectedImages.map((img, idx) => (
+          <div key={idx} className="slot-box">
+            {img ? <img src={img.src} alt={`img-${idx + 1}`} /> : `img-0${idx + 1}`}
+          </div>
+        ))}
+      </div>
 
       <div className="image-grid">
         {currentThemeImages.map((img, idx) => (
@@ -67,14 +76,6 @@ const ImageSelectPage = () => {
           >
             <img src={img.src} alt={img.label} />
             <span>{img.label}</span>
-          </div>
-        ))}
-      </div>
-
-      <div className="slot-row">
-        {selectedImages.map((img, idx) => (
-          <div key={idx} className="slot-box">
-            {img ? <img src={img.src} alt={`img-${idx + 1}`} /> : `img-0${idx + 1}`}
           </div>
         ))}
       </div>
