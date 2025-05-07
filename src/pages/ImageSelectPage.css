@@ -1,80 +1,87 @@
-.image-select-page {
-  padding: 2rem;
-  font-family: 'Pretendard', sans-serif;
+/* ImageSelectPage.css */
+
+.image-select-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 2rem;
+  background-color: #fffafc;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
-.typing-text {
-  font-size: 1.4rem;
-  text-align: center;
-  margin-bottom: 1rem;
-  white-space: pre-line;
+.image-select-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  animation: typing 1.5s steps(20, end);
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid #d63384;
+  margin-bottom: 0.5rem;
 }
 
-.slot-grid {
+.image-select-sub {
+  font-size: 1.2rem;
+  animation: typing 1.5s steps(20, end);
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid #d63384;
+  margin-bottom: 2rem;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+.image-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
+  width: 100%;
+  max-width: 500px;
   margin-bottom: 2rem;
 }
 
-.slot {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: 2px solid transparent;
+.image-option {
+  border: 3px solid transparent;
   border-radius: 10px;
-  padding: 0.5rem;
+  overflow: hidden;
   cursor: pointer;
-  transition: border 0.3s ease;
+  text-align: center;
+  background-color: #f8f9fa;
+  transition: border-color 0.3s;
 }
 
-.slot.selected {
-  border-color: #ff88cc;
-  background-color: #fff0f5;
+.image-option img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-bottom: 1px solid #ccc;
 }
 
-.slot-label {
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
-  color: #555;
+.image-option span {
+  display: block;
+  padding: 0.5rem;
+  font-weight: 500;
+  color: #333;
 }
 
-.selected-slots {
+.image-option.selected {
+  border-color: #ff69b4;
+  box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+}
+
+.image-select-footer {
   display: flex;
   gap: 1rem;
-  margin-bottom: 2rem;
 }
 
-.preview-slot {
-  width: 120px;
-  height: 80px;
-  background-color: #f0f0f0;
-  border: 1px dashed #aaa;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.empty-slot {
-  color: #bbb;
-  font-size: 0.8rem;
-}
-
-.button-row {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-}
-
-.button-row button {
-  padding: 0.6rem 1.2rem;
+.image-select-footer button {
+  padding: 0.8rem 1.5rem;
   font-size: 1rem;
-  background-color: #ff88cc;
+  font-weight: bold;
+  background-color: #ff69b4;
   color: white;
   border: none;
   border-radius: 10px;
@@ -82,6 +89,6 @@
   transition: background-color 0.3s ease;
 }
 
-.button-row button:hover {
-  background-color: #ff66aa;
+.image-select-footer button:hover {
+  background-color: #ff85c1;
 }
