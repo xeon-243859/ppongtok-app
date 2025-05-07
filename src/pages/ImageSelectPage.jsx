@@ -5,14 +5,48 @@ import './ImageSelectPage.css';
 const ImageSelectPage = () => {
   const navigate = useNavigate();
   const [selectedImages, setSelectedImages] = useState([null, null, null, null]);
+  const [showThemes, setShowThemes] = useState(false);
+
+  const themes = {
+    '따뜻한': [
+      { src: '/backgrounds/cosmos.jpg', label: '따뜻한1' },
+      { src: '/backgrounds/leaves.jpg', label: '따뜻한2' }
+    ],
+    '낭만적인': [
+      { src: '/backgrounds/road.jpg', label: '낭만적인1' }
+    ],
+    '화려한': [
+      { src: '/backgrounds/water.jpg', label: '화려한1' }
+    ],
+    '감성적인': [
+      { src: '/backgrounds/sky.jpg', label: '감성적인1' }
+    ]
+  };
 
   const handleLocalFileSelect = (event) => {
     const files = event.target.files;
     const newSelected = [...selectedImages];
 
-    for (let i = 0; i < files.length && i < 4; i++) {
+    for (let i = 0; i < files.length; i++) {
       const fileURL = URL.createObjectURL(files[i]);
-      newSelected[i] = { src: fileURL, label: files[i].name };
+      const emptyIndex = newSelected.findIndex(img => img === null);
+      if (emptyIndex !== -1) {
+        newSelected[emptyIndex] = { src: fileURL, label: files[i].name };
+      }
+    }
+
+    setSelectedImages(newSelected);
+  };
+
+  const handleThemeClick = (theme) => {
+    const themeImages = themes[theme];
+    const newSelected = [...selectedImages];
+
+    for (let i = 0; i < themeImages.length; i++) {
+      const emptyIndex = newSelected.findIndex(img => img === null);
+      if (emptyIndex !== -1) {
+        newSelected[emptyIndex] = themeImages[i];
+      }
     }
 
     setSelectedImages(newSelected);
@@ -21,9 +55,7 @@ const ImageSelectPage = () => {
   const fileInputRef = React.useRef(null);
 
   const handleImageFileClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
+    setShowThemes(true);
   };
 
   return (
@@ -41,8 +73,16 @@ const ImageSelectPage = () => {
           style={{ display: 'none' }}
           onChange={handleLocalFileSelect}
         />
-        <button onClick={handleImageFileClick}>내파일선택</button>
+        <button onClick={() => fileInputRef.current.click()}>내파일선택</button>
       </div>
+
+      {showThemes && (
+        <div className="theme-buttons">
+          {Object.keys(themes).map(theme => (
+            <button key={theme} onClick={() => handleThemeClick(theme)}>{theme}</button>
+          ))}
+        </div>
+      )}
 
       <div className="slot-row">
         {selectedImages.map((img, idx) => (
