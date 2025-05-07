@@ -21,7 +21,7 @@
 }
 
 .image-select-sub {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   animation: typing 1.5s steps(20, end);
   white-space: nowrap;
   overflow: hidden;
@@ -75,6 +75,7 @@
 .image-select-footer {
   display: flex;
   gap: 1rem;
+  justify-content: center;
 }
 
 .image-select-footer button {

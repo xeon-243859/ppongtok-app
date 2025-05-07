@@ -1,18 +1,37 @@
-// ImageSelectPage.jsx - 이미지 저장소 선택 화면
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// ImageSelectPage.jsx - 슬롯에 따라 이미지 테마 선택 화면
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./ImageSelectPage.css";
 
-const imageOptions = [
-  { id: 1, label: "따뜻한", src: "/backgrounds/cosmos.jpg" },
-  { id: 2, label: "낭만적인", src: "/backgrounds/leaves.jpg" },
-  { id: 3, label: "화려한", src: "/backgrounds/road.jpg" },
-  { id: 4, label: "감성적인", src: "/backgrounds/water.jpg" },
-];
+const imageThemes = {
+  "img-01": [
+    { id: 1, label: "따뜻한1", src: "/backgrounds/cosmos.jpg" },
+    { id: 2, label: "따뜻한2", src: "/backgrounds/leaves.jpg" },
+  ],
+  "img-02": [
+    { id: 3, label: "낭만적인1", src: "/backgrounds/road.jpg" },
+    { id: 4, label: "낭만적인2", src: "/backgrounds/water.jpg" },
+  ],
+  "img-03": [
+    { id: 5, label: "화려한1", src: "/backgrounds/cosmos.jpg" },
+    { id: 6, label: "화려한2", src: "/backgrounds/leaves.jpg" },
+  ],
+  "img-04": [
+    { id: 7, label: "감성적인1", src: "/backgrounds/road.jpg" },
+    { id: 8, label: "감성적인2", src: "/backgrounds/water.jpg" },
+  ],
+};
 
 const ImageSelectPage = () => {
   const [selectedImage, setSelectedImage] = useState(null);
+  const [images, setImages] = useState([]);
+  const location = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const slot = location.state?.slot || "img-01";
+    setImages(imageThemes[slot] || []);
+  }, [location.state]);
 
   const handleSelect = (src) => {
     setSelectedImage(src);
@@ -29,7 +48,7 @@ const ImageSelectPage = () => {
       <p className="image-select-sub">선택해주세요</p>
 
       <div className="image-grid">
-        {imageOptions.map((img) => (
+        {images.map((img) => (
           <div
             key={img.id}
             className={`image-option ${selectedImage === img.src ? "selected" : ""}`}
