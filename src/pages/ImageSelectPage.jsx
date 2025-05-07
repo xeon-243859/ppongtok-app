@@ -18,25 +18,35 @@ const imageThemes = {
 const ImageSelectPage = () => {
   const navigate = useNavigate();
   const [selectedImages, setSelectedImages] = useState([null, null, null, null]);
-  const [currentThemeImages, setCurrentThemeImages] = useState([]);
-  const [isThemeOpen, setIsThemeOpen] = useState(false);
+  const [showThemeOptions, setShowThemeOptions] = useState(false);
 
   const handleImageFileClick = () => {
-    setIsThemeOpen(true);
+    setShowThemeOptions(true);
   };
 
   const handleThemeClick = (theme) => {
-    setCurrentThemeImages(imageThemes[theme] || []);
-    setIsThemeOpen(false); // 테마 클릭 후 테마 버튼 숨김
+    const themeImages = imageThemes[theme] || [];
+    const index = selectedImages.findIndex((slot) => slot === null);
+    if (index !== -1 && themeImages.length > 0) {
+      const newSelected = [...selectedImages];
+      newSelected[index] = themeImages[0]; // 대표 이미지 하나만 선택
+      setSelectedImages(newSelected);
+    }
   };
 
-  const handleImageSelect = (img) => {
-    const index = selectedImages.findIndex((slot) => slot === null);
-    if (index !== -1) {
-      const updated = [...selectedImages];
-      updated[index] = img;
-      setSelectedImages(updated);
-    }
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const index = selectedImages.findIndex((slot) => slot === null);
+      if (index !== -1) {
+        const newSelected = [...selectedImages];
+        newSelected[index] = { src: reader.result, label: '사용자 이미지' };
+        setSelectedImages(newSelected);
+      }
+    };
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -46,10 +56,13 @@ const ImageSelectPage = () => {
 
       <div className="button-row">
         <button onClick={handleImageFileClick}>이미지파일</button>
-        <button onClick={() => alert('내파일선택은 아직 구현되지 않았어요.')}>내파일선택</button>
+        <label className="custom-file-upload">
+          내파일선택
+          <input type="file" accept="image/*" onChange={handleFileUpload} />
+        </label>
       </div>
 
-      {isThemeOpen && (
+      {showThemeOptions && (
         <div className="theme-buttons">
           {Object.keys(imageThemes).map((theme) => (
             <button key={theme} onClick={() => handleThemeClick(theme)}>
@@ -63,19 +76,6 @@ const ImageSelectPage = () => {
         {selectedImages.map((img, idx) => (
           <div key={idx} className="slot-box">
             {img ? <img src={img.src} alt={`img-${idx + 1}`} /> : `img-0${idx + 1}`}
-          </div>
-        ))}
-      </div>
-
-      <div className="image-grid">
-        {currentThemeImages.map((img, idx) => (
-          <div
-            key={idx}
-            className="image-option"
-            onClick={() => handleImageSelect(img)}
-          >
-            <img src={img.src} alt={img.label} />
-            <span>{img.label}</span>
           </div>
         ))}
       </div>
