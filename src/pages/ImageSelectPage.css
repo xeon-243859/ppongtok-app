@@ -1,51 +1,66 @@
 .image-select-container {
   background-color: #ffeef3;
-  padding: 20px;
+  min-height: 100vh;
+  padding: 40px 20px;
   text-align: center;
-  font-family: 'Pretendard', sans-serif;
+  font-family: 'Arial', sans-serif;
 }
 
 .image-select-title {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: bold;
   margin-bottom: 10px;
+  color: #333;
 }
 
 .image-select-sub {
   font-size: 18px;
   margin-bottom: 20px;
+  color: #666;
 }
 
 .button-row {
   display: flex;
   justify-content: center;
   gap: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
-.theme-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 15px;
+.button-row button {
+  padding: 10px 20px;
+  border: 1px solid #999;
+  border-radius: 8px;
+  background-color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.button-row button:hover {
+  background-color: #ffe0eb;
 }
 
 .slot-row {
   display: flex;
   justify-content: center;
-  gap: 15px;
-  margin: 20px 0;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
 }
 
 .slot-box {
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   border: 2px dashed #ccc;
+  border-radius: 8px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  background-color: white;
+  justify-content: center;
   font-size: 14px;
+  color: #555;
+  background-color: #fff;
+  overflow: hidden;
 }
 
 .slot-box img {
@@ -62,22 +77,15 @@
 
 .image-select-footer button {
   padding: 10px 20px;
-  background-color: #ff69b4;
-  color: white;
+  background-color: #ff66a3;
   border: none;
-  border-radius: 10px;
-  font-size: 14px;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
   cursor: pointer;
+  transition: all 0.2s;
 }
 
-.custom-file-upload {
-  padding: 6px 12px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  cursor: pointer;
-  border-radius: 6px;
-}
-
-.custom-file-upload input {
-  display: none;
+.image-select-footer button:hover {
+  background-color: #ff3380;
 }
