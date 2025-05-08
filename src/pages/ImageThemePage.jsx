@@ -5,22 +5,35 @@ import "./ImageThemePage.css";
 const ImageThemePage = () => {
   const navigate = useNavigate();
 
-  // ✅ 상대경로를 절대경로로 변환하여 localStorage에 저장
+  // ✅ 이미지 클릭 → base64로 변환해서 localStorage에 저장
   const handleSelect = (relativePath) => {
     const slot = localStorage.getItem("selected-slot");
-
     if (!slot) {
-      alert("슬롯이 설정되지 않았습니다. '이미지파일' 버튼을 먼저 눌러주세요.");
+      alert("슬롯이 설정되지 않았습니다.");
       return;
     }
 
-    const absolutePath = `${window.location.origin}${relativePath}`;
-    console.log("📌 저장할 슬롯:", slot);
-    console.log("✅ 저장할 이미지 절대경로:", absolutePath);
+    const image = new Image();
+    image.crossOrigin = "anonymous"; // 크로스 도메인 허용
+    image.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = image.width;
+      canvas.height = image.height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(image, 0, 0);
+      const base64 = canvas.toDataURL("image/jpeg");
 
-    localStorage.setItem(slot, absolutePath);
-    localStorage.removeItem("selected-slot");
-    navigate("/image/select");
+      localStorage.setItem(slot, base64);
+      localStorage.removeItem("selected-slot");
+      console.log(`✅ ${slot}에 이미지(base64) 저장 완료`);
+      navigate("/image/select");
+    };
+
+    image.onerror = () => {
+      alert("이미지를 불러오지 못했습니다.");
+    };
+
+    image.src = `${window.location.origin}${relativePath}`;
   };
 
   return (
