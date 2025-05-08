@@ -5,7 +5,6 @@ import "./ImageSelectPage.css";
 const ImageSelectPage = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
-
   const [images, setImages] = useState(["", "", "", ""]);
 
   const [displayLines, setDisplayLines] = useState(["", ""]);
@@ -34,7 +33,7 @@ const ImageSelectPage = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // 페이지 로드 시 localStorage에서 이미지 불러오기
+  // 페이지 진입 시 localStorage에서 이미지 불러오기
   useEffect(() => {
     const loaded = [1, 2, 3, 4].map(i => localStorage.getItem(`img-${i}`) || "");
     setImages(loaded);
@@ -48,28 +47,34 @@ const ImageSelectPage = () => {
     localStorage.removeItem(`img-${index + 1}`);
   };
 
-  // 이미지 저장 (비어 있는 슬롯에 자동 저장)
-  // ✅ 이 부분을 기존 파일에서 교체!
-const saveImage = (dataUrl) => {
-  const allKeys = ["img-1", "img-2", "img-3", "img-4"];
-  const emptySlot = allKeys.find(key => !localStorage.getItem(key));
+  // ✅ 빈 슬롯을 정확히 img-1부터 찾아서 저장하는 핵심 함수
+  const saveImage = (dataUrl) => {
+    const updated = [...images];
+    let saved = false;
 
-  if (!emptySlot) return; // 다 찼을 경우
+    for (let i = 0; i < 4; i++) {
+      const key = `img-${i + 1}`;
+      if (!updated[i]) {
+        updated[i] = dataUrl;
+        setImages(updated);
+        localStorage.setItem(key, dataUrl);
+        saved = true;
+        break;
+      }
+    }
 
-  localStorage.setItem(emptySlot, dataUrl);
+    if (!saved) {
+      alert("슬롯이 모두 가득 찼어요!");
+    }
+  };
 
-  // 상태 동기화
-  const index = parseInt(emptySlot.split("-")[1]) - 1;
-  const updated = [...images];
-  updated[index] = dataUrl;
-  setImages(updated);
-};
-
-
-  // 이미지파일 선택 버튼 → 저장소 이동
+  // 이미지파일 선택 → 이미지테마 저장소로 이동
   const handleImageFile = () => {
     const index = images.findIndex(img => img === "");
-    if (index === -1) return;
+    if (index === -1) {
+      alert("모든 슬롯이 가득 찼어요!");
+      return;
+    }
     localStorage.setItem("selected-slot", `img-${index + 1}`);
     navigate("/image/theme");
   };
