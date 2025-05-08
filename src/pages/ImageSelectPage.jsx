@@ -7,13 +7,10 @@ const ImageSelectPage = () => {
   const fileInputRef = useRef(null);
   const [images, setImages] = useState(["", "", "", ""]);
 
-  // 진입 시 슬롯 초기화
+  // ✅ localStorage에서 이미지 상태 복구
   useEffect(() => {
-    for (let i = 1; i <= 4; i++) {
-      localStorage.removeItem(`img-${i}`);
-    }
-    localStorage.removeItem("selected-slot");
-    setImages(["", "", "", ""]);
+    const loaded = [1, 2, 3, 4].map(i => localStorage.getItem(`img-${i}`) || "");
+    setImages(loaded);
   }, []);
 
   const handleDelete = (index) => {
@@ -21,11 +18,9 @@ const ImageSelectPage = () => {
     updated[index] = "";
     setImages(updated);
     localStorage.removeItem(`img-${index + 1}`);
-    if (localStorage.getItem("selected-slot") === `img-${index + 1}`) {
-      localStorage.removeItem("selected-slot");
-    }
   };
 
+  // ✅ base64 이미지 저장 (내파일선택)
   const saveImage = (dataUrl) => {
     const updated = [...images];
     for (let i = 0; i < 4; i++) {
@@ -36,10 +31,10 @@ const ImageSelectPage = () => {
         return;
       }
     }
-    alert("슬롯이 가득 찼습니다!");
+    alert("모든 슬롯이 가득 찼어요!");
   };
 
-  // ✅ 이미지파일 클릭 → 비어 있는 슬롯 찾아서 selected-slot 설정 + 저장소 이동
+  // ✅ 이미지파일 클릭 → 비어있는 슬롯 selected-slot 설정 후 저장소 이동
   const handleImageFile = () => {
     const index = images.findIndex(img => img === "");
     if (index === -1) {
@@ -48,7 +43,6 @@ const ImageSelectPage = () => {
     }
     const slot = `img-${index + 1}`;
     localStorage.setItem("selected-slot", slot);
-    console.log("👉 저장할 슬롯:", slot);
     navigate("/image/theme");
   };
 
