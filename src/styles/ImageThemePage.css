@@ -1,0 +1,62 @@
+.image-theme-container {
+    padding: 20px;
+    background-color: #ffeef3;
+    min-height: 100vh;
+    text-align: center;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  
+  .image-theme-container h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 24px;
+  }
+  
+  .theme-group {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    align-items: center;
+  }
+  
+  .theme-group h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  
+  .theme-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .theme-item {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 8px;
+    background: #fff;
+    width: 150px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .theme-item:hover {
+    border-color: #f06292;
+    box-shadow: 0 0 10px rgba(240, 98, 146, 0.2);
+  }
+  
+  .theme-item img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  
+  .theme-item div {
+    margin-top: 6px;
+    font-size: 14px;
+    color: #555;
+  }
+  
