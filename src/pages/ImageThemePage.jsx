@@ -1,15 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ImageThemePage.css";
 
 const ImageThemePage = () => {
   const navigate = useNavigate();
-  const [slotIndex, setSlotIndex] = useState(1); // img-1부터 시작
+  const [slotIndex, setSlotIndex] = useState(1);
+
+  // 🔹 페이지 진입 시 localStorage에 저장된 인덱스 불러오기
+  useEffect(() => {
+    const savedIndex = parseInt(localStorage.getItem("slot-index")) || 1;
+    setSlotIndex(savedIndex);
+  }, []);
 
   const handleSelect = (imagePath) => {
     const slot = `img-${slotIndex}`;
     localStorage.setItem(slot, imagePath);
-    setSlotIndex((prev) => (prev % 4) + 1); // 1→2→3→4→1 순환
+    const nextIndex = (slotIndex % 4) + 1; // 1→2→3→4→1 순환
+    localStorage.setItem("slot-index", nextIndex); // 🔹 인덱스를 저장!
+    setSlotIndex(nextIndex);
     navigate("/image/select");
   };
 
@@ -28,8 +36,6 @@ const ImageThemePage = () => {
           <p>사랑2</p>
         </div>
       </div>
-
-      {/* 필요에 따라 다른 테마도 추가 */}
     </div>
   );
 };
