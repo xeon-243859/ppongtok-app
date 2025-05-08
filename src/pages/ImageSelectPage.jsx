@@ -6,16 +6,13 @@ const ImageSelectPage = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
 
-  const [img1, setImg1] = useState("");
-  const [img2, setImg2] = useState("");
-  const [img3, setImg3] = useState("");
-  const [img4, setImg4] = useState("");
-  const [slotIndex, setSlotIndex] = useState(1);
+  const [images, setImages] = useState(["", "", "", ""]);
 
   const [displayLines, setDisplayLines] = useState(["", ""]);
   const fullLine1 = "배경으로 사용할 이미지 4개를";
   const fullLine2 = "선택해주세요";
 
+  // 타자 효과
   useEffect(() => {
     let index = 0;
     let current1 = "", current2 = "";
@@ -37,22 +34,40 @@ const ImageSelectPage = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // 페이지 로드 시 localStorage에서 이미지 불러오기
   useEffect(() => {
-    setImg1(localStorage.getItem("img-1") || "");
-    setImg2(localStorage.getItem("img-2") || "");
-    setImg3(localStorage.getItem("img-3") || "");
-    setImg4(localStorage.getItem("img-4") || "");
-    setSlotIndex(parseInt(localStorage.getItem("slot-index")) || 1);
+    const loaded = [1, 2, 3, 4].map(i => localStorage.getItem(`img-${i}`) || "");
+    setImages(loaded);
   }, []);
 
+  // 이미지 삭제
+  const handleDelete = (index) => {
+    const updated = [...images];
+    updated[index] = "";
+    setImages(updated);
+    localStorage.removeItem(`img-${index + 1}`);
+  };
+
+  // 이미지 저장 (비어 있는 슬롯에 자동 저장)
+  const saveImage = (dataUrl) => {
+    const index = images.findIndex(img => img === "");
+    if (index === -1) return; // 슬롯 다 찼으면 저장 안 함
+
+    const updated = [...images];
+    updated[index] = dataUrl;
+    setImages(updated);
+    localStorage.setItem(`img-${index + 1}`, dataUrl);
+  };
+
+  // 이미지파일 선택 버튼 → 저장소 이동
   const handleImageFile = () => {
-    const nextSlot = `img-${slotIndex}`;
-    localStorage.setItem("selected-slot", nextSlot);
-    localStorage.setItem("slot-index", (slotIndex % 4) + 1);
-    setSlotIndex((slotIndex % 4) + 1);
+    const index = images.findIndex(img => img === "");
+    if (index === -1) return;
+    localStorage.setItem("selected-slot", `img-${index + 1}`);
     navigate("/image/theme");
   };
 
+  // 내파일선택 (갤러리)
   const handleLocalFile = () => {
     fileInputRef.current.click();
   };
@@ -63,30 +78,10 @@ const ImageSelectPage = () => {
 
     const reader = new FileReader();
     reader.onloadend = () => {
-      const nextSlot = `img-${slotIndex}`;
-      localStorage.setItem(nextSlot, reader.result);
-
-      const updateMap = {
-        "img-1": setImg1,
-        "img-2": setImg2,
-        "img-3": setImg3,
-        "img-4": setImg4,
-      };
-      updateMap[nextSlot](reader.result);
-
-      const next = (slotIndex % 4) + 1;
-      setSlotIndex(next);
-      localStorage.setItem("slot-index", next);
+      saveImage(reader.result);
     };
     reader.readAsDataURL(file);
   };
-
-  const slots = [
-    { key: "img-1", value: img1, set: setImg1 },
-    { key: "img-2", value: img2, set: setImg2 },
-    { key: "img-3", value: img3, set: setImg3 },
-    { key: "img-4", value: img4, set: setImg4 },
-  ];
 
   return (
     <div className="image-select-container">
@@ -109,20 +104,17 @@ const ImageSelectPage = () => {
       </div>
 
       <div className="image-slots">
-        {slots.map(({ key, value, set }) => (
-          <div className="image-slot" key={key}>
-            {value ? (
+        {images.map((src, i) => (
+          <div className="image-slot" key={i}>
+            {src ? (
               <>
-                <img src={value} alt={key} />
-                <button className="delete-button" onClick={() => {
-                  localStorage.removeItem(key);
-                  set("");
-                }}>❌</button>
+                <img src={src} alt={`img-${i + 1}`} />
+                <button className="delete-button" onClick={() => handleDelete(i)}>❌</button>
               </>
             ) : (
-              <p>{key}</p>
+              <p>{`img-${i + 1}`}</p>
             )}
-            <p>{key}</p>
+            <p>{`img-${i + 1}`}</p>
           </div>
         ))}
       </div>
