@@ -16,9 +16,8 @@ const VideoSelectPage = () => {
     const stored = localStorage.getItem("selected-video") || "";
     setSelectedVideo(stored);
 
-    let i = 0;
-    let j = 0;
-    const typingInterval = setInterval(() => {
+    let i = 0, j = 0;
+    const interval = setInterval(() => {
       setTyping((prev) => {
         const updated = [...prev];
         updated[i] += lines[i][j];
@@ -29,21 +28,26 @@ const VideoSelectPage = () => {
         i++;
         j = 0;
       }
-      if (i >= lines.length) clearInterval(typingInterval);
-    }, 100);
-    return () => clearInterval(typingInterval);
+      if (i >= lines.length) clearInterval(interval);
+    }, 80);
+    return () => clearInterval(interval);
   }, []);
 
   const handleFileSelect = () => {
     fileInputRef.current.click();
   };
 
-  const handleChange = (e) => {
+  const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    const url = URL.createObjectURL(file);
-    setSelectedVideo(url);
-    localStorage.setItem("selected-video", url);
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64 = reader.result;
+      setSelectedVideo(base64);
+      localStorage.setItem("selected-video", base64);
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleStorageVideo = () => {
@@ -62,14 +66,21 @@ const VideoSelectPage = () => {
           type="file"
           accept="video/*"
           ref={fileInputRef}
-          onChange={handleChange}
+          onChange={handleFileChange}
           style={{ display: "none" }}
         />
       </div>
 
       <div className="video-slot">
         {selectedVideo ? (
-          <video src={selectedVideo} controls autoPlay loop muted />
+          <video
+            src={selectedVideo}
+            controls
+            autoPlay
+            loop
+            muted
+            style={{ width: "100%", borderRadius: "10px" }}
+          />
         ) : (
           <p>moving-01</p>
         )}
