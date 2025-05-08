@@ -1,4 +1,3 @@
-// src/pages/ImageSelectPage.jsx
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ImageSelectPage.css";
@@ -7,37 +6,55 @@ const ImageSelectPage = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
 
-  const [img1, setImg1] = useState(localStorage.getItem("img-1") || "");
-  const [img2, setImg2] = useState(localStorage.getItem("img-2") || "");
-  const [img3, setImg3] = useState(localStorage.getItem("img-3") || "");
-  const [img4, setImg4] = useState(localStorage.getItem("img-4") || "");
+  const [img1, setImg1] = useState("");
+  const [img2, setImg2] = useState("");
+  const [img3, setImg3] = useState("");
+  const [img4, setImg4] = useState("");
 
-  const [displayText, setDisplayText] = useState("");
-  const fullText = "배경으로 사용할 이미지 4개를 선택해주세요";
+  const [displayLines, setDisplayLines] = useState(["", ""]);
+  const fullLine1 = "배경으로 사용할 이미지 4개를";
+  const fullLine2 = "선택해주세요";
 
-  // 타자 효과
   useEffect(() => {
     let index = 0;
+    let current1 = "";
+    let current2 = "";
     const interval = setInterval(() => {
-      setDisplayText((prev) => prev + fullText[index]);
+      if (index < fullLine1.length) {
+        current1 += fullLine1[index];
+        setDisplayLines([current1, ""]);
+      } else {
+        const sub = index - fullLine1.length;
+        if (sub < fullLine2.length) {
+          current2 += fullLine2[sub];
+          setDisplayLines([current1, current2]);
+        } else {
+          clearInterval(interval);
+        }
+      }
       index++;
-      if (index === fullText.length) clearInterval(interval);
     }, 50);
     return () => clearInterval(interval);
   }, []);
 
-  // 자동 순번 할당
+  useEffect(() => {
+    setImg1(localStorage.getItem("img-1") || "");
+    setImg2(localStorage.getItem("img-2") || "");
+    setImg3(localStorage.getItem("img-3") || "");
+    setImg4(localStorage.getItem("img-4") || "");
+  }, []);
+
   const getNextEmptySlot = () => {
     if (!img1) return "img-1";
     if (!img2) return "img-2";
     if (!img3) return "img-3";
     if (!img4) return "img-4";
-    return "img-1"; // 다시 덮어쓰기
+    return "img-1";
   };
 
   const handleImageFile = () => {
-    const nextSlot = getNextEmptySlot();
-    localStorage.setItem("selected-slot", nextSlot);
+    const next = getNextEmptySlot();
+    localStorage.setItem("selected-slot", next);
     navigate("/image/theme");
   };
 
@@ -64,7 +81,11 @@ const ImageSelectPage = () => {
 
   return (
     <div className="image-select-container">
-      <h2>{displayText}</h2>
+      <h2>
+        {displayLines.map((line, i) => (
+          <div key={i}>{line}</div>
+        ))}
+      </h2>
 
       <div className="file-button-group">
         <button onClick={handleImageFile}>이미지파일</button>
@@ -79,22 +100,12 @@ const ImageSelectPage = () => {
       </div>
 
       <div className="image-slots">
-        <div className="image-slot">
-          {img1 ? <img src={img1} alt="img-1" /> : <p>img-1</p>}
-          <p>img-1</p>
-        </div>
-        <div className="image-slot">
-          {img2 ? <img src={img2} alt="img-2" /> : <p>img-2</p>}
-          <p>img-2</p>
-        </div>
-        <div className="image-slot">
-          {img3 ? <img src={img3} alt="img-3" /> : <p>img-3</p>}
-          <p>img-3</p>
-        </div>
-        <div className="image-slot">
-          {img4 ? <img src={img4} alt="img-4" /> : <p>img-4</p>}
-          <p>img-4</p>
-        </div>
+        {[img1, img2, img3, img4].map((src, i) => (
+          <div className="image-slot" key={i}>
+            {src ? <img src={src} alt={`img-${i + 1}`} /> : <p>{`img-${i + 1}`}</p>}
+            <p>{`img-${i + 1}`}</p>
+          </div>
+        ))}
       </div>
 
       <div className="button-group">
