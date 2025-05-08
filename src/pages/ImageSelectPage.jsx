@@ -49,15 +49,22 @@ const ImageSelectPage = () => {
   };
 
   // 이미지 저장 (비어 있는 슬롯에 자동 저장)
-  const saveImage = (dataUrl) => {
-    const index = images.findIndex(img => img === "");
-    if (index === -1) return; // 슬롯 다 찼으면 저장 안 함
+  // ✅ 이 부분을 기존 파일에서 교체!
+const saveImage = (dataUrl) => {
+  const allKeys = ["img-1", "img-2", "img-3", "img-4"];
+  const emptySlot = allKeys.find(key => !localStorage.getItem(key));
 
-    const updated = [...images];
-    updated[index] = dataUrl;
-    setImages(updated);
-    localStorage.setItem(`img-${index + 1}`, dataUrl);
-  };
+  if (!emptySlot) return; // 다 찼을 경우
+
+  localStorage.setItem(emptySlot, dataUrl);
+
+  // 상태 동기화
+  const index = parseInt(emptySlot.split("-")[1]) - 1;
+  const updated = [...images];
+  updated[index] = dataUrl;
+  setImages(updated);
+};
+
 
   // 이미지파일 선택 버튼 → 저장소 이동
   const handleImageFile = () => {
