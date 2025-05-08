@@ -1,11 +1,46 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import "./VideoThemePage.css";
+
+const videos = [
+  {
+    src: "/videos/flower.mp4",
+    label: "따뜻한",
+  },
+  {
+    src: "/videos/river.mp4",
+    label: "낭만적인",
+  },
+  {
+    src: "/videos/sky.mp4",
+    label: "감성적인",
+  },
+  {
+    src: "/videos/sunset.mp4",
+    label: "화려한",
+  },
+];
 
 const VideoThemePage = () => {
+  const navigate = useNavigate();
+
+  const handleSelect = (videoSrc) => {
+    localStorage.setItem("selected-video", videoSrc);
+    navigate("/video/select");
+  };
+
   return (
-    <div style={{ textAlign: "center", padding: "40px" }}>
+    <div className="video-theme-container">
       <h2>동영상 테마 저장소</h2>
-      <p>여기에서 따뜻한, 낭만적인, 감성적인 영상들을 선택할 수 있어요.</p>
-      {/* 이후 여기에 썸네일 + 클릭 이벤트 연결하면 됨 */}
+      <p>여기에서 따뜻한, 낭만적인, 감성적인, 화려한 영상을 선택할 수 있어요.</p>
+      <div className="video-grid">
+        {videos.map((video, idx) => (
+          <div key={idx} className="video-item" onClick={() => handleSelect(video.src)}>
+            <video src={video.src} muted loop autoPlay />
+            <span>{video.label}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
