@@ -15,12 +15,27 @@
   color: #333;
 }
 
+.file-button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.file-button-group button {
+  padding: 8px 16px;
+  border: 1px solid #aaa;
+  background-color: white;
+  border-radius: 6px;
+  cursor: not-allowed;
+}
+
 .image-slots {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 16px;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .image-slot {
