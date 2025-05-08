@@ -10,13 +10,12 @@ const ImageSelectPage = () => {
   const [img2, setImg2] = useState("");
   const [img3, setImg3] = useState("");
   const [img4, setImg4] = useState("");
-  const [slotIndex, setSlotIndex] = useState(1); // img-1부터 시작
+  const [slotIndex, setSlotIndex] = useState(1);
 
   const [displayLines, setDisplayLines] = useState(["", ""]);
   const fullLine1 = "배경으로 사용할 이미지 4개를";
   const fullLine2 = "선택해주세요";
 
-  // 타자 효과
   useEffect(() => {
     let index = 0;
     let current1 = "", current2 = "";
@@ -38,23 +37,22 @@ const ImageSelectPage = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // 이미지 불러오기
   useEffect(() => {
     setImg1(localStorage.getItem("img-1") || "");
     setImg2(localStorage.getItem("img-2") || "");
     setImg3(localStorage.getItem("img-3") || "");
     setImg4(localStorage.getItem("img-4") || "");
+    setSlotIndex(parseInt(localStorage.getItem("slot-index")) || 1);
   }, []);
 
-  // ✅ 이미지파일 버튼 클릭 시 자동 순번 저장 후 이동
   const handleImageFile = () => {
     const nextSlot = `img-${slotIndex}`;
     localStorage.setItem("selected-slot", nextSlot);
-    setSlotIndex((prev) => (prev % 4) + 1);
-    navigate("/image/theme"); // 꼭 이 위치에 있어야 작동함!
+    localStorage.setItem("slot-index", (slotIndex % 4) + 1);
+    setSlotIndex((slotIndex % 4) + 1);
+    navigate("/image/theme");
   };
 
-  // ✅ 내파일선택
   const handleLocalFile = () => {
     fileInputRef.current.click();
   };
@@ -73,7 +71,9 @@ const ImageSelectPage = () => {
       if (nextSlot === "img-3") setImg3(reader.result);
       if (nextSlot === "img-4") setImg4(reader.result);
 
-      setSlotIndex((prev) => (prev % 4) + 1);
+      const next = (slotIndex % 4) + 1;
+      setSlotIndex(next);
+      localStorage.setItem("slot-index", next);
     };
     reader.readAsDataURL(file);
   };
@@ -99,12 +99,29 @@ const ImageSelectPage = () => {
       </div>
 
       <div className="image-slots">
-        {[img1, img2, img3, img4].map((src, i) => (
-          <div className="image-slot" key={i}>
-            {src ? <img src={src} alt={`img-${i + 1}`} /> : <p>{`img-${i + 1}`}</p>}
-            <p>{`img-${i + 1}`}</p>
-          </div>
-        ))}
+        {[img1, img2, img3, img4].map((src, i) => {
+          const slotKey = `img-${i + 1}`;
+          const setSlot = [setImg1, setImg2, setImg3, setImg4][i];
+
+          const handleDelete = () => {
+            localStorage.removeItem(slotKey);
+            setSlot("");
+          };
+
+          return (
+            <div className="image-slot" key={i}>
+              {src ? (
+                <>
+                  <img src={src} alt={slotKey} />
+                  <button className="delete-button" onClick={handleDelete}>❌</button>
+                </>
+              ) : (
+                <p>{slotKey}</p>
+              )}
+              <p>{slotKey}</p>
+            </div>
+          );
+        })}
       </div>
 
       <div className="button-group">

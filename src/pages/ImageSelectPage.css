@@ -1,33 +1,22 @@
-/* src/pages/ImageSelectPage.css */
-
 .image-select-container {
   background-color: #ffeef3;
-  padding: 40px 20px;
   min-height: 100vh;
+  padding: 30px;
   text-align: center;
   font-family: 'Pretendard', sans-serif;
 }
 
-.image-select-container h2 {
-  font-size: 20px;
-  line-height: 1.5;
-  margin-bottom: 20px;
-  color: #333;
-}
-
 .file-button-group {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
   margin-bottom: 20px;
 }
 
 .file-button-group button {
+  margin: 0 10px;
   padding: 8px 16px;
-  border: 1px solid #aaa;
-  background-color: white;
+  font-size: 14px;
+  cursor: pointer;
   border-radius: 6px;
-  cursor: not-allowed;
+  border: 1px solid #ccc;
 }
 
 .image-slots {
@@ -35,16 +24,16 @@
   justify-content: center;
   flex-wrap: wrap;
   gap: 16px;
-  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
 .image-slot {
-  width: 100px;
-  height: 120px;
+  width: 120px;
+  height: 140px;
   border: 2px dashed #ccc;
-  border-radius: 10px;
-  background-color: white;
-  overflow: hidden;
+  border-radius: 8px;
+  padding: 6px;
+  background-color: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -55,16 +44,25 @@
   width: 100%;
   height: 80px;
   object-fit: cover;
+  border-radius: 6px;
 }
 
 .image-slot p {
+  margin: 4px 0 2px;
+  font-size: 12px;
+  color: #333;
+}
+
+.delete-button {
   margin-top: 4px;
-  font-size: 13px;
-  color: #666;
+  background: none;
+  border: none;
+  color: red;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .button-group {
-  margin-top: 24px;
   display: flex;
   justify-content: center;
   gap: 20px;
@@ -72,15 +70,10 @@
 
 .button-group button {
   padding: 10px 20px;
-  font-size: 14px;
-  background-color: #ff5c8a;
+  background-color: #ff9ecf;
   color: white;
+  font-size: 14px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.button-group button:hover {
-  background-color: #e24e7d;
 }
