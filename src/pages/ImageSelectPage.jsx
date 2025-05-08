@@ -33,10 +33,19 @@ const ImageSelectPage = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // 페이지 진입 시 localStorage에서 이미지 불러오기
+  // 페이지 진입 시 localStorage → 상태 동기화
   useEffect(() => {
     const loaded = [1, 2, 3, 4].map(i => localStorage.getItem(`img-${i}`) || "");
     setImages(loaded);
+
+    // selected-slot 정리
+    const selected = localStorage.getItem("selected-slot");
+    if (selected) {
+      const index = parseInt(selected.split("-")[1]) - 1;
+      if (!loaded[index]) {
+        localStorage.removeItem("selected-slot");
+      }
+    }
   }, []);
 
   // 이미지 삭제
@@ -45,9 +54,14 @@ const ImageSelectPage = () => {
     updated[index] = "";
     setImages(updated);
     localStorage.removeItem(`img-${index + 1}`);
+
+    // 선택된 슬롯이 이 슬롯이었다면 초기화
+    if (localStorage.getItem("selected-slot") === `img-${index + 1}`) {
+      localStorage.removeItem("selected-slot");
+    }
   };
 
-  // ✅ 가장 먼저 비어 있는 슬롯에 저장 (images 상태 기준)
+  // ✅ 가장 먼저 비어 있는 슬롯을 찾아 정확히 저장
   const saveImage = (dataUrl) => {
     const updated = [...images];
 
@@ -63,7 +77,7 @@ const ImageSelectPage = () => {
     alert("슬롯이 모두 가득 찼어요!");
   };
 
-  // 이미지파일 선택 → 이미지테마 저장소로 이동
+  // 이미지파일 선택 → 이미지 테마 저장소로 이동
   const handleImageFile = () => {
     const index = images.findIndex(img => img === "");
     if (index === -1) {
@@ -74,7 +88,7 @@ const ImageSelectPage = () => {
     navigate("/image/theme");
   };
 
-  // 내파일선택 (갤러리)
+  // 내 파일 선택
   const handleLocalFile = () => {
     fileInputRef.current.click();
   };
