@@ -16,20 +16,27 @@ const VideoSelectPage = () => {
     const stored = localStorage.getItem("selected-video") || "";
     setSelectedVideo(stored);
 
-    let i = 0, j = 0;
+    let i = 0;
+    let j = 0;
+
     const interval = setInterval(() => {
       setTyping((prev) => {
+        if (i >= lines.length) return prev; // ✅ 안전장치
         const updated = [...prev];
+        if (!updated[i]) updated[i] = "";
         updated[i] += lines[i][j];
         return updated;
       });
+
       j++;
-      if (j >= lines[i].length) {
+      if (i < lines.length && j >= lines[i].length) {
         i++;
         j = 0;
       }
+
       if (i >= lines.length) clearInterval(interval);
     }, 80);
+
     return () => clearInterval(interval);
   }, []);
 
