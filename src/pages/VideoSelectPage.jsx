@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./VideoSelectPage.css";
+import VideoSelectPage from "./pages/VideoSelectPage";
 
 const VideoSelectPage = () => {
   const [selectedVideo, setSelectedVideo] = useState("");

@@ -19,6 +19,8 @@ function App() {
         <Route path="/image/theme" element={<ImageThemePage />} /> {/* ✅ 추가 */}
         <Route path="/music/select" element={<MusicSelectPage />} />
         <Route path="/love/preview" element={<LovePreviewPage />} />
+        <Route path="/video/select" element={<VideoSelectPage />} />
+
       </Routes>
     </Router>
   );
