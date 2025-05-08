@@ -8,20 +8,18 @@ const VideoSelectPage = () => {
   const fileInputRef = useRef(null);
   const [typing, setTyping] = useState(["", ""]);
   const lines = [
-    "배경으로 사용할 동영상파일 1개를",
-    "선택해주세요",
+    "배경으로 사용할 영상파일",
+    "1개를 선택해 주세요",
   ];
 
   useEffect(() => {
     const stored = localStorage.getItem("selected-video") || "";
     setSelectedVideo(stored);
 
-    let i = 0;
-    let j = 0;
-
+    let i = 0, j = 0;
     const interval = setInterval(() => {
       setTyping((prev) => {
-        if (i >= lines.length) return prev; // ✅ 안전장치
+        if (i >= lines.length) return prev;
         const updated = [...prev];
         if (!updated[i]) updated[i] = "";
         updated[i] += lines[i][j];
@@ -80,14 +78,33 @@ const VideoSelectPage = () => {
 
       <div className="video-slot">
         {selectedVideo ? (
-          <video
-            src={selectedVideo}
-            controls
-            autoPlay
-            loop
-            muted
-            style={{ width: "100%", borderRadius: "10px" }}
-          />
+          <>
+            <video
+              src={selectedVideo}
+              controls
+              autoPlay
+              loop
+              muted
+              style={{ width: "100%", borderRadius: "10px" }}
+            />
+            <button
+              style={{
+                marginTop: "10px",
+                padding: "6px 12px",
+                background: "#ff6b6b",
+                color: "white",
+                border: "none",
+                borderRadius: "8px",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                localStorage.removeItem("selected-video");
+                setSelectedVideo("");
+              }}
+            >
+              삭제하기
+            </button>
+          </>
         ) : (
           <p>moving-01</p>
         )}
