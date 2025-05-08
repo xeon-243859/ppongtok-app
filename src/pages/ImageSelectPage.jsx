@@ -7,37 +7,13 @@ const ImageSelectPage = () => {
   const fileInputRef = useRef(null);
   const [images, setImages] = useState(["", "", "", ""]);
 
-  const [displayLines, setDisplayLines] = useState(["", ""]);
-  const fullLine1 = "배경으로 사용할 이미지 4개를";
-  const fullLine2 = "선택해주세요";
-
+  // 진입 시 슬롯 초기화
   useEffect(() => {
     for (let i = 1; i <= 4; i++) {
       localStorage.removeItem(`img-${i}`);
     }
     localStorage.removeItem("selected-slot");
     setImages(["", "", "", ""]);
-  }, []);
-
-  useEffect(() => {
-    let index = 0;
-    let current1 = "", current2 = "";
-    const interval = setInterval(() => {
-      if (index < fullLine1.length) {
-        current1 += fullLine1[index];
-        setDisplayLines([current1, ""]);
-      } else {
-        const sub = index - fullLine1.length;
-        if (sub < fullLine2.length) {
-          current2 += fullLine2[sub];
-          setDisplayLines([current1, current2]);
-        } else {
-          clearInterval(interval);
-        }
-      }
-      index++;
-    }, 50);
-    return () => clearInterval(interval);
   }, []);
 
   const handleDelete = (index) => {
@@ -60,9 +36,10 @@ const ImageSelectPage = () => {
         return;
       }
     }
-    alert("모든 슬롯이 가득 찼어요!");
+    alert("슬롯이 가득 찼습니다!");
   };
 
+  // ✅ 이미지파일 클릭 → 비어 있는 슬롯 찾아서 selected-slot 설정 + 저장소 이동
   const handleImageFile = () => {
     const index = images.findIndex(img => img === "");
     if (index === -1) {
@@ -71,7 +48,7 @@ const ImageSelectPage = () => {
     }
     const slot = `img-${index + 1}`;
     localStorage.setItem("selected-slot", slot);
-    console.log("👉 저장할 슬롯:", slot);  // 📌 확인 포인트
+    console.log("👉 저장할 슬롯:", slot);
     navigate("/image/theme");
   };
 
@@ -92,11 +69,7 @@ const ImageSelectPage = () => {
 
   return (
     <div className="image-select-container">
-      <h2>
-        {displayLines.map((line, i) => (
-          <div key={i}>{line}</div>
-        ))}
-      </h2>
+      <h2>배경으로 사용할 이미지 4개를<br />선택해주세요</h2>
 
       <div className="file-button-group">
         <button onClick={handleImageFile}>이미지파일</button>
@@ -116,7 +89,7 @@ const ImageSelectPage = () => {
             {src ? (
               <>
                 <img src={src} alt={`img-${i + 1}`} />
-                <button className="delete-button" onClick={() => handleDelete(i)}>❌</button>
+                <button onClick={() => handleDelete(i)}>❌</button>
               </>
             ) : (
               <p>{`img-${i + 1}`}</p>
