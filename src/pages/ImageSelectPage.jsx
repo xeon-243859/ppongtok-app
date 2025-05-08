@@ -66,10 +66,13 @@ const ImageSelectPage = () => {
       const nextSlot = `img-${slotIndex}`;
       localStorage.setItem(nextSlot, reader.result);
 
-      if (nextSlot === "img-1") setImg1(reader.result);
-      if (nextSlot === "img-2") setImg2(reader.result);
-      if (nextSlot === "img-3") setImg3(reader.result);
-      if (nextSlot === "img-4") setImg4(reader.result);
+      const updateMap = {
+        "img-1": setImg1,
+        "img-2": setImg2,
+        "img-3": setImg3,
+        "img-4": setImg4,
+      };
+      updateMap[nextSlot](reader.result);
 
       const next = (slotIndex % 4) + 1;
       setSlotIndex(next);
@@ -77,6 +80,13 @@ const ImageSelectPage = () => {
     };
     reader.readAsDataURL(file);
   };
+
+  const slots = [
+    { key: "img-1", value: img1, set: setImg1 },
+    { key: "img-2", value: img2, set: setImg2 },
+    { key: "img-3", value: img3, set: setImg3 },
+    { key: "img-4", value: img4, set: setImg4 },
+  ];
 
   return (
     <div className="image-select-container">
@@ -99,29 +109,22 @@ const ImageSelectPage = () => {
       </div>
 
       <div className="image-slots">
-        {[img1, img2, img3, img4].map((src, i) => {
-          const slotKey = `img-${i + 1}`;
-          const setSlot = [setImg1, setImg2, setImg3, setImg4][i];
-
-          const handleDelete = () => {
-            localStorage.removeItem(slotKey);
-            setSlot("");
-          };
-
-          return (
-            <div className="image-slot" key={i}>
-              {src ? (
-                <>
-                  <img src={src} alt={slotKey} />
-                  <button className="delete-button" onClick={handleDelete}>❌</button>
-                </>
-              ) : (
-                <p>{slotKey}</p>
-              )}
-              <p>{slotKey}</p>
-            </div>
-          );
-        })}
+        {slots.map(({ key, value, set }) => (
+          <div className="image-slot" key={key}>
+            {value ? (
+              <>
+                <img src={value} alt={key} />
+                <button className="delete-button" onClick={() => {
+                  localStorage.removeItem(key);
+                  set("");
+                }}>❌</button>
+              </>
+            ) : (
+              <p>{key}</p>
+            )}
+            <p>{key}</p>
+          </div>
+        ))}
       </div>
 
       <div className="button-group">
