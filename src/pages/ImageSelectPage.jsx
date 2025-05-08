@@ -47,25 +47,20 @@ const ImageSelectPage = () => {
     localStorage.removeItem(`img-${index + 1}`);
   };
 
-  // ✅ 빈 슬롯을 정확히 img-1부터 찾아서 저장하는 핵심 함수
+  // ✅ 가장 먼저 비어 있는 슬롯에 저장 (images 상태 기준)
   const saveImage = (dataUrl) => {
     const updated = [...images];
-    let saved = false;
 
-    for (let i = 0; i < 4; i++) {
-      const key = `img-${i + 1}`;
+    for (let i = 0; i < updated.length; i++) {
       if (!updated[i]) {
         updated[i] = dataUrl;
         setImages(updated);
-        localStorage.setItem(key, dataUrl);
-        saved = true;
-        break;
+        localStorage.setItem(`img-${i + 1}`, dataUrl);
+        return;
       }
     }
 
-    if (!saved) {
-      alert("슬롯이 모두 가득 찼어요!");
-    }
+    alert("슬롯이 모두 가득 찼어요!");
   };
 
   // 이미지파일 선택 → 이미지테마 저장소로 이동
