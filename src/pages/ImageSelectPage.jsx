@@ -53,8 +53,9 @@ const ImageSelectPage = () => {
   };
 
   const handleImageFile = () => {
-    const next = getNextEmptySlot();
-    localStorage.setItem("selected-slot", next);
+    const nextSlot = `img-${slotIndex}`;
+    localStorage.setItem("selected-slot", nextSlot);
+    setSlotIndex((prev) => (prev % 4) + 1); // 1→2→3→4→1 순환
     navigate("/image/theme");
   };
 
