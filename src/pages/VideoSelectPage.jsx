@@ -1,109 +1,58 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./VideoSelectPage.css";
 
+const videoOptions = [
+  { name: "flower", src: "/videos/flower.mp4" },
+  { name: "river", src: "/videos/river.mp4" },
+  { name: "sky", src: "/videos/sky.mp4" },
+  { name: "sunset", src: "/videos/sunset.mp4" },
+];
+
 const VideoSelectPage = () => {
-  const [selectedVideo, setSelectedVideo] = useState("");
   const navigate = useNavigate();
-  const fileInputRef = useRef(null);
-  const [typing, setTyping] = useState(["", ""]);
-  const lines = [
-    "배경으로 사용할 영상파일",
-    "1개를 선택해 주세요",
-  ];
+  const [selectedVideo, setSelectedVideo] = useState(null);
 
-  useEffect(() => {
-    const stored = localStorage.getItem("selected-video") || "";
-    setSelectedVideo(stored);
-
-    setTyping(["", ""]); // ✅ 타자체 초기화 확실히 해줌
-
-    let i = 0, j = 0;
-    const interval = setInterval(() => {
-      setTyping((prev) => {
-        const updated = [...prev];
-        if (!updated[i]) updated[i] = "";
-        updated[i] += lines[i][j];
-        return updated;
-      });
-
-      j++;
-      if (i < lines.length && j >= lines[i].length) {
-        i++;
-        j = 0;
-      }
-      if (i >= lines.length) clearInterval(interval);
-    }, 80);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleFileSelect = () => {
-    fileInputRef.current.click();
+  const handleVideoSelect = (video) => {
+    setSelectedVideo(video);
+    localStorage.setItem("selectedVideo", JSON.stringify(video));
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const base64 = reader.result;
-      setSelectedVideo(base64);
-      localStorage.setItem("selected-video", base64);
-    };
-    reader.readAsDataURL(file);
+  const handleNext = () => {
+    if (selectedVideo) {
+      navigate("/music/select");
+    } else {
+      alert("배경으로 사용할 영상을 선택해주세요.");
+    }
   };
 
-  const handleStorageVideo = () => {
-    navigate("/video/theme");
-  };
-
-  const handleDelete = () => {
-    localStorage.removeItem("selected-video");
-    setSelectedVideo("");
+  const handleBack = () => {
+    navigate("/style");
   };
 
   return (
-    <div className="video-select-container">
-      <h2>{typing[0]}</h2>
-      <h2>{typing[1]}</h2>
-
-      <div className="button-group">
-        <button onClick={handleStorageVideo}>동영상파일</button>
-        <button onClick={handleFileSelect}>내파일선택</button>
-        <input
-          type="file"
-          accept="video/*"
-          ref={fileInputRef}
-          onChange={handleFileChange}
-          style={{ display: "none" }}
-        />
+    <div className="video-page-container">
+      <button className="back-button" onClick={handleBack}>
+        뒤로가기
+      </button>
+      <h1 className="video-page-title">배경으로 사용할 영상파일 1개를</h1>
+      <h2 className="video-page-subtitle">선택해주세요</h2>
+      <div className="video-thumbnails">
+        {videoOptions.map((video, index) => (
+          <div
+            key={index}
+            className={`thumbnail-box ${
+              selectedVideo?.name === video.name ? "selected-thumbnail" : ""
+            }`}
+            onClick={() => handleVideoSelect(video)}
+          >
+            <video src={video.src} muted loop playsInline />
+          </div>
+        ))}
       </div>
-
-      <div className="video-slot">
-        {selectedVideo ? (
-          <>
-            <video
-              src={selectedVideo}
-              controls
-              autoPlay
-              loop
-              muted
-            />
-            <button className="delete-button" onClick={handleDelete}>
-              삭제
-            </button>
-          </>
-        ) : (
-          <p>moving-01</p>
-        )}
-      </div>
-
-      <div className="button-group">
-        <button onClick={() => navigate(-1)}>뒤로가기</button>
-        <button onClick={() => navigate("/music/select")}>다음으로</button>
-      </div>
+      <button className="next-button" onClick={handleNext}>
+        다음으로
+      </button>
     </div>
   );
 };

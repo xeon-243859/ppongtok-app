@@ -1,43 +1,118 @@
-.video-select-container {
-  text-align: center;
-  padding: 40px;
-  background-color: #ffeef2;
-  min-height: 100vh;
-}
-
-.button-group {
-  margin: 20px;
+.video-page-container {
   display: flex;
-  justify-content: center;
-  gap: 20px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh;
+  background-color: #fff;
+  padding: 20px;
+  text-align: center;
+  box-sizing: border-box;
 }
 
-.video-slot {
-  width: 90%;
-  max-width: 600px;
-  margin: 30px auto;
-  border: 2px dashed #aaa;
-  border-radius: 15px;
-  background: white;
+.video-page-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  animation: typing 2s steps(20, end), blink 0.75s step-end infinite;
+  white-space: nowrap;
   overflow: hidden;
+  border-right: 2px solid;
 }
 
-.video-slot video {
+.video-page-subtitle {
+  font-size: 18px;
+  margin-bottom: 30px;
+  animation: typing 2s steps(20, end), blink 0.75s step-end infinite;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid;
+}
+
+.video-thumbnails {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
   width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  border-radius: 10px;
-  display: block;
+  max-width: 600px;
 }
 
-.delete-button {
-  margin-top: 8px;
+.thumbnail-box {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 비율 유지 */
+  overflow: hidden;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s, border-color 0.3s;
+  background-color: #f9f9f9;
+}
+
+.thumbnail-box:hover {
+  transform: scale(1.02);
+  border-color: #007bff;
+}
+
+.thumbnail-box video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.selected-thumbnail::after {
+  content: "✓";
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 50%;
+  padding: 4px 8px;
   font-size: 14px;
-  padding: 4px 10px;
-  background: #ff6b6b;
+}
+
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 8px 16px;
+  background-color: #ddd;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.next-button {
+  margin-top: 30px;
+  padding: 10px 24px;
+  font-size: 16px;
+  background-color: #ff4d4f;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.next-button:hover {
+  background-color: #ff7875;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
 }
