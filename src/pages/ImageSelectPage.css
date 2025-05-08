@@ -1,91 +1,71 @@
+/* src/pages/ImageSelectPage.css */
+
 .image-select-container {
   background-color: #ffeef3;
-  min-height: 100vh;
   padding: 40px 20px;
+  min-height: 100vh;
   text-align: center;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Pretendard', sans-serif;
 }
 
-.image-select-title {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 10px;
+.image-select-container h2 {
+  font-size: 20px;
+  line-height: 1.5;
+  margin-bottom: 20px;
   color: #333;
 }
 
-.image-select-sub {
-  font-size: 18px;
-  margin-bottom: 20px;
-  color: #666;
-}
-
-.button-row {
+.image-slots {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-bottom: 20px;
   flex-wrap: wrap;
-}
-
-.button-row button {
-  padding: 10px 20px;
-  border: 1px solid #999;
-  border-radius: 8px;
-  background-color: white;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.button-row button:hover {
-  background-color: #ffe0eb;
-}
-
-.slot-row {
-  display: flex;
-  justify-content: center;
   gap: 16px;
-  flex-wrap: wrap;
-  margin-bottom: 30px;
+  margin-top: 20px;
 }
 
-.slot-box {
-  width: 120px;
+.image-slot {
+  width: 100px;
   height: 120px;
   border: 2px dashed #ccc;
-  border-radius: 8px;
+  border-radius: 10px;
+  background-color: white;
+  overflow: hidden;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
-  color: #555;
-  background-color: #fff;
-  overflow: hidden;
 }
 
-.slot-box img {
+.image-slot img {
   width: 100%;
-  height: 100%;
+  height: 80px;
   object-fit: cover;
 }
 
-.image-select-footer {
+.image-slot p {
+  margin-top: 4px;
+  font-size: 13px;
+  color: #666;
+}
+
+.button-group {
+  margin-top: 24px;
   display: flex;
   justify-content: center;
   gap: 20px;
 }
 
-.image-select-footer button {
+.button-group button {
   padding: 10px 20px;
-  background-color: #ff66a3;
+  font-size: 14px;
+  background-color: #ff5c8a;
+  color: white;
   border: none;
   border-radius: 8px;
-  color: white;
-  font-size: 16px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background-color 0.3s;
 }
 
-.image-select-footer button:hover {
-  background-color: #ff3380;
+.button-group button:hover {
+  background-color: #e24e7d;
 }
