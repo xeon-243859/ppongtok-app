@@ -6,23 +6,35 @@ import "./ImageSelectPage.css";
 const ImageSelectPage = () => {
   const navigate = useNavigate();
   const [img1, setImg1] = useState("");
-
-  // 타자 효과를 위한 상태
   const [displayText, setDisplayText] = useState("");
-  const fullText = "배경으로 사용할 이미지 1개를 선택해주세요";
+  const fullTextLine1 = "배경으로 사용할 이미지 1개를";
+  const fullTextLine2 = "선택해주세요";
 
-  // 타자 애니메이션
   useEffect(() => {
+    // 타자 효과 - 줄별로 처리
     let index = 0;
+    let currentText = "";
     const interval = setInterval(() => {
-      setDisplayText((prev) => prev + fullText[index]);
-      index++;
-      if (index === fullText.length) clearInterval(interval);
+      if (index < fullTextLine1.length) {
+        currentText += fullTextLine1[index];
+        setDisplayText(currentText);
+        index++;
+      } else if (index === fullTextLine1.length) {
+        setDisplayText(currentText + "\n" + fullTextLine2[0]);
+        index++;
+      } else {
+        const subIndex = index - fullTextLine1.length;
+        if (subIndex < fullTextLine2.length) {
+          setDisplayText(currentText + "\n" + fullTextLine2.slice(0, subIndex + 1));
+          index++;
+        } else {
+          clearInterval(interval);
+        }
+      }
     }, 50);
     return () => clearInterval(interval);
   }, []);
 
-  // 이미지 로드
   useEffect(() => {
     const storedImg1 = localStorage.getItem("img-1");
     if (storedImg1) {
@@ -32,11 +44,15 @@ const ImageSelectPage = () => {
 
   return (
     <div className="image-select-container">
-      <h2>{displayText}</h2>
+      <h2>
+        {displayText.split("\n").map((line, index) => (
+          <div key={index}>{line}</div>
+        ))}
+      </h2>
 
       <div className="file-button-group">
-        <button disabled>이미지파일</button>
-        <button disabled>내파일선택</button>
+        <button onClick={() => navigate("/image/theme")}>이미지파일</button>
+        <button onClick={() => navigate("/image/theme")}>내파일선택</button>
       </div>
 
       <div className="image-slots">
