@@ -1,39 +1,32 @@
-// src/pages/ImageSelectPage.jsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ImageSelectPage.css";
 
 const ImageSelectPage = () => {
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
   const [img1, setImg1] = useState("");
-  const [displayText, setDisplayText] = useState("");
-  const fullTextLine1 = "배경으로 사용할 이미지 1개를";
-  const fullTextLine2 = "선택해주세요";
 
-  useEffect(() => {
-    // 타자 효과 - 줄별로 처리
-    let index = 0;
-    let currentText = "";
-    const interval = setInterval(() => {
-      if (index < fullTextLine1.length) {
-        currentText += fullTextLine1[index];
-        setDisplayText(currentText);
-        index++;
-      } else if (index === fullTextLine1.length) {
-        setDisplayText(currentText + "\n" + fullTextLine2[0]);
-        index++;
-      } else {
-        const subIndex = index - fullTextLine1.length;
-        if (subIndex < fullTextLine2.length) {
-          setDisplayText(currentText + "\n" + fullTextLine2.slice(0, subIndex + 1));
-          index++;
-        } else {
-          clearInterval(interval);
-        }
-      }
-    }, 50);
-    return () => clearInterval(interval);
-  }, []);
+  const handleImageFile = () => {
+    localStorage.setItem("selected-slot", "img-1");
+    navigate("/image/theme");
+  };
+
+  const handleLocalFile = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      localStorage.setItem("img-1", reader.result);
+      setImg1(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
 
   useEffect(() => {
     const storedImg1 = localStorage.getItem("img-1");
@@ -45,14 +38,20 @@ const ImageSelectPage = () => {
   return (
     <div className="image-select-container">
       <h2>
-        {displayText.split("\n").map((line, index) => (
-          <div key={index}>{line}</div>
-        ))}
+        <div>배경으로 사용할 이미지 4개를</div>
+        <div>선택해주세요</div>
       </h2>
 
       <div className="file-button-group">
-        <button onClick={() => navigate("/image/theme")}>이미지파일</button>
-        <button onClick={() => navigate("/image/theme")}>내파일선택</button>
+        <button onClick={handleImageFile}>이미지파일</button>
+        <button onClick={handleLocalFile}>내파일선택</button>
+        <input
+          type="file"
+          accept="image/*"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          style={{ display: "none" }}
+        />
       </div>
 
       <div className="image-slots">
