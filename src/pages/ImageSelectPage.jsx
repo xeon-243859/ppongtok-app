@@ -11,7 +11,7 @@ const ImageSelectPage = () => {
   const fullLine1 = "배경으로 사용할 이미지 4개를";
   const fullLine2 = "선택해주세요";
 
-  // ✅ 진입 시 모든 슬롯 및 selected-slot 초기화
+  // ✅ 페이지 진입 시 모든 슬롯 초기화 + selected-slot 제거
   useEffect(() => {
     for (let i = 1; i <= 4; i++) {
       localStorage.removeItem(`img-${i}`);
@@ -53,7 +53,7 @@ const ImageSelectPage = () => {
     }
   };
 
-  // 비어있는 가장 앞 슬롯에 저장
+  // ✅ 가장 먼저 비어 있는 슬롯에 저장
   const saveImage = (dataUrl) => {
     const updated = [...images];
     for (let i = 0; i < 4; i++) {
@@ -67,6 +67,7 @@ const ImageSelectPage = () => {
     alert("모든 슬롯이 가득 찼어요!");
   };
 
+  // ✅ 이미지파일 선택 시 selected-slot 설정 → 이미지테마 저장소 이동
   const handleImageFile = () => {
     const index = images.findIndex(img => img === "");
     if (index === -1) {
@@ -77,6 +78,7 @@ const ImageSelectPage = () => {
     navigate("/image/theme");
   };
 
+  // 내파일 선택
   const handleLocalFile = () => {
     fileInputRef.current.click();
   };
@@ -84,6 +86,7 @@ const ImageSelectPage = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
+
     const reader = new FileReader();
     reader.onloadend = () => {
       saveImage(reader.result);
