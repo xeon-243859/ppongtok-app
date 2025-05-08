@@ -6,10 +6,12 @@ import "./ImageThemePage.css";
 const ImageThemePage = () => {
   const navigate = useNavigate();
 
-  const handleSelect = (slot, imagePath) => {
+  const handleSelect = (imagePath) => {
+    const slot = localStorage.getItem("selected-slot") || "img-1";
     localStorage.setItem(slot, imagePath);
     navigate("/image/select");
   };
+  
 
   return (
     <div className="image-theme-container">
