@@ -24,6 +24,18 @@
 
 .video-slot video {
   width: 100%;
-  height: auto;
+  aspect-ratio: 16 / 9;       /* ✅ 비율 고정 */
+  object-fit: cover;          /* ✅ 잘림 없이 예쁘게 */
   border-radius: 10px;
+  display: block;
+}
+
+.delete-button {
+  margin-top: 10px;
+  padding: 6px 12px;
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
 }

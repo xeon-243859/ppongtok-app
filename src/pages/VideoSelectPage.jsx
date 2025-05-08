@@ -8,8 +8,8 @@ const VideoSelectPage = () => {
   const fileInputRef = useRef(null);
   const [typing, setTyping] = useState(["", ""]);
   const lines = [
-    "배경으로 사용할 영상파일",
-    "1개를 선택해 주세요",
+    "배경으로 사용할 영상파일",      // ✅ 윗줄 수정
+    "1개를 선택해 주세요",           // ✅ 아랫줄 수정
   ];
 
   useEffect(() => {
@@ -59,6 +59,11 @@ const VideoSelectPage = () => {
     navigate("/video/theme");
   };
 
+  const handleDelete = () => {
+    localStorage.removeItem("selected-video");
+    setSelectedVideo("");
+  };
+
   return (
     <div className="video-select-container">
       <h2>{typing[0]}</h2>
@@ -85,23 +90,8 @@ const VideoSelectPage = () => {
               autoPlay
               loop
               muted
-              style={{ width: "100%", borderRadius: "10px" }}
             />
-            <button
-              style={{
-                marginTop: "10px",
-                padding: "6px 12px",
-                background: "#ff6b6b",
-                color: "white",
-                border: "none",
-                borderRadius: "8px",
-                cursor: "pointer",
-              }}
-              onClick={() => {
-                localStorage.removeItem("selected-video");
-                setSelectedVideo("");
-              }}
-            >
+            <button className="delete-button" onClick={handleDelete}>
               삭제하기
             </button>
           </>
