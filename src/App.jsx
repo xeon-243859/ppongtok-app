@@ -7,6 +7,7 @@ import ImageSelectPage from './pages/ImageSelectPage';
 import ImageThemePage from './pages/ImageThemePage'; // ✅ 새로 import
 import MusicSelectPage from './pages/MusicSelectPage';
 import LovePreviewPage from './pages/LovePreviewPage';
+import VideoSelectPage from "./pages/VideoSelectPage";
 
 function App() {
   return (
