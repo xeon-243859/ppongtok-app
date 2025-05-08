@@ -8,18 +8,19 @@ const VideoSelectPage = () => {
   const fileInputRef = useRef(null);
   const [typing, setTyping] = useState(["", ""]);
   const lines = [
-    "배경으로 사용할 영상파일",      // ✅ 윗줄 수정
-    "1개를 선택해 주세요",           // ✅ 아랫줄 수정
+    "배경으로 사용할 영상파일",
+    "1개를 선택해 주세요",
   ];
 
   useEffect(() => {
     const stored = localStorage.getItem("selected-video") || "";
     setSelectedVideo(stored);
 
+    setTyping(["", ""]); // ✅ 타자체 초기화 확실히 해줌
+
     let i = 0, j = 0;
     const interval = setInterval(() => {
       setTyping((prev) => {
-        if (i >= lines.length) return prev;
         const updated = [...prev];
         if (!updated[i]) updated[i] = "";
         updated[i] += lines[i][j];
@@ -31,7 +32,6 @@ const VideoSelectPage = () => {
         i++;
         j = 0;
       }
-
       if (i >= lines.length) clearInterval(interval);
     }, 80);
 
@@ -92,7 +92,7 @@ const VideoSelectPage = () => {
               muted
             />
             <button className="delete-button" onClick={handleDelete}>
-              삭제하기
+              삭제
             </button>
           </>
         ) : (

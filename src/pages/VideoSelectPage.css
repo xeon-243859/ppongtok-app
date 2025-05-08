@@ -13,29 +13,31 @@
 }
 
 .video-slot {
-  width: 70%;
-  max-width: 500px;
+  width: 90%;
+  max-width: 600px;
   margin: 30px auto;
   border: 2px dashed #aaa;
   border-radius: 15px;
-  padding: 15px;
   background: white;
+  overflow: hidden;
 }
 
 .video-slot video {
   width: 100%;
-  aspect-ratio: 16 / 9;       /* ✅ 비율 고정 */
-  object-fit: cover;          /* ✅ 잘림 없이 예쁘게 */
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
   border-radius: 10px;
   display: block;
 }
 
 .delete-button {
-  margin-top: 10px;
-  padding: 6px 12px;
+  margin-top: 8px;
+  font-size: 14px;
+  padding: 4px 10px;
   background: #ff6b6b;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
 }
