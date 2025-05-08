@@ -5,7 +5,8 @@ import './ImageSelectPage.css';
 const ImageSelectPage = () => {
   const navigate = useNavigate();
   const [selectedImages, setSelectedImages] = useState([null, null, null, null]);
-  const [showThemes, setShowThemes] = useState(false);
+  const [showThemeCategories, setShowThemeCategories] = useState(false);
+  const [currentTheme, setCurrentTheme] = useState(null);
 
   const themes = {
     '따뜻한': [
@@ -39,29 +40,28 @@ const ImageSelectPage = () => {
   };
 
   const handleThemeClick = (theme) => {
-    const themeImages = themes[theme];
+    setCurrentTheme(theme);
+  };
+
+  const handleThemeImageSelect = (image) => {
     const newSelected = [...selectedImages];
-
-    for (let i = 0; i < themeImages.length; i++) {
-      const emptyIndex = newSelected.findIndex(img => img === null);
-      if (emptyIndex !== -1) {
-        newSelected[emptyIndex] = themeImages[i];
-      }
+    const emptyIndex = newSelected.findIndex(img => img === null);
+    if (emptyIndex !== -1) {
+      newSelected[emptyIndex] = image;
+      setSelectedImages(newSelected);
     }
-
-    setSelectedImages(newSelected);
   };
 
   const fileInputRef = React.useRef(null);
 
   const handleImageFileClick = () => {
-    setShowThemes(true);
+    setShowThemeCategories(true);
   };
 
   return (
     <div className="image-select-container">
       <div className="image-select-title">배경으로 사용할 이미지 1개를</div>
-      <div className="image-select-sub">선택해주세요</div>
+      <div className="image-select-sub heading-font">선택해주세요</div>
 
       <div className="button-row">
         <button onClick={handleImageFileClick}>이미지파일</button>
@@ -76,10 +76,24 @@ const ImageSelectPage = () => {
         <button onClick={() => fileInputRef.current.click()}>내파일선택</button>
       </div>
 
-      {showThemes && (
+      {showThemeCategories && (
         <div className="theme-buttons">
           {Object.keys(themes).map(theme => (
             <button key={theme} onClick={() => handleThemeClick(theme)}>{theme}</button>
+          ))}
+        </div>
+      )}
+
+      {currentTheme && (
+        <div className="theme-image-preview">
+          {themes[currentTheme].map((img, idx) => (
+            <img
+              key={idx}
+              src={img.src}
+              alt={img.label}
+              className="theme-thumbnail"
+              onClick={() => handleThemeImageSelect(img)}
+            />
           ))}
         </div>
       )}
