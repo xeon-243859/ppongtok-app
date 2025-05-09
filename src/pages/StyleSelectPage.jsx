@@ -5,30 +5,18 @@ import '../styles/StyleSelectPage.css';
 const StyleSelectPage = () => {
   const navigate = useNavigate();
 
-  const handleImageSelect = () => {
-    navigate('/image/select');
-  };
-
-  const handleVideoSelect = () => {
-    navigate('/video/select');
-  };
-
-  const handleBack = () => {
-    navigate(-1);
-  };
-
   return (
     <div className="style-select-container">
       <h2 className="typing-text">어떤 배경으로 사랑을 담아볼까요?</h2>
       <div className="button-group-vertical">
-        <button className="select-button" onClick={handleImageSelect}>
+        <button className="select-button" onClick={() => navigate('/image/select')}>
           이미지 배경 선택
         </button>
-        <button className="select-button" onClick={handleVideoSelect}>
+        <button className="select-button" onClick={() => navigate('/video/select')}>
           영상 배경 선택
         </button>
       </div>
-      <button className="back-button" onClick={handleBack}>← 뒤로가기</button>
+      <button className="back-button" onClick={() => navigate(-1)}>← 뒤로가기</button>
     </div>
   );
 };
