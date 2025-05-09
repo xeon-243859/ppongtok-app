@@ -1,21 +1,16 @@
-/* 전체 화면을 차지하면서 absolute 기준이 될 부모 */
-.root-wrapper {
-  position: relative;
+/* 전체 화면을 기준으로 3분의 1 아래 시작 */
+.message-container {
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 30vh;
+  text-align: center;
   background-color: #fffefc;
 }
 
-/* 자막을 화면 아래 정중앙에 배치 */
-.bottom-wrapper {
-  position: absolute;
-  bottom: 60px;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  width: 100%;
-}
-
-/* 타자체 효과 */
+/* 자막 타자체 효과 + 정중앙 정렬 */
 .typing-text {
   font-size: 22px;
   font-weight: bold;
