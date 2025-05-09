@@ -6,19 +6,20 @@ const StyleSelectPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="style-page-container">
-      <h2 className="typing-text">어떤 배경으로 사랑을 담아볼까요?</h2>
-
-      <div className="button-stack">
-        <button className="select-button" onClick={() => navigate('/image/select')}>
+    <div className="style-select-wrapper">
+      <div className="style-select-box">
+        <h2 className="question-text">어떤 배경으로 사랑을 담아볼까요?</h2>
+        <button className="option-button" onClick={() => navigate('/image/select')}>
           이미지 배경 선택
         </button>
-        <button className="select-button" onClick={() => navigate('/video/select')}>
+        <button className="option-button" onClick={() => navigate('/video/select')}>
           영상 배경 선택
         </button>
       </div>
 
-      <button className="back-button" onClick={() => navigate(-1)}>← 뒤로가기</button>
+      <button className="floating-back" onClick={() => navigate(-1)}>
+        ← 뒤로가기
+      </button>
     </div>
   );
 };
