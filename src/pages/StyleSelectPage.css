@@ -1,17 +1,12 @@
 .love-select-wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #fffefc;
+  padding-top: 30vh; /* 💡 위에서 3분의 1 위치 */
   text-align: center;
 }
 
 .love-title {
   font-size: 22px;
   font-weight: bold;
-  color: #e91e63;
+  color: #e91e63; /* 진한 분홍 자막 */
   margin-bottom: 40px;
 }
 
@@ -19,20 +14,20 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: 80%;
-  max-width: 300px;
+  align-items: center;
 }
 
 .love-button {
+  width: 80%;
+  max-width: 300px;
+  padding: 14px;
+  font-size: 16px;
   background-color: #f06292;
   color: white;
-  font-size: 16px;
-  padding: 14px;
   border: none;
   border-radius: 20px;
   cursor: pointer;
   transition: background-color 0.3s;
-  width: 100%;
 }
 
 .love-button:hover {
