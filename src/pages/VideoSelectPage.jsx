@@ -1,67 +1,40 @@
-// ✅ VideoSelectPage.jsx (그대로 유지)
-import React, { useState } from "react";
+// ✅ VideoSelectPage.jsx
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./VideoSelectPage.css";
 
-const videoOptions = [
-  { name: "flower", src: "/videos/flower.mp4", mood: "따뜻한, 낭만적인" },
-  { name: "river", src: "/videos/river.mp4", mood: "청량한, 고요한" },
-  { name: "sky", src: "/videos/sky.mp4", mood: "밝은, 희망적인" },
-  { name: "sunset", src: "/videos/sunset.mp4", mood: "감성적인, 따뜻한" },
-];
-
 const VideoSelectPage = () => {
   const navigate = useNavigate();
-  const [selectedVideo, setSelectedVideo] = useState(null);
 
-  const handleSelect = (video) => {
-    setSelectedVideo(video);
-    localStorage.setItem("selectedVideo", JSON.stringify(video));
-  };
-
-  const handleRemove = () => {
-    setSelectedVideo(null);
-    localStorage.removeItem("selectedVideo");
-  };
-  const handleVideoNext = () => {
+  const handleClick = (slotName) => {
+    localStorage.setItem("selected-slot", slotName);
     navigate("/video/theme");
   };
-  
-  const handleNext = () => {
-    if (selectedVideo) {
-      navigate("/music/select");
-    } else {
-      alert("배경으로 사용할 영상을 선택해주세요.");
-    }
+
+  const getSlotContent = (slotName) => {
+    const videoSrc = localStorage.getItem(slotName);
+    return videoSrc ? (
+      <video src={videoSrc} controls className="slot-video" />
+    ) : (
+      <div className="empty-slot">+</div>
+    );
   };
 
   return (
     <div className="video-select-container">
-      <h1 className="video-title">배경으로 사용할 영상파일</h1>
-      <h2 className="video-subtitle">1개를 선택해주세요</h2>
-
-      <div className="video-thumbnails">
-        {videoOptions.map((video, index) => (
+      <h2 className="typing-text">배경으로 사용할 영상 1개를</h2>
+      <h3>선택해 주세요</h3>
+      <div className="slot-grid">
+        {["video-0", "video-1", "video-2", "video-3"].map((slot) => (
           <div
-            key={index}
-            className={`thumbnail-box ${selectedVideo?.name === video.name ? "selected" : ""}`}
-            onClick={() => handleSelect(video)}
+            key={slot}
+            className="video-slot"
+            onClick={() => handleClick(slot)}
           >
-            <video src={video.src} muted loop playsInline />
-            {selectedVideo?.name === video.name && (
-              <>
-                <div className="overlay-text">moving file</div>
-                <button className="remove-button" onClick={(e) => {
-                  e.stopPropagation();
-                  handleRemove();
-                }}>X</button>
-              </>
-            )}
+            {getSlotContent(slot)}
           </div>
         ))}
       </div>
-
-      <button className="next-button" onClick={handleNext}>다음으로</button>
     </div>
   );
 };
