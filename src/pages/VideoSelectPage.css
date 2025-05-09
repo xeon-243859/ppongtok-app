@@ -40,7 +40,7 @@
 .thumbnail-box {
   position: relative;
   width: 100%;
-  padding-top: 56.25%; /* 16:9 비율 유지 */
+  padding-top: 56.25%;
   overflow: hidden;
   border: 2px solid #ccc;
   border-radius: 8px;
