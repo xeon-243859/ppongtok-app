@@ -7,12 +7,13 @@ import ImageThemePage from "./pages/ImageThemePage";
 import VideoEntryPage from "./pages/VideoEntryPage";
 import VideoSelectPage from "./pages/VideoSelectPage";
 import MusicSelectPage from "./pages/MusicSelectPage";
+import StyleSelectPage from "./pages/StyleSelectPage";
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* 앱 시작 시 메시지 만들기부터 시작하도록 수정 */}
+        {/* 앱 시작 시 시작화면으로 */}
         <Route path="/" element={<Navigate to="/intro" replace />} />
 
         {/* 1단계: 시작화면 */}
@@ -21,7 +22,8 @@ function App() {
         {/* 2단계: 메시지 입력 */}
         <Route path="/love/form" element={<LoveFormPage />} />
 
-        {/* 3단계: 이미지 or 영상 선택 흐름 */}
+        {/* 3단계: 이미지 or 영상 선택 경로 선택 */}
+        <Route path="/style/select" element={<StyleSelectPage />} />
         <Route path="/image/theme" element={<ImageThemePage />} />
         <Route path="/video/entry" element={<VideoEntryPage />} />
         <Route path="/video/select" element={<VideoSelectPage />} />

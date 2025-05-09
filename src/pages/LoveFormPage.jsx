@@ -13,7 +13,7 @@ const LoveFormPage = () => {
     }
 
     localStorage.setItem("loveMessage", message);
-    navigate("/image/theme"); // 또는 "/video/entry"로 수정 가능
+    navigate("/style/select"); // ✅ 선택화면으로 이동
   };
 
   return (
