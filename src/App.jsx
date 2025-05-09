@@ -26,9 +26,9 @@ function App() {
         <Route path="/style/select" element={<StyleSelectPage />} />
         <Route path="/image/theme" element={<ImageThemePage />} />
         <Route path="/video/entry" element={<VideoEntryPage />} />
-        <Route path="/video/select" element={<VideoSelectPage />} />
 
         {/* 이후 음악 선택 */}
+        <Route path="/video/select" element={<VideoSelectPage />} />
         <Route path="/music/select" element={<MusicSelectPage />} />
       </Routes>
     </Router>
