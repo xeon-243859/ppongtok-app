@@ -1,16 +1,15 @@
-/* 전체 화면을 기준으로 3분의 1 아래 시작 */
-.message-container {
+.style-select-container {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
+  justify-content: flex-start;
   padding-top: 30vh;
-  text-align: center;
   background-color: #fffefc;
+  text-align: center;
 }
 
-/* 자막 타자체 효과 + 정중앙 정렬 */
+/* 타자체 자막 */
 .typing-text {
   font-size: 22px;
   font-weight: bold;
@@ -29,4 +28,28 @@
 
 @keyframes blink {
   50% { border-color: transparent }
+}
+
+/* 감성 버튼 */
+.style-button-group {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.style-button {
+  width: 240px;
+  padding: 14px;
+  background-color: #f06292;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.style-button:hover {
+  background-color: #ec407a;
 }

@@ -6,6 +6,7 @@ const IntroPage = () => {
   const navigate = useNavigate();
 
   const handleStart = () => {
+    console.log("✅ 버튼 클릭됨"); // ✅ 이 줄이 테스트용
     navigate("/love/form");  // 메시지 입력 페이지로 이동
   };
 

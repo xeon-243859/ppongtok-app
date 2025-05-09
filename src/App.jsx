@@ -1,40 +1,26 @@
-// ✅ App.jsx
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+
 import IntroPage from "./pages/IntroPage";
 import LoveFormPage from "./pages/LoveFormPage";
-import ImageThemePage from "./pages/ImageThemePage";
-import ImageSelectPage from "./pages/ImageSelectPage";
-import VideoEntryPage from "./pages/VideoEntryPage";
-import VideoSelectPage from "./pages/VideoSelectPage";
-import MusicSelectPage from "./pages/MusicSelectPage";
 import StyleSelectPage from "./pages/StyleSelectPage";
-
+// 필요하면 여기 다른 페이지들도 추가 가능
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        {/* 앱 시작 시 시작화면으로 */}
-        <Route path="/" element={<Navigate to="/intro" replace />} />
+    <Routes>
+      {/* 🔹 기본 진입 화면 - 브라우저에서 "/" 입력하면 바로 인트로 페이지로 */}
+      <Route path="/" element={<IntroPage />} />
 
-        {/* 1단계: 시작화면 */}
-        <Route path="/intro" element={<IntroPage />} />
+      {/* 🔹 선택적으로 /intro도 작동 가능 */}
+      <Route path="/intro" element={<IntroPage />} />
 
-        {/* 2단계: 메시지 입력 */}
-        <Route path="/love/form" element={<LoveFormPage />} />
+      {/* 🔹 메시지 입력 화면 */}
+      <Route path="/love/form" element={<LoveFormPage />} />
 
-        {/* 3단계: 이미지 or 영상 선택 경로 선택 */}
-        <Route path="/style/select" element={<StyleSelectPage />} />
-        <Route path="/image/select" element={<ImageSelectPage />} />
-        <Route path="/image/theme" element={<ImageThemePage />} />
-        <Route path="/video/entry" element={<VideoEntryPage />} />
-
-        {/* 이후 음악 선택 */}
-        <Route path="/video/select" element={<VideoSelectPage />} />
-        <Route path="/music/select" element={<MusicSelectPage />} />
-      </Routes>
-    </Router>
+      {/* 🔹 배경 스타일 선택 화면 */}
+      <Route path="/style/select" element={<StyleSelectPage />} />
+    </Routes>
   );
 }
 
