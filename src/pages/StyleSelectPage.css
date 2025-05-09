@@ -29,6 +29,8 @@
   gap: 20px;
   align-items: center;
   width: 100%;
+  flex-wrap: nowrap;           /* 줄바꿈 막기 */
+  justify-content: flex-start; /* 위쪽 정렬 */
 }
 
 @keyframes typing {
@@ -49,6 +51,7 @@
 }
 
 .select-button {
+  display: block; /* 🔥 이 한 줄이 핵심!! */
   padding: 12px 24px;
   font-size: 16px;
   background-color: #f7b3e6;
