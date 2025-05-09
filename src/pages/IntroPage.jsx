@@ -6,13 +6,15 @@ const IntroPage = () => {
   const navigate = useNavigate();
 
   const handleStart = () => {
-    navigate("/video/entry");
+    navigate("/love/form");  // 메시지 입력 페이지로 이동
   };
 
   return (
     <div className="intro-container">
-      <h1 className="intro-title">✨ 뿅!톡에 오신 걸 환영합니다 ✨</h1>
-      <p className="intro-subtitle">감성을 담은 메시지를 만들어보세요</p>
+      <div className="intro-text">
+        <h1 className="intro-title">✨ 뿅!톡에 오신 걸 환영합니다 ✨</h1>
+        <p className="intro-subtitle">사랑을 전할 메시지를 만들어보세요</p>
+      </div>
       <button className="start-button" onClick={handleStart}>
         시작하기
       </button>
