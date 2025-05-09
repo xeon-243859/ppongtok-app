@@ -1,8 +1,10 @@
-.center-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh; /* 화면 전체 높이 기준으로 정렬 */
+.bottom-wrapper {
+  position: absolute;
+  bottom: 60px; /* 화면 하단에서 약간 띄움 */
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  width: 100%;
 }
 
 .typing-text {
