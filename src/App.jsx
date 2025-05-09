@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import IntroPage from "./pages/IntroPage";
 import LoveFormPage from "./pages/LoveFormPage";
 import ImageThemePage from "./pages/ImageThemePage";
+import ImageSelectPage from "./pages/ImageSelectPage";
 import VideoEntryPage from "./pages/VideoEntryPage";
 import VideoSelectPage from "./pages/VideoSelectPage";
 import MusicSelectPage from "./pages/MusicSelectPage";
@@ -24,6 +25,7 @@ function App() {
 
         {/* 3단계: 이미지 or 영상 선택 경로 선택 */}
         <Route path="/style/select" element={<StyleSelectPage />} />
+        <Route path="/image/select" element={<ImageSelectPage />} />
         <Route path="/image/theme" element={<ImageThemePage />} />
         <Route path="/video/entry" element={<VideoEntryPage />} />
 

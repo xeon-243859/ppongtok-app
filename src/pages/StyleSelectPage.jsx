@@ -8,7 +8,8 @@ const StyleSelectPage = () => {
 
   const handleImage = () => {
     localStorage.setItem("bgType", "image");
-    navigate("/image/theme");
+    navigate("/image/select"); // ✅ 이미지 직접 선택 화면으로 이동
+
   };
 
   const handleVideo = () => {
