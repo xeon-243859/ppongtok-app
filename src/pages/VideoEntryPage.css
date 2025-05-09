@@ -1,4 +1,4 @@
-// ✅ VideoEntryPage.css
+ ✅ VideoEntryPage.css
 .entry-page-container {
   display: flex;
   flex-direction: column;
@@ -13,29 +13,28 @@
 
 .entry-text-block {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 
-.entry-title,
-.entry-subtitle {
-  font-size: 24px;
+.entry-title {
+  font-size: 22px;
   font-weight: 700;
-  margin: 4px 0;
+  margin: 2px 0;
   white-space: nowrap;
 }
 
 .entry-button-group {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin-bottom: 30px;
+  gap: 12px;
+  margin-bottom: 24px;
   width: 100%;
-  max-width: 280px;
+  max-width: 250px;
 }
 
 .entry-button {
-  padding: 12px 0;
-  font-size: 16px;
+  padding: 10px 0;
+  font-size: 15px;
   font-weight: 600;
   border: none;
   border-radius: 10px;
@@ -50,9 +49,9 @@
 }
 
 .selected-video-box {
-  width: 100%;
-  max-width: 320px;
-  height: 120px;
+  width: 90%;
+  max-width: 300px;
+  height: 100px;
   background-color: #fff;
   border: 2px dashed #999;
   border-radius: 12px;
@@ -64,7 +63,7 @@
 }
 
 .moving-label {
-  font-size: 16px;
+  font-size: 15px;
   color: #333;
 }
 
@@ -76,9 +75,9 @@
   color: white;
   border: none;
   border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  font-size: 14px;
+  width: 22px;
+  height: 22px;
+  font-size: 13px;
   line-height: 20px;
   cursor: pointer;
 }
@@ -86,13 +85,13 @@
 .nav-button-group {
   display: flex;
   flex-direction: row;
-  gap: 20px;
-  margin-top: 10px;
+  gap: 16px;
+  margin-top: 5px;
 }
 
 .nav-button {
-  padding: 10px 28px;
-  font-size: 16px;
+  padding: 8px 20px;
+  font-size: 15px;
   font-weight: 600;
   border: none;
   border-radius: 10px;
