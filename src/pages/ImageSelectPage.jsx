@@ -60,7 +60,8 @@ const ImageSelectPage = () => {
     };
     reader.readAsDataURL(file);
   };
-
+  
+  
   return (
     <div className="image-select-container">
       <h2>배경으로 사용할 이미지 4개를<br />선택해주세요</h2>
