@@ -1,27 +1,35 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../styles/StyleSelectPage.css';
+.select-center-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
 
-const StyleSelectPage = () => {
-  const navigate = useNavigate();
+.center-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
 
-  return (
-    <div className="style-select-wrapper">
-      <div className="style-select-box">
-        <h2 className="question-text">어떤 배경으로 사랑을 담아볼까요?</h2>
-        <button className="option-button" onClick={() => navigate('/image/select')}>
-          이미지 배경 선택
-        </button>
-        <button className="option-button" onClick={() => navigate('/video/select')}>
-          영상 배경 선택
-        </button>
-      </div>
+.center-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
 
-      <button className="floating-back" onClick={() => navigate(-1)}>
-        ← 뒤로가기
-      </button>
-    </div>
-  );
-};
+.center-btn {
+  width: 200px;
+  padding: 12px;
+  background-color: #f7b3e6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
 
-export default StyleSelectPage;
+.center-btn:hover {
+  background-color: #e293d3;
+}
