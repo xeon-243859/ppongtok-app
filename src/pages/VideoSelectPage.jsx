@@ -23,7 +23,10 @@ const VideoSelectPage = () => {
     setSelectedVideo(null);
     localStorage.removeItem("selectedVideo");
   };
-
+  const handleVideoNext = () => {
+    navigate("/video/theme");
+  };
+  
   const handleNext = () => {
     if (selectedVideo) {
       navigate("/music/select");

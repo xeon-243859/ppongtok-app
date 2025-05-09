@@ -6,6 +6,7 @@ import LoveFormPage from "./pages/LoveFormPage";
 import StyleSelectPage from "./pages/StyleSelectPage";
 import ImageSelectPage from "./pages/ImageSelectPage";
 import ImageThemePage from "./pages/ImageThemePage";
+import VideoThemePage from "./pages/VideoThemePage";
 
 // 필요하면 여기 다른 페이지들도 추가 가능
 
@@ -25,7 +26,7 @@ function App() {
       <Route path="/style/select" element={<StyleSelectPage />} />
       <Route path="/image/select" element={<ImageSelectPage />} />
       <Route path="/image/theme" element={<ImageThemePage />} />
-
+      <Route path="/video/theme" element={<VideoThemePage />} />
     </Routes>
   );
 }
