@@ -9,7 +9,7 @@ import VideoEntryPage from "./pages/VideoEntryPage";
 import VideoSelectPage from "./pages/VideoSelectPage";
 import MusicSelectPage from "./pages/MusicSelectPage";
 import StyleSelectPage from "./pages/StyleSelectPage";
-import BackButton from "./components/BackButton"; // 뒤로가기 버튼 추가
+
 
 function App() {
   return (
