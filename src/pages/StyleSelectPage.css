@@ -1,12 +1,21 @@
+/* 전체 화면을 차지하면서 absolute 기준이 될 부모 */
+.root-wrapper {
+  position: relative;
+  height: 100vh;
+  background-color: #fffefc;
+}
+
+/* 자막을 화면 아래 정중앙에 배치 */
 .bottom-wrapper {
   position: absolute;
-  bottom: 60px; /* 화면 하단에서 약간 띄움 */
+  bottom: 60px;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
   width: 100%;
 }
 
+/* 타자체 효과 */
 .typing-text {
   font-size: 22px;
   font-weight: bold;
