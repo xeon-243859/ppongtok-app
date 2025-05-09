@@ -7,6 +7,7 @@ import StyleSelectPage from "./pages/StyleSelectPage";
 import ImageSelectPage from "./pages/ImageSelectPage";
 import ImageThemePage from "./pages/ImageThemePage";
 import VideoThemePage from "./pages/VideoThemePage";
+import VideoSelectPage from "./pages/VideoSelectPage";
 
 // 필요하면 여기 다른 페이지들도 추가 가능
 
@@ -27,6 +28,7 @@ function App() {
       <Route path="/image/select" element={<ImageSelectPage />} />
       <Route path="/image/theme" element={<ImageThemePage />} />
       <Route path="/video/theme" element={<VideoThemePage />} />
+      <Route path="/video/select" element={<VideoSelectPage />} />
     </Routes>
   );
 }
