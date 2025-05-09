@@ -1,45 +1,40 @@
-/* src/pages/intropage.css */
 .intro-container {
-  text-align: center;
-  padding-top: 20%;
-  background-color: #fffafc;
-  height: 100vh;
-  font-family: 'Arial', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #ffeef1;
+  font-family: "Pretendard", sans-serif;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .intro-title {
-  font-size: 2rem;
+  font-size: 28px;
   font-weight: bold;
-  color: #000000;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  color: #333;
 }
 
-.intro-typing {
-  font-size: 1.2rem;
-  color: #444;
-  min-height: 40px;
-  margin-bottom: 40px;
-  white-space: pre-wrap;
-  word-break: keep-all;
-  animation: fadeIn 1s ease-in-out;
+.intro-subtitle {
+  font-size: 16px;
+  margin-bottom: 30px;
+  color: #666;
 }
 
-.intro-button {
-  padding: 12px 24px;
-  font-size: 1rem;
-  background-color: #ff7da9;
+.start-button {
+  padding: 12px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: #ff92b2;
   color: white;
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s;
 }
 
-.intro-button:hover {
-  background-color: #e96490;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.start-button:hover {
+  background-color: #ffb0c7;
 }
