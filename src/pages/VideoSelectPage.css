@@ -2,19 +2,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  height: 100vh;
-  background-color: #fff;
   padding: 20px;
-  text-align: center;
+  background-color: #fff;
+  min-height: 100vh;
   box-sizing: border-box;
 }
 
 .video-page-title {
   font-size: 24px;
   font-weight: bold;
-  margin-bottom: 5px;
-  animation: typing 2s steps(20, end), blink 0.75s step-end infinite;
+  margin-bottom: 4px;
+  animation: typing 2s steps(30, end), blink 0.75s step-end infinite;
   white-space: nowrap;
   overflow: hidden;
   border-right: 2px solid;
@@ -22,8 +20,8 @@
 
 .video-page-subtitle {
   font-size: 18px;
-  margin-bottom: 30px;
-  animation: typing 2s steps(20, end), blink 0.75s step-end infinite;
+  margin-bottom: 24px;
+  animation: typing 2s steps(30, end), blink 0.75s step-end infinite;
   white-space: nowrap;
   overflow: hidden;
   border-right: 2px solid;
@@ -40,13 +38,13 @@
 .thumbnail-box {
   position: relative;
   width: 100%;
-  padding-top: 56.25%;
+  padding-top: 56.25%; /* 16:9 */
   overflow: hidden;
   border: 2px solid #ccc;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
+  background-color: #f5f5f5;
   transition: transform 0.3s, border-color 0.3s;
-  background-color: #f9f9f9;
 }
 
 .thumbnail-box:hover {
@@ -63,16 +61,36 @@
   object-fit: cover;
 }
 
-.selected-thumbnail::after {
-  content: "✓";
+.selected-thumbnail {
+  border-color: #007bff;
+}
+
+.overlay-text {
   position: absolute;
-  top: 6px;
-  right: 10px;
-  background-color: #007bff;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.4);
   color: white;
-  border-radius: 50%;
-  padding: 4px 8px;
+  padding: 6px 12px;
+  border-radius: 6px;
   font-size: 14px;
+  pointer-events: none;
+}
+
+.remove-button {
+  position: absolute;
+  bottom: 6px;
+  left: 8px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 16px;
+  line-height: 20px;
+  cursor: pointer;
 }
 
 .back-button {
@@ -80,7 +98,7 @@
   top: 20px;
   left: 20px;
   padding: 8px 16px;
-  background-color: #ddd;
+  background-color: #eee;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -90,7 +108,7 @@
   margin-top: 30px;
   padding: 10px 24px;
   font-size: 16px;
-  background-color: #ff4d4f;
+  background-color: #fa5252;
   color: white;
   border: none;
   border-radius: 8px;
@@ -99,7 +117,7 @@
 }
 
 .next-button:hover {
-  background-color: #ff7875;
+  background-color: #ff8787;
 }
 
 @keyframes typing {
