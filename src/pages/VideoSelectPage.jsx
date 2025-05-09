@@ -5,7 +5,6 @@ import "./VideoSelectPage.css";
 
 const VideoSelectPage = () => {
   const navigate = useNavigate();
-
   const selected = localStorage.getItem("video-0");
 
   const handleSelect = () => {
@@ -15,7 +14,7 @@ const VideoSelectPage = () => {
 
   const handleRemove = () => {
     localStorage.removeItem("video-0");
-    navigate(0); // 페이지 새로고침
+    navigate(0);
   };
 
   const handleNext = () => {
@@ -31,17 +30,22 @@ const VideoSelectPage = () => {
       <h2 className="video-title">배경으로 사용할 영상파일</h2>
       <h3 className="video-subtitle">1개를 선택해주세요</h3>
 
-      <div className="video-box">
-        {selected ? (
-          <div className="selected-video-box">
-            <video src={selected} controls className="video-preview" />
-            <div className="overlay-text">moving file</div>
-            <button className="remove-button" onClick={handleRemove}>X</button>
-          </div>
-        ) : (
-          <div className="empty-video-box" onClick={handleSelect}>+</div>
-        )}
-      </div>
+      {/* 영상 파일 선택 버튼 */}
+      {!selected && (
+        <div className="video-button-row">
+          <button className="file-select-button" onClick={handleSelect}>동영상파일</button>
+          <button className="file-select-button" onClick={() => alert("내파일선택은 추후 구현")}>내파일선택</button>
+        </div>
+      )}
+
+      {/* 선택된 영상이 있을 경우에만 표시 */}
+      {selected && (
+        <div className="selected-video-box">
+          <video src={selected} controls className="video-preview" />
+          <div className="overlay-text">moving file</div>
+          <button className="remove-button" onClick={handleRemove}>X</button>
+        </div>
+      )}
 
       <div className="video-button-group">
         <button className="back-button" onClick={() => navigate("/style/select")}>뒤로가기</button>
@@ -52,4 +56,3 @@ const VideoSelectPage = () => {
 };
 
 export default VideoSelectPage;
-
