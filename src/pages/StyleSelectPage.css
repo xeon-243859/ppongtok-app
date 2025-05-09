@@ -23,6 +23,14 @@
   margin-bottom: 30px;
 }
 
+.style-select-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  width: 100%;
+}
+
 @keyframes typing {
   from { width: 0 }
   to { width: 100% }

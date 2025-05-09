@@ -8,7 +8,7 @@ const StyleSelectPage = () => {
   return (
     <div className="style-select-container">
       <h2 className="typing-text">어떤 배경으로 사랑을 담아볼까요?</h2>
-      <div className="button-group-vertical">
+      <div className="style-select-buttons">
         <button className="select-button" onClick={() => navigate('/image/select')}>
           이미지 배경 선택
         </button>
