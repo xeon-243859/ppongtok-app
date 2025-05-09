@@ -1,35 +1,25 @@
-.love-select-wrapper {
-  padding-top: 30vh; /* 💡 위에서 3분의 1 위치 */
-  text-align: center;
+.title-container {
+  padding-top: 30vh; /* 세로 3분의 1 위치 */
+  display: flex;
+  justify-content: center;
 }
 
-.love-title {
+.typing-text {
   font-size: 22px;
   font-weight: bold;
-  color: #e91e63; /* 진한 분홍 자막 */
-  margin-bottom: 40px;
+  color: #e91e63;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid #e91e63;
+  width: 0;
+  animation: typing 2.5s steps(30, end) forwards, blink 0.8s step-end infinite;
 }
 
-.love-button-group {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: center;
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
 }
 
-.love-button {
-  width: 80%;
-  max-width: 300px;
-  padding: 14px;
-  font-size: 16px;
-  background-color: #f06292;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.love-button:hover {
-  background-color: #ec407a;
+@keyframes blink {
+  50% { border-color: transparent }
 }
