@@ -1,42 +1,34 @@
-import React, { useEffect, useState } from "react";
+// ✅ StyleSelectPage.jsx
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./StyleSelectPage.css";
 
-function StyleSelectPage() {
+const StyleSelectPage = () => {
   const navigate = useNavigate();
-  const [typedText, setTypedText] = useState("");
-  const fullText = "어떤 배경으로 사랑을 담아볼까요?";
-  const [index, setIndex] = useState(0);
 
-  useEffect(() => {
-    const typing = setTimeout(() => {
-      if (index < fullText.length) {
-        setTypedText((prev) => prev + fullText[index]);
-        setIndex(index + 1);
-      }
-    }, 100);
-    return () => clearTimeout(typing);
-  }, [index]);
+  const handleImage = () => {
+    localStorage.setItem("bgType", "image");
+    navigate("/image/theme");
+  };
+
+  const handleVideo = () => {
+    localStorage.setItem("bgType", "video");
+    navigate("/video/entry");
+  };
 
   return (
-    <div className="style-container">
-      <h2 className="style-title">{typedText}</h2>
-      <div className="style-buttons">
-        <button
-          className="style-button"
-          onClick={() => navigate("/image/select")}
-        >
+    <div className="style-select-container">
+      <h1 className="style-title">어떤 배경을 사용할까요?</h1>
+      <div className="style-button-group">
+        <button className="style-button" onClick={handleImage}>
           이미지 배경 선택
         </button>
-        <button
-          className="style-button"
-          onClick={() => navigate("/video/select")}
-        >
+        <button className="style-button" onClick={handleVideo}>
           영상 배경 선택
         </button>
       </div>
     </div>
   );
-}
+};
 
 export default StyleSelectPage;
