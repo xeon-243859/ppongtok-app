@@ -12,8 +12,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* 앱 시작 시 intro로 이동 */}
-        <Route path="/" element={<Navigate to="/intro" replace />} />
+        {/* 앱 시작 시 메시지 만들기부터 시작하도록 수정 */}
+        <Route path="/" element={<Navigate to="/love/form" replace />} />
 
         {/* 1단계: 시작화면 */}
         <Route path="/intro" element={<IntroPage />} />
