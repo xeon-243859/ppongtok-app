@@ -6,7 +6,7 @@ const VideoEntryPage = () => {
   const navigate = useNavigate();
   const [selectedVideo, setSelectedVideo] = useState(null);
 
-  // localStorage에서 선택된 영상 불러오기
+  // 영상 선택된 상태 불러오기 (자동 이동 ❌)
   useEffect(() => {
     const stored = localStorage.getItem("selectedVideo");
     if (stored) {
