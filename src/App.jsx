@@ -25,7 +25,7 @@ function App() {
         <Route path="/love/form" element={<LoveFormPage />} />
 
         {/* 3단계: 이미지 or 영상 선택 경로 선택 */}
-        <Route path="/style/select" element={<><BackButton /><StyleSelectPage /></>} />
+        <Route path="/style/select" element={<StyleSelectPage />} />
         <Route path="/image/select" element={<ImageSelectPage />} />
         <Route path="/image/theme" element={<ImageThemePage />} />
         <Route path="/video/entry" element={<VideoEntryPage />} />

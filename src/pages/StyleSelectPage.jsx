@@ -1,35 +1,33 @@
 // ✅ StyleSelectPage.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "./StyleSelectPage.css";
+import "../styles/StyleSelectPage.css";
 
-const StyleSelectPage = () => {
+function StyleSelectPage() {
   const navigate = useNavigate();
-
-  const handleImage = () => {
-    localStorage.setItem("bgType", "image");
-    navigate("/image/select"); // ✅ 이미지 직접 선택 화면으로 이동
-
-  };
-
-  const handleVideo = () => {
-    localStorage.setItem("bgType", "video");
-    navigate("/video/entry");
-  };
 
   return (
     <div className="style-select-container">
-      <h1 className="style-title">어떤 배경을 사용할까요?</h1>
+      <button className="back-button" onClick={() => navigate(-1)}>⬅ 뒤로가기</button>
+
+      <h2 className="typing-effect">어떤 배경으로 사랑을 담아볼까요?</h2>
+
       <div className="style-button-group">
-        <button className="style-button" onClick={handleImage}>
+        <button
+          className="style-button"
+          onClick={() => navigate("/image/select")}
+        >
           이미지 배경 선택
         </button>
-        <button className="style-button" onClick={handleVideo}>
+        <button
+          className="style-button"
+          onClick={() => navigate("/video/entry")}
+        >
           영상 배경 선택
         </button>
       </div>
     </div>
   );
-};
+}
 
 export default StyleSelectPage;
