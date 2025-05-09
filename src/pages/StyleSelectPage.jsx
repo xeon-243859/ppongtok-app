@@ -1,4 +1,3 @@
-// src/pages/StyleSelectPage.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/StyleSelectPage.css';
@@ -20,8 +19,8 @@ const StyleSelectPage = () => {
 
   return (
     <div className="style-select-container">
-      <h2 className="typing-effect">어떤 배경으로 사랑을 담아볼까요?</h2>
-      <div className="button-group">
+      <h2 className="typing-text">어떤 배경으로 사랑을 담아볼까요?</h2>
+      <div className="button-group-vertical">
         <button className="select-button" onClick={handleImageSelect}>
           이미지 배경 선택
         </button>
