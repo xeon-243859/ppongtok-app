@@ -1,48 +1,24 @@
-import React from "react";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../styles/StyleSelectPage.css'; // ✅ 외부 CSS만 연결
 
-const TestAudioPage = () => {
-  const playAudio = () => {
-    const audio = document.getElementById("test-audio");
-    if (audio) {
-      audio.play().catch((e) => {
-        console.warn("재생 실패:", e);
-        alert("브라우저가 자동 재생을 차단했어요. 버튼을 다시 눌러주세요.");
-      });
-    }
-  };
+const StyleSelectPage = () => {
+  const navigate = useNavigate();
 
   return (
-    <div style={{
-      height: "100vh",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      backgroundColor: "#f4f4f4"
-    }}>
-      <h1>🎵 배경 음악 단독 테스트</h1>
-      <p>아래 버튼을 누르면 음악이 재생되어야 해요.</p>
-      <audio id="test-audio">
-        <source src="/music/mueon1.mp3" type="audio/mpeg" />
-        브라우저가 오디오를 지원하지 않습니다.
-      </audio>
-      <button
-        onClick={playAudio}
-        style={{
-          padding: "12px 24px",
-          fontSize: "1rem",
-          marginTop: "20px",
-          borderRadius: "8px",
-          border: "none",
-          backgroundColor: "#ff7f7f",
-          color: "#fff",
-          cursor: "pointer"
-        }}
-      >
-        ▶ 음악 재생하기
-      </button>
+    <div className="select-center-box">
+      <h2 className="center-title">어떤 배경으로 사랑을 담아볼까요?</h2>
+
+      <div className="center-buttons">
+        <button className="center-btn" onClick={() => navigate('/image/select')}>
+          이미지 배경 선택
+        </button>
+        <button className="center-btn" onClick={() => navigate('/video/select')}>
+          영상 배경 선택
+        </button>
+      </div>
     </div>
   );
 };
 
-export default TestAudioPage;
+export default StyleSelectPage;
