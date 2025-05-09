@@ -31,12 +31,14 @@ const VideoSelectPage = () => {
       <h3 className="video-subtitle">1개를 선택해주세요</h3>
 
       {/* 영상 파일 선택 버튼 */}
-      {!selected && (
-        <div className="video-button-row">
-          <button className="file-select-button" onClick={handleSelect}>동영상파일</button>
-          <button className="file-select-button" onClick={() => alert("내파일선택은 추후 구현")}>내파일선택</button>
-        </div>
-      )}
+      <div className="video-button-row">
+        {!selected && (
+          <>
+            <button className="file-select-button" onClick={handleSelect}>동영상파일</button>
+            <button className="file-select-button" onClick={() => alert("내파일선택은 추후 구현")}>내파일선택</button>
+          </>
+        )}
+      </div>
 
       {/* 선택된 영상이 있을 경우에만 표시 */}
       {selected && (
