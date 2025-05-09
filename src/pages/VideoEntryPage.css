@@ -3,35 +3,38 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   min-height: 100vh;
   background-color: #ffeef1;
-  padding: 20px;
+  padding: 40px 20px;
   box-sizing: border-box;
   font-family: "Pretendard", sans-serif;
 }
 
 .entry-text-block {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 }
 
-.entry-title {
+.entry-title,
+.entry-subtitle {
   font-size: 24px;
   font-weight: 700;
-  margin-bottom: 6px;
+  margin: 4px 0;
   white-space: nowrap;
 }
 
 .entry-button-group {
   display: flex;
-  flex-direction: row;
-  gap: 20px;
+  flex-direction: column;
+  gap: 16px;
   margin-bottom: 30px;
+  width: 100%;
+  max-width: 280px;
 }
 
 .entry-button {
-  padding: 12px 28px;
+  padding: 12px 0;
   font-size: 16px;
   font-weight: 600;
   border: none;
@@ -47,10 +50,11 @@
 }
 
 .selected-video-box {
-  width: 90%;
-  max-width: 480px;
-  height: 200px;
-  background-color: #ddd;
+  width: 100%;
+  max-width: 320px;
+  height: 120px;
+  background-color: #fff;
+  border: 2px dashed #999;
   border-radius: 12px;
   position: relative;
   margin-bottom: 30px;
@@ -60,22 +64,22 @@
 }
 
 .moving-label {
-  font-size: 18px;
+  font-size: 16px;
   color: #333;
 }
 
 .remove-button {
   position: absolute;
-  bottom: 10px;
-  right: 12px;
+  bottom: 8px;
+  right: 10px;
   background-color: rgba(0, 0, 0, 0.6);
   color: white;
   border: none;
   border-radius: 50%;
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   font-size: 14px;
-  line-height: 24px;
+  line-height: 20px;
   cursor: pointer;
 }
 
@@ -87,7 +91,7 @@
 }
 
 .nav-button {
-  padding: 10px 24px;
+  padding: 10px 28px;
   font-size: 16px;
   font-weight: 600;
   border: none;

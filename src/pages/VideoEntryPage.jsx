@@ -11,7 +11,7 @@ const VideoEntryPage = () => {
     <div className="entry-page-container">
       <div className="entry-text-block">
         <h1 className="entry-title">배경으로 사용할 영상파일</h1>
-        <h2 className="entry-title">1개를 선택해주세요</h2>
+        <h2 className="entry-subtitle">1개를 선택해주세요</h2>
       </div>
 
       <div className="entry-button-group">
