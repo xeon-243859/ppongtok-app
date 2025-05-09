@@ -5,7 +5,7 @@ import "./VideoThemePage.css";
 
 const videos = [
   { src: "/videos/flower.mp4", label: "따뜻한" },
-  { src: "/videos/river.mp4", label: "청량한" },
+  { src: "/videos/river.mp4", label: "낭만적인" },
   { src: "/videos/sky.mp4", label: "감성적인" },
   { src: "/videos/sunset.mp4", label: "화려한" },
 ];
