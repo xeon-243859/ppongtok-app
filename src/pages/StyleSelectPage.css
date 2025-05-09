@@ -1,36 +1,22 @@
-/* src/styles/StyleSelectPage.css */
-
-.style-select-container {
+.style-page-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
   min-height: 100vh;
-  padding-top: 30vh; /* 정확히 화면 1/3에서 시작 */
+  padding-top: 30vh;
   position: relative;
   text-align: center;
-  box-sizing: border-box;
 }
 
 .typing-text {
   font-size: 22px;
   font-weight: bold;
+  margin-bottom: 40px;
   white-space: nowrap;
   overflow: hidden;
   border-right: 2px solid #000;
-  animation: typing 2s steps(30, end), blink 0.7s step-end infinite;
-  width: 100%;
-  max-width: 300px;
-  margin-bottom: 30px;
-}
-
-.style-select-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: center;
-  width: 100%;
-  flex-wrap: nowrap;           /* 줄바꿈 막기 */
-  justify-content: flex-start; /* 위쪽 정렬 */
+  animation: typing 2s steps(30, end), blink 0.8s step-end infinite;
 }
 
 @keyframes typing {
@@ -42,7 +28,7 @@
   50% { border-color: transparent }
 }
 
-.button-group-vertical {
+.button-stack {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -51,7 +37,6 @@
 }
 
 .select-button {
-  display: block; /* 🔥 이 한 줄이 핵심!! */
   padding: 12px 24px;
   font-size: 16px;
   background-color: #f7b3e6;
@@ -69,7 +54,7 @@
 
 .back-button {
   position: fixed;
-  bottom: 70px; /* 너무 아래 안 가게 조정 */
+  bottom: 60px;
   right: 20px;
   background-color: #a24ef7;
   color: white;
