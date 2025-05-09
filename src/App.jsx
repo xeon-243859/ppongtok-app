@@ -1,29 +1,25 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import IntroPage from './pages/IntroPage';
-import LoveFormPage from './pages/LoveFormPage';
-import StyleSelectPage from './pages/StyleSelectPage';
-import ImageSelectPage from './pages/ImageSelectPage';
-import ImageThemePage from './pages/ImageThemePage'; // ✅ 새로 import
-import MusicSelectPage from './pages/MusicSelectPage';
-import LovePreviewPage from './pages/LovePreviewPage';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+
+import VideoEntryPage from "./pages/VideoEntryPage";
 import VideoSelectPage from "./pages/VideoSelectPage";
-import VideoThemePage from "./pages/VideoThemePage";
+import VideoUploadPage from "./pages/VideoUploadPage"; // 만약 만들 예정이라면
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<IntroPage />} />
-        <Route path="/love/form" element={<LoveFormPage />} />
-        <Route path="/love/style" element={<StyleSelectPage />} />
-        <Route path="/image/select" element={<ImageSelectPage />} />
-        <Route path="/image/theme" element={<ImageThemePage />} /> {/* ✅ 추가 */}
-        <Route path="/music/select" element={<MusicSelectPage />} />
-        <Route path="/love/preview" element={<LovePreviewPage />} />
-        <Route path="/video/select" element={<VideoSelectPage />} />
-        <Route path="/video/theme" element={<VideoThemePage />} />
+        {/* 시작 시 무조건 entry 페이지로 */}
+        <Route path="/" element={<Navigate to="/video/entry" replace />} />
         
+        {/* 영상 선택 진입화면 (1단계) */}
+        <Route path="/video/entry" element={<VideoEntryPage />} />
+
+        {/* 영상 저장소 선택화면 (썸네일) */}
+        <Route path="/video/select" element={<VideoSelectPage />} />
+
+        {/* 내 파일 업로드 선택화면 */}
+        <Route path="/video/upload" element={<VideoUploadPage />} />
       </Routes>
     </Router>
   );
