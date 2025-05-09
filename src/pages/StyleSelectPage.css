@@ -1,7 +1,8 @@
-.title-container {
-  padding-top: 30vh; /* 세로 3분의 1 위치 */
+.center-wrapper {
   display: flex;
   justify-content: center;
+  align-items: center;
+  height: 100vh; /* 화면 전체 높이 기준으로 정렬 */
 }
 
 .typing-text {
