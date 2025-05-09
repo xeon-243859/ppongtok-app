@@ -1,3 +1,4 @@
+// ✅ VideoSelectPage.jsx (그대로 유지)
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./VideoSelectPage.css";
@@ -31,23 +32,16 @@ const VideoSelectPage = () => {
     }
   };
 
-  const handleBack = () => {
-    navigate("/style");
-  };
-
   return (
-    <div className="video-page-container">
-      <button className="back-button" onClick={handleBack}>뒤로가기</button>
-      <h1 className="video-page-title">배경으로 사용할 영상파일</h1>
-      <h2 className="video-page-subtitle">1개를 선택해주세요</h2>
+    <div className="video-select-container">
+      <h1 className="video-title">배경으로 사용할 영상파일</h1>
+      <h2 className="video-subtitle">1개를 선택해주세요</h2>
 
       <div className="video-thumbnails">
         {videoOptions.map((video, index) => (
           <div
             key={index}
-            className={`thumbnail-box ${
-              selectedVideo?.name === video.name ? "selected-thumbnail" : ""
-            }`}
+            className={`thumbnail-box ${selectedVideo?.name === video.name ? "selected" : ""}`}
             onClick={() => handleSelect(video)}
           >
             <video src={video.src} muted loop playsInline />
@@ -55,11 +49,9 @@ const VideoSelectPage = () => {
               <>
                 <div className="overlay-text">moving file</div>
                 <button className="remove-button" onClick={(e) => {
-                  e.stopPropagation(); // 버튼 클릭 시 썸네일 클릭 방지
+                  e.stopPropagation();
                   handleRemove();
-                }}>
-                  X
-                </button>
+                }}>X</button>
               </>
             )}
           </div>
@@ -72,4 +64,3 @@ const VideoSelectPage = () => {
 };
 
 export default VideoSelectPage;
-
