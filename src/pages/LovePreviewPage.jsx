@@ -60,12 +60,20 @@ const LovePreviewPage = () => {
     setMusic(null);
   };
 
+  const clearVideo = () => {
+    localStorage.removeItem("video-0");
+    setVideo(null);
+  };
+
   return (
     <div className="preview-container">
       {image ? (
         <img className="preview-media" src={image} alt="선택된 이미지" />
       ) : video ? (
-        <video className="preview-media" src={video} autoPlay loop muted />
+        <div className="video-wrapper">
+          <video className="preview-media" src={video} autoPlay loop muted />
+          <button className="preview-video-remove" onClick={clearVideo}>✖</button>
+        </div>
       ) : (
         <div className="preview-placeholder">배경이 없습니다.</div>
       )}
@@ -75,9 +83,6 @@ const LovePreviewPage = () => {
       {music && (
         <>
           <audio src={music} autoPlay loop className="preview-audio" />
-          <div className="preview-music-remove">
-            <button onClick={clearMusic}>🎵 음악 제거</button>
-          </div>
         </>
       )}
 
@@ -91,6 +96,7 @@ const LovePreviewPage = () => {
         <button onClick={() => handleShare("facebook")}>Facebook</button>
         <button onClick={() => handleShare("twitter")}>Twitter</button>
         <button onClick={() => handleShare("kakao")}>KakaoTalk</button>
+        {music && <button onClick={clearMusic}>🎵 음악 제거</button>}
       </div>
     </div>
   );
