@@ -32,17 +32,38 @@
   background-color: #fff;
 }
 
-.join-button {
+.join-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   margin-top: 20px;
+}
+
+.join-button {
   padding: 10px 25px;
   background-color: #ffb6b6;
   border: none;
   border-radius: 20px;
   font-size: 1rem;
   cursor: pointer;
-  color: #fff;
+  color: #fff; /* ✅ 글씨 진하게 */
+  font-weight: 600; /* ✅ 글씨 강조 */
 }
 
 .join-button:hover {
   background-color: #ff9090;
+}
+
+.skip-button {
+  padding: 10px 25px;
+  background-color: #ddd;
+  border: none;
+  border-radius: 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #555;
+}
+
+.skip-button:hover {
+  background-color: #bbb;
 }
