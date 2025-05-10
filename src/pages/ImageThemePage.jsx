@@ -1,89 +1,45 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import "./ImageSelectPage.css";
+import "./ImageThemePage.css";
 
-const ImageSelectPage = () => {
+const themes = [
+  { id: "img01", src: "/backgrounds/cosmos.jpg" },
+  { id: "img02", src: "/backgrounds/leaves.jpg" },
+  { id: "img03", src: "/backgrounds/road.jpg" },
+  { id: "img04", src: "/backgrounds/water.jpg" },
+];
+
+const ImageThemePage = () => {
   const navigate = useNavigate();
-  const fileInputRef = useRef(null);
-  const [images, setImages] = useState(["", "", "", ""]);
 
-  const handleDelete = (index) => {
-    const updated = [...images];
-    updated[index] = "";
-    setImages(updated);
-    localStorage.removeItem(`img-${index + 1}`);
-  };
-
-  const saveImage = (dataUrl) => {
-    const updated = [...images];
-    for (let i = 0; i < 4; i++) {
-      if (!updated[i]) {
-        updated[i] = dataUrl;
-        setImages(updated);
-        localStorage.setItem(`img-${i + 1}`, dataUrl);
-        return;
+  const handleSelect = (src) => {
+    for (let i = 1; i <= 4; i++) {
+      const key = `img-${i}`;
+      if (!localStorage.getItem(key)) {
+        localStorage.setItem(key, src);
+        break;
       }
     }
-    alert("모든 슬롯이 가득 찼어요!");
-  };
-
-  const handleImageFile = () => {
-    const index = images.findIndex((img) => img === "");
-    if (index === -1) {
-      alert("모든 슬롯이 가득 찼어요!");
-      return;
-    }
-    const slot = `img-${index + 1}`;
-    localStorage.setItem("selected-slot", slot);
-    navigate("/image/theme");
-  };
-
-  const handleLocalFile = () => {
-    fileInputRef.current.click();
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      saveImage(reader.result);
-    };
-    reader.readAsDataURL(file);
+    navigate("/image/select");
   };
 
   return (
-    <div className="image-select-title">
-      <h2>배경으로 사용할 이미지 4개를<br />선택해주세요</h2>
+    <div className="theme-container">
+      <h2 className="theme-title">이미지 테마 저장소</h2>
 
-      <div className="file-button-group">
-        <button onClick={handleImageFile}>이미지파일</button>
-        <button onClick={handleLocalFile}>내파일선택</button>
-        <input
-          type="file"
-          accept="image/*"
-          ref={fileInputRef}
-          onChange={handleFileChange}
-          style={{ display: "none" }}
-        />
-      </div>
-
-      <div className="image-slots">
-        {images.map((src, i) => (
-          <div className="image-slot" key={i}>
-            {src ? (
-              <>
-                <img src={src} alt={`img-${i + 1}`} />
-                <button onClick={() => handleDelete(i)}>❌</button>
-              </>
-            ) : (
-              <p>{`img-${i + 1}`}</p>
-            )}
-          </div>
+      <div className="theme-grid">
+        {themes.map((img) => (
+          <img
+            key={img.id}
+            src={img.src}
+            alt={img.id}
+            className="theme-thumb"
+            onClick={() => handleSelect(img.src)}
+          />
         ))}
       </div>
 
-      <div className="button-group">
+      <div className="theme-buttons">
         <button onClick={() => navigate(-1)}>뒤로가기</button>
         <button onClick={() => navigate("/music/select")}>다음으로</button>
       </div>
@@ -91,4 +47,4 @@ const ImageSelectPage = () => {
   );
 };
 
-export default ImageSelectPage;
+export default ImageThemePage;

@@ -1,81 +1,58 @@
-.image-select-title {
-  font-size: 1.3rem;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.image-select-container {
+.theme-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 50px;
+  padding: 40px 20px;
   text-align: center;
 }
 
-.file-button-group {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+.theme-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 30px;
 }
 
-.image-slots {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-  margin: 20px 0;
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 40px;
 }
 
-.image-slot {
-  width: 80px;
-  height: 80px;
-  border: 1px dashed #ccc;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  background-color: #fdfdfd;
-}
-
-.image-slot img {
-  max-width: 100%;
-  max-height: 100%;
+.theme-thumb {
+  width: 150px;
+  height: 150px;
   object-fit: cover;
-}
-
-.image-slot button {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  background-color: #f00;
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
+  border-radius: 10px;
   cursor: pointer;
+  border: 2px solid #ddd;
+  transition: transform 0.2s, border-color 0.3s;
 }
 
-.button-group {
+.theme-thumb:hover {
+  transform: scale(1.05);
+  border-color: #ff9090;
+}
+
+.theme-buttons {
   display: flex;
-  justify-content: space-between;
-  margin-top: 30px;
-  width: 200px;
+  gap: 20px;
+  justify-content: center;
 }
 
-.button-group button {
-  padding: 10px 20px;
-  font-size: 0.9rem;
+.theme-buttons button {
+  padding: 12px 28px;
+  font-size: 1rem;
   border: none;
-  border-radius: 20px;
-  background-color: #ffb6b6;
-  color: white;
+  border-radius: 25px;
+  background-color: #ffc8c8;
+  color: #333;
+  font-weight: 500;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
-.button-group button:hover {
-  background-color: #ff9090;
+.theme-buttons button:hover {
+  background-color: #ff9e9e;
 }
