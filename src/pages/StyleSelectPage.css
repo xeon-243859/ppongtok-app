@@ -1,55 +1,39 @@
-.style-select-container {
-  height: 100vh;
+.style-container {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-content: flex-start;
-  padding-top: 30vh;
-  background-color: #fffefc;
+  height: 100vh;
+  background-color: #fffdf8;
+  padding: 20px;
+  box-sizing: border-box;
   text-align: center;
 }
 
-/* 타자체 자막 */
-.typing-text {
-  font-size: 22px;
+.style-title {
+  font-size: 1.6rem;
   font-weight: bold;
-  color: #e91e63;
-  white-space: nowrap;
-  overflow: hidden;
-  border-right: 2px solid #e91e63;
-  width: 0;
-  animation: typing 2.5s steps(30, end) forwards, blink 0.8s step-end infinite;
+  margin-bottom: 30px;
+  color: #333;
 }
 
-@keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
-}
-
-@keyframes blink {
-  50% { border-color: transparent }
-}
-
-/* 감성 버튼 */
-.style-button-group {
-  margin-top: 40px;
+.style-buttons {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  flex-direction: row;
+  gap: 15px;
 }
 
 .style-button {
-  width: 240px;
-  padding: 14px;
-  background-color: #f06292;
+  padding: 12px 24px;
+  font-size: 1rem;
+  background-color: #ffb6b6;
   color: white;
   border: none;
   border-radius: 20px;
-  font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 .style-button:hover {
-  background-color: #ec407a;
+  background-color: #ff8f8f;
 }
