@@ -1,19 +1,29 @@
 // ✅ LovePreviewPage.jsx
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./LovePreviewPage.css";
 
 const LovePreviewPage = () => {
-  const video = localStorage.getItem("video-0");
-  const image = localStorage.getItem("image-0");
-  const music = localStorage.getItem("music-0");
-  const message = localStorage.getItem("love-text");
+  const [video, setVideo] = useState(null);
+  const [image, setImage] = useState(null);
+  const [music, setMusic] = useState(null);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    console.log("🎬 배경 영상 (video-0):", video);
-    console.log("🖼️ 배경 이미지 (image-0):", image);
-    console.log("🎵 배경 음악 (music-0):", music);
-    console.log("💌 자막 텍스트 (love-text):", message);
+    const loadedVideo = localStorage.getItem("video-0");
+    const loadedImage = localStorage.getItem("image-0");
+    const loadedMusic = localStorage.getItem("music-0");
+    const loadedMessage = localStorage.getItem("love-text");
+
+    setVideo(loadedVideo);
+    setImage(loadedImage);
+    setMusic(loadedMusic);
+    setMessage(loadedMessage);
+
+    console.log("🎬 배경 영상 (video-0):", loadedVideo);
+    console.log("🖼️ 배경 이미지 (image-0):", loadedImage);
+    console.log("🎵 배경 음악 (music-0):", loadedMusic);
+    console.log("💌 자막 텍스트 (love-text):", loadedMessage);
   }, []);
 
   const handleCopy = () => {
@@ -45,6 +55,11 @@ const LovePreviewPage = () => {
     window.open(shareUrl, "_blank");
   };
 
+  const clearMusic = () => {
+    localStorage.removeItem("music-0");
+    setMusic(null);
+  };
+
   return (
     <div className="preview-container">
       {image ? (
@@ -57,7 +72,14 @@ const LovePreviewPage = () => {
 
       {message && <div className="preview-caption">{message}</div>}
 
-      {music && <audio src={music} autoPlay loop className="preview-audio" />}
+      {music && (
+        <>
+          <audio src={music} autoPlay loop className="preview-audio" />
+          <div className="preview-music-remove">
+            <button onClick={clearMusic}>🎵 음악 제거</button>
+          </div>
+        </>
+      )}
 
       <div className="preview-buttons">
         <button onClick={handleCopy}>링크 복사</button>
