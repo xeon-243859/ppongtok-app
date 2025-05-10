@@ -27,8 +27,8 @@ const VideoSelectPage = () => {
 
   return (
     <div className="video-select-container">
-      <h2 className="video-title">배경으로 사용할 영상파일</h2>
-      <h3 className="video-subtitle">1개를 선택해주세요</h3>
+      <h2 className="video-title typing-effect">배경으로 사용할 영상파일</h2>
+      <h3 className="video-subtitle typing-effect">1개를 선택해 주세요</h3>
 
       {/* 영상 파일 선택 버튼 */}
       <div className="video-button-row">
@@ -44,13 +44,14 @@ const VideoSelectPage = () => {
             <span className="overlay-text">moving file</span>
             <button className="remove-button" onClick={handleRemove}>X</button>
           </div>
+
+          {/* 버튼 묶음도 이 안으로 이동 */}
+          <div className="video-button-group">
+            <button className="back-button" onClick={() => navigate("/style/select")}>뒤로가기</button>
+            <button className="next-button" onClick={handleNext}>다음으로</button>
+          </div>
         </div>
       )}
-
-      <div className="video-button-group">
-        <button className="back-button" onClick={() => navigate("/style/select")}>뒤로가기</button>
-        <button className="next-button" onClick={handleNext}>다음으로</button>
-      </div>
     </div>
   );
 };
