@@ -1,4 +1,4 @@
-// ✅ LovePreviewPage.jsx - 단순하고 안정적인 구조로 재작성
+// ✅ LovePreviewPage.jsx - base64 및 z-index 기반 안정 렌더링 구조
 import React, { useEffect } from "react";
 import "./LovePreviewPage.css";
 
@@ -43,16 +43,23 @@ const LovePreviewPage = () => {
 
   return (
     <div className="preview-container">
-      {video ? (
-        <video className="preview-media" src={video} autoPlay loop muted />
-      ) : image ? (
+      {/* 배경: 이미지가 있으면 이미지 우선, 없으면 영상 */}
+      {image && image.includes("data:image") ? (
         <img className="preview-media" src={image} alt="선택된 이미지" />
+      ) : video && video.includes(".mp4") ? (
+        <video className="preview-media" src={video} autoPlay loop muted />
       ) : (
         <div className="preview-placeholder">배경이 없습니다.</div>
       )}
 
-      {message && <div className="preview-caption">{message}</div>}
+      {/* 자막 */}
+      {message && (
+        <div className="preview-caption">
+          {message}
+        </div>
+      )}
 
+      {/* 음악 */}
       {music && <audio src={music} autoPlay loop className="preview-audio" />}
 
       <div className="preview-buttons">
