@@ -9,8 +9,8 @@ const ImageSelectPage = () => {
 
   // ✅ localStorage에서 이미지 상태 복구
   useEffect(() => {
-    const loaded = [1, 2, 3, 4].map(i => localStorage.getItem(`img-${i}`) || "");
-    setImages(loaded);
+    const timer = setTimeout(() => setShowText(true), 500);
+  return () => clearTimeout(timer);
   }, []);
 
   const handleDelete = (index) => {
@@ -63,7 +63,7 @@ const ImageSelectPage = () => {
   
   
   return (
-    <div className="image-select-container">
+    <div className="image-select-title">
       <h2>배경으로 사용할 이미지 4개를<br />선택해주세요</h2>
 
       <div className="file-button-group">

@@ -1,10 +1,11 @@
 .image-select-container {
-  background-color: #ffeef3;
-  min-height: 100vh;
-  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 30vh; /* 추가 */
   text-align: center;
-  font-family: 'Pretendard', sans-serif;
 }
+
 
 .file-button-group {
   margin-bottom: 20px;
@@ -76,4 +77,21 @@
   border: none;
   border-radius: 10px;
   cursor: pointer;
+}
+.image-select-title {
+  font-size: 1.3rem;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid #333;
+  animation: typingEffect 2.5s steps(40, end) forwards;
+}
+
+@keyframes typingEffect {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
 }
