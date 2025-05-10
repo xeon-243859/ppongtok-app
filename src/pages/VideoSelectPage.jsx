@@ -44,14 +44,22 @@ const VideoSelectPage = () => {
             <span className="overlay-text">moving file</span>
             <button className="remove-button" onClick={handleRemove}>X</button>
           </div>
+
+          {/* 버튼 묶음도 여기로 이동 */}
+          <div className="video-button-group">
+            <button className="back-button" onClick={() => navigate("/style/select")}>뒤로가기</button>
+            <button className="next-button" onClick={handleNext}>다음으로</button>
+          </div>
         </div>
       )}
 
-      {/* 버튼 묶음은 항상 아래에 중앙 정렬 */}
-      <div className="video-button-group">
-        <button className="back-button" onClick={() => navigate("/style/select")}>뒤로가기</button>
-        <button className="next-button" onClick={handleNext}>다음으로</button>
-      </div>
+      {/* 선택이 없을 경우에도 버튼이 아래 중앙 정렬 */}
+      {!selected && (
+        <div className="video-button-group">
+          <button className="back-button" onClick={() => navigate("/style/select")}>뒤로가기</button>
+          <button className="next-button" onClick={handleNext}>다음으로</button>
+        </div>
+      )}
     </div>
   );
 };
