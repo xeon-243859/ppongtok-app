@@ -9,12 +9,9 @@ import ImageThemePage from "./pages/ImageThemePage";
 import VideoThemePage from "./pages/VideoThemePage";
 import VideoSelectPage from "./pages/VideoSelectPage";
 import MusicSelectPage from "./pages/MusicSelectPage";
-import MusicThemePage from "./pages/MusicThemePage"; // (추후 생성될 페이지)
+import MusicThemePage from "./pages/MusicThemePage";
 import LovePreviewPage from "./pages/LovePreviewPage";
 import EPreviewPage from "./pages/EPreviewPage";
-import JoinPage from "./pages/JoinPage";
-
-// 필요하면 여기 다른 페이지들도 추가 가능
 
 function App() {
   return (
@@ -35,10 +32,11 @@ function App() {
       <Route path="/video/theme" element={<VideoThemePage />} />
       <Route path="/video/select" element={<VideoSelectPage />} />
       <Route path="/music/select" element={<MusicSelectPage />} />
-      <Route path="/music/theme" element={<MusicThemePage />} />   
+      <Route path="/music/theme" element={<MusicThemePage />} />
+
+      {/* 🔹 미리보기 화면 */}
       <Route path="/preview" element={<LovePreviewPage />} />
       <Route path="/epreview" element={<EPreviewPage />} />
-      <Route path="/join" element={<JoinPage />} />
     </Routes>
   );
 }
