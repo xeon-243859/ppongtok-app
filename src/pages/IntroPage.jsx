@@ -20,7 +20,7 @@ const IntroPage = () => {
   }, []);
 
   const handleStart = () => {
-    navigate("/love");
+    navigate("/love/form");
   };
 
   return (
