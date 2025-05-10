@@ -8,6 +8,8 @@ import ImageSelectPage from "./pages/ImageSelectPage";
 import ImageThemePage from "./pages/ImageThemePage";
 import VideoThemePage from "./pages/VideoThemePage";
 import VideoSelectPage from "./pages/VideoSelectPage";
+import MusicSelectPage from "./pages/MusicSelectPage";
+import MusicThemePage from "./pages/MusicThemePage"; // (추후 생성될 페이지)
 
 // 필요하면 여기 다른 페이지들도 추가 가능
 
@@ -29,6 +31,8 @@ function App() {
       <Route path="/image/theme" element={<ImageThemePage />} />
       <Route path="/video/theme" element={<VideoThemePage />} />
       <Route path="/video/select" element={<VideoSelectPage />} />
+      <Route path="/music/select" element={<MusicSelectPage />} />
+      <Route path="/music/theme" element={<MusicThemePage />} />   
     </Routes>
   );
 }

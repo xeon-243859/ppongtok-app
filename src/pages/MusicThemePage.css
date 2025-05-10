@@ -1,0 +1,48 @@
+/* ✅ MusicThemePage.css */
+.music-theme-container {
+  padding: 24px;
+  text-align: center;
+  background-color: #fffafc;
+}
+
+.music-theme-container h2 {
+  font-size: 22px;
+  margin-bottom: 24px;
+  color: #333;
+}
+
+.music-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  justify-content: center;
+  padding: 0 16px;
+}
+
+.music-option {
+  border: 2px dashed #ccc;
+  border-radius: 12px;
+  padding: 12px;
+  background-color: white;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.music-option:hover {
+  transform: scale(1.03);
+  border-color: #999;
+}
+
+.music-option p {
+  font-size: 14px;
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 8px;
+}
+
+.music-option audio {
+  width: 100%;
+  max-width: 220px;
+  outline: none;
+}

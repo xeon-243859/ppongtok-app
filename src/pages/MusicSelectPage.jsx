@@ -1,71 +1,54 @@
-import React, { useState, useEffect } from "react";
+// ✅ MusicSelectPage.jsx
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./MusicSelectPage.css";
 
-const musicList = [
-  { name: "잔잔한 뮤온", file: "/audio/mueon.mp3" },
-  { name: "따뜻한 뮤온", file: "/audio/mueon1.mp3" },
-  { name: "봄 느낌", file: "/audio/spring.mp3" },
-  { name: "산들바람", file: "/audio/spring1.mp3" },
-];
-
-function MusicSelectPage() {
-  const [selectedMusic, setSelectedMusic] = useState(null);
-  const [typedTitle, setTypedTitle] = useState("");
+const MusicSelectPage = () => {
   const navigate = useNavigate();
+  const selected = localStorage.getItem("music-0");
 
-  // 타자 효과
-  useEffect(() => {
-    const title = "배경음악을 선택해주세요";
-    let i = 0;
-    const interval = setInterval(() => {
-      if (i < title.length) {
-        setTypedTitle((prev) => prev + title[i]);
-        i++;
-      } else {
-        clearInterval(interval);
-      }
-    }, 50);
-  }, []);
+  const handleSelect = () => {
+    localStorage.setItem("selected-slot", "music-0");
+    navigate("/music/theme");
+  };
 
-  const handleSelect = (file) => {
-    setSelectedMusic(file);
-    localStorage.setItem("selectedMusic", file);
+  const handleRemove = () => {
+    localStorage.removeItem("music-0");
+    navigate(0);
   };
 
   const handleNext = () => {
-    if (selectedMusic) {
-      navigate("/preview");
-    } else {
-      alert("음악을 선택해주세요!");
+    if (!selected) {
+      alert("음악을 선택해주세요");
+      return;
     }
-  };
-
-  const handleBack = () => {
-    navigate(-1);
+    navigate("/preview");
   };
 
   return (
-    <div className="music-container">
-      <h2 className="music-title">{typedTitle}</h2>
-      <div className="music-grid">
-        {musicList.map((music, idx) => (
-          <div
-            key={idx}
-            className={`music-card ${selectedMusic === music.file ? "selected" : ""}`}
-            onClick={() => handleSelect(music.file)}
-          >
-            <p>{music.name}</p>
-            <audio controls src={music.file} preload="metadata" />
-          </div>
-        ))}
+    <div className="music-select-container">
+      <h2 className="music-title">배경음악선택하기</h2>
+
+      <div className="music-button-row">
+        <button className="file-select-button" onClick={handleSelect}>배경음악파일</button>
+        <button className="file-select-button" onClick={() => alert("내파일선택은 추후 구현")}>내파일선택</button>
       </div>
-      <div className="button-group">
-        <button onClick={handleBack}>뒤로가기</button>
-        <button onClick={handleNext}>다음으로</button>
+
+      {/* 선택된 음악이 있을 경우 */}
+      {selected && (
+        <div className="selected-music-box">
+          <p className="music-label">Music--01</p>
+          <audio src={selected} controls className="audio-preview" />
+          <button className="remove-button" onClick={handleRemove}>X</button>
+        </div>
+      )}
+
+      <div className="music-button-group">
+        <button className="back-button" onClick={() => navigate("/video/select")}>뒤로가기</button>
+        <button className="next-button" onClick={handleNext}>다음으로</button>
       </div>
     </div>
   );
-}
+};
 
 export default MusicSelectPage;
