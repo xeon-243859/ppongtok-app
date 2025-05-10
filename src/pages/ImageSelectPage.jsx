@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ImageSelectPage.css";
 
@@ -7,12 +7,6 @@ const ImageSelectPage = () => {
   const fileInputRef = useRef(null);
   const [images, setImages] = useState(["", "", "", ""]);
 
-  // ✅ localStorage에서 이미지 상태 복구
-  useEffect(() => {
-    const timer = setTimeout(() => setShowText(true), 500);
-  return () => clearTimeout(timer);
-  }, []);
-
   const handleDelete = (index) => {
     const updated = [...images];
     updated[index] = "";
@@ -20,7 +14,6 @@ const ImageSelectPage = () => {
     localStorage.removeItem(`img-${index + 1}`);
   };
 
-  // ✅ base64 이미지 저장 (내파일선택)
   const saveImage = (dataUrl) => {
     const updated = [...images];
     for (let i = 0; i < 4; i++) {
@@ -34,9 +27,8 @@ const ImageSelectPage = () => {
     alert("모든 슬롯이 가득 찼어요!");
   };
 
-  // ✅ 이미지파일 클릭 → 비어있는 슬롯 selected-slot 설정 후 저장소 이동
   const handleImageFile = () => {
-    const index = images.findIndex(img => img === "");
+    const index = images.findIndex((img) => img === "");
     if (index === -1) {
       alert("모든 슬롯이 가득 찼어요!");
       return;
@@ -53,18 +45,18 @@ const ImageSelectPage = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
     const reader = new FileReader();
     reader.onloadend = () => {
       saveImage(reader.result);
     };
     reader.readAsDataURL(file);
   };
-  
-  
+
   return (
-    <div className="image-select-title">
-      <h2>배경으로 사용할 이미지 4개를<br />선택해주세요</h2>
+    <div className="image-select-container">
+      <h2 className="image-select-title">
+        배경으로 사용할 이미지 4개를<br />선택해주세요
+      </h2>
 
       <div className="file-button-group">
         <button onClick={handleImageFile}>이미지파일</button>
@@ -89,7 +81,6 @@ const ImageSelectPage = () => {
             ) : (
               <p>{`img-${i + 1}`}</p>
             )}
-            <p>{`img-${i + 1}`}</p>
           </div>
         ))}
       </div>
