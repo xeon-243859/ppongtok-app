@@ -1,32 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+// ✅ LovePreviewPage.jsx
+import React, { useEffect } from "react";
 import "./LovePreviewPage.css";
 
 const LovePreviewPage = () => {
-  const location = useLocation();
-  const { backgroundType, selected, music } = location.state || {};
-  const [showText, setShowText] = useState(false);
+  const video = localStorage.getItem("video-0");
+  const music = localStorage.getItem("music-0");
+  const message = localStorage.getItem("love-text");
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowText(true), 1000);
-    return () => clearTimeout(timer);
+    window.scrollTo(0, 0);
   }, []);
 
   return (
     <div className="preview-container">
-      {backgroundType === "video" ? (
-        <video src={`/videos/${selected}`} autoPlay loop muted className="background-media" />
+      {/* 배경 */}
+      {video ? (
+        <video className="preview-media" src={video} autoPlay loop muted />
       ) : (
-        <img src={selected} alt="배경 이미지" className="background-media" />
+        <div className="preview-placeholder">영상이 없습니다.</div>
       )}
 
-      {music && <audio src={`/audio/${music}`} autoPlay loop />}
+      {/* 자막 */}
+      {message && <div className="preview-caption">{message}</div>}
 
-      {showText && (
-        <div className="love-message">
-          당신에게 꼭 전하고 싶은 말이 있어요
-        </div>
-      )}
+      {/* 음악 */}
+      {music && <audio src={music} autoPlay loop className="preview-audio" />}
     </div>
   );
 };

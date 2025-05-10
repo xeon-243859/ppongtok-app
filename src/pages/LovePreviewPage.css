@@ -1,47 +1,43 @@
+/* ✅ LovePreviewPage.css */
 .preview-container {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    font-family: 'Pretendard', sans-serif;
-  }
-  
-  .background-media {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 1;
-  }
-  
-  .love-message {
-    position: absolute;
-    bottom: 10%;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
-    background-color: rgba(255, 255, 255, 0.6);
-    padding: 1rem 2rem;
-    border-radius: 20px;
-    font-size: 1.4rem;
-    font-weight: bold;
-    color: #333;
-    text-align: center;
-    max-width: 80%;
-    animation: fadeIn 2s ease-in-out;
-    backdrop-filter: blur(4px);
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateX(-50%) translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-  }
-  
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+}
+
+.preview-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.preview-caption {
+  position: absolute;
+  bottom: 10%;
+  width: 100%;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  z-index: 2;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+.preview-audio {
+  display: none;
+}
+
+.preview-placeholder {
+  color: white;
+  font-size: 20px;
+  z-index: 2;
+}
