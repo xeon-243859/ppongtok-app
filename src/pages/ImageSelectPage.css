@@ -15,8 +15,25 @@
 
 .file-button-group {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   margin-bottom: 20px;
+  justify-content: center;
+}
+
+.file-button-group button {
+  padding: 12px 26px;
+  font-size: 1rem;
+  background-color: #ffc8c8;
+  color: #333;
+  border: none;
+  border-radius: 25px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.file-button-group button:hover {
+  background-color: #ff9e9e;
 }
 
 .image-slots {

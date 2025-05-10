@@ -28,13 +28,7 @@ const ImageSelectPage = () => {
   };
 
   const handleImageFile = () => {
-    const index = images.findIndex((img) => img === "");
-    if (index === -1) {
-      alert("모든 슬롯이 가득 찼어요!");
-      return;
-    }
-    const slot = `img-${index + 1}`;
-    localStorage.setItem("selected-slot", slot);
+    // 👉 수정된 부분: 슬롯 검사 생략하고 바로 이동
     navigate("/image/theme");
   };
 
