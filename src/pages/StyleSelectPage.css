@@ -13,7 +13,7 @@
 
 .back-button {
   position: absolute;
-  bottom: 33%;
+  top: 25%;
   right: 20px;
   background: none;
   border: none;
@@ -21,6 +21,7 @@
   color: #888;
   cursor: pointer;
 }
+
 
 
 .style-title {
