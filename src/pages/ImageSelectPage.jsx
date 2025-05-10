@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react"; // useEffect 추가!
 import { useNavigate } from "react-router-dom";
 import "./ImageSelectPage.css";
 
@@ -6,6 +6,13 @@ const ImageSelectPage = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [images, setImages] = useState(["", "", "", ""]);
+  useEffect(() => {
+  const loadedImages = [];
+  for (let i = 1; i <= 4; i++) {
+    loadedImages.push(localStorage.getItem(`img-${i}`) || "");
+  }
+  setImages(loadedImages);
+}, []); // ✅ 이미지 저장소 선택 후 돌아왔을 때 자동 반영
 
   const handleDelete = (index) => {
     const updated = [...images];
