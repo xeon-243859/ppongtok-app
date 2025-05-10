@@ -12,6 +12,7 @@ import MusicSelectPage from "./pages/MusicSelectPage";
 import MusicThemePage from "./pages/MusicThemePage"; // (추후 생성될 페이지)
 import LovePreviewPage from "./pages/LovePreviewPage";
 import EPreviewPage from "./pages/EPreviewPage";
+import JoinPage from "./pages/JoinPage";
 
 // 필요하면 여기 다른 페이지들도 추가 가능
 
@@ -37,6 +38,7 @@ function App() {
       <Route path="/music/theme" element={<MusicThemePage />} />   
       <Route path="/preview" element={<LovePreviewPage />} />
       <Route path="/epreview" element={<EPreviewPage />} />
+      <Route path="/join" element={<JoinPage />} />
     </Routes>
   );
 }
