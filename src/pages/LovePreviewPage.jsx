@@ -1,30 +1,16 @@
-// ✅ LovePreviewPage.jsx
-import React, { useEffect, useState } from "react";
+// ✅ LovePreviewPage.jsx - 단순하고 안정적인 구조로 재작성
+import React, { useEffect } from "react";
 import "./LovePreviewPage.css";
 
 const LovePreviewPage = () => {
-  const [video, setVideo] = useState(null);
-  const [image, setImage] = useState(null);
-  const [music, setMusic] = useState(null);
-  const [message, setMessage] = useState("");
-
   useEffect(() => {
     window.scrollTo(0, 0);
-    const loadedVideo = localStorage.getItem("video-0");
-    const loadedImage = localStorage.getItem("image-0");
-    const loadedMusic = localStorage.getItem("music-0");
-    const loadedMessage = localStorage.getItem("love-text");
-
-    setVideo(loadedVideo);
-    setImage(loadedImage);
-    setMusic(loadedMusic);
-    setMessage(loadedMessage);
-
-    console.log("🎬 배경 영상 (video-0):", loadedVideo);
-    console.log("🖼️ 배경 이미지 (image-0):", loadedImage);
-    console.log("🎵 배경 음악 (music-0):", loadedMusic);
-    console.log("💌 자막 텍스트 (love-text):", loadedMessage);
   }, []);
+
+  const video = localStorage.getItem("video-0");
+  const image = localStorage.getItem("image-0");
+  const music = localStorage.getItem("music-0");
+  const message = localStorage.getItem("love-text") || "";
 
   const handleCopy = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -57,10 +43,10 @@ const LovePreviewPage = () => {
 
   return (
     <div className="preview-container">
-      {image ? (
-        <img className="preview-media" src={image} alt="선택된 이미지" />
-      ) : video ? (
+      {video ? (
         <video className="preview-media" src={video} autoPlay loop muted />
+      ) : image ? (
+        <img className="preview-media" src={image} alt="선택된 이미지" />
       ) : (
         <div className="preview-placeholder">배경이 없습니다.</div>
       )}
