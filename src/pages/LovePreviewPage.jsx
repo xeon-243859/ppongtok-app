@@ -29,9 +29,25 @@ const LovePreviewPage = () => {
     window.location.href = "/";
   };
 
+  const handleShare = (platform) => {
+    const url = encodeURIComponent(window.location.href);
+    const text = encodeURIComponent(message || "사랑 고백 메시지를 확인해보세요!");
+
+    let shareUrl = "";
+    if (platform === "facebook") {
+      shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+    } else if (platform === "twitter") {
+      shareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
+    } else if (platform === "kakao") {
+      alert("카카오톡 공유는 추후 지원됩니다.");
+      return;
+    }
+    window.open(shareUrl, "_blank");
+  };
+
   return (
     <div className="preview-container">
-      {video ? (
+      {video && !image ? (
         <video className="preview-media" src={video} autoPlay loop muted />
       ) : image ? (
         <img className="preview-media" src={image} alt="선택된 이미지" />
@@ -47,6 +63,12 @@ const LovePreviewPage = () => {
         <button onClick={handleCopy}>링크 복사</button>
         <button onClick={handleDownload}>PDF 저장</button>
         <button onClick={handleRestart}>처음으로</button>
+      </div>
+
+      <div className="preview-sns">
+        <button onClick={() => handleShare("facebook")}>📘</button>
+        <button onClick={() => handleShare("twitter")}>🐦</button>
+        <button onClick={() => handleShare("kakao")}>💬</button>
       </div>
     </div>
   );
