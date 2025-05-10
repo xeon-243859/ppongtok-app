@@ -23,6 +23,9 @@ const JoinPage = () => {
   return (
     <div className="join-container">
       <div className="join-title">보내는 사람 정보 입력 ✏️</div>
+      <div className="join-subtext">
+        완성된 메시지가 자막에 담겨 상대방에게 전달돼요.
+      </div>
       <form onSubmit={handleSubmit} className="join-form">
         <input
           className="join-input"
