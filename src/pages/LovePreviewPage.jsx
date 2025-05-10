@@ -47,10 +47,10 @@ const LovePreviewPage = () => {
 
   return (
     <div className="preview-container">
-      {video && !image ? (
-        <video className="preview-media" src={video} autoPlay loop muted />
-      ) : image ? (
+      {image ? (
         <img className="preview-media" src={image} alt="선택된 이미지" />
+      ) : video ? (
+        <video className="preview-media" src={video} autoPlay loop muted />
       ) : (
         <div className="preview-placeholder">배경이 없습니다.</div>
       )}
@@ -65,10 +65,10 @@ const LovePreviewPage = () => {
         <button onClick={handleRestart}>처음으로</button>
       </div>
 
-      <div className="preview-sns">
-        <button onClick={() => handleShare("facebook")}>📘</button>
-        <button onClick={() => handleShare("twitter")}>🐦</button>
-        <button onClick={() => handleShare("kakao")}>💬</button>
+      <div className="preview-buttons">
+        <button onClick={() => handleShare("facebook")}>Facebook</button>
+        <button onClick={() => handleShare("twitter")}>Twitter</button>
+        <button onClick={() => handleShare("kakao")}>KakaoTalk</button>
       </div>
     </div>
   );
