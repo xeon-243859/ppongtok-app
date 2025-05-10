@@ -1,67 +1,94 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./ImageThemePage.css";
+import "./ImageSelectPage.css";
 
-const ImageThemePage = () => {
+const ImageSelectPage = () => {
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
+  const [images, setImages] = useState(["", "", "", ""]);
 
-  const handleSelect = (relativePath) => {
-    const slot = localStorage.getItem("selected-slot");
-    if (!slot) {
-      alert("저장할 슬롯이 설정되지 않았습니다.");
+  const handleDelete = (index) => {
+    const updated = [...images];
+    updated[index] = "";
+    setImages(updated);
+    localStorage.removeItem(`img-${index + 1}`);
+  };
+
+  const saveImage = (dataUrl) => {
+    const updated = [...images];
+    for (let i = 0; i < 4; i++) {
+      if (!updated[i]) {
+        updated[i] = dataUrl;
+        setImages(updated);
+        localStorage.setItem(`img-${i + 1}`, dataUrl);
+        return;
+      }
+    }
+    alert("모든 슬롯이 가득 찼어요!");
+  };
+
+  const handleImageFile = () => {
+    const index = images.findIndex((img) => img === "");
+    if (index === -1) {
+      alert("모든 슬롯이 가득 찼어요!");
       return;
     }
+    const slot = `img-${index + 1}`;
+    localStorage.setItem("selected-slot", slot);
+    navigate("/image/theme");
+  };
 
-    const image = new Image();
-    image.crossOrigin = "anonymous";
-    image.onload = () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = image.width;
-      canvas.height = image.height;
-      canvas.getContext("2d").drawImage(image, 0, 0);
-      const base64 = canvas.toDataURL("image/jpeg");
+  const handleLocalFile = () => {
+    fileInputRef.current.click();
+  };
 
-      localStorage.setItem(slot, base64);
-      localStorage.removeItem("selected-slot");
-      console.log(`✅ ${slot}에 base64 이미지 저장 완료`);
-      navigate("/image/select");
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      saveImage(reader.result);
     };
-    image.onerror = () => {
-      alert("이미지를 불러오는 데 실패했습니다.");
-    };
-
-    image.src = `${window.location.origin}${relativePath}`;
+    reader.readAsDataURL(file);
   };
 
   return (
-    <div className="image-theme-container">
-      <h2>이미지 테마 저장소</h2>
+    <div className="image-select-title">
+      <h2>배경으로 사용할 이미지 4개를<br />선택해주세요</h2>
 
-      <h3>사랑</h3>
-      <div className="image-row">
-        <div className="image-option" onClick={() => handleSelect("/backgrounds/love/love1.jpg")}>
-          <img src="/backgrounds/love/love1.jpg" alt="사랑1" />
-          <p>사랑1</p>
-        </div>
-        <div className="image-option" onClick={() => handleSelect("/backgrounds/love/love2.jpg")}>
-          <img src="/backgrounds/love/love2.jpg" alt="사랑2" />
-          <p>사랑2</p>
-        </div>
+      <div className="file-button-group">
+        <button onClick={handleImageFile}>이미지파일</button>
+        <button onClick={handleLocalFile}>내파일선택</button>
+        <input
+          type="file"
+          accept="image/*"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          style={{ display: "none" }}
+        />
       </div>
 
-      <h3>그리움</h3>
-      <div className="image-row">
-        <div className="image-option" onClick={() => handleSelect("/backgrounds/miss/miss1.jpg")}>
-          <img src="/backgrounds/miss/miss1.jpg" alt="그리움1" />
-          <p>그리움1</p>
-        </div>
-        <div className="image-option" onClick={() => handleSelect("/backgrounds/miss/miss2.jpg")}>
-          <img src="/backgrounds/miss/miss2.jpg" alt="그리움2" />
-          <p>그리움2</p>
-        </div>
+      <div className="image-slots">
+        {images.map((src, i) => (
+          <div className="image-slot" key={i}>
+            {src ? (
+              <>
+                <img src={src} alt={`img-${i + 1}`} />
+                <button onClick={() => handleDelete(i)}>❌</button>
+              </>
+            ) : (
+              <p>{`img-${i + 1}`}</p>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <div className="button-group">
+        <button onClick={() => navigate(-1)}>뒤로가기</button>
+        <button onClick={() => navigate("/music/select")}>다음으로</button>
       </div>
     </div>
   );
 };
 
-export default ImageThemePage;
+export default ImageSelectPage;
