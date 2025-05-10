@@ -4,32 +4,41 @@
   width: 100%;
   height: 100vh;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background-color: black;
 }
 
 .preview-media {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
+  max-width: 600px;
+  height: auto;
+  object-fit: contain;
+  z-index: 0;
+  border-radius: 12px;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.3);
+  display: block;
+  margin: 100px auto 0 auto;
 }
 
 .preview-caption {
   position: absolute;
-  bottom: 10%;
-  width: 100%;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
   text-align: center;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
   color: white;
   z-index: 2;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+  white-space: pre-wrap;
+  animation: floatText 10s linear infinite;
+}
+
+@keyframes floatText {
+  0%   { top: -40px; opacity: 0; }
+  10%  { top: 30px; opacity: 1; }
+  90%  { top: 30px; opacity: 1; }
+  100% { top: -40px; opacity: 0; }
 }
 
 .preview-audio {
@@ -40,4 +49,6 @@
   color: white;
   font-size: 20px;
   z-index: 2;
+  text-align: center;
+  padding-top: 120px;
 }
