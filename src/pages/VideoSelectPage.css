@@ -84,13 +84,20 @@
   position: absolute;
   bottom: 10px;
   right: 10px;
-  background: none;
-  border: none;
-  color: #666;
-  font-size: 16px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid #999;
+  border-radius: 50%;
+  color: #333;
+  font-size: 18px;
   font-weight: bold;
+  width: 28px;
+  height: 28px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 
 .video-button-nav {
   display: flex;
