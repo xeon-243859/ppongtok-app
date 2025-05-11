@@ -20,7 +20,7 @@ const MusicThemePage = () => {
 
   return (
     <div className="music-theme-container">
-      <h2 className="music-theme-title">음악 테마 저장소</h2>
+      <h2 className="music-theme-title">음원 테마 저장소</h2>
 
       <div className="music-theme-list">
         {musicList.map((music) => (

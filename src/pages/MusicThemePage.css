@@ -1,48 +1,58 @@
-/* ✅ MusicThemePage.css */
 .music-theme-container {
-  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
   text-align: center;
-  background-color: #fffafc;
 }
 
-.music-theme-container h2 {
-  font-size: 22px;
-  margin-bottom: 24px;
+.music-theme-title {
+  font-size: 1.5rem; /* ✅ 글씨 크게 */
+  font-weight: bold;
   color: #333;
+  margin-bottom: 30px;
 }
 
-.music-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+.music-theme-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  max-width: 360px;
+}
+
+.music-item {
+  padding: 15px;
+  border: 2px solid #ffdada;
+  border-radius: 15px;
+  background-color: #fff0f0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.music-item:hover {
+  background-color: #ffe2e2;
+}
+
+.music-theme-buttons {
+  display: flex;
   gap: 20px;
   justify-content: center;
-  padding: 0 16px;
+  margin-top: 50px;
 }
 
-.music-option {
-  border: 2px dashed #ccc;
-  border-radius: 12px;
-  padding: 12px;
-  background-color: white;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
-}
-
-.music-option:hover {
-  transform: scale(1.03);
-  border-color: #999;
-}
-
-.music-option p {
-  font-size: 14px;
+.music-theme-buttons button {
+  padding: 14px 30px;
+  font-size: 1rem;
+  background-color: #ffc8c8;
+  border: none;
+  border-radius: 30px;
+  color: #333;
   font-weight: 500;
-  color: #444;
-  margin-bottom: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.music-option audio {
-  width: 100%;
-  max-width: 220px;
-  outline: none;
+.music-theme-buttons button:hover {
+  background-color: #ff9e9e;
 }
