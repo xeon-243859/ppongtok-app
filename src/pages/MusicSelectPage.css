@@ -1,94 +1,95 @@
-/* ✅ MusicSelectPage.css */
 .music-select-container {
-  text-align: center;
-  padding: 24px;
-  background-color: #fff;
-}
-
-.music-title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 16px;
-}
-
-.music-button-row {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 24px;
-}
-
-.file-select-button {
-  padding: 10px 20px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  background-color: white;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.selected-music-box {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 24px;
-  position: relative;
-  border: 1px dashed #ccc;
-  padding: 16px;
-  border-radius: 12px;
-  max-width: 360px;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: #f8f8f8;
+  padding: 40px 20px;
+  text-align: center;
 }
 
-.music-label {
-  font-size: 16px;
-  font-weight: 500;
-  margin-bottom: 10px;
-}
-
-.audio-preview {
-  width: 100%;
-  max-width: 320px;
-  margin-bottom: 8px;
-}
-
-.remove-button {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background: #eee;
-  border: none;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
+.music-select-title {
+  font-size: 1.5rem;
   font-weight: bold;
-  cursor: pointer;
+  color: #333;
+  margin-bottom: 30px;
 }
 
 .music-button-group {
   display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 16px;
+  gap: 15px;
+  margin-bottom: 30px;
 }
 
-.back-button,
-.next-button {
-  padding: 10px 24px;
-  font-size: 15px;
+.music-button-group button {
+  padding: 14px 30px;
+  font-size: 1rem;
+  background-color: #ffc8c8;
   border: none;
-  border-radius: 8px;
+  border-radius: 30px;
+  color: #333;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.music-button-group button:hover {
+  background-color: #ff9e9e;
+}
+
+.music-box {
+  position: relative;
+  width: 90%;
+  max-width: 400px;
+  padding: 20px;
+  margin: 20px auto;
+  border: 2px solid #ffdada;
+  border-radius: 20px;
+  background-color: #fff0f0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.music-name {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #444;
+}
+
+.music-box audio {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.delete-button {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
 }
 
-.back-button {
-  background-color: #9e9e9e;
-  color: white;
+.music-button-nav {
+  display: flex;
+  gap: 15px;
+  margin-top: 40px;
 }
 
-.next-button {
-  background-color: #ef5350;
-  color: white;
+.music-button-nav button {
+  padding: 14px 30px;
+  font-size: 1rem;
+  background-color: #ffc8c8;
+  border: none;
+  border-radius: 30px;
+  color: #333;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.music-button-nav button:hover {
+  background-color: #ff9e9e;
 }
