@@ -58,7 +58,7 @@
 .music-box {
   position: relative;
   width: 100%;
-  max-width: 260px; /* ✅ 살짝 줄인 감성 사이즈 */
+  max-width: 230px; /* ✅ 살짝 줄인 감성 사이즈 */
   padding: 20px;
   margin: 20px auto;
   border: 2px solid #ffdada;
