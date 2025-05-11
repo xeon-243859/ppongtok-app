@@ -22,37 +22,45 @@ function PreviewPage() {
   }, []);
 
   return (
-    <div className="preview-container">
-      {/* ✅ 이미지 있을 때만 이미지 출력 */}
-      {selectedImage && (
-        <img
-          src={selectedImage}
-          alt="Selected Background"
-          className="background-media"
-        />
-      )}
+  <div className="preview-container">
 
-      {/* ✅ 이미지 없고, 영상 있을 때만 영상 출력 */}
-      {!selectedImage && selectedVideo && (
-        <video
-          src={selectedVideo}
-          className="background-media"
-          autoPlay
-          loop
-          muted
-        />
-      )}
+    {/* ✅ 자막을 맨 위에 출력 */}
+    {message && (
+      <div className="message-overlay">
+        <p>{message}</p>
+      </div>
+    )}
 
-      {/* ✅ 메시지가 있을 경우 자막으로 출력 */}
-      {message && (
-        <div className="message-overlay">
-          <p>{message}</p>
-        </div>
-      )}
+    {/* ✅ 영상 배경 */}
+    {selectedVideo && (
+      <video
+        className="preview-video"
+        src={selectedVideo}
+        autoPlay
+        loop
+        muted
+      />
+    )}
+
+    {/* ✅ 이미지 배경 */}
+    {selectedImage && (
+      <img className="preview-image" src={selectedImage} alt="preview" />
+    )}
+
+    {/* ✅ 공유 및 저장 버튼들 */}
+    <div className="button-container">
+      <button>링크 복사</button>
+      <button>PDF 저장</button>
+      <button>처음으로</button>
+      <div>
+        <button>Facebook</button>
+        <button>Twitter</button>
+        <button>KakaoTalk</button>
+      </div>
     </div>
-  );
-}
+  </div>
+);
+} // ← 이 중괄호가 누락됨
+
 
 export default PreviewPage;
-
-// 🔁 Triggered redeploy to fix message overlay z-index
