@@ -39,7 +39,7 @@ function App() {
 
       {/* 🔹 미리보기 화면 */}
       <Route path="/preview" element={<PreviewPage />} />
-      <Route path="/epreview" element={<EPreviewPage />} />
+    
     </Routes>
   );
 }
