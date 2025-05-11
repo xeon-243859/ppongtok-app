@@ -1,38 +1,34 @@
-// ✅ VideoThemePage.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./VideoThemePage.css";
 
-const videos = [
-  { src: "/videos/flower.mp4", label: "따뜻한" },
-  { src: "/videos/river.mp4", label: "낭만적인" },
-  { src: "/videos/sky.mp4", label: "감성적인" },
-  { src: "/videos/sunset.mp4", label: "화려한" },
+const videoList = [
+  { id: "video01", src: "/videos/flower.mp4", name: "꽃잎" },
+  { id: "video02", src: "/videos/river.mp4", name: "강물" },
+  { id: "video03", src: "/videos/sky.mp4", name: "하늘" },
+  { id: "video04", src: "/videos/sunset.mp4", name: "노을" },
 ];
 
 const VideoThemePage = () => {
   const navigate = useNavigate();
 
-  const handleSelect = (videoPath) => {
-    const slot = localStorage.getItem("selected-slot");
-    if (!slot) {
-      alert("저장할 슬롯이 설정되지 않았습니다.");
-      return;
-    }
-
-    localStorage.setItem(slot, videoPath);
-    localStorage.removeItem("selected-slot");
-    navigate("/video/select");
+  const handleSelect = (src) => {
+    localStorage.setItem("selected-video", src); // ✅ 슬롯 없이 저장
+    navigate("/video/select"); // ✅ 선택 후 다음 화면으로
   };
 
   return (
     <div className="video-theme-container">
-      <h2>영상 테마 저장소</h2>
-      <div className="video-grid">
-        {videos.map((video, index) => (
-          <div key={index} className="video-option" onClick={() => handleSelect(video.src)}>
-            <video src={video.src} muted loop playsInline />
-            <p>{video.label}</p>
+      <h2 className="video-theme-title">영상 테마 저장소</h2>
+
+      <div className="video-theme-list">
+        {videoList.map((video) => (
+          <div
+            key={video.id}
+            className="video-item"
+            onClick={() => handleSelect(video.src)}
+          >
+            <p>{video.name}</p>
           </div>
         ))}
       </div>
