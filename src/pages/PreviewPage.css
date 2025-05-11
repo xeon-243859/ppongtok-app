@@ -1,52 +1,17 @@
 .preview-page {
-  position: relative;
-  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100vh;
-  overflow: hidden;
   background-color: black;
 }
 
-.preview-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 0;
-}
-
 .preview-subtitle {
-  position: absolute;
-  bottom: 10%;
-  width: 100%;
-  text-align: center;
-  font-size: 2rem;
   color: white;
-  z-index: 2;
-  padding: 0 20px;
+  font-size: 2rem;
+  text-align: center;
+  padding: 20px;
   word-break: keep-all;
   line-height: 1.4;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
-}
-
-.preview-buttons {
-  position: absolute;
-  top: 5%;
-  right: 5%;
-  z-index: 3;
-}
-
-.preview-buttons button {
-  padding: 10px 20px;
-  font-size: 1rem;
-  background-color: #ffffffbb;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.preview-buttons button:hover {
-  background-color: #fff;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
 }
