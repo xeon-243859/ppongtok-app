@@ -6,11 +6,31 @@
   text-align: center;
 }
 
-.music-select-title {
+.music-title-line1,
+.music-title-line2 {
   font-size: 1.5rem;
   font-weight: bold;
   color: #333;
-  margin-bottom: 30px;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid #333;
+  animation: typing 1.5s steps(30, end) forwards;
+}
+
+.music-title-line2 {
+  animation-delay: 1.5s;
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
 }
 
 .music-button-group {
