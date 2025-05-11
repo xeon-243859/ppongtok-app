@@ -90,12 +90,10 @@
   white-space: nowrap;
   overflow: hidden;
   animation: typing 1.5s steps(30, end) forwards;
-  width: 100%;
-  max-width: 320px;
+  width: fit-content;   /* ✅ 글자에 딱 맞게 */
   margin: 0 auto;
-  /* ❌ 커서 제거: 아래 줄은 생략함 */
-  /* border-right: 2px solid #666; */
 }
+
 
 @keyframes typing {
   from {
