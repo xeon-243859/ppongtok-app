@@ -13,8 +13,8 @@ const VideoThemePage = () => {
   const navigate = useNavigate();
 
   const handleSelect = (src) => {
-    localStorage.setItem("selected-video", src); // ✅ 슬롯 없이 저장
-    navigate("/video/select"); // ✅ 선택 후 다음 화면으로
+    localStorage.setItem("selected-video", src);
+    navigate("/video/select");
   };
 
   return (
@@ -28,7 +28,7 @@ const VideoThemePage = () => {
             className="video-item"
             onClick={() => handleSelect(video.src)}
           >
-            <p>{video.name}</p>
+            <p>▶ {video.name}</p>
           </div>
         ))}
       </div>

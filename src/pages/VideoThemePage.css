@@ -1,48 +1,42 @@
 .video-theme-container {
-  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
   text-align: center;
-  background-color: #fffafc;
 }
 
-.video-theme-container h2 {
-  font-size: 22px;
-  margin-bottom: 24px;
+.video-theme-title {
+  font-size: 1.5rem; /* ✅ 제목 크기 증가 */
+  font-weight: bold;
   color: #333;
+  margin-bottom: 30px;
 }
 
-.video-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  justify-content: center;
-  padding: 0 16px;
-}
-
-.video-option {
-  border: 2px dashed #ccc;
-  border-radius: 12px;
-  padding: 10px;
-  background-color: white;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.video-option:hover {
-  transform: scale(1.02);
-  border-color: #999;
-}
-
-.video-option video {
+.video-theme-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
   width: 100%;
-  max-width: 150px;
-  height: auto;
-  border-radius: 10px;
-  display: block;
-  margin: 0 auto 8px auto;
+  max-width: 360px;
 }
 
-.video-option p {
-  font-size: 14px;
-  color: #555;
+.video-item {
+  padding: 15px;
+  border: 2px solid #ffdada;
+  border-radius: 15px;
+  background-color: #fff0f0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.video-item:hover {
+  background-color: #ffe2e2;
+}
+
+.video-item p {
+  font-size: 1.1rem;  /* ✅ 글씨 더 크게 */
+  word-break: keep-all;
+  white-space: normal;
   margin: 0;
 }
