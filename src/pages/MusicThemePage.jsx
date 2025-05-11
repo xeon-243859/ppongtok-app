@@ -1,43 +1,42 @@
-// ✅ MusicThemePage.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./MusicThemePage.css";
 
 const musicList = [
-  { src: "/audio/mueon.mp3", label: "무언가" },
-  { src: "/audio/spring.mp3", label: "봄의 노래" },
-  { src: "/audio/mueon1.mp3", label: "무언가 2" },
-  { src: "/audio/spring1.mp3", label: "봄의 노래 2" },
+  { id: "music01", src: "/audio/spring.mp3", name: "봄의노래" },
+  { id: "music02", src: "/audio/spring1.mp3", name: "설레임" },
+  { id: "music03", src: "/audio/mueon.mp3", name: "무언의 감정" },
+  { id: "music04", src: "/audio/mueon1.mp3", name: "고요한 바람" },
 ];
 
 const MusicThemePage = () => {
   const navigate = useNavigate();
 
-  const handleSelect = (musicPath) => {
-    const slot = localStorage.getItem("selected-slot");
-    if (!slot) {
-      alert("저장할 슬롯이 설정되지 않았습니다.");
-      return;
-    }
-    localStorage.setItem(slot, musicPath);
-    localStorage.removeItem("selected-slot");
+  const handleSelect = (src, name) => {
+    localStorage.setItem("selected-music", src);
+    localStorage.setItem("selected-music-name", name);
     navigate("/music/select");
   };
 
   return (
     <div className="music-theme-container">
-      <h2>음원 테마 저장소</h2>
-      <div className="music-grid">
-        {musicList.map((music, index) => (
+      <h2 className="music-theme-title">음악 테마 저장소</h2>
+
+      <div className="music-theme-list">
+        {musicList.map((music) => (
           <div
-            key={index}
-            className="music-option"
-            onClick={() => handleSelect(music.src)}
+            key={music.id}
+            className="music-item"
+            onClick={() => handleSelect(music.src, music.name)}
           >
-            <p>{music.label}</p>
-            <audio src={music.src} controls />
+            <p>{music.name}</p>
           </div>
         ))}
+      </div>
+
+      <div className="music-theme-buttons">
+        <button onClick={() => navigate(-1)}>뒤로가기</button>
+        <button onClick={() => navigate("/music/select")}>다음으로</button>
       </div>
     </div>
   );
