@@ -71,13 +71,17 @@ const MusicSelectPage = () => {
         />
       </div>
 
-      {selectedMusic && (
-        <div className="music-box">
-          <p className="music-name">{musicName}</p>
-          <audio src={selectedMusic} autoPlay controls />
-          <button className="delete-button" onClick={handleDelete}>X</button>
-        </div>
-      )}
+      <div className="music-box">
+        {selectedMusic ? (
+          <>
+            <p className="music-name">{musicName}</p>
+            <audio src={selectedMusic} autoPlay controls />
+            <button className="delete-button" onClick={handleDelete}>X</button>
+          </>
+        ) : (
+          <p className="music-placeholder">선택된 음악이 없습니다</p>
+        )}
+      </div>
 
       <div className="music-button-nav">
         <button onClick={() => navigate(-1)}>뒤로가기</button>

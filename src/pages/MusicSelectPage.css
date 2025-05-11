@@ -61,18 +61,24 @@
   max-width: 400px;
   padding: 20px;
   margin: 20px auto;
-  border: 2px solid #ffdada;
+  border: 2px dashed #ffdada;
   border-radius: 20px;
-  background-color: #fff0f0;
+  background-color: #fffaf9;
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 100px;
 }
 
 .music-name {
   font-size: 1.2rem;
   margin-bottom: 10px;
   color: #444;
+}
+
+.music-placeholder {
+  font-size: 1rem;
+  color: #aaa;
 }
 
 .music-box audio {
