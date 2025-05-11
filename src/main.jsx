@@ -11,3 +11,4 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     </BrowserRouter>
   </React.StrictMode>
 );
+console.log("Vercel redeploy trigger");
