@@ -2,30 +2,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center; /* ✅ 정중앙 정렬 */
   padding: 40px 20px;
   text-align: center;
-  position: relative;
   height: 100vh;
-}
-
-.back-button {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  padding: 10px 20px;
-  font-size: 0.95rem;
-  background-color: #ffdada;
-  color: #333;
-  border: none;
-  border-radius: 30px;
-  font-weight: 500;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease;
-}
-
-.back-button:hover {
-  background-color: #ffbcbc;
+  position: relative;
 }
 
 .style-title-line1,
@@ -75,4 +56,24 @@
 
 .style-button-group button:hover {
   background-color: #a6d5ff;
+}
+
+.back-button {
+  position: fixed; /* ✅ 화면 오른쪽 하단 고정 */
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  background-color: #ffdada;
+  color: #333;
+  border: none;
+  border-radius: 30px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #ffbcbc;
 }

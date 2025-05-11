@@ -26,10 +26,6 @@ const StyleSelectPage = () => {
 
   return (
     <div className="style-select-container">
-      <button className="back-button" onClick={() => navigate(-1)}>
-        ← 뒤로가기
-      </button>
-
       {showLine1 && <h2 className="style-title-line1">어떤 배경으로</h2>}
       {showLine2 && <h2 className="style-title-line2">사랑을 담아볼까요?</h2>}
 
@@ -37,6 +33,10 @@ const StyleSelectPage = () => {
         <button onClick={handleImageClick}>이미지 배경 선택</button>
         <button onClick={handleVideoClick}>영상 배경 선택</button>
       </div>
+
+      <button className="back-button" onClick={() => navigate(-1)}>
+        ← 뒤로가기
+      </button>
     </div>
   );
 };
