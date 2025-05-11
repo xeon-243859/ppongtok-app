@@ -2,7 +2,6 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 import IntroPage from "./pages/IntroPage";
-import LoveFormPage from "./pages/LoveFormPage";
 import StyleSelectPage from "./pages/StyleSelectPage";
 import ImageSelectPage from "./pages/ImageSelectPage";
 import ImageThemePage from "./pages/ImageThemePage";
@@ -10,8 +9,12 @@ import VideoThemePage from "./pages/VideoThemePage";
 import VideoSelectPage from "./pages/VideoSelectPage";
 import MusicSelectPage from "./pages/MusicSelectPage";
 import MusicThemePage from "./pages/MusicThemePage";
-import LovePreviewPage from "./pages/LovePreviewPage";
-import EPreviewPage from "./pages/EPreviewPage";
+import LoveFormPage from "./pages/LoveFormPage";       // ✅ 이 줄 꼭 필요!
+import PreviewPage from "./pages/PreviewPage";         // ✅ 우리가 만든 진짜 프리뷰
+// 이전 프리뷰들은 연결 X (필요 시 아래처럼 다른 경로로 변경 가능)
+// import LovePreviewPage from "./pages/LovePreviewPage";
+// import EPreviewPage from "./pages/EPreviewPage";
+
 
 function App() {
   return (
@@ -35,7 +38,7 @@ function App() {
       <Route path="/music/theme" element={<MusicThemePage />} />
 
       {/* 🔹 미리보기 화면 */}
-      <Route path="/preview" element={<LovePreviewPage />} />
+      <Route path="/preview" element={<PreviewPage />} />
       <Route path="/epreview" element={<EPreviewPage />} />
     </Routes>
   );
