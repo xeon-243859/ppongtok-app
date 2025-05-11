@@ -57,8 +57,9 @@
 
 .music-box {
   position: relative;
-  width: fit-content;
-  padding: 16px 20px;
+  width: 100%;
+  max-width: 320px; /* 배 ~ 택 사이에 맞춰 고정 */
+  padding: 20px;
   margin: 20px auto;
   border: 2px solid #ffdada;
   border-radius: 20px;
@@ -84,8 +85,8 @@
 }
 
 .music-box audio {
-  width: 100%;
-  margin-bottom: 10px;
+  width: 100%; /* ✅ 재생 버튼 안 보이던 문제 해결 */
+  margin-top: 10px;
 }
 
 .delete-button {
