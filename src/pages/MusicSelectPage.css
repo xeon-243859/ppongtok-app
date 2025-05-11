@@ -57,18 +57,20 @@
 
 .music-box {
   position: relative;
-  width: 90%;
-  max-width: 400px;
+  width: 100%;
+  max-width: 360px;
+  height: 120px;
   padding: 20px;
   margin: 20px auto;
-  border: 2px dashed #ffdada;
+  border: 2px solid #ffdada; /* ✅ 실선으로 변경 */
   border-radius: 20px;
   background-color: #fffaf9;
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 100px;
+  justify-content: center;
 }
+
 
 .music-name {
   font-size: 1.2rem;
