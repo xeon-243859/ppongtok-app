@@ -2,17 +2,18 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start; /* ⬅️ 위쪽 정렬 */
   height: 100vh;
-  padding: 40px 20px;
+  padding-top: 60px; /* ⬅️ 상단 여백만 조금 주기 */
   background-color: #fffdf9;
   text-align: center;
+  box-sizing: border-box;
 }
 
 .intro-image {
-  width: 120px;
+  width: 100px;
   height: auto;
-  margin-top: 30px;
+  margin-bottom: 16px;
   animation: pop 1.5s ease-in-out;
 }
 
@@ -28,7 +29,7 @@
 }
 
 .intro-text {
-  margin-top: 20px;
+  margin-bottom: 30px;
 }
 
 .intro-title-line1 {
@@ -36,22 +37,20 @@
   font-size: 3.5rem;
   font-weight: 400;
   color: #ff6b81;
-  margin-bottom: 10px;
-  letter-spacing: 1px;
+  margin-bottom: 5px;
 }
-
-
 
 .intro-title-line2 {
   font-size: 2.2rem;
+  font-weight: 500;
   color: #444;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .intro-subtitle {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: #777;
-  margin-top: 5px;
+  margin-bottom: 30px;
 }
 
 .start-button {
@@ -62,7 +61,7 @@
   border: none;
   border-radius: 30px;
   cursor: pointer;
-  margin-bottom: 40px;
+  margin-top: 20px;
   box-shadow: 0 4px 12px rgba(255, 105, 135, 0.3);
   transition: all 0.3s ease;
 }
