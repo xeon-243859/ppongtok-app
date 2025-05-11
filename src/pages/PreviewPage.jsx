@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import "../styles/PreviewPage.css";
+import "./PreviewPage.css"; // ✅ 경로 수정 완료
 
 function PreviewPage() {
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedImage, setSelectedImage] = useState("");
+  const [selectedVideo, setSelectedVideo] = useState("");
   const [message, setMessage] = useState("");
 
   useEffect(() => {
@@ -11,56 +11,48 @@ function PreviewPage() {
     const vid = localStorage.getItem("selected-video");
     const msg = localStorage.getItem("message");
 
-    // 콘솔 확인용
-    console.log("이미지:", img);
-    console.log("영상:", vid);
-    console.log("메시지:", msg);
-
-    setSelectedImage(img);
-    setSelectedVideo(vid);
-    setMessage(msg);
+    setSelectedImage(img || "");
+    setSelectedVideo(vid || "");
+    setMessage(msg || "");
   }, []);
 
   return (
-  <div className="preview-container">
+    <div className="preview-page">
+      {/* ✅ 이미지 또는 영상 중 하나만 출력 */}
+      {selectedImage && !selectedVideo && (
+        <img
+          src={selectedImage}
+          alt="배경 이미지"
+          className="preview-background"
+        />
+      )}
+      {selectedVideo && !selectedImage && (
+        <video
+          className="preview-background"
+          autoPlay
+          loop
+          muted
+        >
+          <source src={selectedVideo} type="video/mp4" />
+          동영상을 불러오는 중입니다...
+        </video>
+      )}
 
-    {/* ✅ 자막을 맨 위에 출력 */}
-    {message && (
-      <div className="message-overlay">
-        <p>{message}</p>
+      {/* ✅ 자막 표시 */}
+      <div className="preview-subtitle">
+        {message}
       </div>
-    )}
 
-    {/* ✅ 영상 배경 */}
-    {selectedVideo && (
-      <video
-        className="preview-video"
-        src={selectedVideo}
-        autoPlay
-        loop
-        muted
-      />
-    )}
-
-    {/* ✅ 이미지 배경 */}
-    {selectedImage && (
-      <img className="preview-image" src={selectedImage} alt="preview" />
-    )}
-
-    {/* ✅ 공유 및 저장 버튼들 */}
-    <div className="button-container">
-      <button>링크 복사</button>
-      <button>PDF 저장</button>
-      <button>처음으로</button>
-      <div>
-        <button>Facebook</button>
-        <button>Twitter</button>
-        <button>KakaoTalk</button>
+      {/* ✅ 공유 버튼 */}
+      <div className="preview-buttons">
+        <button
+          onClick={() => navigator.clipboard.writeText(window.location.href)}
+        >
+          링크 복사하기
+        </button>
       </div>
     </div>
-  </div>
-);
-} // ← 이 중괄호가 누락됨
-
+  );
+}
 
 export default PreviewPage;
