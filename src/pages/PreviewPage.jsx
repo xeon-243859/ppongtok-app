@@ -1,54 +1,41 @@
-// PreviewPage.jsx (최신 수정본)
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import "./PreviewPage.css";
+import "../styles/PreviewPage.css";
 
-const PreviewPage = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { selectedImages, selectedVideo, selectedMusic, message } = location.state || {};
-  const [typedMessage, setTypedMessage] = useState("");
+function PreviewPage() {
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
-    let index = 0;
-    const interval = setInterval(() => {
-      if (index <= message?.length) {
-        setTypedMessage(message.slice(0, index));
-        index++;
-      } else {
-        clearInterval(interval);
-      }
-    }, 100);
-    return () => clearInterval(interval);
-  }, [message]);
+    const img = localStorage.getItem("selected-image");
+    const vid = localStorage.getItem("selected-video");
+    const msg = localStorage.getItem("message");
+    setSelectedImage(img);
+    setSelectedVideo(vid);
+    setMessage(msg);
+  }, []);
 
   return (
     <div className="preview-container">
-      {selectedVideo ? (
+      {selectedImage && (
+        <img src={selectedImage} alt="Selected Background" className="background-media" />
+      )}
+
+      {selectedVideo && (
         <video
-          className="preview-video"
           src={selectedVideo}
+          className="background-media"
           autoPlay
           loop
           muted
         />
-      ) : (
-        <img
-          className="preview-image"
-          src={selectedImages && selectedImages[0] ? selectedImages[0] : ""}
-          alt="배경"
-        />
       )}
 
-      {selectedMusic && <audio src={selectedMusic} autoPlay loop />}
-
-      <div className="preview-caption">{typedMessage}</div>
-
-      <div className="preview-buttons">
-        <button onClick={() => navigate(-1)}>뒤로가기</button>
+      <div className="message-overlay">
+        <p>{message}</p>
       </div>
     </div>
   );
-};
+}
 
 export default PreviewPage;
