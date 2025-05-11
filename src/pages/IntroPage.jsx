@@ -1,23 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import "./IntroPage.css";
+import "../styles/IntroPage.css";
 
-const IntroPage = () => {
+function IntroPage() {
   const navigate = useNavigate();
-  const [showLine1, setShowLine1] = useState(false);
-  const [showLine2, setShowLine2] = useState(false);
-  const [showLine3, setShowLine3] = useState(false);
-
-  useEffect(() => {
-    const timer1 = setTimeout(() => setShowLine1(true), 500);
-    const timer2 = setTimeout(() => setShowLine2(true), 2000);
-    const timer3 = setTimeout(() => setShowLine3(true), 3500);
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
-    };
-  }, []);
 
   const handleStart = () => {
     navigate("/love/form");
@@ -25,17 +11,26 @@ const IntroPage = () => {
 
   return (
     <div className="intro-container">
-      {showLine1 && <h1 className="typing-top">뿅!톡에 오신 것을</h1>}
-      {showLine2 && <h1 className="typing-side">환영합니다</h1>}
-      {showLine3 && <p className="typing-bottom">따뜻한 마음을 여기에 담아주세요</p>}
+      {/* 상단 하트 + 뿅 효과 이미지 */}
+      <img
+        src="/images/heart-effect.png"
+        alt="하트 뿅 효과"
+        className="intro-image"
+      />
 
-      {showLine3 && (
-        <button className="start-button" onClick={handleStart}>
-          시작하기
-        </button>
-      )}
+      {/* 텍스트 영역 */}
+      <div className="intro-text">
+        <p className="intro-title-line1">뿅!톡</p>
+        <p className="intro-title-line2">환영합니다</p>
+        <p className="intro-subtitle">따뜻한 마음을 여기에 담아주세요</p>
+      </div>
+
+      {/* 시작하기 버튼 */}
+      <button className="start-button" onClick={handleStart}>
+        시작하기
+      </button>
     </div>
   );
-};
+}
 
 export default IntroPage;
