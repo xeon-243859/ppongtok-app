@@ -14,7 +14,7 @@
   color: #333;
   white-space: nowrap;
   overflow: hidden;
-  animation: typing 2s steps(40, end) forwards;
+  animation: typing 2s steps(60, end) forwards;
   width: fit-content; /* ✅ 글자가 잘리지 않도록 */
   margin-bottom: 20px;
 }
@@ -37,6 +37,12 @@
   resize: none;
   outline: none;
   margin-bottom: 20px;
+}
+
+.message-input::placeholder {
+  color: #555;
+  opacity: 1; /* ✅ 흐림 제거 */
+  font-size: 0.95rem;
 }
 
 .next-button {
