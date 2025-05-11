@@ -7,7 +7,7 @@
 }
 
 .music-theme-title {
-  font-size: 1.5rem; /* ✅ 글씨 크게 */
+  font-size: 1.5rem;
   font-weight: bold;
   color: #333;
   margin-bottom: 30px;
@@ -34,25 +34,9 @@
   background-color: #ffe2e2;
 }
 
-.music-theme-buttons {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  margin-top: 50px;
-}
-
-.music-theme-buttons button {
-  padding: 14px 30px;
+.music-item p {
   font-size: 1rem;
-  background-color: #ffc8c8;
-  border: none;
-  border-radius: 30px;
-  color: #333;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.music-theme-buttons button:hover {
-  background-color: #ff9e9e;
+  word-break: keep-all;
+  white-space: normal;
+  margin: 0;
 }

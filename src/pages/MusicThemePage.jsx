@@ -33,11 +33,6 @@ const MusicThemePage = () => {
           </div>
         ))}
       </div>
-
-      <div className="music-theme-buttons">
-        <button onClick={() => navigate(-1)}>뒤로가기</button>
-        <button onClick={() => navigate("/music/select")}>다음으로</button>
-      </div>
     </div>
   );
 };
