@@ -4,6 +4,8 @@
   align-items: center;
   padding: 40px 20px;
   text-align: center;
+  max-width: 500px;   /* ✅ PC에서 너무 넓어지지 않도록 제한 */
+  margin: 0 auto;     /* ✅ PC에서도 중앙 정렬 유지 */
 }
 
 .music-title-line1,
@@ -87,6 +89,7 @@
 .music-box audio {
   width: 100%;
   margin-top: 10px;
+  max-width: 100%; /* ✅ 이 줄만 추가하면 돼! */
 }
 
 .delete-button {
