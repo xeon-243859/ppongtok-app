@@ -18,7 +18,8 @@ const LoveFormPage = () => {
 
   return (
     <div className="love-form-container">
-      <h1 className="form-title">💕 사랑 메시지를 입력해보세요</h1>
+      <h2 className="form-title">마음속 사랑을 살며시 남겨보세요</h2>
+
       <textarea
         className="message-input"
         placeholder="그 사람에게 전하고 싶은 말을 써보세요..."
