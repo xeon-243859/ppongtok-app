@@ -1,60 +1,67 @@
 import React, { useEffect, useState } from "react";
 import "./PreviewPage.css";
 
-function PreviewPage() {
-  const [selectedImage, setSelectedImage] = useState("");
-  const [selectedVideo, setSelectedVideo] = useState("");
-  const [selectedMusic, setSelectedMusic] = useState("");
+const PreviewPage = () => {
   const [message, setMessage] = useState("");
+  const [image, setImage] = useState("");
+  const [video, setVideo] = useState("");
+  const [music, setMusic] = useState("");
 
   useEffect(() => {
+    // 확실하게 각 항목 불러오기
+    const msg = localStorage.getItem("message");
     const img = localStorage.getItem("selected-image");
     const vid = localStorage.getItem("selected-video");
-    const music = localStorage.getItem("selected-music");
-    const msg = localStorage.getItem("message");
+    const mus = localStorage.getItem("selected-music");
 
-    setSelectedImage(img || "");
-    setSelectedVideo(vid || "");
-    setSelectedMusic(music || "");
+    console.log("📝 메시지:", msg);
+    console.log("🖼️ 이미지:", img);
+    console.log("🎬 영상:", vid);
+    console.log("🎵 음악:", mus);
+
     setMessage(msg || "");
-
-    console.log("🎬 선택된 영상:", vid);
-    console.log("🖼️ 선택된 이미지:", img);
-    console.log("🎵 선택된 음악:", music);
-    console.log("📝 입력된 메시지:", msg);
+    setImage(img || "");
+    setVideo(vid || "");
+    setMusic(mus || "");
   }, []);
+
+  const renderBackground = () => {
+    if (image && !video) {
+      return <img src={image} alt="배경 이미지" className="preview-background" />;
+    } else if (video && !image) {
+      return (
+        <video className="preview-background" autoPlay loop muted>
+          <source src={video} type="video/mp4" />
+        </video>
+      );
+    } else {
+      return <div className="preview-background" style={{ backgroundColor: "#000" }} />;
+    }
+  };
 
   return (
     <div className="preview-page">
-      {/* 배경: 이미지 or 영상 중 하나만 출력 */}
-      {selectedImage && !selectedVideo && (
-        <img src={selectedImage} alt="배경 이미지" className="preview-background" />
-      )}
-      {selectedVideo && !selectedImage && (
-        <video className="preview-background" autoPlay loop muted>
-          <source src={selectedVideo} type="video/mp4" />
-          영상 로딩 중...
-        </video>
-      )}
+      {/* 🎨 배경: 이미지 또는 영상 */}
+      {renderBackground()}
 
-      {/* 자막 메시지 */}
-      <div className="preview-subtitle">{message}</div>
+      {/* ✨ 메시지 */}
+      {message && <div className="preview-subtitle">{message}</div>}
 
-      {/* 배경 음악 */}
-      {selectedMusic && (
+      {/* 🎵 음악 */}
+      {music && (
         <audio autoPlay loop>
-          <source src={selectedMusic} type="audio/mp3" />
+          <source src={music} type="audio/mp3" />
         </audio>
       )}
 
-      {/* 링크 복사 버튼 */}
+      {/* 🔗 공유 */}
       <div className="preview-buttons">
         <button onClick={() => navigator.clipboard.writeText(window.location.href)}>
-          링크 복사하기
+          링크 복사
         </button>
       </div>
     </div>
   );
-}
+};
 
 export default PreviewPage;
