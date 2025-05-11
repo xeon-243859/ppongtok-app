@@ -15,7 +15,8 @@
   white-space: nowrap;
   overflow: hidden;
   animation: typing 2s steps(100, end) forwards;
-  width:  100%;
+  width:   15ch;  
+  box-sizing: content-box;
   max-width: 320px;
   margin-bottom: 20px;
 }
