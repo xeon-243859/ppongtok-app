@@ -9,7 +9,6 @@ const PreviewPage = () => {
 
   const [displayedText, setDisplayedText] = useState("");
 
-  // 타자 효과 구현
   useEffect(() => {
     if (!message) return;
     let index = 0;
@@ -17,49 +16,50 @@ const PreviewPage = () => {
       setDisplayedText((prev) => prev + message[index]);
       index++;
       if (index >= message.length) clearInterval(interval);
-    }, 20 * 1000 / message.length); // 전체 20초에 분배
+    }, 20000 / message.length);
 
     return () => clearInterval(interval);
   }, [message]);
 
   return (
-    <div className="preview-frame">
-      {/* 메시지 */}
-      <div className="message-area">{displayedText}</div>
+    <div className="preview-page">
+      {/* 감성 틀 박스 */}
+      <div className="media-box">
+        {/* 메시지 */}
+        <div className="message-text">{displayedText}</div>
 
-      {/* 이미지 또는 영상 (둘 중 하나만) */}
-      {selectedImage && (
-        <img
-          src={`/backgrounds/${selectedImage}`}
-          alt="Selected Background"
-          className="media-display"
-        />
-      )}
-      {selectedVideo && (
-        <video
-          src={`/videos/${selectedVideo}`}
-          className="media-display"
-          autoPlay
-          muted
-          onLoadedMetadata={(e) => {
-            e.target.currentTime = 0;
-            setTimeout(() => {
-              e.target.pause();
-            }, 20000); // 20초 재생 후 정지
-          }}
-        />
-      )}
+        {/* 이미지 or 영상 */}
+        {selectedImage && (
+          <img
+            src={`/backgrounds/${selectedImage}`}
+            alt="preview"
+            className="media-display"
+          />
+        )}
+        {selectedVideo && (
+          <video
+            src={`/videos/${selectedVideo}`}
+            autoPlay
+            muted
+            className="media-display"
+            onLoadedMetadata={(e) => {
+              e.target.currentTime = 0;
+              setTimeout(() => {
+                e.target.pause();
+              }, 20000);
+            }}
+          />
+        )}
+      </div>
 
-      {/* 버튼 */}
+      {/* 공유 & 뒤로 버튼 */}
       <div className="button-box">
         <button onClick={() => window.history.back()}>뒤로가기</button>
         <button onClick={() => window.location.href = "/share"}>다음 - 공유하기</button>
       </div>
 
-      {/* 음악 */}
-      {selectedMusic && (
-        <audio src={`/audio/${selectedMusic}`} autoPlay />
-      )}
+      {/* 음악 자동 재생 */}
+      {selectedMusic && <audio src={`/audio/${selectedMusic}`} autoPlay />}
     </div>
   );
 };
