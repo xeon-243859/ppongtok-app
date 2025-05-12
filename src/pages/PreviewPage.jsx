@@ -20,32 +20,31 @@ const PreviewPage = () => {
 
     return () => clearInterval(interval);
   }, [message]);
- 
+
+  // 🔎 콘솔 로그 확인 (유지)
   useEffect(() => {
-  console.log("📝 메시지:", localStorage.getItem("message"));
-  console.log("🖼 이미지:", localStorage.getItem("selected-image"));
-  console.log("🎥 영상:", localStorage.getItem("selected-video"));
-  console.log("🎵 음악:", localStorage.getItem("selected-music"));
-}, []);
+    console.log("📝 메시지:", message);
+    console.log("🖼 이미지:", selectedImage);
+    console.log("🎥 영상:", selectedVideo);
+    console.log("🎵 음악:", selectedMusic);
+  }, []);
 
   return (
     <div className="preview-page">
-      {/* 감성 틀 박스 */}
       <div className="media-box">
-        {/* 메시지 */}
         <div className="message-text">{displayedText}</div>
 
-        {/* 이미지 or 영상 */}
         {selectedImage && (
           <img
-            src={`/backgrounds/${selectedImage}`}
+            src={selectedImage} // ✅ 중복 제거
             alt="preview"
             className="media-display"
           />
         )}
+
         {selectedVideo && (
           <video
-            src={`/videos/${selectedVideo}`}
+            src={selectedVideo} // ✅ 중복 제거
             autoPlay
             muted
             className="media-display"
@@ -59,14 +58,12 @@ const PreviewPage = () => {
         )}
       </div>
 
-      {/* 공유 & 뒤로 버튼 */}
       <div className="button-box">
         <button onClick={() => window.history.back()}>뒤로가기</button>
         <button onClick={() => window.location.href = "/share"}>다음 - 공유하기</button>
       </div>
 
-      {/* 음악 자동 재생 */}
-      {selectedMusic && <audio src={`/audio/${selectedMusic}`} autoPlay />}
+      {selectedMusic && <audio src={selectedMusic} autoPlay />}
     </div>
   );
 };
