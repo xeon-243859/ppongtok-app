@@ -13,15 +13,22 @@ const ImageThemePage = () => {
   const navigate = useNavigate();
 
   const handleSelect = (src) => {
-    for (let i = 1; i <= 4; i++) {
-      const key = `img-${i}`;
-      if (!localStorage.getItem(key)) {
-        localStorage.setItem(key, src);
-        break;
-      }
+  console.log("🖱️ 이미지 클릭됨! src:", src);  // ✅ 이거 추가 
+  for (let i = 1; i <= 4; i++) {
+    const key = `img-${i}`;
+    if (!localStorage.getItem(key)) {
+      localStorage.setItem(key, src); // 슬롯 저장
+      break;
     }
-    navigate("/image/select");
-  };
+  }
+
+  localStorage.setItem("selected-image", src);  // ✅ 대표 이미지 항상 저장
+  localStorage.removeItem("selected-video");    // ✅ 영상 제거 (중복 방지)
+  console.log("🌅 대표 이미지 저장됨:", src);
+
+  navigate("/image/select"); // 또는 다음 페이지
+};
+
 
   return (
     <div className="theme-container">
