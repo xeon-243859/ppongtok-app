@@ -33,18 +33,23 @@ const PreviewPage = () => {
   
   useEffect(() => {
   if (!Array.isArray(selectedImages) || selectedImages.length === 0) return;
+
   let index = 0;
-  setCurrentImageIndex(index);
-  const interval = setInterval(() => {
+  setCurrentImageIndex(index); // 첫 이미지 출력
+
+  const displayNext = () => {
     index++;
-    if (index >= selectedImages.length) {
-      clearInterval(interval);
-    } else {
+    if (index < selectedImages.length) {
       setCurrentImageIndex(index);
+      setTimeout(displayNext, 5000); // 다음 이미지로 넘어감
     }
-  }, 5000);
-  return () => clearInterval(interval);
+  };
+
+  const timer = setTimeout(displayNext, 5000); // 첫 타이머 설정
+
+  return () => clearTimeout(timer); // 정리
 }, [selectedImages]);
+
 
   // ✅ 이미지 4장 전환 (5초 간격, 20초 정지)
 
