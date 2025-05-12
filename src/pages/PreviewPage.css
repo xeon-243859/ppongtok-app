@@ -41,3 +41,44 @@
   left: 0;
   z-index: -1;
 }
+
+/* 기존 스타일 - 유지! */
+.background-image {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.background-video {
+  width: 100vw;
+  max-height: 90vh;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+/* ✅ 아래처럼 새로 붙여넣기 */
+.preview-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background-color: black;
+}
+
+.background-image {
+  width: 80vw;
+  height: auto;
+  object-fit: contain;
+  z-index: -1;
+  border-radius: 20px;
+   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
