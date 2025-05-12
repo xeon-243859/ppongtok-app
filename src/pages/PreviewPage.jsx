@@ -2,14 +2,15 @@ import React, { useEffect, useState } from "react";
 import "./PreviewPage.css";
 
 const PreviewPage = () => {
-  const selectedImage = localStorage.getItem("selected-image");
+  const selectedImages = JSON.parse(localStorage.getItem("selected-images")); // ✅ 이미지 배열
   const selectedVideo = localStorage.getItem("selected-video");
   const selectedMusic = localStorage.getItem("selected-music");
   const message = localStorage.getItem("message");
 
   const [displayedText, setDisplayedText] = useState("");
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // ✅ 메시지 타자 출력 효과 (undefined 제거됨)
+  // ✅ 메시지 타자 효과
   useEffect(() => {
     if (!message) return;
     let index = 0;
@@ -21,23 +22,30 @@ const PreviewPage = () => {
         clearInterval(interval);
       }
     }, 20000 / message.length);
-
     return () => clearInterval(interval);
   }, [message]);
 
-  // 🔍 디버깅 콘솔 출력 (선택적으로 제거 가능)
+  // ✅ 이미지 4장 순차 전환
   useEffect(() => {
-    console.log("📝 메시지:", message);
-    console.log("🖼 이미지:", selectedImage);
-    console.log("🎥 영상:", selectedVideo);
-    console.log("🎵 음악:", selectedMusic);
-  }, []);
+    if (!selectedImages || selectedImages.length === 0) return;
+    let index = 0;
+    const interval = setInterval(() => {
+      index++;
+      if (index >= selectedImages.length) {
+        clearInterval(interval);
+      } else {
+        setCurrentImageIndex(index);
+      }
+    }, 5000); // 5초마다 전환
+    return () => clearInterval(interval);
+  }, [selectedImages]);
 
   return (
     <div className="preview-page">
       <div className="media-box">
         <div className="message-text">{displayedText}</div>
 
+        {/* ✅ 영상이 있을 경우 우선 */}
         {selectedVideo ? (
           <video
             src={selectedVideo}
@@ -51,9 +59,9 @@ const PreviewPage = () => {
               }, 20000);
             }}
           />
-        ) : selectedImage ? (
+        ) : selectedImages && selectedImages.length > 0 ? (
           <img
-            src={selectedImage}
+            src={selectedImages[currentImageIndex]}
             alt="preview"
             className="media-display"
           />
