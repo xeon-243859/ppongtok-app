@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import "./PreviewPage.css";
 
 const PreviewPage = () => {
-  const selectedImages = JSON.parse(localStorage.getItem("selected-images")); // ✅ 이미지 배열
+  let selectedImages;
+  try {
+    selectedImages = JSON.parse(localStorage.getItem("selected-images")) || [];
+  } catch (e) {
+    selectedImages = [];
+  }
+
   const selectedVideo = localStorage.getItem("selected-video");
   const selectedMusic = localStorage.getItem("selected-music");
   const message = localStorage.getItem("message");
@@ -25,9 +31,9 @@ const PreviewPage = () => {
     return () => clearInterval(interval);
   }, [message]);
 
-  // ✅ 이미지 4장 순차 전환
+  // ✅ 이미지 4장 전환 (5초 간격, 20초 정지)
   useEffect(() => {
-    if (!selectedImages || selectedImages.length === 0) return;
+    if (!Array.isArray(selectedImages) || selectedImages.length === 0) return;
     let index = 0;
     const interval = setInterval(() => {
       index++;
@@ -36,16 +42,24 @@ const PreviewPage = () => {
       } else {
         setCurrentImageIndex(index);
       }
-    }, 5000); // 5초마다 전환
+    }, 5000);
     return () => clearInterval(interval);
   }, [selectedImages]);
+
+  // ✅ 디버깅 로그
+  useEffect(() => {
+    console.log("📝 메시지:", message);
+    console.log("🖼 이미지 배열:", selectedImages);
+    console.log("🎥 영상:", selectedVideo);
+    console.log("🎵 음악:", selectedMusic);
+  }, []);
 
   return (
     <div className="preview-page">
       <div className="media-box">
         <div className="message-text">{displayedText}</div>
 
-        {/* ✅ 영상이 있을 경우 우선 */}
+        {/* ✅ 조건 분기: 영상 → 이미지 → fallback */}
         {selectedVideo ? (
           <video
             src={selectedVideo}
@@ -59,13 +73,15 @@ const PreviewPage = () => {
               }, 20000);
             }}
           />
-        ) : selectedImages && selectedImages.length > 0 ? (
+        ) : (Array.isArray(selectedImages) && selectedImages.length > 0) ? (
           <img
             src={selectedImages[currentImageIndex]}
             alt="preview"
             className="media-display"
           />
-        ) : null}
+        ) : (
+          <div className="media-fallback">배경 이미지/영상이 없어요 😢</div>
+        )}
       </div>
 
       <div className="button-box">
