@@ -12,7 +12,8 @@
 /* 감성적인 영상/이미지 프레임 */
 .media-box {
   width: 85vw;
-  max-height: 50vh;
+  max-height: 40vh;
+  height: auto;
   background-color: black;
   border-radius: 20px;
   overflow: hidden;
@@ -22,6 +23,7 @@
   align-items: center;
   justify-content: center;
 }
+
 
 /* 이미지 또는 영상 */
 .media-display {
