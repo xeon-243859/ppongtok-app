@@ -47,6 +47,21 @@
   animation: fadeIn 20s linear forwards;
 }
 
+.typing-text {
+  position: absolute;
+  top: 5%;
+  width: 100%;
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: white;
+  text-shadow: 1px 1px 3px black;
+  z-index: 10;
+  padding: 0 20px;
+  white-space: pre-wrap;
+}
+
+
 /* 하단 버튼 */
 .button-box {
   position: fixed;
