@@ -1,81 +1,64 @@
 import React, { useEffect, useState } from "react";
 import "./PreviewPage.css";
 
-const selectedImage = localStorage.getItem("selected-image");
-const selectedVideo = localStorage.getItem("selected-video");
-const selectedMusic = localStorage.getItem("selected-music");
-const message = localStorage.getItem("message");
-
 const PreviewPage = () => {
-  const [message, setMessage] = useState("");
-  const [image, setImage] = useState("");
-  const [video, setVideo] = useState("");
-  const [music, setMusic] = useState("");
-  const [ready, setReady] = useState(false); // 🔥 이게 핵심!
+  const selectedImage = localStorage.getItem("selected-image");
+  const selectedVideo = localStorage.getItem("selected-video");
+  const selectedMusic = localStorage.getItem("selected-music");
+  const message = localStorage.getItem("message");
 
+  const [displayedText, setDisplayedText] = useState("");
+
+  // 타자 효과 구현
   useEffect(() => {
-    const msg = localStorage.getItem("message");
-    const img = localStorage.getItem("selected-image");
-    const vid = localStorage.getItem("selected-video");
-    const mus = localStorage.getItem("selected-music");
+    if (!message) return;
+    let index = 0;
+    const interval = setInterval(() => {
+      setDisplayedText((prev) => prev + message[index]);
+      index++;
+      if (index >= message.length) clearInterval(interval);
+    }, 20 * 1000 / message.length); // 전체 20초에 분배
 
-    console.log("📝 메시지:", msg);
-    console.log("🎥 영상:", vid);
-    console.log("🎵 음악:", mus);
-
-    setMessage(msg || "");
-    setImage(img || "");
-    setVideo(vid || "");
-    setMusic(mus || "");
-    setReady(true); // ✔️ 값이 모두 설정된 후 렌더링 허용
-  }, []);
-
-  if (!ready) return null; // 로딩 중이면 아무것도 렌더링 안 함
+    return () => clearInterval(interval);
+  }, [message]);
 
   return (
-    <div className="preview-page">
-       {selectedImage && (
-      <img
-        src={`/backgrounds/${selectedImage}`}
-        alt="Selected Background"
-        className="background-image"
-      />
-    )}
+    <div className="preview-frame">
+      {/* 메시지 */}
+      <div className="message-area">{displayedText}</div>
 
-    {selectedVideo && (
-      <video
-        src={`/videos/${selectedVideo}`}
-        autoPlay
-        muted
-        loop
-        className="background-video"
-      />
-    )}
-    {/* ✅ 여기까지 복붙! */}
-      {/* 🎨 이미지 또는 영상 중 하나만 표시 */}
-      {image && !video && (
-        <img src={image} alt="선택된 이미지" className="preview-background" />
+      {/* 이미지 또는 영상 (둘 중 하나만) */}
+      {selectedImage && (
+        <img
+          src={`/backgrounds/${selectedImage}`}
+          alt="Selected Background"
+          className="media-display"
+        />
       )}
-      {video && !image && (
+      {selectedVideo && (
         <video
-          className="preview-background"
+          src={`/videos/${selectedVideo}`}
+          className="media-display"
           autoPlay
-          loop
           muted
-          key={video}
-        >
-          <source src={video} type="video/mp4" />
-        </video>
+          onLoadedMetadata={(e) => {
+            e.target.currentTime = 0;
+            setTimeout(() => {
+              e.target.pause();
+            }, 20000); // 20초 재생 후 정지
+          }}
+        />
       )}
 
-      {/* ✨ 메시지 */}
-      <div className="preview-subtitle">{message}</div>
+      {/* 버튼 */}
+      <div className="button-box">
+        <button onClick={() => window.history.back()}>뒤로가기</button>
+        <button onClick={() => window.location.href = "/share"}>다음 - 공유하기</button>
+      </div>
 
-      {/* 🎵 음악 */}
-      {music && (
-        <audio autoPlay loop key={music}>
-          <source src={music} type="audio/mp3" />
-        </audio>
+      {/* 음악 */}
+      {selectedMusic && (
+        <audio src={`/audio/${selectedMusic}`} autoPlay />
       )}
     </div>
   );

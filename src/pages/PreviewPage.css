@@ -1,84 +1,62 @@
-.preview-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: black;
-}
-
-.preview-subtitle {
-  color: white;
-  font-size: 2rem;
-  text-align: center;
-  padding: 20px;
-  word-break: keep-all;
-  line-height: 1.4;
-  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
-}
-
-.preview-background {
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
-}
-
-.background-image {
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: -1;
-}
-
-.background-video {
-  width: 100vw;
-  max-height: 90vh;
-  object-fit: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: -1;
-}
-
-/* 기존 스타일 - 유지! */
-.background-image {
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: -1;
-}
-
-.background-video {
-  width: 100vw;
-  max-height: 90vh;
-  object-fit: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: -1;
-}
-
-/* ✅ 아래처럼 새로 붙여넣기 */
-.preview-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+.preview-frame {
+  width: 90vw;
+  height: 90vh;
+  margin: auto;
   position: relative;
+  background-color: #000;
   overflow: hidden;
-  background-color: black;
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.background-image {
-  width: 80vw;
-  height: auto;
+.media-display {
+  width: 80%;
+  max-height: 60vh;
   object-fit: contain;
-  z-index: -1;
-  border-radius: 20px;
-   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+  border-radius: 12px;
+}
+
+.message-area {
+  position: absolute;
+  top: 5%;
+  width: 80%;
+  color: white;
+  font-size: 1.5rem;
+  text-align: center;
+  z-index: 2;
+  white-space: pre-wrap;
+  animation: fadeIn 20s linear forwards;
+}
+
+.button-box {
+  position: absolute;
+  bottom: 5%;
+  right: 5%;
+  display: flex;
+  gap: 10px;
+}
+
+.button-box button {
+  padding: 10px 16px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  background: #ffffff22;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.button-box button:hover {
+  background: #ffffff55;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
