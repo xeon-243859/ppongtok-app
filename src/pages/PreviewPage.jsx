@@ -20,6 +20,13 @@ const PreviewPage = () => {
 
     return () => clearInterval(interval);
   }, [message]);
+ 
+  useEffect(() => {
+  console.log("📝 메시지:", localStorage.getItem("message"));
+  console.log("🖼 이미지:", localStorage.getItem("selected-image"));
+  console.log("🎥 영상:", localStorage.getItem("selected-video"));
+  console.log("🎵 음악:", localStorage.getItem("selected-music"));
+}, []);
 
   return (
     <div className="preview-page">
