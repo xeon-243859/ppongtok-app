@@ -33,30 +33,33 @@ const PreviewPage = () => {
     <div className="preview-page">
       <div className="media-box">
         <div className="message-text">{displayedText}</div>
+  
 
-        {selectedImage && (
-          <img
-            src={selectedImage} // ✅ 중복 제거
-            alt="preview"
-            className="media-display"
-          />
-        )}
+  {/* ✅ 여기에 이 코드 넣기!! ↓↓↓ */}
+  {selectedVideo ? (
+    <video
+      src={selectedVideo}
+      autoPlay
+      muted
+      className="media-display"
+      onLoadedMetadata={(e) => {
+        e.target.currentTime = 0;
+        setTimeout(() => {
+          e.target.pause();
+        }, 20000);
+      }}
+    />
+  ) : selectedImage ? (
+    <img
+      src={selectedImage}
+      alt="preview"
+      className="media-display"
+    />
+  ) : null}
+</div>
 
-        {selectedVideo && (
-          <video
-            src={selectedVideo} // ✅ 중복 제거
-            autoPlay
-            muted
-            className="media-display"
-            onLoadedMetadata={(e) => {
-              e.target.currentTime = 0;
-              setTimeout(() => {
-                e.target.pause();
-              }, 20000);
-            }}
-          />
-        )}
-      </div>
+      
+    
 
       <div className="button-box">
         <button onClick={() => window.history.back()}>뒤로가기</button>
