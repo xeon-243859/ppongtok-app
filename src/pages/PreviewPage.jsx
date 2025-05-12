@@ -30,6 +30,21 @@ const PreviewPage = () => {
     }, 20000 / message.length);
     return () => clearInterval(interval);
   }, [message]);
+  
+  useEffect(() => {
+  if (!Array.isArray(selectedImages) || selectedImages.length === 0) return;
+  let index = 0;
+  setCurrentImageIndex(index);
+  const interval = setInterval(() => {
+    index++;
+    if (index >= selectedImages.length) {
+      clearInterval(interval);
+    } else {
+      setCurrentImageIndex(index);
+    }
+  }, 5000);
+  return () => clearInterval(interval);
+}, [selectedImages]);
 
   // ✅ 이미지 4장 전환 (5초 간격, 20초 정지)
   useEffect(() => {
@@ -85,6 +100,7 @@ const PreviewPage = () => {
     <div className="media-fallback">이미지가 없습니다 😢</div>
   )
 )}
+
 
       </div>
 
