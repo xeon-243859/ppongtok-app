@@ -29,6 +29,24 @@ const PreviewPage = () => {
 
   return (
     <div className="preview-page">
+       {selectedImage && (
+      <img
+        src={`/backgrounds/${selectedImage}`}
+        alt="Selected Background"
+        className="background-image"
+      />
+    )}
+
+    {selectedVideo && (
+      <video
+        src={`/videos/${selectedVideo}`}
+        autoPlay
+        muted
+        loop
+        className="background-video"
+      />
+    )}
+    {/* ✅ 여기까지 복붙! */}
       {/* 🎨 이미지 또는 영상 중 하나만 표시 */}
       {image && !video && (
         <img src={image} alt="선택된 이미지" className="preview-background" />
