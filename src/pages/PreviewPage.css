@@ -11,18 +11,19 @@
 
 /* 감성적인 영상/이미지 프레임 */
 .media-box {
-  width: 240vw;
-  max-height: 160vh;
-  height: auto;
-  background-color: black;
+  width: 80vw;
+  height: 45vh;
+  background-color: #000;
   border-radius: 20px;
   overflow: hidden;
   position: relative;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 40px;
 }
+
 
 
 /* 이미지 또는 영상 */
