@@ -2,19 +2,27 @@ import React, { useEffect, useState } from "react";
 import "./PreviewPage.css";
 
 const PreviewPage = () => {
-  let selectedImages;
-  try {
-    selectedImages = JSON.parse(localStorage.getItem("selected-images")) || [];
-  } catch (e) {
-    selectedImages = [];
-  }
+  const [message, setMessage] = useState("");
+  const [displayedText, setDisplayedText] = useState("");
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const selectedVideo = localStorage.getItem("selected-video");
   const selectedMusic = localStorage.getItem("selected-music");
-  const message = localStorage.getItem("message");
 
-  const [displayedText, setDisplayedText] = useState("");
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  // ✅ 메시지 불러오기
+  useEffect(() => {
+    const storedMessage = localStorage.getItem("message");
+    if (storedMessage) setMessage(storedMessage);
+  }, []);
+
+  // ✅ 이미지 불러오기
+  useEffect(() => {
+    const storedImages = JSON.parse(localStorage.getItem("selected-images"));
+    if (Array.isArray(storedImages)) {
+      setSelectedImages(storedImages);
+    }
+  }, []);
 
   // ✅ 메시지 타자 효과
   useEffect(() => {
@@ -30,28 +38,25 @@ const PreviewPage = () => {
     }, 20000 / message.length);
     return () => clearInterval(interval);
   }, [message]);
-  
+
+  // ✅ 이미지 4장 순차 전환
   useEffect(() => {
-  if (!Array.isArray(selectedImages) || selectedImages.length === 0) return;
+    if (!Array.isArray(selectedImages) || selectedImages.length === 0) return;
+    let index = 0;
+    setCurrentImageIndex(index); // 첫 이미지 출력
 
-  let index = 0;
-  setCurrentImageIndex(index); // 첫 이미지 출력
+    const displayNext = () => {
+      index++;
+      if (index < selectedImages.length) {
+        setCurrentImageIndex(index);
+        setTimeout(displayNext, 5000); // 다음 이미지로 넘어감
+      }
+    };
 
-  const displayNext = () => {
-    index++;
-    if (index < selectedImages.length) {
-      setCurrentImageIndex(index);
-      setTimeout(displayNext, 5000); // 다음 이미지로 넘어감
-    }
-  };
+    const timer = setTimeout(displayNext, 5000); // 첫 타이머 설정
 
-  const timer = setTimeout(displayNext, 5000); // 첫 타이머 설정
-
-  return () => clearTimeout(timer); // 정리
-}, [selectedImages]);
-
-
-  // ✅ 이미지 4장 전환 (5초 간격, 20초 정지)
+    return () => clearTimeout(timer); // 정리
+  }, [selectedImages]);
 
   // ✅ 디버깅 로그
   useEffect(() => {
@@ -67,33 +72,31 @@ const PreviewPage = () => {
         <div className="message-text">{displayedText}</div>
 
         {selectedVideo ? (
-  <video
-    src={selectedVideo}
-    autoPlay
-    muted
-    className="media-display"
-    onLoadedMetadata={(e) => {
-      e.target.currentTime = 0;
-      setTimeout(() => {
-        e.target.pause();
-      }, 20000);
-    }}
-  />
-) : (
-  Array.isArray(selectedImages) &&
-  selectedImages.length > 0 &&
-  selectedImages[currentImageIndex] ? (
-    <img
-      src={selectedImages[currentImageIndex]}
-      alt="preview"
-      className="media-display"
-    />
-  ) : (
-    <div className="media-fallback">이미지가 없습니다 😢</div>
-  )
-)}
-
-
+          <video
+            src={selectedVideo}
+            autoPlay
+            muted
+            className="media-display"
+            onLoadedMetadata={(e) => {
+              e.target.currentTime = 0;
+              setTimeout(() => {
+                e.target.pause();
+              }, 20000);
+            }}
+          />
+        ) : (
+          Array.isArray(selectedImages) &&
+          selectedImages.length > 0 &&
+          selectedImages[currentImageIndex] ? (
+            <img
+              src={selectedImages[currentImageIndex]}
+              alt="preview"
+              className="media-display"
+            />
+          ) : (
+            <div className="media-fallback">이미지가 없습니다 😢</div>
+          )
+        )}
       </div>
 
       <div className="button-box">
