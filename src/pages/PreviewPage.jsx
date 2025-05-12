@@ -24,18 +24,19 @@ const PreviewPage = () => {
     }
   }, []);
 
-  // ✅ 메시지 타자 효과
+  // ✅ 메시지 타자 효과 (20초 동안 전체 출력)
   useEffect(() => {
     if (!message) return;
     let index = 0;
+    setDisplayedText(""); // 초기화
     const interval = setInterval(() => {
-      if (index < message.length) {
-        setDisplayedText((prev) => prev + message[index]);
-        index++;
-      } else {
+      setDisplayedText((prev) => prev + message[index]);
+      index++;
+      if (index >= message.length) {
         clearInterval(interval);
       }
-    }, 20000 / message.length);
+    }, Math.floor(20000 / message.length)); // 20초 분할
+
     return () => clearInterval(interval);
   }, [message]);
 
@@ -43,19 +44,18 @@ const PreviewPage = () => {
   useEffect(() => {
     if (!Array.isArray(selectedImages) || selectedImages.length === 0) return;
     let index = 0;
-    setCurrentImageIndex(index); // 첫 이미지 출력
+    setCurrentImageIndex(index);
 
     const displayNext = () => {
       index++;
       if (index < selectedImages.length) {
         setCurrentImageIndex(index);
-        setTimeout(displayNext, 5000); // 다음 이미지로 넘어감
+        setTimeout(displayNext, 5000);
       }
     };
 
-    const timer = setTimeout(displayNext, 5000); // 첫 타이머 설정
-
-    return () => clearTimeout(timer); // 정리
+    const timer = setTimeout(displayNext, 5000);
+    return () => clearTimeout(timer);
   }, [selectedImages]);
 
   // ✅ 디버깅 로그
@@ -69,7 +69,7 @@ const PreviewPage = () => {
   return (
     <div className="preview-page">
       <div className="media-box">
-        <div className="message-text">{displayedText}</div>
+        <div className="message-text typing-text">{displayedText}</div>
 
         {selectedVideo ? (
           <video
