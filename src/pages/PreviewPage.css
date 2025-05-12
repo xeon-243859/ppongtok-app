@@ -15,3 +15,10 @@
   line-height: 1.4;
   text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
 }
+
+.preview-background {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+}
+
