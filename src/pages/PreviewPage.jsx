@@ -59,29 +59,33 @@ const PreviewPage = () => {
       <div className="media-box">
         <div className="message-text">{displayedText}</div>
 
-        {/* ✅ 조건 분기: 영상 → 이미지 → fallback */}
         {selectedVideo ? (
-          <video
-            src={selectedVideo}
-            autoPlay
-            muted
-            className="media-display"
-            onLoadedMetadata={(e) => {
-              e.target.currentTime = 0;
-              setTimeout(() => {
-                e.target.pause();
-              }, 20000);
-            }}
-          />
-        ) : (Array.isArray(selectedImages) && selectedImages.length > 0) ? (
-          <img
-            src={selectedImages[currentImageIndex]}
-            alt="preview"
-            className="media-display"
-          />
-        ) : (
-          <div className="media-fallback">배경 이미지/영상이 없어요 😢</div>
-        )}
+  <video
+    src={selectedVideo}
+    autoPlay
+    muted
+    className="media-display"
+    onLoadedMetadata={(e) => {
+      e.target.currentTime = 0;
+      setTimeout(() => {
+        e.target.pause();
+      }, 20000);
+    }}
+  />
+) : (
+  Array.isArray(selectedImages) &&
+  selectedImages.length > 0 &&
+  selectedImages[currentImageIndex] ? (
+    <img
+      src={selectedImages[currentImageIndex]}
+      alt="preview"
+      className="media-display"
+    />
+  ) : (
+    <div className="media-fallback">이미지가 없습니다 😢</div>
+  )
+)}
+
       </div>
 
       <div className="button-box">
