@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./PreviewPage.css";
 
+const selectedImage = localStorage.getItem("selected-image");
+const selectedVideo = localStorage.getItem("selected-video");
+const selectedMusic = localStorage.getItem("selected-music");
+const message = localStorage.getItem("message");
+
 const PreviewPage = () => {
   const [message, setMessage] = useState("");
   const [image, setImage] = useState("");
