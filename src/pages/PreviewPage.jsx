@@ -9,19 +9,23 @@ const PreviewPage = () => {
 
   const [displayedText, setDisplayedText] = useState("");
 
+  // ✅ 메시지 타자 출력 효과 (undefined 제거됨)
   useEffect(() => {
     if (!message) return;
     let index = 0;
     const interval = setInterval(() => {
-      setDisplayedText((prev) => prev + message[index]);
-      index++;
-      if (index >= message.length) clearInterval(interval);
+      if (index < message.length) {
+        setDisplayedText((prev) => prev + message[index]);
+        index++;
+      } else {
+        clearInterval(interval);
+      }
     }, 20000 / message.length);
 
     return () => clearInterval(interval);
   }, [message]);
 
-  // 🔎 콘솔 로그 확인 (유지)
+  // 🔍 디버깅 콘솔 출력 (선택적으로 제거 가능)
   useEffect(() => {
     console.log("📝 메시지:", message);
     console.log("🖼 이미지:", selectedImage);
@@ -33,33 +37,28 @@ const PreviewPage = () => {
     <div className="preview-page">
       <div className="media-box">
         <div className="message-text">{displayedText}</div>
-  
 
-  {/* ✅ 여기에 이 코드 넣기!! ↓↓↓ */}
-  {selectedVideo ? (
-    <video
-      src={selectedVideo}
-      autoPlay
-      muted
-      className="media-display"
-      onLoadedMetadata={(e) => {
-        e.target.currentTime = 0;
-        setTimeout(() => {
-          e.target.pause();
-        }, 20000);
-      }}
-    />
-  ) : selectedImage ? (
-    <img
-      src={selectedImage}
-      alt="preview"
-      className="media-display"
-    />
-  ) : null}
-</div>
-
-      
-    
+        {selectedVideo ? (
+          <video
+            src={selectedVideo}
+            autoPlay
+            muted
+            className="media-display"
+            onLoadedMetadata={(e) => {
+              e.target.currentTime = 0;
+              setTimeout(() => {
+                e.target.pause();
+              }, 20000);
+            }}
+          />
+        ) : selectedImage ? (
+          <img
+            src={selectedImage}
+            alt="preview"
+            className="media-display"
+          />
+        ) : null}
+      </div>
 
       <div className="button-box">
         <button onClick={() => window.history.back()}>뒤로가기</button>
