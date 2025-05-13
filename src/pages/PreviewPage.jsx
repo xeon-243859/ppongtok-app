@@ -1,9 +1,10 @@
-// ✅ 완성된 PreviewPage.jsx (모바일 대응 + 이미지/영상 충돌 해결 + 메시지 애니메이션 + 슬롯 자동 제거)
+// ✅ 완성된 PreviewPage.jsx (모바일 대응 + 이미지/영상 충돌 해결 + 타자 애니메이션 + 슬롯 제거 + 이미지 노출 오류 수정)
 import React, { useEffect, useState, useRef } from "react";
 import "./PreviewPage.css";
 
 const PreviewPage = () => {
   const [message, setMessage] = useState("");
+  const [typedMessage, setTypedMessage] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [mediaType, setMediaType] = useState("none");
@@ -19,9 +20,21 @@ const PreviewPage = () => {
   }, []);
 
   useEffect(() => {
+    // 타자 효과 메시지 출력
+    if (!message) return;
+    let index = 0;
+    setTypedMessage("");
+    const interval = setInterval(() => {
+      setTypedMessage((prev) => prev + message.charAt(index));
+      index++;
+      if (index >= message.length) clearInterval(interval);
+    }, 100);
+    return () => clearInterval(interval);
+  }, [message]);
+
+  useEffect(() => {
     const storedImages = JSON.parse(localStorage.getItem("selected-images") || "[]");
 
-    // ✅ 충돌 방지용: 슬롯 정리
     if (selectedType === "video") {
       for (let i = 1; i <= 4; i++) {
         localStorage.removeItem(`img-${i}`);
@@ -30,7 +43,6 @@ const PreviewPage = () => {
       localStorage.removeItem("selected-video");
     }
 
-    // ✅ mediaType 설정
     if (selectedType === "video" && selectedVideo) {
       setMediaType("video");
     } else if (selectedType === "image" && storedImages.length > 0) {
@@ -76,6 +88,7 @@ const PreviewPage = () => {
               autoPlay
               muted
               className="media-display"
+              playsInline
               onLoadedMetadata={(e) => {
                 e.target.currentTime = 0;
                 setTimeout(() => {
@@ -88,6 +101,8 @@ const PreviewPage = () => {
               src={selectedImages[currentImageIndex]}
               alt="preview"
               className="media-display"
+              loading="eager"
+              style={{ objectFit: "cover", width: "100%", height: "100%" }}
               onError={(e) => {
                 console.error("❌ 이미지 로딩 실패:", e.target.src);
                 e.target.style.display = "none";
@@ -97,7 +112,7 @@ const PreviewPage = () => {
             <div className="media-fallback">배경이 없습니다</div>
           )}
 
-          <div className="scrolling-message top-aligned typing-message">{message}</div>
+          <div className="scrolling-message top-aligned">{typedMessage}</div>
         </div>
       </div>
 
