@@ -34,11 +34,12 @@
 
 /* 🪄 moving file 자막 박스 */
 .moving-box {
-  position: relative;
-  width: 120%;
-  margin: 80px auto 0;
-  overflow: hidden;
-  height: 2.5em;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  height: 5em;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -46,7 +47,9 @@
   border-radius: 12px;
   padding: 0 12px;
   background-color: rgba(0, 0, 0, 0.5);
+  overflow: hidden;
 }
+
 
 /* 자막 흐름 애니메이션 */
 .scrolling-message {
