@@ -35,8 +35,8 @@
 /* 🪄 moving file 자막 박스 */
 .moving-box {
   position: relative;
-  width: 80%;
-  margin: 60px auto 0;
+  width: 120%;
+  margin: 80px auto 0;
   overflow: hidden;
   height: 2.5em;
   display: flex;
