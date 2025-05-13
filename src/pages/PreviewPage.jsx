@@ -3,19 +3,26 @@ import "./PreviewPage.css";
 
 const PreviewPage = () => {
   const [message, setMessage] = useState("");
+  const [displayedText, setDisplayedText] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
   const selectedVideo = localStorage.getItem("selected-video");
   const selectedMusic = localStorage.getItem("selected-music");
   const audioRef = useRef(null);
 
-  // 메시지 불러오기
+  // ✅ 정확한 영상 선택 여부 판단
+  const isVideoSelected =
+    selectedVideo &&
+    selectedVideo !== "null" &&
+    selectedVideo !== null &&
+    selectedVideo !== "";
+
   useEffect(() => {
     const storedMessage = localStorage.getItem("message");
     if (storedMessage) setMessage(storedMessage);
   }, []);
 
-  // 이미지 불러오기
   useEffect(() => {
     const storedImages = JSON.parse(localStorage.getItem("selected-images"));
     if (Array.isArray(storedImages)) {
@@ -23,9 +30,24 @@ const PreviewPage = () => {
     }
   }, []);
 
-  // 이미지 순차 전환 (30초까지만)
+  // 자막 타자 효과 유지
   useEffect(() => {
-    if (!Array.isArray(selectedImages) || selectedImages.length === 0 || (selectedVideo && selectedVideo !== "null")) return;
+    if (!message) return;
+    let index = 0;
+    const interval = setInterval(() => {
+      if (index < message.length) {
+        setDisplayedText((prev) => prev + message[index]);
+        index++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 45000 / message.length); // 예: 45초 기준
+    return () => clearInterval(interval);
+  }, [message]);
+
+  // 이미지 순차 전환 (30초 후 정지)
+  useEffect(() => {
+    if (!Array.isArray(selectedImages) || selectedImages.length === 0 || isVideoSelected) return;
     let index = 0;
     setCurrentImageIndex(index);
     const interval = setInterval(() => {
@@ -39,7 +61,7 @@ const PreviewPage = () => {
       clearInterval(interval);
       clearTimeout(timeout);
     };
-  }, [selectedImages, selectedVideo]);
+  }, [selectedImages, isVideoSelected]);
 
   // 음악 30초 후 정지
   useEffect(() => {
@@ -53,13 +75,11 @@ const PreviewPage = () => {
   return (
     <div className="preview-page">
       <div className="media-box">
-        {/* ✅ 감성 자막 */}
-        <div className="scrolling-message-box">
-          <div className="scrolling-message">{message}</div>
-        </div>
+        {/* 자막 */}
+        <div className="message-text">{displayedText}</div>
 
-        {/* ✅ 분기: 영상 vs 이미지 정확히 분리 */}
-        {(selectedVideo && selectedVideo !== "null" && selectedVideo !== null) ? (
+        {/* ✅ 영상과 이미지 완전 분리 */}
+        {isVideoSelected ? (
           <video
             src={selectedVideo}
             autoPlay
@@ -72,14 +92,14 @@ const PreviewPage = () => {
               }, 30000);
             }}
           />
+        ) : selectedImages.length > 0 ? (
+          <img
+            src={selectedImages[currentImageIndex]}
+            alt="preview"
+            className="media-display"
+          />
         ) : (
-          selectedImages.length > 0 && (
-            <img
-              src={selectedImages[currentImageIndex]}
-              alt="preview"
-              className="media-display"
-            />
-          )
+          <div className="media-fallback">배경이 없습니다</div>
         )}
       </div>
 
