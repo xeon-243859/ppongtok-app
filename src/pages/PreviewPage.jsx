@@ -1,4 +1,4 @@
-// ✅ 완성 PreviewPage.jsx 전체코드 복원 + aspectRatio 반영 + 무빙박스 및 자막 하단 고정 유지
+// ✅ 완성 PreviewPage.jsx 전체코드 복원 + mediaType 분기 개선 + 무빙박스 및 자막 하단 고정 유지
 import React, { useEffect, useState, useRef } from "react";
 import "./PreviewPage.css";
 
@@ -36,13 +36,14 @@ const PreviewPage = () => {
     const hasVideo = selectedVideo && selectedVideo !== "null" && selectedVideo !== "";
     const hasImages = Array.isArray(storedImages) && storedImages.length > 0;
 
+    // ✅ 상태 먼저 세팅
+    setSelectedImages(storedImages);
+
     if (selectedType === "video" && hasVideo && !hasImages) {
       setMediaType("video");
-    } else if (selectedType === "image" && hasImages && !hasVideo) {
-      setSelectedImages(storedImages);
+    } else if ((selectedType === "image" || hasImages) && !hasVideo) {
       setMediaType("image");
     } else if (hasImages && !hasVideo) {
-      setSelectedImages(storedImages);
       setMediaType("image");
     } else if (hasVideo && !hasImages) {
       setMediaType("video");
