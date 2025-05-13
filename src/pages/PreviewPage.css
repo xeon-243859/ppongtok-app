@@ -60,8 +60,8 @@
 }
 
 .video-container {
-  width: 240vw;
-  height: 90vw;
+  width: 100vw;
+  height: 40vw;
   max-width: 720px;
   max-height: 400px;
   margin: 0 auto;
