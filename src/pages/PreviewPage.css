@@ -20,8 +20,8 @@
 
 /* 🎬 영상 감성 박스 */
 .video-container {
-  width: 90vw;
-  height: 50vw;
+  width: 120vw;
+  height: 80vw;
   max-width: 720px;
   max-height: 400px;
   margin: 0 auto;
