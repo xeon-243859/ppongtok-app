@@ -1,4 +1,4 @@
-// ✅ 완성된 PreviewPage.jsx (모바일 대응 + 이미지/영상 충돌 해결 + 타자 애니메이션 + 슬롯 제거 + 이미지 노출 오류 수정)
+// ✅ 완성된 PreviewPage.jsx (요구사항 완전 반영: 자막 하단 고정, 이미지 흑화 해결, 애니메이션 통일, 버튼 유지)
 import React, { useEffect, useState, useRef } from "react";
 import "./PreviewPage.css";
 
@@ -20,7 +20,6 @@ const PreviewPage = () => {
   }, []);
 
   useEffect(() => {
-    // 타자 효과 메시지 출력
     if (!message) return;
     let index = 0;
     setTypedMessage("");
@@ -87,8 +86,8 @@ const PreviewPage = () => {
               src={selectedVideo}
               autoPlay
               muted
-              className="media-display"
               playsInline
+              className="media-display"
               onLoadedMetadata={(e) => {
                 e.target.currentTime = 0;
                 setTimeout(() => {
@@ -102,7 +101,7 @@ const PreviewPage = () => {
               alt="preview"
               className="media-display"
               loading="eager"
-              style={{ objectFit: "cover", width: "100%", height: "100%" }}
+              style={{ objectFit: "cover", width: "100%", height: "100%", backgroundColor: "black", display: "block" }}
               onError={(e) => {
                 console.error("❌ 이미지 로딩 실패:", e.target.src);
                 e.target.style.display = "none";
@@ -112,7 +111,8 @@ const PreviewPage = () => {
             <div className="media-fallback">배경이 없습니다</div>
           )}
 
-          <div className="scrolling-message top-aligned">{typedMessage}</div>
+          {/* ✅ 자막은 항상 하단 고정 */}
+          <div className="scrolling-message-bottom">{typedMessage}</div>
         </div>
       </div>
 
