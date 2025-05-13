@@ -84,11 +84,13 @@ const PreviewPage = () => {
           <div className="media-fallback">배경이 없습니다</div>
         )}
 
-        <div className="scrolling-message-box">
+        {/* 감성 moving file box 중앙 배치 */}
+        <div className="moving-box">
           <div className="scrolling-message">{message}</div>
         </div>
 
-        <div className="button-box">
+        {/* 버튼은 moving box 아래 정중앙 위치 */}
+        <div className="button-box under-box">
           <button className="styled-button" onClick={() => window.history.back()}>
             ← 뒤로가기
           </button>
