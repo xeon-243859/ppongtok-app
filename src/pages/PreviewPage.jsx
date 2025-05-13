@@ -9,6 +9,7 @@ const PreviewPage = () => {
 
   const selectedVideo = localStorage.getItem("selected-video");
   const selectedMusic = localStorage.getItem("selected-music");
+  const selectedType = localStorage.getItem("selected-type"); // ✅ 추가
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -18,15 +19,11 @@ const PreviewPage = () => {
 
   useEffect(() => {
     const storedImages = JSON.parse(localStorage.getItem("selected-images") || "[]");
-    const hasValidVideo = selectedVideo && selectedVideo !== "null" && selectedVideo !== "";
-    const hasValidImages = Array.isArray(storedImages) && storedImages.length > 0;
 
-    if (hasValidVideo && !hasValidImages) {
+    // ✅ type을 기반으로 렌더링 분기 (중복 방지)
+    if (selectedType === "video" && selectedVideo) {
       setMediaType("video");
-    } else if (!hasValidVideo && hasValidImages) {
-      setSelectedImages(storedImages);
-      setMediaType("image");
-    } else if (hasValidImages) {
+    } else if (selectedType === "image" && storedImages.length > 0) {
       setSelectedImages(storedImages);
       setMediaType("image");
     } else {
@@ -37,15 +34,18 @@ const PreviewPage = () => {
   useEffect(() => {
     if (mediaType !== "image") return;
     if (!Array.isArray(selectedImages) || selectedImages.length === 0) return;
+
     let index = 0;
     setCurrentImageIndex(index);
     const interval = setInterval(() => {
       index = (index + 1) % selectedImages.length;
       setCurrentImageIndex(index);
     }, 5000);
+
     const timeout = setTimeout(() => {
       clearInterval(interval);
     }, 30000);
+
     return () => {
       clearInterval(interval);
       clearTimeout(timeout);

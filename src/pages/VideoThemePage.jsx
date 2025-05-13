@@ -14,6 +14,8 @@ const VideoThemePage = () => {
 
   const handleSelect = (src) => {
     localStorage.setItem("selected-video", src);
+    localStorage.setItem("selected-type", "video");     // ✅ 추가
+    localStorage.removeItem("selected-images");         // ✅ 충돌 방지
     navigate("/video/select");
   };
 
