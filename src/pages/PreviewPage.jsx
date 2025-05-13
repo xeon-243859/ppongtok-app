@@ -1,4 +1,4 @@
-// ✅ 완성된 PreviewPage.jsx (요구사항 완전 반영: 자막 하단 고정, 이미지 흑화 해결, 애니메이션 통일, 버튼 유지)
+// ✅ 완성 PreviewPage.jsx 전체코드 복원 + aspectRatio 반영 + 무빙박스 및 자막 하단 고정 유지
 import React, { useEffect, useState, useRef } from "react";
 import "./PreviewPage.css";
 
@@ -33,20 +33,19 @@ const PreviewPage = () => {
 
   useEffect(() => {
     const storedImages = JSON.parse(localStorage.getItem("selected-images") || "[]");
+    const hasVideo = selectedVideo && selectedVideo !== "null" && selectedVideo !== "";
+    const hasImages = Array.isArray(storedImages) && storedImages.length > 0;
 
-    if (selectedType === "video") {
-      for (let i = 1; i <= 4; i++) {
-        localStorage.removeItem(`img-${i}`);
-      }
-    } else if (selectedType === "image") {
-      localStorage.removeItem("selected-video");
-    }
-
-    if (selectedType === "video" && selectedVideo) {
+    if (selectedType === "video" && hasVideo && !hasImages) {
       setMediaType("video");
-    } else if (selectedType === "image" && storedImages.length > 0) {
+    } else if (selectedType === "image" && hasImages && !hasVideo) {
       setSelectedImages(storedImages);
       setMediaType("image");
+    } else if (hasImages && !hasVideo) {
+      setSelectedImages(storedImages);
+      setMediaType("image");
+    } else if (hasVideo && !hasImages) {
+      setMediaType("video");
     } else {
       setMediaType("none");
     }
@@ -101,7 +100,7 @@ const PreviewPage = () => {
               alt="preview"
               className="media-display"
               loading="eager"
-              style={{ objectFit: "cover", width: "100%", height: "100%", backgroundColor: "black", display: "block" }}
+              style={{ objectFit: "cover", width: "100%", height: "100%", backgroundColor: "black", display: "block", aspectRatio: "9 / 16" }}
               onError={(e) => {
                 console.error("❌ 이미지 로딩 실패:", e.target.src);
                 e.target.style.display = "none";
