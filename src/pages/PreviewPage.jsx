@@ -1,4 +1,4 @@
-// ✅ 완성 PreviewPage.jsx 전체코드 (A안 + 모바일 딜레이 대응)
+// ✅ 완성 PreviewPage.jsx 전체코드 (localStorage 초기화 포함 + 모바일 보정)
 import React, { useEffect, useState, useRef } from "react";
 import "./PreviewPage.css";
 
@@ -36,6 +36,14 @@ const PreviewPage = () => {
     const hasVideo = selectedVideo && selectedVideo !== "null" && selectedVideo !== "";
     const hasImages = Array.isArray(storedImages) && storedImages.length > 0;
 
+    // ✅ localStorage 정리
+    if (!hasImages) {
+      localStorage.removeItem("selected-images");
+    }
+    if (!hasVideo) {
+      localStorage.removeItem("selected-video");
+    }
+
     setSelectedImages(storedImages);
 
     if (selectedType === "video" && hasVideo && !hasImages) {
@@ -51,7 +59,6 @@ const PreviewPage = () => {
     }
   }, []);
 
-  // ✅ 모바일 초기 렌더링 보정
   useEffect(() => {
     setTimeout(() => {
       const images = JSON.parse(localStorage.getItem("selected-images") || "[]");
