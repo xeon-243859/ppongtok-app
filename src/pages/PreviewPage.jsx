@@ -3,15 +3,12 @@ import "./PreviewPage.css";
 
 const PreviewPage = () => {
   const [message, setMessage] = useState("");
-  const [displayedText, setDisplayedText] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
   const selectedVideo = localStorage.getItem("selected-video");
   const selectedMusic = localStorage.getItem("selected-music");
   const audioRef = useRef(null);
 
-  // ✅ 정확한 영상 선택 여부 판단
   const isVideoSelected =
     selectedVideo &&
     selectedVideo !== "null" &&
@@ -30,22 +27,6 @@ const PreviewPage = () => {
     }
   }, []);
 
-  // 자막 타자 효과 유지
-  useEffect(() => {
-    if (!message) return;
-    let index = 0;
-    const interval = setInterval(() => {
-      if (index < message.length) {
-        setDisplayedText((prev) => prev + message[index]);
-        index++;
-      } else {
-        clearInterval(interval);
-      }
-    }, 45000 / message.length); // 예: 45초 기준
-    return () => clearInterval(interval);
-  }, [message]);
-
-  // 이미지 순차 전환 (30초 후 정지)
   useEffect(() => {
     if (!Array.isArray(selectedImages) || selectedImages.length === 0 || isVideoSelected) return;
     let index = 0;
@@ -63,7 +44,6 @@ const PreviewPage = () => {
     };
   }, [selectedImages, isVideoSelected]);
 
-  // 음악 30초 후 정지
   useEffect(() => {
     if (!audioRef.current) return;
     const timer = setTimeout(() => {
@@ -75,10 +55,6 @@ const PreviewPage = () => {
   return (
     <div className="preview-page">
       <div className="media-box">
-        {/* 자막 */}
-        <div className="message-text">{displayedText}</div>
-
-        {/* ✅ 영상과 이미지 완전 분리 */}
         {isVideoSelected ? (
           <video
             src={selectedVideo}
@@ -101,11 +77,22 @@ const PreviewPage = () => {
         ) : (
           <div className="media-fallback">배경이 없습니다</div>
         )}
-      </div>
 
-      <div className="button-box">
-        <button className="styled-button" onClick={() => window.history.back()}>← 뒤로가기</button>
-        <button className="styled-button" onClick={() => window.location.href = "/share"}>다음 - 공유하기 →</button>
+        <div className="scrolling-message-box">
+          <div className="scrolling-message">{message}</div>
+        </div>
+
+        <div className="button-box">
+          <button className="styled-button" onClick={() => window.history.back()}>
+            ← 뒤로가기
+          </button>
+          <button
+            className="styled-button"
+            onClick={() => (window.location.href = "/share")}
+          >
+            다음 - 공유하기 →
+          </button>
+        </div>
       </div>
 
       {selectedMusic && <audio src={selectedMusic} autoPlay ref={audioRef} />}
