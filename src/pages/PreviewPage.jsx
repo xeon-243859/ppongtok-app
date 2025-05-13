@@ -1,4 +1,4 @@
-// ✅ 완성 PreviewPage.jsx 전체코드 (A안 적용: 이미지가 하나라도 있으면 반드시 출력)
+// ✅ 완성 PreviewPage.jsx 전체코드 (A안 + 모바일 딜레이 대응)
 import React, { useEffect, useState, useRef } from "react";
 import "./PreviewPage.css";
 
@@ -49,6 +49,17 @@ const PreviewPage = () => {
     } else {
       setMediaType("none");
     }
+  }, []);
+
+  // ✅ 모바일 초기 렌더링 보정
+  useEffect(() => {
+    setTimeout(() => {
+      const images = JSON.parse(localStorage.getItem("selected-images") || "[]");
+      if (images.length > 0) {
+        setSelectedImages(images);
+        setMediaType("image");
+      }
+    }, 100);
   }, []);
 
   useEffect(() => {
