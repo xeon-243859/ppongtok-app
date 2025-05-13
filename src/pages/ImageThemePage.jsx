@@ -1,5 +1,6 @@
-// ✅ ImageThemePage.jsx 전체코드 (이미지 선택 시 자동 저장)
-import React, { useState } from "react";
+// ✅ ImageThemePage.jsx 전체코드 (4개 선택 시 자동 /preview 이동)
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./ImageThemePage.css";
 
 const images = [
@@ -11,6 +12,7 @@ const images = [
 
 const ImageThemePage = () => {
   const [selected, setSelected] = useState([]);
+  const navigate = useNavigate();
 
   const handleSelect = (src) => {
     let updated;
@@ -20,11 +22,19 @@ const ImageThemePage = () => {
       updated = selected.length < 4 ? [...selected, src] : selected;
     }
     setSelected(updated);
-    // ✅ 자동 저장
     localStorage.setItem("selected-images", JSON.stringify(updated));
     localStorage.setItem("selected-type", "image");
     localStorage.removeItem("selected-video");
   };
+
+  // ✅ 4개 선택 시 자동 이동
+  useEffect(() => {
+    if (selected.length === 4) {
+      setTimeout(() => {
+        navigate("/preview");
+      }, 300); // 약간의 딜레이로 자연스럽게
+    }
+  }, [selected, navigate]);
 
   return (
     <div className="image-theme-page">
