@@ -59,6 +59,12 @@
   animation: scrollMessage 45s linear forwards;
 }
 
+.fast-message {
+  animation-duration: 18s; /* 45s ÷ 2.5 → 약 2.5배 빠르게 ✅ */
+}
+
+
+
 .scrolling-message.top-aligned {
   position: absolute;
   top: 8px;
@@ -109,3 +115,4 @@
 .styled-button:hover {
   background-color: #ffeef0;
 }
+

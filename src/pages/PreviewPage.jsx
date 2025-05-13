@@ -19,16 +19,20 @@ const PreviewPage = () => {
   useEffect(() => {
     const storedImages = JSON.parse(localStorage.getItem("selected-images") || "[]");
     const hasValidVideo = selectedVideo && selectedVideo !== "null" && selectedVideo !== "";
+    const hasValidImages = Array.isArray(storedImages) && storedImages.length > 0;
 
-    if (hasValidVideo) {
+    if (hasValidVideo && !hasValidImages) {
       setMediaType("video");
-    } else if (Array.isArray(storedImages) && storedImages.length > 0) {
+    } else if (!hasValidVideo && hasValidImages) {
+      setSelectedImages(storedImages);
+      setMediaType("image");
+    } else if (hasValidImages) {
       setSelectedImages(storedImages);
       setMediaType("image");
     } else {
       setMediaType("none");
     }
-  }, [selectedVideo]);
+  }, []);
 
   useEffect(() => {
     if (mediaType !== "image") return;
@@ -83,11 +87,11 @@ const PreviewPage = () => {
             <div className="media-fallback">배경이 없습니다</div>
           )}
 
-          <div className="scrolling-message top-aligned">{message}</div>
+          <div className="scrolling-message top-aligned fast-message">{message}</div>
         </div>
       </div>
 
-      <div className="button-box below-box">
+      <div className="button-box below-box" style={{ display: "flex" }}>
         <button className="styled-button" onClick={() => window.history.back()}>
           ← 뒤로가기
         </button>
