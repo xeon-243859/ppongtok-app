@@ -125,3 +125,17 @@
   margin-top: 24px;          /* 꼭 여백 줘야 아래서 보임 */
   z-index: 10;
 }
+
+.typing-message {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 1.4rem;
+  border-right: 2px solid #fff;
+  animation: typing 5s steps(40, end) forwards;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}

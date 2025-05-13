@@ -1,3 +1,4 @@
+// ✅ 완성된 PreviewPage.jsx (모바일 대응 + 이미지/영상 충돌 해결 + 메시지 애니메이션 + 슬롯 자동 제거)
 import React, { useEffect, useState, useRef } from "react";
 import "./PreviewPage.css";
 
@@ -9,7 +10,7 @@ const PreviewPage = () => {
 
   const selectedVideo = localStorage.getItem("selected-video");
   const selectedMusic = localStorage.getItem("selected-music");
-  const selectedType = localStorage.getItem("selected-type"); // ✅ 추가
+  const selectedType = localStorage.getItem("selected-type");
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -20,7 +21,16 @@ const PreviewPage = () => {
   useEffect(() => {
     const storedImages = JSON.parse(localStorage.getItem("selected-images") || "[]");
 
-    // ✅ type을 기반으로 렌더링 분기 (중복 방지)
+    // ✅ 충돌 방지용: 슬롯 정리
+    if (selectedType === "video") {
+      for (let i = 1; i <= 4; i++) {
+        localStorage.removeItem(`img-${i}`);
+      }
+    } else if (selectedType === "image") {
+      localStorage.removeItem("selected-video");
+    }
+
+    // ✅ mediaType 설정
     if (selectedType === "video" && selectedVideo) {
       setMediaType("video");
     } else if (selectedType === "image" && storedImages.length > 0) {
@@ -32,20 +42,16 @@ const PreviewPage = () => {
   }, []);
 
   useEffect(() => {
-    if (mediaType !== "image") return;
-    if (!Array.isArray(selectedImages) || selectedImages.length === 0) return;
-
+    if (mediaType !== "image" || selectedImages.length === 0) return;
     let index = 0;
     setCurrentImageIndex(index);
     const interval = setInterval(() => {
       index = (index + 1) % selectedImages.length;
       setCurrentImageIndex(index);
     }, 5000);
-
     const timeout = setTimeout(() => {
       clearInterval(interval);
     }, 30000);
-
     return () => {
       clearInterval(interval);
       clearTimeout(timeout);
@@ -77,17 +83,21 @@ const PreviewPage = () => {
                 }, 30000);
               }}
             />
-          ) : mediaType === "image" ? (
+          ) : mediaType === "image" && selectedImages[currentImageIndex] ? (
             <img
               src={selectedImages[currentImageIndex]}
               alt="preview"
               className="media-display"
+              onError={(e) => {
+                console.error("❌ 이미지 로딩 실패:", e.target.src);
+                e.target.style.display = "none";
+              }}
             />
           ) : (
             <div className="media-fallback">배경이 없습니다</div>
           )}
 
-          <div className="scrolling-message top-aligned fast-message">{message}</div>
+          <div className="scrolling-message top-aligned typing-message">{message}</div>
         </div>
       </div>
 
