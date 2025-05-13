@@ -12,15 +12,14 @@ const LoveFormPage = () => {
       return;
     }
 
-    localStorage.setItem("loveMessage", message);
-    navigate("/style/select"); // ✅ 선택화면으로 이동
+    localStorage.setItem("message", message); // ✅ 이름 수정 (정상 연결용)
+    navigate("/style/select");
   };
 
   return (
     <div className="love-form-container">
       <h2 className="form-title-line1">마음속 사랑을 살며시</h2>
       <h2 className="form-title-line2">남겨보세요</h2>
-
 
       <textarea
         className="message-input"
