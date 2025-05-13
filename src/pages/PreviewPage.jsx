@@ -3,10 +3,8 @@ import "./PreviewPage.css";
 
 const PreviewPage = () => {
   const [message, setMessage] = useState("");
-  const [displayedText, setDisplayedText] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
   const selectedVideo = localStorage.getItem("selected-video");
   const selectedMusic = localStorage.getItem("selected-music");
 
@@ -24,28 +22,11 @@ const PreviewPage = () => {
     }
   }, []);
 
-  // ✅ 메시지 타자 효과 (20초 동안 전체 출력)
-  useEffect(() => {
-    if (!message) return;
-    let index = 0;
-    setDisplayedText(""); // 초기화
-    const interval = setInterval(() => {
-      setDisplayedText((prev) => prev + message[index]);
-      index++;
-      if (index >= message.length) {
-        clearInterval(interval);
-      }
-    }, Math.floor(20000 / message.length)); // 20초 분할
-
-    return () => clearInterval(interval);
-  }, [message]);
-
-  // ✅ 이미지 4장 순차 전환
+  // ✅ 이미지 4장 순차 전환 (5초 간격, 총 20초)
   useEffect(() => {
     if (!Array.isArray(selectedImages) || selectedImages.length === 0) return;
     let index = 0;
     setCurrentImageIndex(index);
-
     const displayNext = () => {
       index++;
       if (index < selectedImages.length) {
@@ -53,49 +34,29 @@ const PreviewPage = () => {
         setTimeout(displayNext, 5000);
       }
     };
-
     const timer = setTimeout(displayNext, 5000);
     return () => clearTimeout(timer);
   }, [selectedImages]);
 
-  // ✅ 디버깅 로그
-  useEffect(() => {
-    console.log("📝 메시지:", message);
-    console.log("🖼 이미지 배열:", selectedImages);
-    console.log("🎥 영상:", selectedVideo);
-    console.log("🎵 음악:", selectedMusic);
-  }, []);
-
   return (
     <div className="preview-page">
       <div className="media-box">
-        <div className="message-text typing-text">{displayedText}</div>
+        {/* ✅ 감성 자막 */}
+        <div className="scrolling-message-box">
+          <div className="scrolling-message">{message}</div>
+        </div>
 
-        {selectedVideo ? (
-          <video
-            src={selectedVideo}
-            autoPlay
-            muted
+        {/* ✅ 이미지 배경 (4장 순차 전환) */}
+        {Array.isArray(selectedImages) &&
+        selectedImages.length > 0 &&
+        selectedImages[currentImageIndex] ? (
+          <img
+            src={selectedImages[currentImageIndex]}
+            alt="preview"
             className="media-display"
-            onLoadedMetadata={(e) => {
-              e.target.currentTime = 0;
-              setTimeout(() => {
-                e.target.pause();
-              }, 20000);
-            }}
           />
         ) : (
-          Array.isArray(selectedImages) &&
-          selectedImages.length > 0 &&
-          selectedImages[currentImageIndex] ? (
-            <img
-              src={selectedImages[currentImageIndex]}
-              alt="preview"
-              className="media-display"
-            />
-          ) : (
-            <div className="media-fallback">이미지가 없습니다 😢</div>
-          )
+          <div className="media-fallback">이미지가 없습니다 😢</div>
         )}
       </div>
 

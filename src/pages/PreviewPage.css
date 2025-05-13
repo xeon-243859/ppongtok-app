@@ -1,93 +1,75 @@
 .preview-page {
-  width: 100vw;
+  position: relative;
+  width: 100%;
   height: 100vh;
-  position: relative;
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-/* 감성적인 영상/이미지 프레임 */
-.media-box {
-  width: 80vw;
-  height: 45vh;
-  background-color: #000;
-  border-radius: 20px;
   overflow: hidden;
-  position: relative;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 40px;
 }
 
+.media-box {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
 
-
-/* 이미지 또는 영상 */
 .media-display {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-
-/* 메시지 텍스트 */
-.message-text {
-  position: absolute;
-  top: 10px;
+.media-fallback {
   width: 100%;
-  text-align: center;
-  font-size: 1.2rem;
-  color: white;
-  z-index: 2;
-  white-space: pre-wrap;
-  animation: fadeIn 20s linear forwards;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
+  color: #fff;
 }
 
-.typing-text {
+.button-box {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  z-index: 10;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* ✅ 감성 자막: 20초간 흘러가는 텍스트 */
+.scrolling-message-box {
   position: absolute;
   top: 5%;
   width: 100%;
-  text-align: center;
-  font-size: 1.8rem;
-  font-weight: 500;
-  color: white;
-  text-shadow: 1px 1px 3px black;
+  overflow: hidden;
   z-index: 10;
-  padding: 0 20px;
-  white-space: pre-wrap;
 }
 
-
-/* 하단 버튼 */
-.button-box {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  display: flex;
-  gap: 10px;
-}
-
-.button-box button {
-  padding: 10px 14px;
-  font-size: 1rem;
-  background-color: #222;
+.scrolling-message {
+  display: inline-block;
+  white-space: nowrap;
+  font-size: 2rem;
   color: white;
-  border: none;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  cursor: pointer;
+  text-shadow: 1px 1px 2px black;
+  padding-left: 100%;
+  animation: scrollMessage 20s linear forwards;
 }
 
-.button-box button:hover {
-  background-color: #444;
-}
-
-/* 텍스트 페이드인 */
-@keyframes fadeIn {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+@keyframes scrollMessage {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
