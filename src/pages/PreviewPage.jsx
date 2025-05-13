@@ -59,7 +59,7 @@ const PreviewPage = () => {
   return (
     <div className="preview-page">
       <div className="media-box">
-        <div className="media-container">
+        <div className="moving-box">
           {mediaType === "video" ? (
             <video
               src={selectedVideo}
@@ -82,25 +82,21 @@ const PreviewPage = () => {
           ) : (
             <div className="media-fallback">배경이 없습니다</div>
           )}
-        </div>
 
-        {/* 감성 moving file box 중앙 배치 */}
-        <div className="moving-box">
-          <div className="scrolling-message">{message}</div>
+          <div className="scrolling-message top-aligned">{message}</div>
         </div>
+      </div>
 
-        {/* 버튼은 moving box 아래 정중앙 위치 */}
-        <div className="button-box under-box">
-          <button className="styled-button" onClick={() => window.history.back()}>
-            ← 뒤로가기
-          </button>
-          <button
-            className="styled-button"
-            onClick={() => (window.location.href = "/share")}
-          >
-            다음 - 공유하기 →
-          </button>
-        </div>
+      <div className="button-box below-box">
+        <button className="styled-button" onClick={() => window.history.back()}>
+          ← 뒤로가기
+        </button>
+        <button
+          className="styled-button"
+          onClick={() => (window.location.href = "/share")}
+        >
+          다음 - 공유하기 →
+        </button>
       </div>
 
       {selectedMusic && <audio src={selectedMusic} autoPlay ref={audioRef} />}

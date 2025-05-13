@@ -16,7 +16,9 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  z-index: 1;
 }
+
 
 /* 🎬 영상 감성 박스 */
 .video-container {
@@ -33,21 +35,19 @@
 }
 
 .moving-box {
-  position: absolute;
-  top: 43%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
   width: 95%;
-  height: 13em;
-  padding: 0 16px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  border: 2px solid white;
-  border-radius: 12px;
-  background-color: rgba(0, 0, 0, 0.5);
+  height: 13em;         /* 크세온님 요청대로 유지 */
+  margin: 0 auto;
+  border-radius: 16px;
   overflow: hidden;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* 자막을 위로 붙이기 위해 */
 }
+
 
 
 
@@ -61,14 +61,30 @@
   animation: scrollMessage 45s linear forwards;
 }
 
+.scrolling-message.top-aligned {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  width: 100%;
+  white-space: nowrap;
+  padding-left: 100%;
+  font-size: 1.2rem;
+  color: white;
+  animation: scrollMessage 45s linear forwards;
+  text-shadow: 1px 1px 3px black;
+  z-index: 2;
+}
+
+
 @keyframes scrollMessage {
   0% {
-    transform: translateX(100%);
+    transform: translateX(0%);
   }
   100% {
     transform: translateX(-100%);
   }
 }
+
 
 /* 🎛 버튼 감성 스타일 */
 .button-box {
