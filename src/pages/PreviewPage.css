@@ -1,15 +1,29 @@
-.message-text {
+.scrolling-message-box {
   position: absolute;
   top: 5%;
   width: 100%;
-  text-align: center;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.scrolling-message {
+  display: inline-block;
+  white-space: nowrap;
   font-size: 1.8rem;
   font-weight: 500;
   color: white;
   text-shadow: 1px 1px 3px black;
-  z-index: 10;
-  padding: 0 20px;
-  white-space: pre-wrap;
+  padding-left: 100%;
+  animation: scrollMessage 45s linear forwards;
+}
+
+@keyframes scrollMessage {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 
 .button-box {

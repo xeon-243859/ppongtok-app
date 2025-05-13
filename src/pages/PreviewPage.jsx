@@ -3,21 +3,19 @@ import "./PreviewPage.css";
 
 const PreviewPage = () => {
   const [message, setMessage] = useState("");
-  const [displayedText, setDisplayedText] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
   const selectedVideo = localStorage.getItem("selected-video");
   const selectedMusic = localStorage.getItem("selected-music");
   const audioRef = useRef(null);
 
-  // ✅ 메시지 불러오기
+  // 메시지 불러오기
   useEffect(() => {
     const storedMessage = localStorage.getItem("message");
     if (storedMessage) setMessage(storedMessage);
   }, []);
 
-  // ✅ 이미지 불러오기
+  // 이미지 불러오기
   useEffect(() => {
     const storedImages = JSON.parse(localStorage.getItem("selected-images"));
     if (Array.isArray(storedImages)) {
@@ -25,24 +23,9 @@ const PreviewPage = () => {
     }
   }, []);
 
-  // ✅ 메시지 자막 흐름 (45초 속도, 누적 없이 출력)
+  // 이미지 순차 전환 (30초까지만)
   useEffect(() => {
-    if (!message) return;
-    let index = 0;
-    const interval = setInterval(() => {
-      if (index < message.length) {
-        setDisplayedText(message[index]); // ❗ 누적 ❌, 현재 글자만 표시
-        index++;
-      } else {
-        clearInterval(interval);
-      }
-    }, 45000 / message.length);
-    return () => clearInterval(interval);
-  }, [message]);
-
-  // ✅ 이미지 순차 전환 (30초 후 정지)
-  useEffect(() => {
-    if (!Array.isArray(selectedImages) || selectedImages.length === 0 || selectedVideo) return;
+    if (!Array.isArray(selectedImages) || selectedImages.length === 0 || (selectedVideo && selectedVideo !== "null")) return;
     let index = 0;
     setCurrentImageIndex(index);
     const interval = setInterval(() => {
@@ -58,7 +41,7 @@ const PreviewPage = () => {
     };
   }, [selectedImages, selectedVideo]);
 
-  // ✅ 음악 30초 후 정지
+  // 음악 30초 후 정지
   useEffect(() => {
     if (!audioRef.current) return;
     const timer = setTimeout(() => {
@@ -70,10 +53,13 @@ const PreviewPage = () => {
   return (
     <div className="preview-page">
       <div className="media-box">
-        <div className="message-text">{displayedText}</div>
+        {/* ✅ 감성 자막 */}
+        <div className="scrolling-message-box">
+          <div className="scrolling-message">{message}</div>
+        </div>
 
-        {/* ✅ 이미지/영상 정확히 분리 출력 */}
-        {selectedVideo && selectedVideo !== "null" ? (
+        {/* ✅ 분기: 영상 vs 이미지 정확히 분리 */}
+        {(selectedVideo && selectedVideo !== "null" && selectedVideo !== null) ? (
           <video
             src={selectedVideo}
             autoPlay
