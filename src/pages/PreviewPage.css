@@ -37,19 +37,17 @@
 .moving-box {
   position: relative;
   width: 95%;
-  height: 13em;         /* 크세온님 요청대로 유지 */
-  margin: 0 auto;
+  height: 60vw; /* 모바일에서도 안전하게 높이 확보 */
+  max-width: 720px;
+  margin: 33vh auto 0; /* 모바일에서 화면 1/3 지점부터 시작 */
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
   background-color: rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* 자막을 위로 붙이기 위해 */
+  justify-content: flex-start;
 }
-
-
-
 
 
 /* 자막 흐름 애니메이션 */
