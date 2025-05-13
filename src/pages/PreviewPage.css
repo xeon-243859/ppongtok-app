@@ -13,7 +13,7 @@
   color: white;
   text-shadow: 1px 1px 2px black;
   padding-left: 100%;
-  animation: scrollMessage 120s linear forwards; /* ✅ 120초 흐름 */
+  animation: scrollMessage 60s linear forwards;
 }
 
 @keyframes scrollMessage {
@@ -23,4 +23,31 @@
   100% {
     transform: translateX(-100%);
   }
+}
+
+.button-box {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  z-index: 20;
+}
+
+button {
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #444;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: rgba(255, 230, 230, 0.95);
 }

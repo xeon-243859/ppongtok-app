@@ -1,87 +1,108 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./PreviewPage.css";
 
 const PreviewPage = () => {
   const [message, setMessage] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [showImage, setShowImage] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
+  const audioRef = useRef(null);
+
   const selectedVideo = localStorage.getItem("selected-video");
   const selectedMusic = localStorage.getItem("selected-music");
 
-  // 메시지 불러오기
   useEffect(() => {
     const storedMessage = localStorage.getItem("message");
     if (storedMessage) setMessage(storedMessage);
   }, []);
 
-  // 이미지 불러오기
   useEffect(() => {
     const storedImages = JSON.parse(localStorage.getItem("selected-images"));
-    if (Array.isArray(storedImages)) {
+    if (Array.isArray(storedImages) && storedImages.length > 0) {
       setSelectedImages(storedImages);
+      setShowImage(true);
     }
-  }, []);
+    if (selectedVideo && selectedVideo !== "null") {
+      setShowVideo(true);
+      setShowImage(false);
+    }
+  }, [selectedVideo]);
 
-  // 이미지 5초마다 순차 전환 → 30초 후 정지
+  // 이미지 5초 간격 순환 → 30초 후 정지
   useEffect(() => {
-    if (!selectedImages || selectedImages.length === 0 || selectedVideo) return;
+    if (!showImage || selectedImages.length === 0) return;
     let index = 0;
     setCurrentImageIndex(index);
-
     const interval = setInterval(() => {
       index = (index + 1) % selectedImages.length;
       setCurrentImageIndex(index);
     }, 5000);
-
     const timeout = setTimeout(() => {
       clearInterval(interval);
-    }, 30000); // 30초 후 정지
-
+    }, 30000);
     return () => {
       clearInterval(interval);
       clearTimeout(timeout);
     };
-  }, [selectedImages, selectedVideo]);
+  }, [showImage, selectedImages]);
+
+  // 영상 30초 후 정지
+  useEffect(() => {
+    if (!showVideo) return;
+    const timer = setTimeout(() => {
+      const video = document.querySelector("video");
+      if (video) video.pause();
+    }, 30000);
+    return () => clearTimeout(timer);
+  }, [showVideo]);
+
+  // 음악 30초 후 정지
+  useEffect(() => {
+    if (!audioRef.current) return;
+    const timer = setTimeout(() => {
+      audioRef.current.pause();
+    }, 30000);
+    return () => clearTimeout(timer);
+  }, [selectedMusic]);
 
   return (
     <div className="preview-page">
       <div className="media-box">
-        {/* 자막 */}
         <div className="scrolling-message-box">
           <div className="scrolling-message">{message}</div>
         </div>
 
-        {/* 영상이 선택되었을 경우 → 영상만 출력 */}
-        {selectedVideo && selectedVideo !== "null" ? (
+        {showVideo ? (
           <video
             src={selectedVideo}
             autoPlay
             muted
             className="media-display"
-            onLoadedMetadata={(e) => {
-              e.target.currentTime = 0;
-              setTimeout(() => {
-                e.target.pause();
-              }, 30000); // 30초 후 정지
-            }}
+          />
+        ) : showImage && selectedImages.length > 0 ? (
+          <img
+            src={selectedImages[currentImageIndex]}
+            alt="preview"
+            className="media-display"
           />
         ) : (
-          selectedImages.length > 0 && (
-            <img
-              src={selectedImages[currentImageIndex]}
-              alt="preview"
-              className="media-display"
-            />
-          )
+          <div className="media-fallback">배경 미디어가 없습니다 😢</div>
         )}
       </div>
 
       <div className="button-box">
-        <button onClick={() => window.history.back()}>뒤로가기</button>
-        <button onClick={() => window.location.href = "/share"}>다음 - 공유하기</button>
+        <button className="btn-back" onClick={() => window.history.back()}>
+          ← 뒤로가기
+        </button>
+        <button className="btn-next" onClick={() => (window.location.href = "/share")}>
+          다음 - 공유하기 →
+        </button>
       </div>
 
-      {selectedMusic && <audio src={selectedMusic} autoPlay />}
+      {selectedMusic && (
+        <audio ref={audioRef} src={selectedMusic} autoPlay />
+      )}
     </div>
   );
 };
