@@ -1,4 +1,4 @@
-// ✅ 완성 PreviewPage.jsx 전체코드 복원 + mediaType 분기 개선 + 무빙박스 및 자막 하단 고정 유지
+// ✅ 완성 PreviewPage.jsx 전체코드 (A안 적용: 이미지가 하나라도 있으면 반드시 출력)
 import React, { useEffect, useState, useRef } from "react";
 import "./PreviewPage.css";
 
@@ -36,7 +36,6 @@ const PreviewPage = () => {
     const hasVideo = selectedVideo && selectedVideo !== "null" && selectedVideo !== "";
     const hasImages = Array.isArray(storedImages) && storedImages.length > 0;
 
-    // ✅ 상태 먼저 세팅
     setSelectedImages(storedImages);
 
     if (selectedType === "video" && hasVideo && !hasImages) {
@@ -95,9 +94,9 @@ const PreviewPage = () => {
                 }, 30000);
               }}
             />
-          ) : mediaType === "image" && selectedImages[currentImageIndex] ? (
+          ) : mediaType === "image" && selectedImages.length > 0 ? (
             <img
-              src={selectedImages[currentImageIndex]}
+              src={selectedImages[currentImageIndex] || selectedImages[0]}
               alt="preview"
               className="media-display"
               loading="eager"
@@ -111,7 +110,6 @@ const PreviewPage = () => {
             <div className="media-fallback">배경이 없습니다</div>
           )}
 
-          {/* ✅ 자막은 항상 하단 고정 */}
           <div className="scrolling-message-bottom">{typedMessage}</div>
         </div>
       </div>
