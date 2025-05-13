@@ -58,3 +58,18 @@
   height: 100%;
   object-fit: cover;
 }
+
+.video-container {
+  width: 240vw;
+  height: 90vw;
+  max-width: 720px;
+  max-height: 400px;
+  margin: 0 auto;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+
+
