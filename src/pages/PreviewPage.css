@@ -46,7 +46,7 @@ button {
   background-color: rgba(255, 255, 255, 0.8);
 }
 
-/* ✅ 감성 자막: 20초간 흘러가는 텍스트 */
+/* 자막 박스 */
 .scrolling-message-box {
   position: absolute;
   top: 5%;
@@ -55,6 +55,7 @@ button {
   z-index: 10;
 }
 
+/* 자막 애니메이션: 30초 */
 .scrolling-message {
   display: inline-block;
   white-space: nowrap;
@@ -62,7 +63,7 @@ button {
   color: white;
   text-shadow: 1px 1px 2px black;
   padding-left: 100%;
-  animation: scrollMessage 20s linear forwards;
+  animation: scrollMessage 30s linear forwards;
 }
 
 @keyframes scrollMessage {

@@ -8,13 +8,13 @@ const PreviewPage = () => {
   const selectedVideo = localStorage.getItem("selected-video");
   const selectedMusic = localStorage.getItem("selected-music");
 
-  // ✅ 메시지 불러오기
+  // 메시지 불러오기
   useEffect(() => {
     const storedMessage = localStorage.getItem("message");
     if (storedMessage) setMessage(storedMessage);
   }, []);
 
-  // ✅ 이미지 불러오기
+  // 이미지 불러오기
   useEffect(() => {
     const storedImages = JSON.parse(localStorage.getItem("selected-images"));
     if (Array.isArray(storedImages)) {
@@ -22,41 +22,53 @@ const PreviewPage = () => {
     }
   }, []);
 
-  // ✅ 이미지 4장 순차 전환 (5초 간격, 총 20초)
+  // 이미지 순차 전환 - 5초마다, 계속 순환
   useEffect(() => {
     if (!Array.isArray(selectedImages) || selectedImages.length === 0) return;
     let index = 0;
     setCurrentImageIndex(index);
     const displayNext = () => {
-      index++;
-      if (index < selectedImages.length) {
-        setCurrentImageIndex(index);
-        setTimeout(displayNext, 5000);
-      }
+      index = (index + 1) % selectedImages.length;
+      setCurrentImageIndex(index);
     };
-    const timer = setTimeout(displayNext, 5000);
-    return () => clearTimeout(timer);
+    const timer = setInterval(displayNext, 5000); // 5초 간격 반복
+    return () => clearInterval(timer);
   }, [selectedImages]);
 
   return (
     <div className="preview-page">
       <div className="media-box">
-        {/* ✅ 감성 자막 */}
+        {/* 자막 */}
         <div className="scrolling-message-box">
           <div className="scrolling-message">{message}</div>
         </div>
 
-        {/* ✅ 이미지 배경 (4장 순차 전환) */}
-        {Array.isArray(selectedImages) &&
-        selectedImages.length > 0 &&
-        selectedImages[currentImageIndex] ? (
-          <img
-            src={selectedImages[currentImageIndex]}
-            alt="preview"
+        {/* 배경: 영상이 있으면 영상, 아니면 이미지 순환 */}
+        {selectedVideo ? (
+          <video
+            src={selectedVideo}
+            autoPlay
+            muted
             className="media-display"
+            onLoadedMetadata={(e) => {
+              e.target.currentTime = 0;
+              setTimeout(() => {
+                e.target.pause();
+              }, 30000); // 30초 후 정지
+            }}
           />
         ) : (
-          <div className="media-fallback">이미지가 없습니다 😢</div>
+          Array.isArray(selectedImages) &&
+          selectedImages.length > 0 &&
+          selectedImages[currentImageIndex] ? (
+            <img
+              src={selectedImages[currentImageIndex]}
+              alt="preview"
+              className="media-display"
+            />
+          ) : (
+            <div className="media-fallback">이미지가 없습니다 😢</div>
+          )
         )}
       </div>
 
