@@ -32,23 +32,24 @@
   position: relative;
 }
 
-/* 🪄 moving file 자막 박스 */
 .moving-box {
   position: absolute;
-  top: 50%;
+  top: 43%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 95%;
   height: 13em;
+  padding: 0 16px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   border: 2px solid white;
   border-radius: 12px;
-  padding: 0 12px;
   background-color: rgba(0, 0, 0, 0.5);
   overflow: hidden;
 }
+
+
 
 
 /* 자막 흐름 애니메이션 */

@@ -59,8 +59,8 @@ const PreviewPage = () => {
   return (
     <div className="preview-page">
       <div className="media-box">
-        {mediaType === "video" ? (
-          <div className="video-container">
+        <div className="media-container">
+          {mediaType === "video" ? (
             <video
               src={selectedVideo}
               autoPlay
@@ -73,16 +73,16 @@ const PreviewPage = () => {
                 }, 30000);
               }}
             />
-          </div>
-        ) : mediaType === "image" ? (
-          <img
-            src={selectedImages[currentImageIndex]}
-            alt="preview"
-            className="media-display"
-          />
-        ) : (
-          <div className="media-fallback">배경이 없습니다</div>
-        )}
+          ) : mediaType === "image" ? (
+            <img
+              src={selectedImages[currentImageIndex]}
+              alt="preview"
+              className="media-display"
+            />
+          ) : (
+            <div className="media-fallback">배경이 없습니다</div>
+          )}
+        </div>
 
         {/* 감성 moving file box 중앙 배치 */}
         <div className="moving-box">
