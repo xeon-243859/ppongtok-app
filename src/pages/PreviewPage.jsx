@@ -22,18 +22,26 @@ const PreviewPage = () => {
     }
   }, []);
 
-  // 이미지 순차 전환 - 5초마다, 계속 순환
+  // 이미지 5초마다 순차 전환 → 30초 후 정지
   useEffect(() => {
-    if (!Array.isArray(selectedImages) || selectedImages.length === 0) return;
+    if (!selectedImages || selectedImages.length === 0 || selectedVideo) return;
     let index = 0;
     setCurrentImageIndex(index);
-    const displayNext = () => {
+
+    const interval = setInterval(() => {
       index = (index + 1) % selectedImages.length;
       setCurrentImageIndex(index);
+    }, 5000);
+
+    const timeout = setTimeout(() => {
+      clearInterval(interval);
+    }, 30000); // 30초 후 정지
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeout);
     };
-    const timer = setInterval(displayNext, 5000); // 5초 간격 반복
-    return () => clearInterval(timer);
-  }, [selectedImages]);
+  }, [selectedImages, selectedVideo]);
 
   return (
     <div className="preview-page">
@@ -43,8 +51,8 @@ const PreviewPage = () => {
           <div className="scrolling-message">{message}</div>
         </div>
 
-        {/* 배경: 영상이 있으면 영상, 아니면 이미지 순환 */}
-        {selectedVideo ? (
+        {/* 영상이 선택되었을 경우 → 영상만 출력 */}
+        {selectedVideo && selectedVideo !== "null" ? (
           <video
             src={selectedVideo}
             autoPlay
@@ -58,16 +66,12 @@ const PreviewPage = () => {
             }}
           />
         ) : (
-          Array.isArray(selectedImages) &&
-          selectedImages.length > 0 &&
-          selectedImages[currentImageIndex] ? (
+          selectedImages.length > 0 && (
             <img
               src={selectedImages[currentImageIndex]}
               alt="preview"
               className="media-display"
             />
-          ) : (
-            <div className="media-fallback">이미지가 없습니다 😢</div>
           )
         )}
       </div>

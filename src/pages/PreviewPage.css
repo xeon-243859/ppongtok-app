@@ -1,52 +1,3 @@
-.preview-page {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-}
-
-.media-box {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-
-.media-display {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.media-fallback {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #000;
-  color: #fff;
-}
-
-.button-box {
-  position: absolute;
-  bottom: 20px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  z-index: 10;
-}
-
-button {
-  padding: 10px 20px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  background-color: rgba(255, 255, 255, 0.8);
-}
-
-/* 자막 박스 */
 .scrolling-message-box {
   position: absolute;
   top: 5%;
@@ -55,7 +6,6 @@ button {
   z-index: 10;
 }
 
-/* 자막 애니메이션: 30초 */
 .scrolling-message {
   display: inline-block;
   white-space: nowrap;
@@ -63,7 +13,7 @@ button {
   color: white;
   text-shadow: 1px 1px 2px black;
   padding-left: 100%;
-  animation: scrollMessage 30s linear forwards;
+  animation: scrollMessage 120s linear forwards; /* ✅ 120초 흐름 */
 }
 
 @keyframes scrollMessage {
