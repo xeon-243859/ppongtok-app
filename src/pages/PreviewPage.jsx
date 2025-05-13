@@ -25,43 +25,36 @@ const PreviewPage = () => {
     }
   }, []);
 
-  // ✅ 메시지 타자 효과 (60초 속도)
+  // ✅ 메시지 자막 흐름 (45초 속도, 누적 없이 출력)
   useEffect(() => {
     if (!message) return;
     let index = 0;
     const interval = setInterval(() => {
       if (index < message.length) {
-        setDisplayedText((prev) => prev + message[index]);
+        setDisplayedText(message[index]); // ❗ 누적 ❌, 현재 글자만 표시
         index++;
       } else {
         clearInterval(interval);
       }
-    }, 60000 / message.length); // ⏱ 더 느리게
+    }, 45000 / message.length);
     return () => clearInterval(interval);
   }, [message]);
 
-  // ✅ 이미지 4장 순차 전환 (30초 후 정지)
+  // ✅ 이미지 순차 전환 (30초 후 정지)
   useEffect(() => {
     if (!Array.isArray(selectedImages) || selectedImages.length === 0 || selectedVideo) return;
     let index = 0;
     setCurrentImageIndex(index);
-
-    const displayNext = () => {
-      index++;
-      if (index < selectedImages.length) {
-        setCurrentImageIndex(index);
-        setTimeout(displayNext, 5000);
-      }
-    };
-
-    const timer = setTimeout(displayNext, 5000);
-    const stop = setTimeout(() => {
-      clearTimeout(timer);
+    const interval = setInterval(() => {
+      index = (index + 1) % selectedImages.length;
+      setCurrentImageIndex(index);
+    }, 5000);
+    const timeout = setTimeout(() => {
+      clearInterval(interval);
     }, 30000);
-
     return () => {
-      clearTimeout(timer);
-      clearTimeout(stop);
+      clearInterval(interval);
+      clearTimeout(timeout);
     };
   }, [selectedImages, selectedVideo]);
 
@@ -74,19 +67,12 @@ const PreviewPage = () => {
     return () => clearTimeout(timer);
   }, [selectedMusic]);
 
-  // ✅ 디버깅 로그
-  useEffect(() => {
-    console.log("📝 메시지:", message);
-    console.log("🖼 이미지 배열:", selectedImages);
-    console.log("🎥 영상:", selectedVideo);
-    console.log("🎵 음악:", selectedMusic);
-  }, []);
-
   return (
     <div className="preview-page">
       <div className="media-box">
         <div className="message-text">{displayedText}</div>
 
+        {/* ✅ 이미지/영상 정확히 분리 출력 */}
         {selectedVideo && selectedVideo !== "null" ? (
           <video
             src={selectedVideo}
@@ -101,16 +87,12 @@ const PreviewPage = () => {
             }}
           />
         ) : (
-          Array.isArray(selectedImages) &&
-          selectedImages.length > 0 &&
-          selectedImages[currentImageIndex] ? (
+          selectedImages.length > 0 && (
             <img
               src={selectedImages[currentImageIndex]}
               alt="preview"
               className="media-display"
             />
-          ) : (
-            <div className="media-fallback">이미지가 없습니다 😢</div>
           )
         )}
       </div>
