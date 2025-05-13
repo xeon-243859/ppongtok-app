@@ -5,15 +5,11 @@ const PreviewPage = () => {
   const [message, setMessage] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [mediaType, setMediaType] = useState("none");
+
   const selectedVideo = localStorage.getItem("selected-video");
   const selectedMusic = localStorage.getItem("selected-music");
   const audioRef = useRef(null);
-
-  const isVideoSelected =
-    selectedVideo &&
-    selectedVideo !== "null" &&
-    selectedVideo !== null &&
-    selectedVideo !== "";
 
   useEffect(() => {
     const storedMessage = localStorage.getItem("message");
@@ -21,14 +17,22 @@ const PreviewPage = () => {
   }, []);
 
   useEffect(() => {
-    const storedImages = JSON.parse(localStorage.getItem("selected-images"));
-    if (Array.isArray(storedImages)) {
+    const storedImages = JSON.parse(localStorage.getItem("selected-images") || "[]");
+    const hasValidVideo = selectedVideo && selectedVideo !== "null" && selectedVideo !== "";
+
+    if (hasValidVideo) {
+      setMediaType("video");
+    } else if (Array.isArray(storedImages) && storedImages.length > 0) {
       setSelectedImages(storedImages);
+      setMediaType("image");
+    } else {
+      setMediaType("none");
     }
-  }, []);
+  }, [selectedVideo]);
 
   useEffect(() => {
-    if (!Array.isArray(selectedImages) || selectedImages.length === 0 || isVideoSelected) return;
+    if (mediaType !== "image") return;
+    if (!Array.isArray(selectedImages) || selectedImages.length === 0) return;
     let index = 0;
     setCurrentImageIndex(index);
     const interval = setInterval(() => {
@@ -42,7 +46,7 @@ const PreviewPage = () => {
       clearInterval(interval);
       clearTimeout(timeout);
     };
-  }, [selectedImages, isVideoSelected]);
+  }, [mediaType, selectedImages]);
 
   useEffect(() => {
     if (!audioRef.current) return;
@@ -55,20 +59,22 @@ const PreviewPage = () => {
   return (
     <div className="preview-page">
       <div className="media-box">
-        {isVideoSelected ? (
-          <video
-            src={selectedVideo}
-            autoPlay
-            muted
-            className="media-display"
-            onLoadedMetadata={(e) => {
-              e.target.currentTime = 0;
-              setTimeout(() => {
-                e.target.pause();
-              }, 30000);
-            }}
-          />
-        ) : selectedImages.length > 0 ? (
+        {mediaType === "video" ? (
+          <div className="video-container">
+            <video
+              src={selectedVideo}
+              autoPlay
+              muted
+              className="media-display"
+              onLoadedMetadata={(e) => {
+                e.target.currentTime = 0;
+                setTimeout(() => {
+                  e.target.pause();
+                }, 30000);
+              }}
+            />
+          </div>
+        ) : mediaType === "image" ? (
           <img
             src={selectedImages[currentImageIndex]}
             alt="preview"
