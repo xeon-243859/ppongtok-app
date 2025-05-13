@@ -1,54 +1,44 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+// ✅ ImageThemePage.jsx 전체코드 (이미지 선택 시 자동 저장)
+import React, { useState } from "react";
 import "./ImageThemePage.css";
 
-const themes = [
-  { id: "img01", src: "/backgrounds/cosmos.jpg" },
-  { id: "img02", src: "/backgrounds/leaves.jpg" },
-  { id: "img03", src: "/backgrounds/road.jpg" },
-  { id: "img04", src: "/backgrounds/water.jpg" },
+const images = [
+  "/backgrounds/leaves.jpg",
+  "/backgrounds/road.jpg",
+  "/backgrounds/water.jpg",
+  "/backgrounds/cosmos.jpg"
 ];
 
 const ImageThemePage = () => {
-  const navigate = useNavigate();
+  const [selected, setSelected] = useState([]);
 
   const handleSelect = (src) => {
-    console.log("🖱️ 이미지 클릭됨! src:", src);
-    for (let i = 1; i <= 4; i++) {
-      const key = `img-${i}`;
-      if (!localStorage.getItem(key)) {
-        localStorage.setItem(key, src);
-        break;
-      }
+    let updated;
+    if (selected.includes(src)) {
+      updated = selected.filter((item) => item !== src);
+    } else {
+      updated = selected.length < 4 ? [...selected, src] : selected;
     }
-
-    localStorage.setItem("selected-image", src);    // 대표 이미지 저장
-    localStorage.setItem("selected-type", "image"); // ✅ 추가
-    localStorage.removeItem("selected-video");      // ✅ 충돌 방지
-    console.log("🌅 대표 이미지 저장됨:", src);
-
-    navigate("/image/select");
+    setSelected(updated);
+    // ✅ 자동 저장
+    localStorage.setItem("selected-images", JSON.stringify(updated));
+    localStorage.setItem("selected-type", "image");
+    localStorage.removeItem("selected-video");
   };
 
   return (
-    <div className="theme-container">
-      <h2 className="theme-title">이미지 테마 저장소</h2>
-
-      <div className="theme-grid">
-        {themes.map((img) => (
-          <img
-            key={img.id}
-            src={img.src}
-            alt={img.id}
-            className="theme-thumb"
-            onClick={() => handleSelect(img.src)}
-          />
+    <div className="image-theme-page">
+      <h2>이미지 배경 선택 (최대 4개)</h2>
+      <div className="image-grid">
+        {images.map((src) => (
+          <div
+            key={src}
+            className={`thumbnail ${selected.includes(src) ? "selected" : ""}`}
+            onClick={() => handleSelect(src)}
+          >
+            <img src={src} alt="thumb" />
+          </div>
         ))}
-      </div>
-
-      <div className="theme-buttons">
-        <button onClick={() => navigate(-1)}>뒤로가기</button>
-        <button onClick={() => navigate("/music/select")}>다음으로</button>
       </div>
     </div>
   );
