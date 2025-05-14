@@ -21,7 +21,7 @@ const ImageThemePage = () => {
   }
 
   // 🔥 navigate 대신 강제 이동
-  window.location.replace("/image/select");
+   window.location.href = window.location.origin + "/image/select";
 };
 
 
