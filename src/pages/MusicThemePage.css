@@ -35,3 +35,11 @@
   cursor: pointer;
   color: red;
 }
+
+.music-grid-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  margin-top: 20px;
+}

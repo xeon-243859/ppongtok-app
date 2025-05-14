@@ -13,14 +13,15 @@ const MusicThemePage = () => {
   const navigate = useNavigate();
 
   const handleSelect = (value) => {
+    // 음악만 저장 (이동은 안 함)
     localStorage.setItem("selected-music", value);
-    navigate("/preview");
+    // stay on page
   };
 
   return (
     <div className="music-theme-page">
       <h2 className="music-theme-title">음원 테마 저장소</h2>
-      <div className="music-grid">
+      <div className="music-grid-vertical">
         {musicOptions.map((option) => (
           <button
             key={option.value}
@@ -30,9 +31,6 @@ const MusicThemePage = () => {
             {option.label}
           </button>
         ))}
-      </div>
-      <div className="button-group">
-        <button onClick={() => navigate(-1)}>뒤로가기</button>
       </div>
     </div>
   );
