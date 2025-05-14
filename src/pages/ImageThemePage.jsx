@@ -1,4 +1,4 @@
-// ✅ ImageThemePage.jsx 전체코드 (handleSelect 로그 + 대소문자 문제 해결)
+// ✅ ImageThemePage.jsx 전체코드 (handleSelect 로그 + 대소문자 문제 해결 + 음악선택 페이지로 이동)
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ImageThemePage.css";
@@ -33,7 +33,7 @@ const ImageThemePage = () => {
   useEffect(() => {
     if (selected.length === 4) {
       setTimeout(() => {
-        navigate("/preview");
+        navigate("/music/theme"); // ✅ 음악 선택 페이지로 이동하도록 수정
       }, 300);
     }
   }, [selected, navigate]);
