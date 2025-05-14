@@ -33,7 +33,7 @@ const ImageThemePage = () => {
   useEffect(() => {
     if (selected.length === 4) {
       setTimeout(() => {
-        navigate("/music/select"); // ✅ 음악 선택 페이지로 이동하도록 수정
+        navigate("/image/theme"); // ✅ 음악 선택 페이지로 이동하도록 수정
       }, 300);
     }
   }, [selected, navigate]);
