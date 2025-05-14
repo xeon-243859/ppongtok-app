@@ -132,3 +132,18 @@
   text-align: center;
   margin-bottom: 8px;
 }
+
+.music-select-title {
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.button-group.centered {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+}
