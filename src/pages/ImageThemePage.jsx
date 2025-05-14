@@ -16,9 +16,16 @@ const ImageThemePage = () => {
     for (let i = 1; i <= 4; i++) {
       if (!localStorage.getItem(`img-${i}`)) {
         localStorage.setItem(`img-${i}`, src);
-        break;
+
+        // ✅ 이미지 저장 후 바로 이미지 선택 페이지로 이동
+        navigate("/image/select");
+        return; // 첫 슬롯만 저장하고 종료
       }
     }
+
+    // ✅ 모든 슬롯이 다 찬 경우
+    alert("이미지 슬롯이 모두 찼어요!");
+    navigate("/image/select");
   };
 
   return (
