@@ -19,15 +19,6 @@ const ImageThemePage = () => {
         break;
       }
     }
-
-    const allImages = [];
-    for (let i = 1; i <= 4; i++) {
-      allImages.push(localStorage.getItem(`img-${i}`));
-    }
-
-    if (allImages.every((item) => item)) {
-      navigate("/image/select"); // ✅ 음악으로 안 튐
-    }
   };
 
   return (
@@ -40,6 +31,7 @@ const ImageThemePage = () => {
           </div>
         ))}
       </div>
+      <button onClick={() => navigate("/image/select")}>다음으로</button>
     </div>
   );
 };

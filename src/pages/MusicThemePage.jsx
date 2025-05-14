@@ -15,7 +15,7 @@ const MusicThemePage = () => {
   const handleThemeClick = (theme) => {
     localStorage.setItem("selected-music", theme.file);
     localStorage.setItem("selected-music-name", theme.name);
-    navigate("/preview"); // ✅ 선택 후 프리뷰로 바로 이동
+    navigate("/music/select");
   };
 
   return (
