@@ -1,5 +1,3 @@
-// ✅ MusicThemePage.jsx (음원 테마 선택만 하고 머무는 버전)
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./MusicThemePage.css";
@@ -16,9 +14,8 @@ const MusicThemePage = () => {
 
   const handleThemeClick = (theme) => {
     localStorage.setItem("selected-music", theme.file);
-    localStorage.setItem("selected-music-name", theme.name); // 이름 저장도 일치하게
-    // ✅ navigate 없음: stay at current page
-    // 필요 시 navigate("/preview") 가능
+    localStorage.setItem("selected-music-name", theme.name);
+    navigate("/preview"); // ✅ 선택 후 프리뷰로 바로 이동
   };
 
   return (

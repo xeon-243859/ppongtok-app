@@ -20,14 +20,13 @@ const ImageThemePage = () => {
       }
     }
 
-    // 선택이 완료되었는지 확인
     const allImages = [];
     for (let i = 1; i <= 4; i++) {
       allImages.push(localStorage.getItem(`img-${i}`));
     }
 
     if (allImages.every((item) => item)) {
-      navigate("/image/select");
+      navigate("/image/select"); // ✅ 음악으로 안 튐
     }
   };
 
