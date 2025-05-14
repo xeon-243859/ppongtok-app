@@ -1,5 +1,3 @@
-// ✅ 새 방식: 이미지 선택 후 "확인하고 넘어가기" 버튼으로 이동하는 구조
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ImageThemePage.css";
@@ -27,8 +25,8 @@ const ImageThemePage = () => {
           break;
         }
       }
-      // 절대경로 강제 이동
-      window.location.href = window.location.origin + "/image/select";
+      // ✅ 수정된 부분: navigate로 이동
+      navigate("/image/select");
     } else {
       alert("먼저 이미지를 선택해주세요.");
     }

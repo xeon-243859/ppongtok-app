@@ -7,12 +7,24 @@ const ImageSelectPage = () => {
   const fileInputRef = useRef(null);
   const [images, setImages] = useState(["", "", "", ""]);
 
-  useEffect(() => {
+  // 이미지 로딩 함수
+  const loadImages = () => {
     const loadedImages = [];
     for (let i = 1; i <= 4; i++) {
       loadedImages.push(localStorage.getItem(`img-${i}`) || "");
     }
     setImages(loadedImages);
+  };
+
+  useEffect(() => {
+    loadImages(); // 최초 로딩
+
+    // 이미지가 갱신되지 않는 문제 해결을 위한 polling 방식
+    const interval = setInterval(() => {
+      loadImages();
+    }, 1000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const handleDelete = (index) => {
