@@ -1,4 +1,4 @@
-// ✅ ImageThemePage.jsx 전체코드 (handleSelect 로그 포함)
+// ✅ ImageThemePage.jsx 전체코드 (handleSelect 로그 + 대소문자 문제 해결)
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ImageThemePage.css";
@@ -15,13 +15,14 @@ const ImageThemePage = () => {
   const navigate = useNavigate();
 
   const handleSelect = (src) => {
+    const normalizedSrc = src.toLowerCase(); // ✅ 경로를 소문자로 통일
     let updated;
-    if (selected.includes(src)) {
-      updated = selected.filter((item) => item !== src);
+    if (selected.includes(normalizedSrc)) {
+      updated = selected.filter((item) => item !== normalizedSrc);
     } else {
-      updated = selected.length < 4 ? [...selected, src] : selected;
+      updated = selected.length < 4 ? [...selected, normalizedSrc] : selected;
     }
-    console.log("🔥 클릭됨:", src);
+    console.log("🔥 클릭됨:", normalizedSrc);
     console.log("🧠 업데이트할 selected:", updated);
     setSelected(updated);
     localStorage.setItem("selected-images", JSON.stringify(updated));
@@ -44,7 +45,7 @@ const ImageThemePage = () => {
         {images.map((src) => (
           <div
             key={src}
-            className={`thumbnail ${selected.includes(src) ? "selected" : ""}`}
+            className={`thumbnail ${selected.includes(src.toLowerCase()) ? "selected" : ""}`} // ✅ 클래스 조건도 소문자화
             onClick={() => handleSelect(src)}
           >
             <img src={src} alt="thumb" />
