@@ -1,4 +1,4 @@
-// ✅ ImageThemePage.jsx 전체코드 (4개 선택 시 자동 /preview 이동)
+// ✅ ImageThemePage.jsx 전체코드 (handleSelect 로그 포함)
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ImageThemePage.css";
@@ -21,18 +21,19 @@ const ImageThemePage = () => {
     } else {
       updated = selected.length < 4 ? [...selected, src] : selected;
     }
+    console.log("🔥 클릭됨:", src);
+    console.log("🧠 업데이트할 selected:", updated);
     setSelected(updated);
     localStorage.setItem("selected-images", JSON.stringify(updated));
     localStorage.setItem("selected-type", "image");
     localStorage.removeItem("selected-video");
   };
 
-  // ✅ 4개 선택 시 자동 이동
   useEffect(() => {
     if (selected.length === 4) {
       setTimeout(() => {
         navigate("/preview");
-      }, 300); // 약간의 딜레이로 자연스럽게
+      }, 300);
     }
   }, [selected, navigate]);
 
