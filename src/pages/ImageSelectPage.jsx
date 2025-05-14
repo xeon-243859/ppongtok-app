@@ -76,9 +76,14 @@ const ImageSelectPage = () => {
           <div className="image-slot" key={i}>
             {src ? (
               <>
-                <img src={src} alt={`img-${i + 1}`} />
+                <img
+                  src={src.includes("/backgrounds/") ? src : `data:image/jpeg;base64,${src}`}
+                  alt={`img-${i + 1}`}
+                />
                 <div className="image-overlay-text">Still file</div>
-                <button className="delete-button" onClick={() => handleDelete(i)}>❌</button>
+                <button className="delete-button" onClick={() => handleDelete(i)}>
+                  ❌
+                </button>
               </>
             ) : (
               <p>{`img-${i + 1}`}</p>
