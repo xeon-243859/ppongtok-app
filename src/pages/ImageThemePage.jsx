@@ -1,4 +1,3 @@
-// ✅ ImageThemePage.jsx (이미지 선택 후 /music/select 이동)
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ImageThemePage.css";
@@ -17,13 +16,31 @@ const ImageThemePage = () => {
   const handleSelect = (src) => {
     const normalizedSrc = src.toLowerCase();
     let updated;
+
     if (selected.includes(normalizedSrc)) {
       updated = selected.filter((item) => item !== normalizedSrc);
+      // localStorage에서도 제거
+      for (let i = 1; i <= 4; i++) {
+        if (localStorage.getItem(`img-${i}`) === normalizedSrc) {
+          localStorage.removeItem(`img-${i}`);
+          break;
+        }
+      }
     } else {
-      updated = selected.length < 4 ? [...selected, normalizedSrc] : selected;
+      if (selected.length >= 4) return;
+      updated = [...selected, normalizedSrc];
+      // 빈 슬롯에 저장
+      for (let i = 1; i <= 4; i++) {
+        if (!localStorage.getItem(`img-${i}`)) {
+          localStorage.setItem(`img-${i}`, normalizedSrc);
+          break;
+        }
+      }
     }
+
     console.log("🔥 클릭됨:", normalizedSrc);
     console.log("🧠 업데이트할 selected:", updated);
+
     setSelected(updated);
     localStorage.setItem("selected-images", JSON.stringify(updated));
     localStorage.setItem("selected-type", "image");
@@ -33,7 +50,7 @@ const ImageThemePage = () => {
   useEffect(() => {
     if (selected.length === 4) {
       setTimeout(() => {
-        navigate("/image/theme"); // ✅ 음악 선택 페이지로 이동하도록 수정
+        navigate("/music/select"); // ✅ 정확한 다음 경로로 수정
       }, 300);
     }
   }, [selected, navigate]);
