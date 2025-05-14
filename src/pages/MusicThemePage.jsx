@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./MusicThemePage.css";
 
 const musicOptions = [
@@ -9,9 +10,11 @@ const musicOptions = [
 ];
 
 const MusicThemePage = () => {
+  const navigate = useNavigate();
+
   const handleSelect = (value) => {
     localStorage.setItem("selected-music", value);
-    // stay on page! 이동 ❌
+    navigate("/music/select"); // ✅ 클릭 후 음악선택화면으로 이동
   };
 
   return (
