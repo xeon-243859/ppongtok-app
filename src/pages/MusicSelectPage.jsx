@@ -5,30 +5,33 @@ import "./MusicSelectPage.css";
 const MusicSelectPage = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
+
   const [selectedMusic, setSelectedMusic] = useState(null);
   const [musicName, setMusicName] = useState("");
   const [showLine1, setShowLine1] = useState(false);
   const [showLine2, setShowLine2] = useState(false);
 
   useEffect(() => {
-    const timer1 = setTimeout(() => setShowLine1(true), 300);
-    const timer2 = setTimeout(() => setShowLine2(true), 1800);
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-    };
-  }, []);
+    const storedMusic = localStorage.getItem("selected-music");
+    const storedLabel = localStorage.getItem("selected-music-label");
 
-  useEffect(() => {
-    const savedMusic = localStorage.getItem("selected-music");
-    const savedName = localStorage.getItem("selected-music-name") || localStorage.getItem("selected-music-label");
-    if (savedMusic) {
-      setSelectedMusic(savedMusic);
-      setMusicName(savedName || savedMusic.split("/").pop().replace(".mp3", ""));
+    if (storedMusic) {
+      setSelectedMusic(storedMusic);
+    }
+
+    if (storedLabel) {
+      setMusicName(storedLabel);
     }
   }, []);
 
-  const handleSelectMusicFile = () => {
+  const handleDelete = () => {
+    setSelectedMusic(null);
+    setMusicName("");
+    localStorage.removeItem("selected-music");
+    localStorage.removeItem("selected-music-label");
+  };
+
+  const handleMusicFile = () => {
     navigate("/music/theme");
   };
 
@@ -39,29 +42,22 @@ const MusicSelectPage = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    const url = URL.createObjectURL(file);
-    const name = file.name.replace(".mp3", "");
-    setSelectedMusic(url);
-    setMusicName(name);
-    localStorage.setItem("selected-music", url);
-    localStorage.setItem("selected-music-name", name);
-  };
 
-  const handleDelete = () => {
-    localStorage.removeItem("selected-music");
-    localStorage.removeItem("selected-music-name");
-    localStorage.removeItem("selected-music-label");
-    setSelectedMusic(null);
-    setMusicName("");
+    const musicUrl = URL.createObjectURL(file);
+    setSelectedMusic(musicUrl);
+    setMusicName(file.name);
+    localStorage.setItem("selected-music", musicUrl);
+    localStorage.setItem("selected-music-label", file.name);
   };
 
   return (
-    <div className="music-select-container">
-      {showLine1 && <h2 className="music-title-line1">배경으로 사용할 음악을</h2>}
-      {showLine2 && <h2 className="music-title-line2">선택해주세요</h2>}
+    <div className="music-select-page">
+      <h2 className="music-select-title">
+        배경으로 사용할 음악을<br />선택해주세요
+      </h2>
 
-      <div className="music-button-group">
-        <button onClick={handleSelectMusicFile}>배경음악파일</button>
+      <div className="file-button-group">
+        <button onClick={handleMusicFile}>배경음악파일</button>
         <button onClick={handleLocalFile}>내파일선택</button>
         <input
           type="file"
@@ -72,19 +68,17 @@ const MusicSelectPage = () => {
         />
       </div>
 
-      <div className="music-box">
-        {selectedMusic ? (
-          <>
-            <p className="music-name">{musicName}</p>
-            <audio src={selectedMusic} autoPlay controls />
-            <button className="delete-button" onClick={handleDelete}>X</button>
-          </>
-        ) : (
-          <p className="music-placeholder">선택된 음악이 없습니다</p>
-        )}
-      </div>
+      {selectedMusic && (
+        <div className="music-box">
+          <p className="music-label">{musicName || "선택된 음악 없음"}</p>
+          <audio controls src={selectedMusic} />
+          <button className="delete-button" onClick={handleDelete}>
+            ❌
+          </button>
+        </div>
+      )}
 
-      <div className="music-button-nav">
+      <div className="button-group">
         <button onClick={() => navigate(-1)}>뒤로가기</button>
         <button onClick={() => navigate("/preview")}>다음으로</button>
       </div>

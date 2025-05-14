@@ -12,9 +12,10 @@ const musicOptions = [
 const MusicThemePage = () => {
   const navigate = useNavigate();
 
-  const handleSelect = (value) => {
+  const handleSelect = (value, label) => {
     localStorage.setItem("selected-music", value);
-    navigate("/music/select"); // ✅ 클릭 후 음악선택화면으로 이동
+    localStorage.setItem("selected-music-label", label); // ✅ 음악 제목 저장
+    navigate("/music/select");
   };
 
   return (
@@ -25,7 +26,7 @@ const MusicThemePage = () => {
           <button
             key={option.value}
             className="music-button"
-            onClick={() => handleSelect(option.value)}
+            onClick={() => handleSelect(option.value, option.label)}
           >
             {option.label}
           </button>
