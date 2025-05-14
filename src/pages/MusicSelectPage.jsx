@@ -21,7 +21,7 @@ const MusicSelectPage = () => {
 
   useEffect(() => {
     const savedMusic = localStorage.getItem("selected-music");
-    const savedName = localStorage.getItem("selected-music-name");
+    const savedName = localStorage.getItem("selected-music-name") || localStorage.getItem("selected-music-label");
     if (savedMusic) {
       setSelectedMusic(savedMusic);
       setMusicName(savedName || savedMusic.split("/").pop().replace(".mp3", ""));
@@ -50,6 +50,7 @@ const MusicSelectPage = () => {
   const handleDelete = () => {
     localStorage.removeItem("selected-music");
     localStorage.removeItem("selected-music-name");
+    localStorage.removeItem("selected-music-label");
     setSelectedMusic(null);
     setMusicName("");
   };
