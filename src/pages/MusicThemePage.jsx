@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import "./MusicThemePage.css";
 
 const musicOptions = [
@@ -10,17 +9,14 @@ const musicOptions = [
 ];
 
 const MusicThemePage = () => {
-  const navigate = useNavigate();
-
   const handleSelect = (value) => {
-    // 음악만 저장 (이동은 안 함)
     localStorage.setItem("selected-music", value);
-    // stay on page
+    // stay on page! 이동 ❌
   };
 
   return (
     <div className="music-theme-page">
-      <h2 className="music-theme-title">음원 테마 저장소</h2>
+      <h2 className="music-theme-title">🎵 음원 테마 저장소</h2>
       <div className="music-grid-vertical">
         {musicOptions.map((option) => (
           <button

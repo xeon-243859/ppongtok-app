@@ -43,3 +43,25 @@
   align-items: center;
   margin-top: 20px;
 }
+
+c .music-theme-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.music-button {
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 12px;
+  background-color: #fdb2b2;
+  color: #000;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.music-button:hover {
+  background-color: #ff8c8c;
+}
