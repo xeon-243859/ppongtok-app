@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react"; // useEffect 추가!
+import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ImageSelectPage.css";
 
@@ -6,13 +6,14 @@ const ImageSelectPage = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [images, setImages] = useState(["", "", "", ""]);
+
   useEffect(() => {
-  const loadedImages = [];
-  for (let i = 1; i <= 4; i++) {
-    loadedImages.push(localStorage.getItem(`img-${i}`) || "");
-  }
-  setImages(loadedImages);
-}, []); // ✅ 이미지 저장소 선택 후 돌아왔을 때 자동 반영
+    const loadedImages = [];
+    for (let i = 1; i <= 4; i++) {
+      loadedImages.push(localStorage.getItem(`img-${i}`) || "");
+    }
+    setImages(loadedImages);
+  }, []);
 
   const handleDelete = (index) => {
     const updated = [...images];
@@ -35,7 +36,6 @@ const ImageSelectPage = () => {
   };
 
   const handleImageFile = () => {
-    // 👉 수정된 부분: 슬롯 검사 생략하고 바로 이동
     navigate("/image/theme");
   };
 
@@ -77,7 +77,8 @@ const ImageSelectPage = () => {
             {src ? (
               <>
                 <img src={src} alt={`img-${i + 1}`} />
-                <button onClick={() => handleDelete(i)}>❌</button>
+                <div className="image-overlay-text">Still file</div>
+                <button className="delete-button" onClick={() => handleDelete(i)}>❌</button>
               </>
             ) : (
               <p>{`img-${i + 1}`}</p>

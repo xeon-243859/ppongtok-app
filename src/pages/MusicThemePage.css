@@ -1,42 +1,28 @@
-.music-theme-container {
+.music-theme-page {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 40px 20px;
-  text-align: center;
+  padding: 30px 20px;
 }
 
-.music-theme-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 30px;
+.music-theme-page h2 {
+  font-size: 20px;
+  margin-bottom: 20px;
 }
 
-.music-theme-list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  width: 100%;
-  max-width: 360px;
-}
-
-.music-item {
-  padding: 15px;
-  border: 2px solid #ffdada;
-  border-radius: 15px;
-  background-color: #fff0f0;
+.theme-button {
+  margin: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  background-color: #ffeef3;
+  border: 1px solid #ffb3c6;
+  border-radius: 12px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s;
+  width: 200px;
 }
 
-.music-item:hover {
-  background-color: #ffe2e2;
-}
-
-.music-item p {
-  font-size: 1rem;
-  word-break: keep-all;
-  white-space: normal;
-  margin: 0;
+.theme-button:hover {
+  background-color: #ffd6e0;
+  transform: scale(1.03);
 }
