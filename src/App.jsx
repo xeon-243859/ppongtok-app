@@ -14,7 +14,7 @@ import PreviewPage from "./pages/PreviewPage";         // ✅ 우리가 만든 �
 // 이전 프리뷰들은 연결 X (필요 시 아래처럼 다른 경로로 변경 가능)
 // import LovePreviewPage from "./pages/LovePreviewPage";
 // import EPreviewPage from "./pages/EPreviewPage";
-
+import ImageThemeSlotPage from "./pages/ImageThemeSlotPage";
 
 function App() {
   return (
@@ -31,12 +31,12 @@ function App() {
       {/* 🔹 배경 스타일 선택 화면 */}
       <Route path="/style/select" element={<StyleSelectPage />} />
       <Route path="/image/select" element={<ImageSelectPage />} />
-      <Route path="/image/theme" element={<ImageThemePage />} />
+      <Route path="/image/theme" element={<ImageThemeSlotPage />} />
       <Route path="/video/theme" element={<VideoThemePage />} />
       <Route path="/video/select" element={<VideoSelectPage />} />
       <Route path="/music/select" element={<MusicSelectPage />} />
       <Route path="/music/theme" element={<MusicThemePage />} />
-
+      <Route path="/image/theme" element={<ImageThemeSlotPage />} />
       {/* 🔹 미리보기 화면 */}
       <Route path="/preview" element={<PreviewPage />} />
     
