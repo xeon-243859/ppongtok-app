@@ -2,34 +2,38 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./MusicThemePage.css";
 
-const themes = [
-  { name: "봄의노래", file: "/audio/spring.mp3" },
-  { name: "설레임", file: "/audio/spring1.mp3" },
-  { name: "무언의 감정", file: "/audio/mueon.mp3" },
-  { name: "고요한 바람", file: "/audio/mueon1.mp3" }
+const musicOptions = [
+  { label: "봄의노래", value: "/audio/spring.mp3" },
+  { label: "설레임", value: "/audio/spring1.mp3" },
+  { label: "무언의 감정", value: "/audio/mueon.mp3" },
+  { label: "고요한 바람", value: "/audio/mueon1.mp3" }
 ];
 
 const MusicThemePage = () => {
   const navigate = useNavigate();
 
-  const handleThemeClick = (theme) => {
-    localStorage.setItem("selected-music", theme.file);
-    localStorage.setItem("selected-music-name", theme.name);
-    navigate("/music/select");
+  const handleSelect = (value) => {
+    localStorage.setItem("selected-music", value);
+    navigate("/preview");
   };
 
   return (
     <div className="music-theme-page">
-      <h2>음원 테마 저장소</h2>
-      {themes.map((theme) => (
-        <button
-          key={theme.file}
-          className="theme-button"
-          onClick={() => handleThemeClick(theme)}
-        >
-          {theme.name}
-        </button>
-      ))}
+      <h2 className="music-theme-title">음원 테마 저장소</h2>
+      <div className="music-grid">
+        {musicOptions.map((option) => (
+          <button
+            key={option.value}
+            className="music-button"
+            onClick={() => handleSelect(option.value)}
+          >
+            {option.label}
+          </button>
+        ))}
+      </div>
+      <div className="button-group">
+        <button onClick={() => navigate(-1)}>뒤로가기</button>
+      </div>
     </div>
   );
 };

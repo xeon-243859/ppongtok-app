@@ -11,25 +11,34 @@ const images = [
 
 const ImageThemePage = () => {
   const navigate = useNavigate();
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [_, forceRerender] = useState(false); // 강제 리렌더링용
 
   const handleSelect = (src) => {
-    setSelectedImage(src);
+    for (let i = 1; i <= 4; i++) {
+      if (!localStorage.getItem(`img-${i}`)) {
+        localStorage.setItem(`img-${i}`, src);
+        break;
+      }
+    }
+    navigate("/image/select");
   };
 
-  const handleConfirm = () => {
-    if (selectedImage) {
-      for (let i = 1; i <= 4; i++) {
-        if (!localStorage.getItem(`img-${i}`)) {
-          localStorage.setItem(`img-${i}`, selectedImage);
-          break;
-        }
+  const handleRemove = (src) => {
+    for (let i = 1; i <= 4; i++) {
+      if (localStorage.getItem(`img-${i}`) === src) {
+        localStorage.removeItem(`img-${i}`);
+        break;
       }
-      // ✅ 수정된 부분: navigate로 이동
-      navigate("/image/select");
-    } else {
-      alert("먼저 이미지를 선택해주세요.");
     }
+    forceRerender((prev) => !prev); // 상태 변경으로 강제 리렌더링
+  };
+
+  // 이미지가 이미 선택되어 있는지 확인
+  const isSelected = (src) => {
+    for (let i = 1; i <= 4; i++) {
+      if (localStorage.getItem(`img-${i}`) === src) return true;
+    }
+    return false;
   };
 
   return (
@@ -37,18 +46,19 @@ const ImageThemePage = () => {
       <h2 className="image-theme-title">이미지 테마 저장소</h2>
       <div className="image-grid">
         {images.map((src) => (
-          <div
-            key={src}
-            className={`thumbnail ${selectedImage === src ? "selected" : ""}`}
-            onClick={() => handleSelect(src)}
-          >
-            <img src={src} alt="thumb" />
+          <div key={src} className="thumbnail">
+            <img src={src} alt="thumb" onClick={() => handleSelect(src)} />
+            {isSelected(src) && (
+              <button
+                className="remove-button"
+                onClick={() => handleRemove(src)}
+              >
+                ❌
+              </button>
+            )}
           </div>
         ))}
       </div>
-      <button className="confirm-button" onClick={handleConfirm}>
-        확인하고 넘어가기
-      </button>
     </div>
   );
 };
