@@ -1,4 +1,4 @@
-// ✅ ImageThemePage.jsx 전체코드 (handleSelect 로그 + 대소문자 문제 해결 + 음악선택 페이지로 이동)
+// ✅ ImageThemePage.jsx (이미지 선택 후 /music/select 이동)
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ImageThemePage.css";
@@ -15,7 +15,7 @@ const ImageThemePage = () => {
   const navigate = useNavigate();
 
   const handleSelect = (src) => {
-    const normalizedSrc = src.toLowerCase(); // ✅ 경로를 소문자로 통일
+    const normalizedSrc = src.toLowerCase();
     let updated;
     if (selected.includes(normalizedSrc)) {
       updated = selected.filter((item) => item !== normalizedSrc);
@@ -33,7 +33,7 @@ const ImageThemePage = () => {
   useEffect(() => {
     if (selected.length === 4) {
       setTimeout(() => {
-        navigate("/music/theme"); // ✅ 음악 선택 페이지로 이동하도록 수정
+        navigate("/music/select"); // ✅ 음악 선택 페이지로 이동하도록 수정
       }, 300);
     }
   }, [selected, navigate]);
@@ -45,7 +45,7 @@ const ImageThemePage = () => {
         {images.map((src) => (
           <div
             key={src}
-            className={`thumbnail ${selected.includes(src.toLowerCase()) ? "selected" : ""}`} // ✅ 클래스 조건도 소문자화
+            className={`thumbnail ${selected.includes(src.toLowerCase()) ? "selected" : ""}`}
             onClick={() => handleSelect(src)}
           >
             <img src={src} alt="thumb" />
