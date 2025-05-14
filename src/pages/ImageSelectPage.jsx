@@ -7,7 +7,6 @@ const ImageSelectPage = () => {
   const fileInputRef = useRef(null);
   const [images, setImages] = useState(["", "", "", ""]);
 
-  // 이미지 로딩 함수
   const loadImages = () => {
     const loadedImages = [];
     for (let i = 1; i <= 4; i++) {
@@ -17,14 +16,15 @@ const ImageSelectPage = () => {
   };
 
   useEffect(() => {
-    loadImages(); // 최초 로딩
+    // 최초 로딩
+    loadImages();
 
-    // 이미지가 갱신되지 않는 문제 해결을 위한 polling 방식
-    const interval = setInterval(() => {
-      loadImages();
-    }, 1000);
+    // 창에 포커스될 때마다 이미지 다시 불러옴
+    window.addEventListener("focus", loadImages);
 
-    return () => clearInterval(interval);
+    return () => {
+      window.removeEventListener("focus", loadImages);
+    };
   }, []);
 
   const handleDelete = (index) => {
