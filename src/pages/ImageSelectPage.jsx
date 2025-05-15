@@ -80,8 +80,7 @@ const ImageSelectPage = () => {
                 <img
                   src={src.includes("/backgrounds/") ? src : `data:image/jpeg;base64,${src}`}
                   alt={`img-${i + 1}`}
-                />
-                <div className="image-overlay-text">Still file</div>
+                / >
                 <button className="delete-button" onClick={() => handleDelete(i)}>❌</button>
               </>
             ) : (
