@@ -171,3 +171,20 @@
 .button-group button:hover {
   background-color: #ffaaaa;
 }
+
+.back-button,
+.next-button {
+  padding: 0.8rem 2rem;
+  font-size: 1.1rem;
+  background-color: #ffc8c8;
+  border: none;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.back-button:hover,
+.next-button:hover {
+  background-color: #ffaaaa;
+}
