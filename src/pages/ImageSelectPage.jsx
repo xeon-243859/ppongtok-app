@@ -1,72 +1,103 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ImageSelectPage.css";
 
 const ImageSelectPage = () => {
   const navigate = useNavigate();
-  const [selectedImages, setSelectedImages] = useState([]);
+  const fileInputRef = useRef(null);
+  const [images, setImages] = useState(["", "", "", ""]);
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("selected-images")) || [];
-    setSelectedImages(saved);
+    const loadedImages = [];
+    for (let i = 1; i <= 4; i++) {
+      loadedImages.push(localStorage.getItem(`img-${i}`) || "");
+    }
+    setImages(loadedImages);
   }, []);
 
-  const handleRemove = (index) => {
-    const updated = [...selectedImages];
-    updated.splice(index, 1);
-    setSelectedImages(updated);
-    localStorage.setItem("selected-images", JSON.stringify(updated));
+  const handleDelete = (index) => {
+    const updated = [...images];
+    updated[index] = "";
+    setImages(updated);
+    localStorage.removeItem(`img-${index + 1}`);
   };
 
-  const handleNext = () => {
-    if (selectedImages.length === 0) {
-      alert("이미지를 1장 이상 선택해주세요!");
-      return;
+  const saveImage = (dataUrl) => {
+    const updated = [...images];
+    for (let i = 0; i < 4; i++) {
+      if (!updated[i]) {
+        updated[i] = dataUrl;
+        setImages(updated);
+        localStorage.setItem(`img-${i + 1}`, dataUrl);
+        localStorage.removeItem("selected-video");
+        return;
+      }
     }
-    localStorage.setItem("selected-type", "image");
-    navigate("/music/select");
+    alert("모든 슬롯이 가득 찼어요!");
   };
 
-  const handleBack = () => {
-    navigate("/love/form");
-  };
-
-  const handleTheme = () => {
+  const handleImageFile = () => {
     navigate("/image/theme");
   };
 
-  const handleMyFile = () => {
-    alert("🔧 내 파일 선택은 추후 구현 예정입니다.");
+  const handleLocalFile = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      saveImage(reader.result);
+    };
+    reader.readAsDataURL(file);
   };
 
   return (
-    <div className="image-select-page">
-      <div className="typing-text">
-        <div className="line1">배경으로 사용할 이미지 4개를</div>
-        <div className="line2">선택해 주세요</div>
+    <div className="image-select-container">
+      <h2 className="image-select-title">
+        배경으로 사용할 이미지 4개를<br />선택해주세요
+      </h2>
+
+      <div className="file-button-group">
+        <button onClick={handleImageFile}>배경이미지 파일</button>
+        <button onClick={handleLocalFile}>내 파일 선택</button>
+        <input
+          type="file"
+          accept="image/*"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          style={{ display: "none" }}
+        />
       </div>
 
-      <div className="image-buttons">
-        <button onClick={handleTheme}>배경이미지 파일</button>
-        <button onClick={handleMyFile}>내 파일 선택</button>
-      </div>
-
-      <div className="preview-box-grid">
-        {[0, 1, 2, 3].map((i) => (
-          <div key={i} className="preview-slot">
-            {selectedImages[i] && (
-              <div className="slot-container">
-                <img src={selectedImages[i].src} alt={`선택된 이미지 ${i + 1}`} />
-                <button className="delete-button" onClick={() => handleRemove(i)}>X</button>
-              </div>
+      <div className="image-slots-grid">
+        {images.map((src, i) => (
+          <div className="image-slot" key={i}>
+            {src ? (
+              <>
+                <img
+                  src={
+                    src.includes("/backgrounds/")
+                      ? src
+                      : `data:image/jpeg;base64,${src}`
+                  }
+                  alt={`img-${i + 1}`}
+                />
+                <button className="delete-button" onClick={() => handleDelete(i)}>❌</button>
+              </>
+            ) : (
+              <p>{`img-${i + 1}`}</p>
             )}
           </div>
         ))}
       </div>
 
       <div className="button-group">
-        <button onClick={handleBack}>뒤로가기</button>
-        <button onClick={handleNext}>다음으로</button>
+        <button onClick={() => navigate(-1)}>뒤로가기</button>
+        <button onClick={() => navigate("/music/image")}>다음으로</button>
       </div>
     </div>
   );
