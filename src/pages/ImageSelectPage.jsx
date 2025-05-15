@@ -10,7 +10,9 @@ const images = [
 ];
 
 const ImageSelectPage = () => {
-  const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedImages, setSelectedImages] = useState(
+    JSON.parse(localStorage.getItem("selected-images")) || []
+  );
   const navigate = useNavigate();
 
   const handleImageClick = (image) => {
@@ -29,12 +31,19 @@ const ImageSelectPage = () => {
     }
   };
 
+  const handleRemove = (index) => {
+    const updated = [...selectedImages];
+    updated.splice(index, 1);
+    setSelectedImages(updated);
+    localStorage.setItem("selected-images", JSON.stringify(updated));
+  };
+
   const handleNext = () => {
     if (selectedImages.length === 0) {
       alert("배경으로 사용할 이미지를 1장 이상 선택해주세요!");
     } else {
-      localStorage.setItem("selected-type", "image"); // 미리보기용 타입 지정
-      navigate("/music/select"); // ✅ 여기서 음악 선택 페이지로 이동
+      localStorage.setItem("selected-type", "image");
+      navigate("/music/select");
     }
   };
 
@@ -44,11 +53,10 @@ const ImageSelectPage = () => {
 
   return (
     <div className="image-select-page">
-      <h2 className="typing-text">배경으로 사용할 이미지를 선택해주세요</h2>
-      <div className="image-buttons">
-      <button onClick={() => alert("🔧 추후 구현 예정")}>배경이미지 파일</button>
-      <button onClick={() => alert("🔧 추후 구현 예정")}>내 파일 선택</button>
-     </div>
+      <div className="typing-text">
+        <div className="line1">배경으로 사용할 이미지 4개를</div>
+        <div className="line2">선택해 주세요</div>
+      </div>
 
       <div className="image-grid">
         {images.map((image) => (
@@ -69,7 +77,10 @@ const ImageSelectPage = () => {
         {[0, 1, 2, 3].map((i) => (
           <div key={i} className="preview-slot">
             {selectedImages[i] && (
-              <img src={selectedImages[i].src} alt={`선택된 이미지 ${i + 1}`} />
+              <div className="slot-container">
+                <img src={selectedImages[i].src} alt={`선택된 이미지 ${i + 1}`} />
+                <button className="delete-button" onClick={() => handleRemove(i)}>X</button>
+              </div>
             )}
           </div>
         ))}
