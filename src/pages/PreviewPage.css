@@ -70,6 +70,63 @@
   justify-content: center;
   font-size: 1.2rem;
 }
-/* redeploy check */
-/* ✅ Force layout redeploy trigger by 크세온 */
-/* ✅ Final redeploy trigger for preview layout */
+
+.share-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin: 40px auto;
+  max-width: 600px;
+}
+
+.share-btn {
+  padding: 10px 16px;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 2px solid #00aa00;
+  background-color: white;
+  color: #333;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.share-btn:hover {
+  background-color: #eaffea;
+  transform: scale(1.05);
+}
+
+.share-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin: 40px auto;
+  max-width: 600px;
+}
+
+.share-btn {
+  padding: 10px 16px;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 2px solid #00aa00;
+  background-color: white;
+  color: #333;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.share-btn:hover {
+  background-color: #eaffea;
+  transform: scale(1.05);
+}
+
+
+
+
+
+
+
+
+
+

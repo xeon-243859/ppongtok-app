@@ -1,9 +1,9 @@
-// ✅ PreviewPage.jsx
 import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import "./PreviewPage.css";
 
 console.log("🟢 PreviewPage has loaded correctly."); // ✅ 요기에 넣어줘
+
 const PreviewPage = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
@@ -39,8 +39,6 @@ const PreviewPage = () => {
   useEffect(() => {
     const rawImages = JSON.parse(localStorage.getItem("selected-images") || "[]");
     const validImages = Array.isArray(rawImages)
-    
-
       ? rawImages.filter((img) => typeof img === "string" && img.trim() !== "")
       : [];
     console.log("✅ Preview updated at " + new Date().toISOString());
@@ -126,9 +124,19 @@ const PreviewPage = () => {
         <button className="styled-button" onClick={() => window.history.back()}>
           ← 뒤로가기
         </button>
-        <button className="styled-button" onClick={() => (window.location.href = "/share")}> 
+        <button className="styled-button" onClick={() => (window.location.href = "/share")}>
           다음 - 공유하기 →
         </button>
+      </div>
+
+      {/* 🎁 공유 버튼 추가 영역 */}
+      <div className="share-buttons">
+        <button className="share-btn">카카오톡</button>
+        <button className="share-btn">Facebook</button>
+        <button className="share-btn">Twitter</button>
+        <button className="share-btn">카*톡으로</button>
+        <button className="share-btn">PDF 저장</button>
+        <button className="share-btn">이미지 저장</button>
       </div>
 
       {selectedMusic && <audio src={selectedMusic} autoPlay ref={audioRef} />}
@@ -137,4 +145,3 @@ const PreviewPage = () => {
 };
 
 export default PreviewPage;
-// 수정 테스트용 공백
