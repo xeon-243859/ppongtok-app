@@ -100,7 +100,7 @@ const ImageSelectPage = () => {
 
       <div className="button-group">
         <button onClick={() => navigate(-1)}>뒤로가기</button>
-        <button onClick={() => navigate("/music/select")}>다음으로</button>
+        <button onClick={() => navigate("/music/image")}>다음으로</button>
       </div>
     </div>
   );

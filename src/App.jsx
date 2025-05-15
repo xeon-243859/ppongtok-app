@@ -7,7 +7,7 @@ import ImageSelectPage from "./pages/ImageSelectPage";
 import ImageThemePage from "./pages/ImageThemePage";       // ✅ 우리가 수정한 진짜 저장소
 import VideoThemePage from "./pages/VideoThemePage";
 import VideoSelectPage from "./pages/VideoSelectPage";
-import MusicSelectPage from "./pages/MusicSelectPage";
+import MusicSelectPage from "./pages/MusicSelectPage1";
 import MusicThemePage from "./pages/MusicThemePage";
 import LoveFormPage from "./pages/LoveFormPage";           // ✅ 고백 메시지 입력 화면
 import PreviewPage from "./pages/PreviewPage";             // ✅ 최종 미리보기 화면
@@ -38,6 +38,8 @@ function App() {
 
       {/* 🔹 미리보기 화면 */}
       <Route path="/preview" element={<PreviewPage />} />
+      <Route path="/music/image" element={<MusicSelectPage1 />} />
+      <Route path="/music/video" element={<MusicSelectPage2 />} />
     </Routes>
   );
 }
