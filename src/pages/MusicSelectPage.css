@@ -55,20 +55,22 @@
   margin: 20px 0;
 }
 
-.music-header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-}
-
 .music-label {
   font-weight: bold;
   font-size: 16px;
   text-align: center;
+  margin-bottom: 6px;
+}
+
+.audio-wrapper {
+  position: relative;
+  display: inline-block;
 }
 
 .delete-button {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
   background: none;
   border: none;
   font-size: 16px;

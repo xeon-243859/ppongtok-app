@@ -25,7 +25,6 @@ const MusicSelectPage = () => {
   };
 
   const handleMusicFile = () => navigate("/music/theme");
-
   const handleLocalFile = () => fileInputRef.current.click();
 
   const handleFileChange = (e) => {
@@ -62,11 +61,11 @@ const MusicSelectPage = () => {
 
       {selectedMusic && (
         <div className="music-box">
-          <div className="music-header">
-            <span className="music-label">{musicName}</span>
+          <span className="music-label">{musicName}</span>
+          <div className="audio-wrapper">
+            <audio controls autoPlay src={selectedMusic} />
             <button className="delete-button" onClick={handleDelete}>❌</button>
           </div>
-          <audio controls autoPlay src={selectedMusic} />
         </div>
       )}
 
