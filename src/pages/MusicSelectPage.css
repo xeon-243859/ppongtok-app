@@ -149,15 +149,25 @@
   margin-top: 30px;
 }
 
-.button-group button {
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 20px;
-}
-
 .button-group {
   display: flex;
-  justify-content: center;  /* 정중앙으로 정렬 */
-  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
   margin-top: 2rem;
+}
+
+.button-group button {
+  padding: 0.8rem 2rem;
+  font-size: 1.1rem;
+  background-color: #ffc8c8;
+  border: none;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button-group button:hover {
+  background-color: #ffaaaa;
 }
