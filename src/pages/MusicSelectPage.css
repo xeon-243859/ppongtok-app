@@ -149,13 +149,6 @@
   margin-top: 30px;
 }
 
-.button-group {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1.5rem;
-  margin-top: 2rem;
-}
 
 .button-group button {
   padding: 0.8rem 2rem;
@@ -170,6 +163,14 @@
 
 .button-group button:hover {
   background-color: #ffaaaa;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.2rem;
+  margin-top: 2rem;
 }
 
 .back-button,
