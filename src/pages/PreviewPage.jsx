@@ -41,6 +41,7 @@ const PreviewPage = () => {
       ? rawImages.filter((img) => typeof img === "string" && img.trim() !== "")
       : [];
     console.log("✅ Preview updated at " + new Date().toISOString());
+    console.log("🟢 Vercel redeploy 확인용 로그", new Date().toISOString());
 
     const hasImages = validImages.length > 0;
     const hasVideo = selectedVideo && selectedVideo !== "null" && selectedVideo !== "";
