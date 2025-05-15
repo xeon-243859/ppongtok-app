@@ -2,8 +2,11 @@ import React, { useEffect } from "react";
 import "./SharePage.css";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { useNavigate } from "react-router-dom";
 
 const SharePage = () => {
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (window.Kakao && !window.Kakao.isInitialized()) {
       window.Kakao.init("여기에_자바스크립트_키");
@@ -95,6 +98,9 @@ const SharePage = () => {
         <button className="share-button" onClick={() => handleShare("copy")}>링크 복사</button>
         <button className="share-button" onClick={() => handleShare("pdf")}>PDF 저장</button>
         <button className="share-button" onClick={() => handleShare("image")}>이미지 저장</button>
+      </div>
+      <div className="button-box">
+        <button className="styled-button" onClick={() => navigate("/preview")}>뒤로가기</button>
       </div>
     </div>
   );
