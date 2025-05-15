@@ -88,7 +88,7 @@ const SharePage = () => {
   return (
     <div className="share-page">
       <h1 className="share-title">이제 이 감정을<br />함께 나눠볼까요?</h1>
-      <div className="share-button-group">
+      <div className="share-button-group responsive">
         <button className="share-button" onClick={() => handleShare("kakao")}>카카오톡</button>
         <button className="share-button" onClick={() => handleShare("facebook")}>Facebook</button>
         <button className="share-button" onClick={() => handleShare("twitter")}>Twitter</button>
