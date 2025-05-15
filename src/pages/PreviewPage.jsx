@@ -64,7 +64,6 @@ const PreviewPage = () => {
 
   useEffect(() => {
     if (mediaType !== "image" || selectedImages.length === 0) return;
-
     let index = 0;
     setCurrentImageIndex(index);
     const interval = setInterval(() => {
@@ -122,21 +121,11 @@ const PreviewPage = () => {
 
       <div className="button-box">
         <button className="styled-button" onClick={() => window.history.back()}>
-          ← 뒤로가기
+          뒤로가기
         </button>
         <button className="styled-button" onClick={() => (window.location.href = "/share")}>
-          다음 - 공유하기 →
+          다음 - 공유하기
         </button>
-      </div>
-
-      {/* 🎁 공유 버튼 추가 영역 */}
-      <div className="share-buttons">
-        <button className="share-btn">카카오톡</button>
-        <button className="share-btn">Facebook</button>
-        <button className="share-btn">Twitter</button>
-        <button className="share-btn">카*톡으로</button>
-        <button className="share-btn">PDF 저장</button>
-        <button className="share-btn">이미지 저장</button>
       </div>
 
       {selectedMusic && <audio src={selectedMusic} autoPlay ref={audioRef} />}
