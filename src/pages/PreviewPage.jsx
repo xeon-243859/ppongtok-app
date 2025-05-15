@@ -1,7 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import "./PreviewPage.css";
 
 const PreviewPage = () => {
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const forcedMediaType = params.get("type"); // 'image' or 'video'
+
   const [message, setMessage] = useState("");
   const [typedMessage, setTypedMessage] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
@@ -38,16 +43,21 @@ const PreviewPage = () => {
     const hasImages = validImages.length > 0;
     const hasVideo = selectedVideo && selectedVideo !== "null" && selectedVideo !== "";
 
-    if (hasImages) {
+    setSelectedImages(validImages);
+
+    // ✅ URL 파라미터가 우선
+    if (forcedMediaType === "image") {
+      setMediaType("image");
+    } else if (forcedMediaType === "video") {
+      setMediaType("video");
+    } else if (hasImages) {
       setMediaType("image");
     } else if (hasVideo) {
       setMediaType("video");
     } else {
       setMediaType("none");
     }
-
-    setSelectedImages(validImages);
-  }, []);
+  }, [forcedMediaType]);
 
   useEffect(() => {
     if (mediaType !== "image" || selectedImages.length === 0) return;

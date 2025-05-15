@@ -53,7 +53,7 @@ const MusicSelectPage = () => {
   };
 
   const handleNext = () => {
-    navigate("/preview");
+    navigate("/preview?type=image");
   };
 
   return (

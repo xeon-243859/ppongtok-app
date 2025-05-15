@@ -49,11 +49,11 @@ const MusicSelectPage = () => {
   };
 
   const handleBack = () => {
-    navigate("/image/select");
+    navigate("/video/select");
   };
 
   const handleNext = () => {
-    navigate("/preview");
+    navigate("/preview?type=video");
   };
 
   return (
