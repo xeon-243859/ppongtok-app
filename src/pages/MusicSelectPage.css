@@ -1,3 +1,10 @@
+.music-select-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+}
+
 .typing-text {
   text-align: center;
   margin-top: 60px;
@@ -38,6 +45,35 @@
   border-radius: 25px;
   cursor: pointer;
   white-space: nowrap;
+}
+
+.music-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.music-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.music-label {
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #cc0000;
 }
 
 .button-group {

@@ -13,12 +13,8 @@ const MusicSelectPage = () => {
     const storedMusic = localStorage.getItem("selected-music");
     const storedLabel = localStorage.getItem("selected-music-label");
 
-    if (storedMusic) {
-      setSelectedMusic(storedMusic);
-    }
-    if (storedLabel) {
-      setMusicName(storedLabel);
-    }
+    if (storedMusic) setSelectedMusic(storedMusic);
+    if (storedLabel) setMusicName(storedLabel);
   }, []);
 
   const handleDelete = () => {
@@ -28,18 +24,13 @@ const MusicSelectPage = () => {
     localStorage.removeItem("selected-music-label");
   };
 
-  const handleMusicFile = () => {
-    navigate("/music/theme");
-  };
+  const handleMusicFile = () => navigate("/music/theme");
 
-  const handleLocalFile = () => {
-    fileInputRef.current.click();
-  };
+  const handleLocalFile = () => fileInputRef.current.click();
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
     const musicUrl = URL.createObjectURL(file);
     setSelectedMusic(musicUrl);
     setMusicName(file.name);
@@ -47,23 +38,16 @@ const MusicSelectPage = () => {
     localStorage.setItem("selected-music-label", file.name);
   };
 
-  const handleBack = () => {
-    navigate("/image/select");
-  };
-
-  const handleNext = () => {
-    navigate("/preview?type=image");
-  };
+  const handleBack = () => navigate("/image/select");
+  const handleNext = () => navigate("/preview?type=image");
 
   return (
     <div className="music-select-page">
-      {/* ✅ 타자체 두 줄 문구 */}
       <div className="typing-text">
         <div className="line1">배경으로 사용할 음악을</div>
         <div className="line2">선택해주세요</div>
       </div>
 
-      {/* ✅ 감성 버튼 정렬 */}
       <div className="file-button-group">
         <button onClick={handleMusicFile}>배경음악 파일</button>
         <button onClick={handleLocalFile}>내 파일 선택</button>
@@ -78,15 +62,17 @@ const MusicSelectPage = () => {
 
       {selectedMusic && (
         <div className="music-box">
-          <p className="music-label">{musicName || "선택된 음악 없음"}</p>
+          <div className="music-header">
+            <span className="music-label">{musicName}</span>
+            <button className="delete-button" onClick={handleDelete}>❌</button>
+          </div>
           <audio controls autoPlay src={selectedMusic} />
-          <button className="delete-button" onClick={handleDelete}>❌</button>
         </div>
       )}
 
       <div className="button-group">
-        <button className="back-button" onClick={handleBack}>뒤로가기</button>
-        <button className="next-button" onClick={handleNext}>다음으로</button>
+        <button onClick={handleBack}>뒤로가기</button>
+        <button onClick={handleNext}>다음으로</button>
       </div>
     </div>
   );
