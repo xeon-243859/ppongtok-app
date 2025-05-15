@@ -30,20 +30,14 @@ const PreviewPage = () => {
   }, [message]);
 
   useEffect(() => {
-    const storedImages = JSON.parse(localStorage.getItem("selected-images") || "[]");
-    const hasImages = Array.isArray(storedImages) && storedImages.length > 0;
+    const rawImages = JSON.parse(localStorage.getItem("selected-images") || "[]");
+    const validImages = Array.isArray(rawImages)
+      ? rawImages.filter((img) => img && img.includes("data:image"))
+      : [];
+
+    const hasImages = validImages.length > 0;
     const hasVideo = selectedVideo && selectedVideo !== "null" && selectedVideo !== "";
 
-    if (!hasImages) {
-      localStorage.removeItem("selected-images");
-    }
-    if (!hasVideo) {
-      localStorage.removeItem("selected-video");
-    }
-
-    setSelectedImages(storedImages);
-
-    // ✅ 우선순위: 이미지 > 영상
     if (hasImages) {
       setMediaType("image");
     } else if (hasVideo) {
@@ -51,10 +45,13 @@ const PreviewPage = () => {
     } else {
       setMediaType("none");
     }
+
+    setSelectedImages(validImages);
   }, []);
 
   useEffect(() => {
     if (mediaType !== "image" || selectedImages.length === 0) return;
+
     let index = 0;
     setCurrentImageIndex(index);
     const interval = setInterval(() => {
@@ -82,23 +79,9 @@ const PreviewPage = () => {
     <div className="preview-page">
       <div className="media-box">
         <div className="moving-box">
-          {mediaType === "video" ? (
-            <video
-              src={selectedVideo}
-              autoPlay
-              muted
-              playsInline
-              className="media-display"
-              onLoadedMetadata={(e) => {
-                e.target.currentTime = 0;
-                setTimeout(() => {
-                  e.target.pause();
-                }, 30000);
-              }}
-            />
-          ) : mediaType === "image" && selectedImages.length > 0 ? (
+          {mediaType === "image" && selectedImages.length > 0 ? (
             <img
-              src={selectedImages[currentImageIndex] || selectedImages[0]}
+              src={selectedImages[currentImageIndex % selectedImages.length]}
               alt="preview"
               className="media-display"
               loading="eager"
@@ -115,9 +98,24 @@ const PreviewPage = () => {
                 e.target.style.display = "none";
               }}
             />
+          ) : mediaType === "video" ? (
+            <video
+              src={selectedVideo}
+              autoPlay
+              muted
+              playsInline
+              className="media-display"
+              onLoadedMetadata={(e) => {
+                e.target.currentTime = 0;
+                setTimeout(() => {
+                  e.target.pause();
+                }, 30000);
+              }}
+            />
           ) : (
             <div className="media-fallback">배경이 없습니다</div>
           )}
+
           <div className="scrolling-message-bottom">{typedMessage}</div>
         </div>
       </div>
