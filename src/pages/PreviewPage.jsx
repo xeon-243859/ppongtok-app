@@ -1,3 +1,4 @@
+// ✅ PreviewPage.jsx
 import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import "./PreviewPage.css";
@@ -37,15 +38,14 @@ const PreviewPage = () => {
   useEffect(() => {
     const rawImages = JSON.parse(localStorage.getItem("selected-images") || "[]");
     const validImages = Array.isArray(rawImages)
-       ? rawImages.filter((img) => typeof img === "string" && img.trim() !== "")
-  : [];
+      ? rawImages.filter((img) => typeof img === "string" && img.trim() !== "")
+      : [];
 
     const hasImages = validImages.length > 0;
     const hasVideo = selectedVideo && selectedVideo !== "null" && selectedVideo !== "";
 
     setSelectedImages(validImages);
 
-    // ✅ URL 파라미터가 우선
     if (forcedMediaType === "image") {
       setMediaType("image");
     } else if (forcedMediaType === "video") {
@@ -94,19 +94,6 @@ const PreviewPage = () => {
               src={selectedImages[currentImageIndex % selectedImages.length]}
               alt="preview"
               className="media-display"
-              loading="eager"
-              style={{
-                objectFit: "cover",
-                width: "100%",
-                height: "100%",
-                backgroundColor: "black",
-                display: "block",
-                aspectRatio: "9 / 16",
-              }}
-              onError={(e) => {
-                console.error("❌ 이미지 로딩 실패:", e.target.src);
-                e.target.style.display = "none";
-              }}
             />
           ) : mediaType === "video" ? (
             <video
@@ -130,14 +117,11 @@ const PreviewPage = () => {
         </div>
       </div>
 
-      <div className="button-box below-box" style={{ display: "flex" }}>
+      <div className="button-box">
         <button className="styled-button" onClick={() => window.history.back()}>
           ← 뒤로가기
         </button>
-        <button
-          className="styled-button"
-          onClick={() => (window.location.href = "/share")}
-        >
+        <button className="styled-button" onClick={() => (window.location.href = "/share")}> 
           다음 - 공유하기 →
         </button>
       </div>

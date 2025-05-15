@@ -1,100 +1,72 @@
 .preview-page {
-  width: 100vw;
-  height: 100vh;
-  background-color: black;
-  position: relative;
-  overflow: hidden;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .media-box {
   width: 100%;
-  height: 100%;
-  position: relative;
+  display: flex;
+  justify-content: center;
 }
 
 .moving-box {
-  position: relative;
-  width: 95%;
-  height: 80vh; /* 충분한 높이 확보 */
-  min-height: 300px;
-  max-width: 720px;
-  margin: 10vh auto;
-  border-radius: 16px;
+  width: 100%;
+  max-width: 600px;
+  aspect-ratio: 16 / 9;
+  border: 1px solid skyblue;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
-  background-color: rgba(0, 0, 0, 0.3);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  position: relative;
+  background: black;
 }
 
 .media-display {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
-  background-color: black;
-}
-
-.media-fallback {
-  color: white;
-  font-size: 1.2rem;
-  text-align: center;
-  padding-top: 40%;
 }
 
 .scrolling-message-bottom {
   position: absolute;
-  bottom: 16px;
-  left: 0;
-  width: 100%;
-  padding-left: 100%;
+  bottom: 8px;
+  left: 12px;
+  right: 12px;
+  font-size: 1rem;
   color: white;
-  font-size: 1.2rem;
-  white-space: nowrap;
-  animation: scrollMessage 18s linear forwards;
   text-shadow: 1px 1px 3px black;
-  z-index: 2;
-}
-
-@keyframes scrollMessage {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
+  text-align: center;
 }
 
 .button-box {
-  margin-top: 20px;
   display: flex;
   justify-content: center;
-  gap: 20px;
-  z-index: 10;
+  gap: 1rem;
+  margin-top: 20px;
 }
 
 .styled-button {
-  padding: 12px 24px;
-  font-size: 1.1rem;
-  font-weight: bold;
+  background-color: pink;
   border: none;
-  border-radius: 12px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border-radius: 20px;
   cursor: pointer;
-  background-color: rgba(255, 255, 255, 0.9);
-  color: #444;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
+  transition: background 0.3s;
 }
 
 .styled-button:hover {
-  background-color: #ffeef0;
+  background-color: hotpink;
+  color: white;
 }
 
-.button-box.below-box {
+.media-fallback {
+  width: 100%;
+  height: 100%;
+  color: white;
   display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 20px;
-  margin-top: 24px;
-  z-index: 10;
+  font-size: 1.2rem;
 }
