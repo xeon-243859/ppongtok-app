@@ -1,14 +1,16 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "./PreviewPage.css";
+
+console.log("🟢 PreviewPage has loaded correctly.");
 
 const PreviewPage = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
-  const forcedMediaType = params.get("type");
+  const forcedMediaType = params.get("type"); // 'image' or 'video'
 
   const [message, setMessage] = useState("");
+  const [typedMessage, setTypedMessage] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [mediaType, setMediaType] = useState("none");
@@ -16,8 +18,6 @@ const PreviewPage = () => {
   const selectedVideo = localStorage.getItem("selected-video");
   const selectedMusic = localStorage.getItem("selected-music");
   const audioRef = useRef(null);
-  const videoRef = useRef(null);
-  const imageIntervalRef = useRef(null);
 
   useEffect(() => {
     const storedMessage = localStorage.getItem("message");
@@ -25,10 +25,24 @@ const PreviewPage = () => {
   }, []);
 
   useEffect(() => {
+    if (!message) return;
+    let index = 0;
+    setTypedMessage("");
+    const interval = setInterval(() => {
+      setTypedMessage((prev) => prev + message.charAt(index));
+      index++;
+      if (index >= message.length) clearInterval(interval);
+    }, 100);
+    return () => clearInterval(interval);
+  }, [message]);
+
+  useEffect(() => {
     const rawImages = JSON.parse(localStorage.getItem("selected-images") || "[]");
     const validImages = Array.isArray(rawImages)
       ? rawImages.filter((img) => typeof img === "string" && img.trim() !== "")
       : [];
+
+    console.log("✅ 이미지 리스트:", validImages);
 
     setSelectedImages(validImages);
 
@@ -49,26 +63,30 @@ const PreviewPage = () => {
   }, [forcedMediaType]);
 
   useEffect(() => {
-    if (mediaType === "image" && selectedImages.length > 1) {
-      let index = 0;
+    if (mediaType !== "image" || selectedImages.length === 0) return;
+
+    let index = 0;
+    setCurrentImageIndex(index);
+    const interval = setInterval(() => {
+      index = (index + 1) % selectedImages.length;
       setCurrentImageIndex(index);
-      imageIntervalRef.current = setInterval(() => {
-        index = (index + 1) % selectedImages.length;
-        setCurrentImageIndex(index);
-      }, 5000);
-    }
-
+    }, 5000);
     const timeout = setTimeout(() => {
-      if (imageIntervalRef.current) clearInterval(imageIntervalRef.current);
-      if (audioRef.current) audioRef.current.pause();
-      if (videoRef.current) videoRef.current.pause();
+      clearInterval(interval);
     }, 30000);
-
     return () => {
+      clearInterval(interval);
       clearTimeout(timeout);
-      if (imageIntervalRef.current) clearInterval(imageIntervalRef.current);
     };
   }, [mediaType, selectedImages]);
+
+  useEffect(() => {
+    if (!audioRef.current) return;
+    const timer = setTimeout(() => {
+      audioRef.current.pause();
+    }, 30000);
+    return () => clearTimeout(timer);
+  }, [selectedMusic]);
 
   return (
     <div className="preview-page">
@@ -83,28 +101,32 @@ const PreviewPage = () => {
           ) : mediaType === "video" ? (
             <video
               src={selectedVideo}
-              ref={videoRef}
               autoPlay
               muted
               playsInline
               className="media-display"
               onLoadedMetadata={(e) => {
                 e.target.currentTime = 0;
+                setTimeout(() => {
+                  e.target.pause();
+                }, 30000);
               }}
             />
           ) : (
             <div className="media-fallback">배경이 없습니다</div>
           )}
 
-          <div className="scrolling-message-bottom">
-            <div className="scrolling-text">{message}</div>
-          </div>
+          <div className="scrolling-message-bottom">{typedMessage}</div>
         </div>
       </div>
 
       <div className="button-box">
-        <button className="styled-button" onClick={() => navigate("/music/select")}>뒤로가기</button>
-        <button className="styled-button" onClick={() => navigate("/share")}>다음 - 공유하기</button>
+        <button className="styled-button" onClick={() => window.history.back()}>
+          뒤로가기
+        </button>
+        <button className="styled-button" onClick={() => (window.location.href = "/share")}>
+          다음 - 공유하기
+        </button>
       </div>
 
       {selectedMusic && <audio src={selectedMusic} autoPlay ref={audioRef} />}
@@ -113,5 +135,3 @@ const PreviewPage = () => {
 };
 
 export default PreviewPage;
-
-
