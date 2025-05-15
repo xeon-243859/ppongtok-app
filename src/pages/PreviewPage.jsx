@@ -37,8 +37,8 @@ const PreviewPage = () => {
   useEffect(() => {
     const rawImages = JSON.parse(localStorage.getItem("selected-images") || "[]");
     const validImages = Array.isArray(rawImages)
-      ? rawImages.filter((img) => img && img.includes("data:image"))
-      : [];
+       ? rawImages.filter((img) => typeof img === "string" && img.trim() !== "")
+  : [];
 
     const hasImages = validImages.length > 0;
     const hasVideo = selectedVideo && selectedVideo !== "null" && selectedVideo !== "";
