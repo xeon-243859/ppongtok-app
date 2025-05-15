@@ -57,9 +57,10 @@ const ImageSelectPage = () => {
 
   return (
     <div className="image-select-container">
-      <h2 className="image-select-title">
-        배경으로 사용할 이미지 4개를<br />선택해주세요
-      </h2>
+      <div className="typing-text">
+        <div className="line1">배경으로 사용할 이미지 4개를</div>
+        <div className="line2">선택해 주세요</div>
+      </div>
 
       <div className="file-button-group">
         <button onClick={handleImageFile}>배경이미지 파일</button>

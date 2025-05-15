@@ -6,14 +6,33 @@
   text-align: center;
 }
 
-.image-select-title {
-  font-size: 1.3rem;
-  font-weight: bold;
-  color: #333;
-  margin-top: 60px; /* 🔽 여백 추가 */
+/* ✅ 타자체 두 줄 */
+.typing-text {
+  text-align: center;
+  margin-top: 60px;
   margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: bold;
 }
 
+.typing-text .line1,
+.typing-text .line2 {
+  animation: typing 1.2s steps(20) forwards;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: none;
+}
+
+.typing-text .line2 {
+  animation-delay: 1.2s;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+/* ✅ 감성 버튼 + 한 줄 유지 */
 .file-button-group {
   display: flex;
   gap: 12px;
@@ -22,6 +41,7 @@
 }
 
 .file-button-group button {
+  white-space: nowrap;
   padding: 12px 26px;
   font-size: 1rem;
   background-color: #ffc8c8;
@@ -37,9 +57,10 @@
   background-color: #ff9e9e;
 }
 
+/* ✅ 2행 2열 슬롯 정렬 */
 .image-slots-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* ✅ 2행 2열 배치 */
+  grid-template-columns: repeat(2, 1fr);
   gap: 15px;
   margin: 20px 0;
 }
@@ -72,18 +93,19 @@
   cursor: pointer;
 }
 
+/* ✅ 가로 정렬 버튼 */
 .button-group {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 30px;
   margin-top: 30px;
-  width: 200px;
 }
 
 .button-group button {
-  padding: 10px 20px;
-  font-size: 0.9rem;
+  padding: 12px 24px;
+  font-size: 0.95rem;
   border: none;
-  border-radius: 20px;
+  border-radius: 25px;
   background-color: #ffb6b6;
   color: white;
   cursor: pointer;
