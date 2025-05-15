@@ -16,18 +16,19 @@ const PreviewPage = () => {
   const selectedVideo = localStorage.getItem("selected-video");
   const selectedMusic = localStorage.getItem("selected-music");
   const audioRef = useRef(null);
+  const videoRef = useRef(null);
+  const imageIntervalRef = useRef(null);
 
   useEffect(() => {
     const storedMessage = localStorage.getItem("message");
     if (storedMessage) setMessage(storedMessage);
   }, []);
 
-  // 타자효과 30초 안에 다 나오게 설정
   useEffect(() => {
     if (!message) return;
     let index = 0;
     setTypedMessage("");
-    const typingSpeed = Math.max(30, 30000 / message.length); // 한 글자당 시간 계산
+    const typingSpeed = Math.max(30, 30000 / message.length);
     const interval = setInterval(() => {
       setTypedMessage((prev) => prev + message.charAt(index));
       index++;
@@ -60,28 +61,29 @@ const PreviewPage = () => {
     }
   }, [forcedMediaType]);
 
-  // 이미지 전환 30초마다 1장씩
   useEffect(() => {
-    if (mediaType !== "image" || selectedImages.length === 0) return;
-
-    let index = 0;
-    setCurrentImageIndex(index);
-    const interval = setInterval(() => {
-      index = (index + 1) % selectedImages.length;
+    // 이미지가 2장 이상일 때 5초마다 전환
+    if (mediaType === "image" && selectedImages.length > 1) {
+      let index = 0;
       setCurrentImageIndex(index);
-    }, 30000); // 30초 간격
+      imageIntervalRef.current = setInterval(() => {
+        index = (index + 1) % selectedImages.length;
+        setCurrentImageIndex(index);
+      }, 5000); // ✅ 5초 간격 전환
+    }
 
-    return () => clearInterval(interval);
+    // 30초 후 이미지/음악/영상 모두 정지
+    const timeout = setTimeout(() => {
+      if (imageIntervalRef.current) clearInterval(imageIntervalRef.current);
+      if (audioRef.current) audioRef.current.pause();
+      if (videoRef.current) videoRef.current.pause();
+    }, 30000); // ✅ 30초 후 정지
+
+    return () => {
+      clearTimeout(timeout);
+      if (imageIntervalRef.current) clearInterval(imageIntervalRef.current);
+    };
   }, [mediaType, selectedImages]);
-
-  // 영상 자동 정지 30초 후
-  useEffect(() => {
-    if (!audioRef.current) return;
-    const timer = setTimeout(() => {
-      audioRef.current.pause();
-    }, 30000);
-    return () => clearTimeout(timer);
-  }, [selectedMusic]);
 
   return (
     <div className="preview-page">
@@ -96,15 +98,13 @@ const PreviewPage = () => {
           ) : mediaType === "video" ? (
             <video
               src={selectedVideo}
+              ref={videoRef}
               autoPlay
               muted
               playsInline
               className="media-display"
               onLoadedMetadata={(e) => {
                 e.target.currentTime = 0;
-                setTimeout(() => {
-                  e.target.pause();
-                }, 30000); // 30초 후 정지
               }}
             />
           ) : (
@@ -130,3 +130,4 @@ const PreviewPage = () => {
 };
 
 export default PreviewPage;
+

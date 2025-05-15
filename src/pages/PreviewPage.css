@@ -67,14 +67,18 @@
 .scrolling-message-bottom {
   position: absolute;
   bottom: 30px;
-  white-space: nowrap;
+  width: 100%;
   overflow: hidden;
+}
+
+.scrolling-text {
+  white-space: nowrap;
+  display: inline-block;
   font-size: 1.2rem;
   color: white;
   text-shadow: 0 0 4px black;
   animation: scroll-left 30s linear;
 }
-
 
 
 .button-box {
