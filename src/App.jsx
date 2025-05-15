@@ -7,7 +7,9 @@ import ImageSelectPage from "./pages/ImageSelectPage";
 import ImageThemePage from "./pages/ImageThemePage";       // ✅ 우리가 수정한 진짜 저장소
 import VideoThemePage from "./pages/VideoThemePage";
 import VideoSelectPage from "./pages/VideoSelectPage";
-import MusicSelectPage from "./pages/MusicSelectPage1";
+import MusicSelectPage from "./pages/MusicSelectPage1"; // ❌ 중복, 삭제!
+import MusicSelectPage1 from "./pages/MusicSelectPage1";
+import MusicSelectPage2 from "./pages/MusicSelectPage2";
 import MusicThemePage from "./pages/MusicThemePage";
 import LoveFormPage from "./pages/LoveFormPage";           // ✅ 고백 메시지 입력 화면
 import PreviewPage from "./pages/PreviewPage";             // ✅ 최종 미리보기 화면
