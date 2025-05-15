@@ -173,6 +173,14 @@
   margin-top: 2rem;
 }
 
+.back-button {
+  order: 1;
+}
+
+.next-button {
+  order: 2;
+}
+
 .back-button,
 .next-button {
   padding: 0.8rem 2rem;
