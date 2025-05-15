@@ -1,92 +1,67 @@
 .music-select-page {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  padding: 40px 20px;
+  height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.music-title {
   text-align: center;
-  max-width: 600px;
-  margin: 0 auto;
+  margin-bottom: 30px;
+  font-size: 24px;
 }
 
-.music-select-title {
-  font-size: 1.8rem;
-  font-weight: bold;
-  margin-bottom: 2rem;
-  line-height: 1.4;
+.music-title .line1,
+.music-title .line2 {
+  animation: typing 1.5s steps(20) forwards;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: none;
 }
 
-.file-button-group {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
+.music-title .line2 {
+  animation-delay: 1.5s;
 }
 
-.file-button-group button {
-  padding: 0.8rem 2rem;
-  font-size: 1rem;
-  background-color: #ffc8c8;
-  border: none;
-  border-radius: 20px;
-  font-weight: bold;
-  cursor: pointer;
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
 }
 
 .music-box {
-  position: relative;
-  width: 100%;
-  max-width: 300px;
+  border: 2px solid #aaa;
   padding: 20px;
-  margin: 20px auto;
-  border: 2px solid #ffdada;
-  border-radius: 20px;
-  background-color: #fffaf9;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
+  margin-bottom: 40px;
 }
 
-.music-label {
-  font-size: 1rem;
+.music-box p {
   margin-bottom: 10px;
+  font-weight: bold;
 }
 
-.music-box audio {
-  width: 100%;
-}
-
-.delete-button {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  background: none;
-  border: none;
+.music-box button {
+  margin: 5px;
+  padding: 10px 20px;
   font-size: 16px;
-  color: #888;
-  cursor: pointer;
 }
 
 .button-group {
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 1.5rem;
-  margin-top: 3rem;
-  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .button-group button {
-  padding: 0.8rem 2rem;
-  font-size: 1.2rem;
-  min-width: 140px;
-  background-color: #ffc8c8;
-  border: none;
-  border-radius: 25px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.button-group button:hover {
-  background-color: #ffaaaa;
+  padding: 10px 20px;
+  font-size: 16px;
 }
