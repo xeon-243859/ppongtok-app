@@ -88,6 +88,7 @@ const MusicSelectPage = () => {
       </div>
     </div>
   );
-};
+}; // UI 정렬 점검 주석 추가
+
 
 export default MusicSelectPage;
