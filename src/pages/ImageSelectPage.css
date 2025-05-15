@@ -4,6 +4,7 @@
   align-items: center;
   padding: 30px;
   box-sizing: border-box;
+  min-height: 100vh;
 }
 
 .typing-text {
@@ -33,35 +34,27 @@
   }
 }
 
-.image-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+.image-buttons {
+  display: flex;
   gap: 15px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
-.image-box {
-  position: relative;
+.image-buttons button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  background-color: #ffecec;
+  border-radius: 12px;
   cursor: pointer;
-}
-
-.image-box img {
-  width: 160px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 10px;
-}
-
-.label {
-  text-align: center;
-  margin-top: 5px;
-  font-size: 14px;
 }
 
 .preview-box {
   display: flex;
   gap: 10px;
   margin: 20px 0;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .preview-slot {
