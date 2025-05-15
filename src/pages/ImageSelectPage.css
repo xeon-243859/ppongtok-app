@@ -1,8 +1,11 @@
 .image-select-container {
+  max-width: 800px;   /* 💻 PC에서도 보기 좋게 */
+  min-width: 320px;
+  margin: 0 auto;     /* ✅ 가운데 정렬 */
+  padding: 40px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 50px;
   text-align: center;
 }
 
@@ -20,16 +23,12 @@
   justify-content: center;
 }
 
-.file-button-group button {
-  padding: 12px 26px;
-  font-size: 1rem;
-  background-color: #ffc8c8;
-  color: #333;
-  border: none;
-  border-radius: 25px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.3s;
+.file-button-group button,
+.button-group button {
+  padding: 0.8rem 2rem;
+  font-size: 1.1rem;
+  border-radius: 20px;
+  margin: 0 0.5rem;
 }
 
 .file-button-group button:hover {
