@@ -1,48 +1,36 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./ImageSelectPage.css";
+import "./MusicSelectPage.css";
 
-const ImageSelectPage = () => {
+const MusicSelectPage = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
-  const [images, setImages] = useState(["", "", "", ""]);
 
-  const loadImages = () => {
-    const loadedImages = [];
-    for (let i = 1; i <= 4; i++) {
-      loadedImages.push(localStorage.getItem(`img-${i}`) || "");
-    }
-    setImages(loadedImages);
-  };
+  const [selectedMusic, setSelectedMusic] = useState(null);
+  const [musicName, setMusicName] = useState("");
 
   useEffect(() => {
-    loadImages();
-    window.addEventListener("focus", loadImages);
-    return () => window.removeEventListener("focus", loadImages);
+    const storedMusic = localStorage.getItem("selected-music");
+    const storedLabel = localStorage.getItem("selected-music-label");
+
+    if (storedMusic) {
+      setSelectedMusic(storedMusic);
+    }
+
+    if (storedLabel) {
+      setMusicName(storedLabel);
+    }
   }, []);
 
-  const handleDelete = (index) => {
-    const updated = [...images];
-    updated[index] = "";
-    setImages(updated);
-    localStorage.removeItem(`img-${index + 1}`);
+  const handleDelete = () => {
+    setSelectedMusic(null);
+    setMusicName("");
+    localStorage.removeItem("selected-music");
+    localStorage.removeItem("selected-music-label");
   };
 
-  const saveImage = (dataUrl) => {
-    const updated = [...images];
-    for (let i = 0; i < 4; i++) {
-      if (!updated[i]) {
-        updated[i] = dataUrl;
-        setImages(updated);
-        localStorage.setItem(`img-${i + 1}`, dataUrl);
-        return;
-      }
-    }
-    alert("모든 슬롯이 가득 찼어요!");
-  };
-
-  const handleImageFile = () => {
-    navigate("/image/theme");
+  const handleMusicFile = () => {
+    navigate("/music/theme");
   };
 
   const handleLocalFile = () => {
@@ -52,57 +40,54 @@ const ImageSelectPage = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      saveImage(reader.result);
-    };
-    reader.readAsDataURL(file);
+
+    const musicUrl = URL.createObjectURL(file);
+    setSelectedMusic(musicUrl);
+    setMusicName(file.name);
+    localStorage.setItem("selected-music", musicUrl);
+    localStorage.setItem("selected-music-label", file.name);
+  };
+
+  const handleBack = () => {
+    navigate("/video/theme");
+  };
+
+  const handleNext = () => {
+    navigate("/preview");
   };
 
   return (
-    <div className="image-select-container">
-      <h2 className="image-select-title">
-        배경으로 사용할 이미지 4개를<br />선택해주세요
+    <div className="music-select-page">
+      <h2 className="music-select-title">
+        배경으로 사용할 음악을<br />선택해주세요
       </h2>
 
       <div className="file-button-group">
-        <button onClick={handleImageFile}>이미지파일</button>
+        <button onClick={handleMusicFile}>배경음악파일</button>
         <button onClick={handleLocalFile}>내파일선택</button>
         <input
           type="file"
-          accept="image/*"
+          accept="audio/*"
           ref={fileInputRef}
           onChange={handleFileChange}
           style={{ display: "none" }}
         />
       </div>
 
-      <div className="image-slots">
-        {images.map((src, i) => (
-          <div className="image-slot" key={i}>
-            {src ? (
-              <>
-                <img
-                  src={src.includes("/backgrounds/") ? src : `data:image/jpeg;base64,${src}`}
-                  alt={`img-${i + 1}`}
-                />
-                <button className="delete-button" onClick={() => handleDelete(i)}>
-                  ❌
-                </button>
-              </>
-            ) : (
-              <p>{`img-${i + 1}`}</p>
-            )}
-          </div>
-        ))}
-      </div>
+      {selectedMusic && (
+        <div className="music-box">
+          <p className="music-label">{musicName || "선택된 음악 없음"}</p>
+          <audio controls autoPlay src={selectedMusic} />
+          <button className="delete-button" onClick={handleDelete}>❌</button>
+        </div>
+      )}
 
-      <div className="button-group">
-        <button onClick={() => navigate(-1)}>뒤로가기</button>
-        <button onClick={() => navigate("/music/select")}>다음으로</button>
+      <div className="button-group centered">
+        <button className="back-button" onClick={handleBack}>뒤로가기</button>
+        <button className="next-button" onClick={handleNext}>다음으로</button>
       </div>
     </div>
   );
 };
 
-export default ImageSelectPage;
+export default MusicSelectPage;
