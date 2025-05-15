@@ -1,66 +1,40 @@
-.music-select-container {
+.music-select-page {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 40px 20px;
   text-align: center;
-  max-width: 500px;   /* ✅ PC에서 너무 넓어지지 않도록 제한 */
-  margin: 0 auto;     /* ✅ PC에서도 중앙 정렬 유지 */
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-.music-title-line1,
-.music-title-line2 {
-  font-size: 1.5rem;
+.music-select-title {
+  font-size: 1.8rem;
   font-weight: bold;
-  color: #333;
-  margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  /* ✅ 타자 커서 제거 */
-  animation: typing 1.5s steps(30, end) forwards;
+  margin-bottom: 2rem;
+  line-height: 1.4;
 }
 
-.music-title-line2 {
-  animation-delay: 1.5s;
-  margin-top: 5px;
-  margin-bottom: 20px;
-}
-
-@keyframes typing {
-  from {
-    width: 0;
-  }
-  to {
-    width: 100%;
-  }
-}
-
-.music-button-group {
+.file-button-group {
   display: flex;
-  gap: 15px;
-  margin-bottom: 30px;
+  gap: 1rem;
+  margin-bottom: 2rem;
 }
 
-.music-button-group button {
-  padding: 14px 30px;
+.file-button-group button {
+  padding: 0.8rem 2rem;
   font-size: 1rem;
   background-color: #ffc8c8;
   border: none;
-  border-radius: 30px;
-  color: #333;
-  font-weight: 500;
+  border-radius: 20px;
+  font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.music-button-group button:hover {
-  background-color: #ff9e9e;
 }
 
 .music-box {
   position: relative;
   width: 100%;
-  max-width: 230px; /* ✅ 살짝 줄인 감성 사이즈 */
+  max-width: 300px;
   padding: 20px;
   margin: 20px auto;
   border: 2px solid #ffdada;
@@ -70,26 +44,15 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100px;
 }
 
-
-
-.music-name {
-  font-size: 1.2rem;
-  margin-bottom: 10px;
-  color: #444;
-}
-
-.music-placeholder {
+.music-label {
   font-size: 1rem;
-  color: #aaa;
+  margin-bottom: 10px;
 }
 
 .music-box audio {
   width: 100%;
-  margin-top: 10px;
-  max-width: 100%; /* ✅ 이 줄만 추가하면 돼! */
 }
 
 .delete-button {
@@ -98,102 +61,32 @@
   right: 10px;
   background: none;
   border: none;
-  color: #666;
   font-size: 16px;
-  font-weight: bold;
+  color: #888;
   cursor: pointer;
-}
-
-.music-button-nav {
-  display: flex;
-  gap: 15px;
-  margin-top: 40px;
-}
-
-.music-button-nav button {
-  padding: 14px 30px;
-  font-size: 1rem;
-  background-color: #ffc8c8;
-  border: none;
-  border-radius: 30px;
-  color: #333;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.music-button-nav button:hover {
-  background-color: #ff9e9e;
-}
-
-.music-label {
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 8px;
-}
-
-.music-select-title {
-  font-size: 22px;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 20px;
-  line-height: 1.5;
-}
-
-.button-group.centered {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  margin-top: 30px;
-}
-
-
-.button-group button {
-  padding: 0.8rem 2rem;
-  font-size: 1.1rem;
-  background-color: #ffc8c8;
-  border: none;
-  border-radius: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.button-group button:hover {
-  background-color: #ffaaaa;
 }
 
 .button-group {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1.2rem;
-  margin-top: 2rem;
+  gap: 1.5rem;
+  margin-top: 3rem;
+  flex-wrap: wrap;
 }
 
-.back-button {
-  order: 1;
-}
-
-.next-button {
-  order: 2;
-}
-
-.back-button,
-.next-button {
+.button-group button {
   padding: 0.8rem 2rem;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
+  min-width: 140px;
   background-color: #ffc8c8;
   border: none;
-  border-radius: 20px;
+  border-radius: 25px;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
-.back-button:hover,
-.next-button:hover {
+.button-group button:hover {
   background-color: #ffaaaa;
 }
