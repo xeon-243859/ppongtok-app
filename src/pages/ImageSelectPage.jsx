@@ -93,7 +93,8 @@ const ImageSelectPage = () => {
 
       <div className="button-group">
         <button onClick={() => navigate(-1)}>뒤로가기</button>
-        <button onClick={() => navigate("/image/theme")}>다음으로</button>
+        <button onClick={() => navigate("/music/select")}>다음으로</button> // ✅ 음악선택으로 이동
+
       </div>
     </div>
   );
