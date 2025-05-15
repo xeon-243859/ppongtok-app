@@ -45,6 +45,10 @@ const ImageSelectPage = () => {
   return (
     <div className="image-select-page">
       <h2 className="typing-text">배경으로 사용할 이미지를 선택해주세요</h2>
+      <div className="image-buttons">
+      <button onClick={() => alert("🔧 추후 구현 예정")}>배경이미지 파일</button>
+      <button onClick={() => alert("🔧 추후 구현 예정")}>내 파일 선택</button>
+     </div>
 
       <div className="image-grid">
         {images.map((image) => (
