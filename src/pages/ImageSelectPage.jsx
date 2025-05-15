@@ -51,7 +51,7 @@ const ImageSelectPage = () => {
         <button onClick={handleMyFile}>내 파일 선택</button>
       </div>
 
-      <div className="preview-box">
+      <div className="preview-box-grid">
         {[0, 1, 2, 3].map((i) => (
           <div key={i} className="preview-slot">
             {selectedImages[i] && (
