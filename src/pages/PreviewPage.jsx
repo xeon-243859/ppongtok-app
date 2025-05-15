@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import "./PreviewPage.css";
 
+console.log("🟢 PreviewPage has loaded correctly."); // ✅ 요기에 넣어줘
 const PreviewPage = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
@@ -38,6 +39,8 @@ const PreviewPage = () => {
   useEffect(() => {
     const rawImages = JSON.parse(localStorage.getItem("selected-images") || "[]");
     const validImages = Array.isArray(rawImages)
+    
+
       ? rawImages.filter((img) => typeof img === "string" && img.trim() !== "")
       : [];
     console.log("✅ Preview updated at " + new Date().toISOString());
