@@ -13,6 +13,9 @@ const ImageSelectPage = () => {
       loadedImages.push(localStorage.getItem(`img-${i}`) || "");
     }
     setImages(loadedImages);
+
+    // ✅ 불러온 이미지들을 selected-images에도 반영
+    localStorage.setItem("selected-images", JSON.stringify(loadedImages));
   }, []);
 
   const handleDelete = (index) => {
@@ -20,7 +23,7 @@ const ImageSelectPage = () => {
     updated[index] = "";
     setImages(updated);
     localStorage.removeItem(`img-${index + 1}`);
-    localStorage.setItem("selected-images", JSON.stringify(updated)); // ✅ 삭제 시도 반영
+    localStorage.setItem("selected-images", JSON.stringify(updated)); // 필수 저장
   };
 
   const saveImage = (dataUrl) => {
@@ -29,9 +32,10 @@ const ImageSelectPage = () => {
       if (!updated[i]) {
         updated[i] = dataUrl;
         setImages(updated);
+
         localStorage.setItem(`img-${i + 1}`, dataUrl);
 
-        // ✅ 핵심 추가
+        // ✅ 핵심 저장
         localStorage.setItem("selected-images", JSON.stringify(updated));
 
         // ✅ 영상 제거
