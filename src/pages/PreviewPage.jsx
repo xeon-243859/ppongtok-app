@@ -1,4 +1,3 @@
-// ✅ 완성 PreviewPage.jsx 전체코드 (localStorage 초기화 포함 + 모바일 보정)
 import React, { useEffect, useState, useRef } from "react";
 import "./PreviewPage.css";
 
@@ -11,7 +10,6 @@ const PreviewPage = () => {
 
   const selectedVideo = localStorage.getItem("selected-video");
   const selectedMusic = localStorage.getItem("selected-music");
-  const selectedType = localStorage.getItem("selected-type");
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -33,10 +31,9 @@ const PreviewPage = () => {
 
   useEffect(() => {
     const storedImages = JSON.parse(localStorage.getItem("selected-images") || "[]");
-    const hasVideo = selectedVideo && selectedVideo !== "null" && selectedVideo !== "";
     const hasImages = Array.isArray(storedImages) && storedImages.length > 0;
+    const hasVideo = selectedVideo && selectedVideo !== "null" && selectedVideo !== "";
 
-    // ✅ localStorage 정리
     if (!hasImages) {
       localStorage.removeItem("selected-images");
     }
@@ -46,27 +43,14 @@ const PreviewPage = () => {
 
     setSelectedImages(storedImages);
 
-    if (selectedType === "video" && hasVideo && !hasImages) {
-      setMediaType("video");
-    } else if ((selectedType === "image" || hasImages) && !hasVideo) {
+    // ✅ 우선순위: 이미지 > 영상
+    if (hasImages) {
       setMediaType("image");
-    } else if (hasImages && !hasVideo) {
-      setMediaType("image");
-    } else if (hasVideo && !hasImages) {
+    } else if (hasVideo) {
       setMediaType("video");
     } else {
       setMediaType("none");
     }
-  }, []);
-
-  useEffect(() => {
-    setTimeout(() => {
-      const images = JSON.parse(localStorage.getItem("selected-images") || "[]");
-      if (images.length > 0) {
-        setSelectedImages(images);
-        setMediaType("image");
-      }
-    }, 100);
   }, []);
 
   useEffect(() => {
@@ -118,7 +102,14 @@ const PreviewPage = () => {
               alt="preview"
               className="media-display"
               loading="eager"
-              style={{ objectFit: "cover", width: "100%", height: "100%", backgroundColor: "black", display: "block", aspectRatio: "9 / 16" }}
+              style={{
+                objectFit: "cover",
+                width: "100%",
+                height: "100%",
+                backgroundColor: "black",
+                display: "block",
+                aspectRatio: "9 / 16",
+              }}
               onError={(e) => {
                 console.error("❌ 이미지 로딩 실패:", e.target.src);
                 e.target.style.display = "none";
@@ -127,7 +118,6 @@ const PreviewPage = () => {
           ) : (
             <div className="media-fallback">배경이 없습니다</div>
           )}
-
           <div className="scrolling-message-bottom">{typedMessage}</div>
         </div>
       </div>

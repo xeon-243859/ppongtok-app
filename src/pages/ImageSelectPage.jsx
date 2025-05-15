@@ -29,6 +29,10 @@ const ImageSelectPage = () => {
         updated[i] = dataUrl;
         setImages(updated);
         localStorage.setItem(`img-${i + 1}`, dataUrl);
+
+        // ✅ 이미지 선택 시 영상 제거
+        localStorage.removeItem("selected-video");
+
         return;
       }
     }
@@ -78,9 +82,13 @@ const ImageSelectPage = () => {
             {src ? (
               <>
                 <img
-                  src={src.includes("/backgrounds/") ? src : `data:image/jpeg;base64,${src}`}
+                  src={
+                    src.includes("/backgrounds/")
+                      ? src
+                      : `data:image/jpeg;base64,${src}`
+                  }
                   alt={`img-${i + 1}`}
-                / >
+                />
                 <button className="delete-button" onClick={() => handleDelete(i)}>❌</button>
               </>
             ) : (
@@ -92,8 +100,7 @@ const ImageSelectPage = () => {
 
       <div className="button-group">
         <button onClick={() => navigate(-1)}>뒤로가기</button>
-        <button onClick={() => navigate("/music/select")}>다음으로</button> 
-
+        <button onClick={() => navigate("/music/select")}>다음으로</button>
       </div>
     </div>
   );
