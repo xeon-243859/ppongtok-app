@@ -6,7 +6,7 @@ import jsPDF from "jspdf";
 const SharePage = () => {
   useEffect(() => {
     if (window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.init("여기에_자바스크립트_키"); // ← 네 카카오 JavaScript 키로 바꿔줘!
+      window.Kakao.init("여기에_자바스크립트_키");
       console.log("✅ Kakao 초기화 완료");
     }
   }, []);
@@ -20,7 +20,7 @@ const SharePage = () => {
             content: {
               title: "감정을 담은 뿅!톡 메시지",
               description: "내 마음을 전하는 감성 메시지를 확인해보세요 💌",
-              imageUrl: "https://yourdomain.com/preview-thumbnail.jpg", // 필요시 수정
+              imageUrl: "https://yourdomain.com/preview-thumbnail.jpg",
               link: {
                 mobileWebUrl: window.location.href,
                 webUrl: window.location.href,

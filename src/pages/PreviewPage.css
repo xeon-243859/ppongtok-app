@@ -55,16 +55,27 @@
   border-radius: 12px;
 }
 
+@keyframes scroll-left {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
 .scrolling-message-bottom {
   position: absolute;
-  bottom: 8px;
-  left: 12px;
-  right: 12px;
-  font-size: 1rem;
+  bottom: 30px;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 1.2rem;
   color: white;
-  text-shadow: 1px 1px 3px black;
-  text-align: center;
+  text-shadow: 0 0 4px black;
+  animation: scroll-left 30s linear;
 }
+
+
 
 .button-box {
   display: flex;

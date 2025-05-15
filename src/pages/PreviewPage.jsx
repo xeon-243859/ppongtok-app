@@ -2,12 +2,10 @@ import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import "./PreviewPage.css";
 
-console.log("🟢 PreviewPage has loaded correctly."); // ✅ 요기에 넣어줘
-
 const PreviewPage = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const forcedMediaType = params.get("type"); // 'image' or 'video'
+  const forcedMediaType = params.get("type");
 
   const [message, setMessage] = useState("");
   const [typedMessage, setTypedMessage] = useState("");
@@ -24,15 +22,17 @@ const PreviewPage = () => {
     if (storedMessage) setMessage(storedMessage);
   }, []);
 
+  // 타자효과 30초 안에 다 나오게 설정
   useEffect(() => {
     if (!message) return;
     let index = 0;
     setTypedMessage("");
+    const typingSpeed = Math.max(30, 30000 / message.length); // 한 글자당 시간 계산
     const interval = setInterval(() => {
       setTypedMessage((prev) => prev + message.charAt(index));
       index++;
       if (index >= message.length) clearInterval(interval);
-    }, 100);
+    }, typingSpeed);
     return () => clearInterval(interval);
   }, [message]);
 
@@ -41,13 +41,11 @@ const PreviewPage = () => {
     const validImages = Array.isArray(rawImages)
       ? rawImages.filter((img) => typeof img === "string" && img.trim() !== "")
       : [];
-    console.log("✅ Preview updated at " + new Date().toISOString());
-    console.log("🟢 Vercel redeploy 확인용 로그", new Date().toISOString());
+
+    setSelectedImages(validImages);
 
     const hasImages = validImages.length > 0;
     const hasVideo = selectedVideo && selectedVideo !== "null" && selectedVideo !== "";
-
-    setSelectedImages(validImages);
 
     if (forcedMediaType === "image") {
       setMediaType("image");
@@ -62,23 +60,21 @@ const PreviewPage = () => {
     }
   }, [forcedMediaType]);
 
+  // 이미지 전환 30초마다 1장씩
   useEffect(() => {
     if (mediaType !== "image" || selectedImages.length === 0) return;
+
     let index = 0;
     setCurrentImageIndex(index);
     const interval = setInterval(() => {
       index = (index + 1) % selectedImages.length;
       setCurrentImageIndex(index);
-    }, 5000);
-    const timeout = setTimeout(() => {
-      clearInterval(interval);
-    }, 30000);
-    return () => {
-      clearInterval(interval);
-      clearTimeout(timeout);
-    };
+    }, 30000); // 30초 간격
+
+    return () => clearInterval(interval);
   }, [mediaType, selectedImages]);
 
+  // 영상 자동 정지 30초 후
   useEffect(() => {
     if (!audioRef.current) return;
     const timer = setTimeout(() => {
@@ -108,7 +104,7 @@ const PreviewPage = () => {
                 e.target.currentTime = 0;
                 setTimeout(() => {
                   e.target.pause();
-                }, 30000);
+                }, 30000); // 30초 후 정지
               }}
             />
           ) : (
