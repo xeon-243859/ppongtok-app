@@ -40,6 +40,7 @@ const PreviewPage = () => {
     const validImages = Array.isArray(rawImages)
       ? rawImages.filter((img) => typeof img === "string" && img.trim() !== "")
       : [];
+    console.log("✅ Preview updated at " + new Date().toISOString());
 
     const hasImages = validImages.length > 0;
     const hasVideo = selectedVideo && selectedVideo !== "null" && selectedVideo !== "";
