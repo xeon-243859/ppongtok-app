@@ -13,6 +13,7 @@ import MusicSelectPage2 from "./pages/MusicSelectPage2";
 import MusicThemePage from "./pages/MusicThemePage";
 import LoveFormPage from "./pages/LoveFormPage";           // ✅ 고백 메시지 입력 화면
 import PreviewPage from "./pages/PreviewPage";             // ✅ 최종 미리보기 화면
+import SharePage from "./pages/SharePage";
 
 // ❌ 더 이상 사용하지 않음 (사용 중단됨)
 // import ImageThemeSlotPage from "./pages/ImageThemeSlotPage";
@@ -42,6 +43,7 @@ function App() {
       <Route path="/preview" element={<PreviewPage />} />
       <Route path="/music/image" element={<MusicSelectPage1 />} />
       <Route path="/music/video" element={<MusicSelectPage2 />} />
+      <Route path="/share" element={<SharePage />} />
     </Routes>
   );
 }
