@@ -20,6 +20,7 @@ const ImageSelectPage = () => {
     updated[index] = "";
     setImages(updated);
     localStorage.removeItem(`img-${index + 1}`);
+    localStorage.setItem("selected-images", JSON.stringify(updated)); // ✅ 삭제 시도 반영
   };
 
   const saveImage = (dataUrl) => {
@@ -30,7 +31,10 @@ const ImageSelectPage = () => {
         setImages(updated);
         localStorage.setItem(`img-${i + 1}`, dataUrl);
 
-        // ✅ 이미지 선택 시 영상 제거
+        // ✅ 핵심 추가
+        localStorage.setItem("selected-images", JSON.stringify(updated));
+
+        // ✅ 영상 제거
         localStorage.removeItem("selected-video");
 
         return;
