@@ -1,29 +1,29 @@
 .music-select-page {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  height: 100vh;
-  padding: 20px;
+  padding: 40px 20px;
   box-sizing: border-box;
+  height: 100vh;
+  justify-content: space-between;
 }
 
 .music-title {
   text-align: center;
-  margin-bottom: 30px;
   font-size: 24px;
+  margin-top: 20px;
 }
 
 .music-title .line1,
 .music-title .line2 {
-  animation: typing 1.5s steps(20) forwards;
+  animation: typing 1.2s steps(20) forwards;
   white-space: nowrap;
   overflow: hidden;
   border-right: none;
 }
 
 .music-title .line2 {
-  animation-delay: 1.5s;
+  animation-delay: 1.2s;
 }
 
 @keyframes typing {
@@ -35,33 +35,55 @@
   }
 }
 
-.music-box {
-  border: 2px solid #aaa;
-  padding: 20px;
-  width: 80%;
-  max-width: 400px;
-  text-align: center;
-  margin-bottom: 40px;
+.music-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+  margin-bottom: 10px;
 }
 
-.music-box p {
+.music-buttons button {
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+.music-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.music-preview p {
   margin-bottom: 10px;
   font-weight: bold;
 }
 
-.music-box button {
-  margin: 5px;
-  padding: 10px 20px;
-  font-size: 16px;
+.music-preview audio {
+  width: 250px;
+  margin-bottom: 8px;
+}
+
+.delete-button {
+  background: none;
+  color: red;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
 }
 
 .button-group {
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: 30px;
+  margin-bottom: 20px;
 }
 
 .button-group button {
-  padding: 10px 20px;
+  padding: 12px 24px;
   font-size: 16px;
+  border-radius: 20px;
+  background-color: #ffdede;
+  border: none;
+  cursor: pointer;
 }
