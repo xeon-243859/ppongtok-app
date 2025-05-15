@@ -1,114 +1,79 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ImageSelectPage.css";
 
+const images = [
+  { id: 1, src: "/backgrounds/cosmos.jpg", label: "따뜻한1" },
+  { id: 2, src: "/backgrounds/leaves.jpg", label: "따뜻한2" },
+  { id: 3, src: "/backgrounds/road.jpg", label: "낭만적인1" },
+  { id: 4, src: "/backgrounds/water.jpg", label: "낭만적인2" },
+];
+
 const ImageSelectPage = () => {
+  const [selectedImages, setSelectedImages] = useState([]);
   const navigate = useNavigate();
-  const fileInputRef = useRef(null);
-  const [images, setImages] = useState(["", "", "", ""]);
 
-  useEffect(() => {
-    const loadedImages = [];
-    for (let i = 1; i <= 4; i++) {
-      loadedImages.push(localStorage.getItem(`img-${i}`) || "");
-    }
-    setImages(loadedImages);
-
-    // ✅ 불러온 이미지들을 selected-images에도 반영
-    localStorage.setItem("selected-images", JSON.stringify(loadedImages));
-  }, []);
-
-  const handleDelete = (index) => {
-    const updated = [...images];
-    updated[index] = "";
-    setImages(updated);
-    localStorage.removeItem(`img-${index + 1}`);
-    localStorage.setItem("selected-images", JSON.stringify(updated)); // 필수 저장
-  };
-
-  const saveImage = (dataUrl) => {
-    const updated = [...images];
-    for (let i = 0; i < 4; i++) {
-      if (!updated[i]) {
-        updated[i] = dataUrl;
-        setImages(updated);
-
-        localStorage.setItem(`img-${i + 1}`, dataUrl);
-
-        // ✅ 핵심 저장
+  const handleImageClick = (image) => {
+    if (selectedImages.find((img) => img.id === image.id)) {
+      const updated = selectedImages.filter((img) => img.id !== image.id);
+      setSelectedImages(updated);
+      localStorage.setItem("selected-images", JSON.stringify(updated));
+    } else {
+      if (selectedImages.length < 4) {
+        const updated = [...selectedImages, image];
+        setSelectedImages(updated);
         localStorage.setItem("selected-images", JSON.stringify(updated));
-
-        // ✅ 영상 제거
-        localStorage.removeItem("selected-video");
-
-        return;
+      } else {
+        alert("최대 4장까지 선택할 수 있어요!");
       }
     }
-    alert("모든 슬롯이 가득 찼어요!");
   };
 
-  const handleImageFile = () => {
-    navigate("/image/theme");
+  const handleNext = () => {
+    if (selectedImages.length === 0) {
+      alert("배경으로 사용할 이미지를 1장 이상 선택해주세요!");
+    } else {
+      localStorage.setItem("selected-type", "image"); // 미리보기용 타입 지정
+      navigate("/music/select"); // ✅ 여기서 음악 선택 페이지로 이동
+    }
   };
 
-  const handleLocalFile = () => {
-    fileInputRef.current.click();
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      saveImage(reader.result);
-    };
-    reader.readAsDataURL(file);
+  const handleBack = () => {
+    navigate("/love/form");
   };
 
   return (
-    <div className="image-select-container">
-      <h2 className="image-select-title">
-        배경으로 사용할 이미지 4개를<br />선택해주세요
-      </h2>
+    <div className="image-select-page">
+      <h2 className="typing-text">배경으로 사용할 이미지를 선택해주세요</h2>
 
-      <div className="file-button-group">
-        <button onClick={handleImageFile}>이미지파일</button>
-        <button onClick={handleLocalFile}>내파일선택</button>
-        <input
-          type="file"
-          accept="image/*"
-          ref={fileInputRef}
-          onChange={handleFileChange}
-          style={{ display: "none" }}
-        />
+      <div className="image-grid">
+        {images.map((image) => (
+          <div
+            key={image.id}
+            className={`image-box ${
+              selectedImages.find((img) => img.id === image.id) ? "selected" : ""
+            }`}
+            onClick={() => handleImageClick(image)}
+          >
+            <img src={image.src} alt={image.label} />
+            <div className="label">{image.label}</div>
+          </div>
+        ))}
       </div>
 
-      <div className="image-slots">
-        {images.map((src, i) => (
-          <div className="image-slot" key={i}>
-            {src ? (
-              <>
-                <img
-                  src={
-                    src.includes("/backgrounds/")
-                      ? src
-                      : `data:image/jpeg;base64,${src}`
-                  }
-                  alt={`img-${i + 1}`}
-                />
-                <button className="delete-button" onClick={() => handleDelete(i)}>❌</button>
-              </>
-            ) : (
-              <p>{`img-${i + 1}`}</p>
+      <div className="preview-box">
+        {[0, 1, 2, 3].map((i) => (
+          <div key={i} className="preview-slot">
+            {selectedImages[i] && (
+              <img src={selectedImages[i].src} alt={`선택된 이미지 ${i + 1}`} />
             )}
           </div>
         ))}
       </div>
 
       <div className="button-group">
-        <button onClick={() => navigate(-1)}>뒤로가기</button>
-        <button onClick={() => navigate("/music/image")}>다음으로</button>
+        <button onClick={handleBack}>뒤로가기</button>
+        <button onClick={handleNext}>다음으로</button>
       </div>
     </div>
   );
