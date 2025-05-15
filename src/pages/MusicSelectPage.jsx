@@ -1,73 +1,92 @@
-import React, { useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MusicSelectPage.css";
 
 const MusicSelectPage = () => {
-  const [selectedMusic, setSelectedMusic] = useState(localStorage.getItem("selected-music") || "");
-  const [selectedLabel, setSelectedLabel] = useState(localStorage.getItem("selected-music-label") || "선택된 음악 없음");
-
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
 
-  const handleMyFile = () => {
-    navigate("/music/upload");
+  const [selectedMusic, setSelectedMusic] = useState(null);
+  const [musicName, setMusicName] = useState("");
+
+  useEffect(() => {
+    const storedMusic = localStorage.getItem("selected-music");
+    const storedLabel = localStorage.getItem("selected-music-label");
+
+    if (storedMusic) {
+      setSelectedMusic(storedMusic);
+    }
+    if (storedLabel) {
+      setMusicName(storedLabel);
+    }
+  }, []);
+
+  const handleDelete = () => {
+    setSelectedMusic(null);
+    setMusicName("");
+    localStorage.removeItem("selected-music");
+    localStorage.removeItem("selected-music-label");
   };
 
-  const handleThemeMusic = () => {
+  const handleMusicFile = () => {
     navigate("/music/theme");
   };
 
+  const handleLocalFile = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const musicUrl = URL.createObjectURL(file);
+    setSelectedMusic(musicUrl);
+    setMusicName(file.name);
+    localStorage.setItem("selected-music", musicUrl);
+    localStorage.setItem("selected-music-label", file.name);
+  };
+
   const handleBack = () => {
-    const selectedType = localStorage.getItem("selected-type");
-    if (selectedType === "video") {
-      navigate("/video/select");
-    } else {
-      navigate("/image/select");
-    }
+    navigate("/image/select");
   };
 
   const handleNext = () => {
-    if (selectedMusic) {
-      navigate("/preview");
-    } else {
-      alert("음악을 선택해주세요!");
-    }
-  };
-
-  const handleDelete = () => {
-    localStorage.removeItem("selected-music");
-    localStorage.removeItem("selected-music-label");
-    setSelectedMusic("");
-    setSelectedLabel("선택된 음악 없음");
+    navigate("/preview?type=image");
   };
 
   return (
     <div className="music-select-page">
-      <div className="music-title">
+      {/* ✅ 타자체 두 줄 문구 */}
+      <div className="typing-text">
         <div className="line1">배경으로 사용할 음악을</div>
         <div className="line2">선택해주세요</div>
       </div>
 
-      <div className="music-buttons">
-        <button onClick={handleThemeMusic}>배경음악 파일</button>
-        <button onClick={handleMyFile}>내 파일 선택</button>
+      {/* ✅ 감성 버튼 정렬 */}
+      <div className="file-button-group">
+        <button onClick={handleMusicFile}>배경음악 파일</button>
+        <button onClick={handleLocalFile}>내 파일 선택</button>
+        <input
+          type="file"
+          accept="audio/*"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          style={{ display: "none" }}
+        />
       </div>
 
-      <div className="music-preview">
-        <p>{selectedLabel}</p>
-        {selectedMusic && (
-          <>
-            <audio controls>
-              <source src={selectedMusic} type="audio/mp3" />
-              브라우저가 오디오 태그를 지원하지 않습니다.
-            </audio>
-            <button className="delete-button" onClick={handleDelete}>❌ 음악 삭제</button>
-          </>
-        )}
-      </div>
+      {selectedMusic && (
+        <div className="music-box">
+          <p className="music-label">{musicName || "선택된 음악 없음"}</p>
+          <audio controls autoPlay src={selectedMusic} />
+          <button className="delete-button" onClick={handleDelete}>❌</button>
+        </div>
+      )}
 
       <div className="button-group">
-        <button onClick={handleBack}>뒤로가기</button>
-        <button onClick={handleNext}>다음으로</button>
+        <button className="back-button" onClick={handleBack}>뒤로가기</button>
+        <button className="next-button" onClick={handleNext}>다음으로</button>
       </div>
     </div>
   );
