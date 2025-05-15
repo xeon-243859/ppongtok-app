@@ -154,3 +154,10 @@
   font-size: 16px;
   border-radius: 20px;
 }
+
+.button-group {
+  display: flex;
+  justify-content: center;  /* 정중앙으로 정렬 */
+  gap: 1rem;
+  margin-top: 2rem;
+}

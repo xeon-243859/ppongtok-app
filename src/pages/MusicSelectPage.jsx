@@ -78,10 +78,11 @@ const MusicSelectPage = () => {
         </div>
       )}
 
-      <div className="button-group centered">
-        <button onClick={() => navigate(-1)}>뒤로가기</button>
-        <button onClick={() => navigate("/preview")}>다음으로</button>
-      </div>
+      <div className="button-group">
+        <button className="back-button" onClick={handleBack}>뒤로가기</button>
+        <button className="next-button" onClick={handleNext}>다음으로</button>
+</div>
+
     </div>
   );
 };
