@@ -23,10 +23,15 @@ const ImageSelectPage = () => {
   };
  
   const handleNext = () => {
-  localStorage.removeItem("selected-video");
-  localStorage.setItem("selected-type", "image");
-  navigate("/preview?type=image");
-  };
+  localStorage.removeItem("selected-video");        // ✅ 영상 흔적 제거
+  localStorage.setItem("selected-type", "image");   // ✅ 이미지임을 명확히 설정
+
+  // ✅ 딜레이 후 이동 (PC에서도 localStorage 반영 확실히 되게)
+  setTimeout(() => {
+    navigate("/preview?type=image");
+  }, 100); // 약 0.1초 딜레이로 안정적 반영
+};
+
 
   const saveImage = (dataUrl) => {
     const updated = [...images];
