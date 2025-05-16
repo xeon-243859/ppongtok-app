@@ -2,8 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import "./PreviewPage.css";
 
-console.log("🟢 PreviewPage has loaded correctly.");
-
 const PreviewPage = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
@@ -29,16 +27,14 @@ const PreviewPage = () => {
       ? rawImages.filter((img) => typeof img === "string" && img.trim() !== "")
       : [];
 
-    console.log("✅ 이미지 리스트:", validImages);
-
     setSelectedImages(validImages);
 
     const hasImages = validImages.length > 0;
     const hasVideo = selectedVideo && selectedVideo !== "null" && selectedVideo !== "";
 
-    if (forcedMediaType === "image") {
+    if (forcedMediaType === "image" && hasImages) {
       setMediaType("image");
-    } else if (forcedMediaType === "video") {
+    } else if (forcedMediaType === "video" && hasVideo) {
       setMediaType("video");
     } else if (hasImages) {
       setMediaType("image");
@@ -75,6 +71,8 @@ const PreviewPage = () => {
     return () => clearTimeout(timer);
   }, [selectedMusic]);
 
+  const repeatedMessage = message.length < 20 ? message.repeat(3) : message;
+
   return (
     <div className="preview-page">
       <div className="media-box">
@@ -103,14 +101,9 @@ const PreviewPage = () => {
             <div className="media-fallback">배경이 없습니다</div>
           )}
 
-          {/* ✅ 자막: 타자체 아닌 흐르는 방식 */}
-          {message && (
           <div className="scrolling-caption">
-          <span>{message.length < 20 ? message.repeat(3) : message}</span>
-        </div>
-        )}
-
-
+            <span>{repeatedMessage}</span>
+          </div>
         </div>
       </div>
 
