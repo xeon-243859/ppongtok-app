@@ -32,7 +32,7 @@ const ImageSelectPage = () => {
     localStorage.setItem("selected-images", JSON.stringify(selectedImages));
 
     setTimeout(() => {
-      navigate("/preview?type=image");
+      navigate("/music/select");
     }, 100);
   };
 
