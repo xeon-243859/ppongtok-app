@@ -1,42 +1,41 @@
-.video-theme-container {
+.video-theme-page {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 40px 20px;
-  text-align: center;
+  padding: 40px;
 }
 
 .video-theme-title {
-  font-size: 1.5rem; /* ✅ 제목 크기 증가 */
+  font-size: 20px;
   font-weight: bold;
-  color: #333;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
-.video-theme-list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  width: 100%;
-  max-width: 360px;
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);  /* ✅ 두 칸 정렬 */
+  gap: 20px;
+  justify-items: center;
+  padding: 10px 20px;
 }
 
-.video-item {
-  padding: 15px;
-  border: 2px solid #ffdada;
-  border-radius: 15px;
-  background-color: #fff0f0;
+.video-box {
+  width: 150px;              /* ✅ 썸네일 박스 고정 크기 */
+  text-align: center;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
-.video-item:hover {
-  background-color: #ffe2e2;
+.video-thumb {
+  width: 100%;               /* ✅ 가득 차게 */
+  height: 100px;             /* ✅ 높이 고정 */
+  object-fit: cover;         /* ✅ 영상 비율 유지하며 자르기 */
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.video-item p {
-  font-size: 1.1rem;  /* ✅ 글씨 더 크게 */
-  word-break: keep-all;
-  white-space: normal;
-  margin: 0;
+.video-label {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
 }
