@@ -18,8 +18,8 @@
 }
 
 .moving-box {
-  width: 80%;
-  height: 100%;
+  width: 50%;
+  height: 60%;
   position: relative;         /* ✅ 자식 요소 기준 설정 */
 }
 
