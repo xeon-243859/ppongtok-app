@@ -84,7 +84,6 @@ const VideoSelectPage = () => {
 
       <div className="video-button-nav">
         <button onClick={() => navigate(-1)}>뒤로가기</button>
-        /* 🎬 영상 선택 완료 후 음악 선택으로 강제 이동 (디버깅용 주석) */
         <button onClick={() => navigate("/music/select")}>다음으로</button>
       </div>
     </div>
