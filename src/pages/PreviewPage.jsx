@@ -10,7 +10,6 @@ const PreviewPage = () => {
   const forcedMediaType = params.get("type"); // 'image' or 'video'
 
   const [message, setMessage] = useState("");
-  const [typedMessage, setTypedMessage] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [mediaType, setMediaType] = useState("none");
@@ -23,18 +22,6 @@ const PreviewPage = () => {
     const storedMessage = localStorage.getItem("message");
     if (storedMessage) setMessage(storedMessage);
   }, []);
-
-  useEffect(() => {
-    if (!message) return;
-    let index = 0;
-    setTypedMessage("");
-    const interval = setInterval(() => {
-      setTypedMessage((prev) => prev + message.charAt(index));
-      index++;
-      if (index >= message.length) clearInterval(interval);
-    }, 100);
-    return () => clearInterval(interval);
-  }, [message]);
 
   useEffect(() => {
     const rawImages = JSON.parse(localStorage.getItem("selected-images") || "[]");
@@ -116,7 +103,10 @@ const PreviewPage = () => {
             <div className="media-fallback">배경이 없습니다</div>
           )}
 
-          <div className="scrolling-message-bottom">{typedMessage}</div>
+          {/* ✅ 자막: 타자체 아닌 흐르는 방식 */}
+          {message && (
+            <div className="scrolling-caption" data-text={message}></div>
+          )}
         </div>
       </div>
 
