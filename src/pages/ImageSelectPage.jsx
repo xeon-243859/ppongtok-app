@@ -21,6 +21,12 @@ const ImageSelectPage = () => {
     setImages(updated);
     localStorage.removeItem(`img-${index + 1}`);
   };
+ 
+  const handleNext = () => {
+  localStorage.removeItem("selected-video");
+  localStorage.setItem("selected-type", "image");
+  navigate("/preview?type=image");
+  };
 
   const saveImage = (dataUrl) => {
     const updated = [...images];

@@ -5,7 +5,7 @@ import "./PreviewPage.css";
 const PreviewPage = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const forcedMediaType = params.get("type"); // 'image' or 'video'
+  const forcedMediaType = params.get("type");
 
   const [message, setMessage] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
