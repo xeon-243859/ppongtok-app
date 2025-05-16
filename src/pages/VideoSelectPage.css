@@ -56,9 +56,9 @@
 
 .moving-box {
   position: relative;
-  width: 100%;
+  width: 60%;
   max-width: 260px;
-  height: 180px;
+  height: 80px;
   margin: 20px auto;
   border: 2px solid #a6d5ff;
   border-radius: 20px;
@@ -122,4 +122,38 @@
 
 .video-button-nav button:hover {
   background-color: #ff9e9e;
+}
+
+.theme-video-options {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.video-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  padding: 10px;
+  width: 180px;
+  background-color: #fdfdfd;
+  transition: transform 0.3s;
+}
+
+.video-option:hover {
+  transform: scale(1.05);
+  border-color: #ffcccc;
+}
+
+.video-option video {
+  width: 100%;
+  height: 120px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: #000;
 }

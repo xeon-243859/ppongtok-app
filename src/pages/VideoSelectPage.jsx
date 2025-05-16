@@ -10,7 +10,7 @@ const VideoSelectPage = () => {
   const [videoName, setVideoName] = useState("");
 
   const handleThemeSelect = () => {
-    // 기존 동영상 테마 파일 선택 버튼 (테마 목록 아래로 이동)
+    navigate("/video/theme");
   };
 
   const handleLocalSelect = () => {
@@ -27,13 +27,6 @@ const VideoSelectPage = () => {
     localStorage.setItem("selected-video", videoUrl);
   };
 
-  const handleVideoSelect = (url) => {
-    setSelectedVideo(url);
-    setVideoName(url.split("/").pop());
-    localStorage.setItem("selected-video", url);
-    navigate("/music/select");
-  };
-
   const handleBack = () => {
     navigate("/style/select");
   };
@@ -44,9 +37,11 @@ const VideoSelectPage = () => {
 
   return (
     <div className="video-select-page">
-      <h2 className="video-select-title">
-        배경으로 사용할 영상을<br />선택해주세요
-      </h2>
+      <div className="video-title-box">
+        <h2 className="video-select-title">
+          배경으로 사용할 영상1개를 <br />선택해주세요
+        </h2>
+      </div>
 
       <div className="video-button-group">
         <button onClick={handleThemeSelect}>동영상파일</button>
@@ -60,22 +55,15 @@ const VideoSelectPage = () => {
         />
       </div>
 
-      {/* 🎞 테마 영상 UI */}
-      <div className="theme-video-options">
-        <div className="video-option" onClick={() => handleVideoSelect("/video/spring1.mp4")}> 
-          <video src="/video/spring1.mp4" muted loop />
-          <p>봄 영상</p>
-        </div>
-        <div className="video-option" onClick={() => handleVideoSelect("/video/night1.mp4")}> 
-          <video src="/video/night1.mp4" muted loop />
-          <p>밤 영상</p>
-        </div>
-      </div>
-
       {selectedVideo && (
         <div className="video-preview-box">
           <p className="video-label">{videoName || "선택된 영상 없음"}</p>
-          <video src={selectedVideo} controls autoPlay muted loop />
+          <video src={selectedVideo} controls autoPlay muted loop className="moving-box" />
+          <button className="delete-button" onClick={() => {
+            setSelectedVideo(null);
+            setVideoName("");
+            localStorage.removeItem("selected-video");
+          }}>❌</button>
         </div>
       )}
 
