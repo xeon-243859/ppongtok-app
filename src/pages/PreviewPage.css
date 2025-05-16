@@ -109,16 +109,16 @@
   font-weight: bold;
 }
 
-.scrolling-caption::after {
-  content: attr(data-text);
+.scrolling-caption span {
   display: inline-block;
-  padding-left: 0%;
-  animation: scroll-left 50s linear forwards;
+  transform: translateX(0);                     /* 처음엔 고정 */
+  animation: scroll-later 50s ease-in-out forwards;
+  animation-delay: 1s;                          /* 1초 뒤부터 흐름 시작 */
 }
 
-@keyframes scroll-left {
+@keyframes scroll-later {
   0% {
-    transform: translateX(100%);
+    transform: translateX(0);
     opacity: 1;
   }
   90% {
@@ -130,3 +130,4 @@
     opacity: 0;
   }
 }
+

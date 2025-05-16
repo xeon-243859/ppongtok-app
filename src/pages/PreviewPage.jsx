@@ -105,8 +105,10 @@ const PreviewPage = () => {
 
           {/* ✅ 자막: 타자체 아닌 흐르는 방식 */}
           {message && (
-            <div className="scrolling-caption" data-text={message}></div>
-          )}
+                  <div className="scrolling-caption"> <span>{message}</span>
+               </div>
+               )}
+
         </div>
       </div>
 
