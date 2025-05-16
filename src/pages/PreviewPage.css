@@ -112,8 +112,8 @@
 .scrolling-caption::after {
   content: attr(data-text);
   display: inline-block;
-  padding-left: 10%;
-  animation: scroll-left 48s linear forwards;
+  padding-left: 0%;
+  animation: scroll-left 50s linear forwards;
 }
 
 @keyframes scroll-left {
