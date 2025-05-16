@@ -12,7 +12,6 @@ const MusicSelectPage = () => {
   useEffect(() => {
     const storedMusic = localStorage.getItem("selected-music");
     const storedLabel = localStorage.getItem("selected-music-label");
-
     if (storedMusic) setSelectedMusic(storedMusic);
     if (storedLabel) setMusicName(storedLabel);
   }, []);
@@ -37,8 +36,16 @@ const MusicSelectPage = () => {
     localStorage.setItem("selected-music-label", file.name);
   };
 
-  const handleBack = () => navigate("/image/select");
-  const handleNext = () => navigate("/preview?type=image");
+  const handleBack = () => navigate(-1);
+
+  const handleNext = () => {
+    const selectedType = localStorage.getItem("selected-type");
+    if (selectedType === "video") {
+      navigate("/preview?type=video");
+    } else {
+      navigate("/preview?type=image");
+    }
+  };
 
   return (
     <div className="music-select-page">
