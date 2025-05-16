@@ -16,7 +16,8 @@ const VideoThemePage = () => {
     localStorage.setItem("selected-video", src);
     localStorage.setItem("selected-type", "video");
     localStorage.removeItem("selected-images"); // 이미지가 있으면 충돌방지
-    navigate("/video");
+    navigate("/video/select");
+
   };
 
   return (
