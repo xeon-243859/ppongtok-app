@@ -74,6 +74,7 @@ const PreviewPage = () => {
   const repeatedMessage = message.length < 20 ? message.repeat(3) : message;
 
   return (
+  <div className="preview-wrapper">
     <div className="preview-page">
       <div className="media-box">
         <div className="moving-box">
@@ -106,19 +107,27 @@ const PreviewPage = () => {
           </div>
         </div>
       </div>
-
-      <div className="button-box">
-        <button className="styled-button" onClick={() => window.history.back()}>
-          뒤로가기
-        </button>
-        <button className="styled-button" onClick={() => (window.location.href = "/share")}>
-          다음 - 공유하기
-        </button>
-      </div>
-
-      {selectedMusic && <audio src={selectedMusic} autoPlay ref={audioRef} />}
     </div>
-  );
+
+    <div className="preview-container">
+      <div className="preview-content">
+        <div className="preview-buttons">
+          <button className="styled-button" onClick={() => window.history.back()}>
+            뒤로가기
+          </button>
+          <button className="styled-button" onClick={() => (window.location.href = "/share")}>
+            다음 - 공유하기
+          </button>
+        </div>
+
+        {selectedMusic && (
+          <audio src={selectedMusic} autoPlay ref={audioRef} />
+        )}
+      </div>
+    </div>
+  </div>
+);
 };
+
 
 export default PreviewPage;
