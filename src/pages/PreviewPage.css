@@ -38,11 +38,12 @@
   overflow: hidden;
 }
 
-/* 이미지/영상 크기 */
+/* ✅ 이미지/영상 전체 배경 크기 고정 */
 .media-display {
   width: 100%;
-  height: 100%;
+  height: 100vh;        /* PC에서도 보이게 */
   object-fit: cover;
+  display: block;
 }
 
 /* 자막 영역 */
@@ -97,6 +98,7 @@
   text-align: center;
 }
 
+/* ✅ 감성 자막 흐름 - 쌓이지 않고 한 줄 */
 .scrolling-caption {
   position: absolute;
   bottom: 30px;
@@ -111,9 +113,10 @@
 
 .scrolling-caption span {
   display: inline-block;
-  transform: translateX(0);                     /* 처음엔 고정 */
-  animation: scroll-later 50s ease-in-out forwards;
-  animation-delay: 1s;                          /* 1초 뒤부터 흐름 시작 */
+  white-space: nowrap;               /* ✅ 줄바꿈 방지 */
+  transform: translateX(0);
+  animation: scroll-later 45s ease-in-out forwards;
+  animation-delay: 1s;
 }
 
 @keyframes scroll-later {
@@ -130,4 +133,3 @@
     opacity: 0;
   }
 }
-
