@@ -1,3 +1,4 @@
+// ✅ 수정: ImageSelectPage.jsx
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ImageSelectPage.css";
@@ -21,17 +22,19 @@ const ImageSelectPage = () => {
     setImages(updated);
     localStorage.removeItem(`img-${index + 1}`);
   };
- 
+
   const handleNext = () => {
-  localStorage.removeItem("selected-video");        // ✅ 영상 흔적 제거
-  localStorage.setItem("selected-type", "image");   // ✅ 이미지임을 명확히 설정
+    // ✅ 영상 관련 localStorage 흔적 완전 제거
+    localStorage.removeItem("selected-video");
+    localStorage.setItem("selected-type", "image");
 
-  // ✅ 딜레이 후 이동 (PC에서도 localStorage 반영 확실히 되게)
-  setTimeout(() => {
-    navigate("/preview?type=image");
-  }, 100); // 약 0.1초 딜레이로 안정적 반영
-};
+    const selectedImages = images.filter((img) => img);
+    localStorage.setItem("selected-images", JSON.stringify(selectedImages));
 
+    setTimeout(() => {
+      navigate("/preview?type=image");
+    }, 100);
+  };
 
   const saveImage = (dataUrl) => {
     const updated = [...images];
@@ -40,7 +43,6 @@ const ImageSelectPage = () => {
         updated[i] = dataUrl;
         setImages(updated);
         localStorage.setItem(`img-${i + 1}`, dataUrl);
-        localStorage.removeItem("selected-video");
         return;
       }
     }
@@ -98,7 +100,9 @@ const ImageSelectPage = () => {
                   }
                   alt={`img-${i + 1}`}
                 />
-                <button className="delete-button" onClick={() => handleDelete(i)}>❌</button>
+                <button className="delete-button" onClick={() => handleDelete(i)}>
+                  ❌
+                </button>
               </>
             ) : (
               <p>{`img-${i + 1}`}</p>
@@ -109,8 +113,7 @@ const ImageSelectPage = () => {
 
       <div className="button-group">
         <button onClick={() => navigate(-1)}>뒤로가기</button>
-        <button onClick={() => navigate("/music/select")}>다음으로</button>
-
+        <button onClick={handleNext}>다음으로</button>
       </div>
     </div>
   );
