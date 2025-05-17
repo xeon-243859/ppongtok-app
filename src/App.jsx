@@ -8,6 +8,7 @@ import ImageSelectPage from "./pages/ImageSelectPage";
 import ImageThemePage from "./pages/ImageThemePage";       // ✅ 우리가 수정한 진짜 저장소
 import VideoThemePage from "./pages/VideoThemePage";
 import VideoSelectPage from "./pages/VideoSelectPage";
+import WriteMessagePage from "./pages/WriteMessagePage";
 
 import MusicSelectPage from "./pages/MusicSelectPage";
 import MusicThemePage from "./pages/MusicThemePage";
@@ -29,6 +30,7 @@ function App() {
 
       {/* 🔹 메시지 입력 화면 */}
       <Route path="/love/form" element={<LoveFormPage />} />
+      <Route path="/write/message" element={<WriteMessagePage />} />
 
       {/* 🔹 배경 스타일 선택 화면 */}
       <Route path="/style/select" element={<StyleSelectPage />} />
@@ -46,7 +48,7 @@ function App() {
       <Route path="/redirect-style" element={<RedirectToStyle />} />
       <Route path="/prepare-video" element={<PrepareVideo />} />
       <Route path="/prepare-style" element={<PrepareStyle />} />
-      
+
       {/* 🔹 미리보기 화면 */}
       <Route path="/preview" element={<PreviewPage />} />
       <Route path="/share" element={<SharePage />} />
