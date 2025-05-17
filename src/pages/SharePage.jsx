@@ -91,6 +91,7 @@ const SharePage = () => {
   return (
     <div className="share-page">
       <h1 className="share-title">이제 이 감정을<br />함께 나눠볼까요?</h1>
+
       <div className="share-button-group responsive">
         <button className="share-button" onClick={() => handleShare("kakao")}>카카오톡</button>
         <button className="share-button" onClick={() => handleShare("facebook")}>Facebook</button>
@@ -99,7 +100,15 @@ const SharePage = () => {
         <button className="share-button" onClick={() => handleShare("pdf")}>PDF 저장</button>
         <button className="share-button" onClick={() => handleShare("image")}>이미지 저장</button>
       </div>
-      <div className="button-box">
+
+      {/* 📌 공유 방식 안내 문구 추가 */}
+      <div className="share-guide" style={{ marginTop: "40px", textAlign: "left", maxWidth: "500px", fontSize: "14px", color: "#444", lineHeight: "1.6" }}>
+        <p>🔗 <strong>링크 복사:</strong> 복사된 링크는 클립보드에 저장되며, 카카오톡이나 문자창에 붙여넣을 수 있어요. (Ctrl+V 또는 길게 눌러 붙여넣기)</p>
+        <p>📄 <strong>PDF 저장:</strong> 화면 전체가 PDF 파일로 저장되며, 보통 <strong>다운로드 폴더</strong>에서 확인할 수 있어요.</p>
+        <p>🖼️ <strong>이미지 저장:</strong> 메시지 화면이 이미지로 저장되며, 역시 <strong>다운로드 폴더</strong>에서 찾을 수 있어요. 모바일에선 저장 알림이 뜨기도 해요.</p>
+      </div>
+
+      <div className="button-box" style={{ marginTop: "30px" }}>
         <button className="styled-button" onClick={() => navigate("/preview")}>뒤로가기</button>
       </div>
     </div>
