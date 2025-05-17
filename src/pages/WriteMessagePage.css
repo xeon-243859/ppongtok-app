@@ -46,13 +46,20 @@
 
 @media (max-width: 480px) {
   .next-button {
-    width: 80%;
+    width: auto;
+    max-width: 33vw;         /* ✅ 뷰포트의 1/3 */
+    min-width: 100px;         /* ✅ 너무 작아지지 않게 */
     font-size: 0.95rem;
-    padding: 12px 0;
+    padding: 10px 14px;
+    margin: 1.5rem auto;
+    display: block;
+    text-align: center;
   }
+}
 
-  .message-input {
+
+.message-input {
     font-size: 0.95rem;
     padding: 0.8rem;
   }
-}
+
