@@ -37,6 +37,7 @@ function App() {
       {/* 🔹 음악 선택 화면 */}
       <Route path="/music/select" element={<MusicSelectPage />} />
       <Route path="/music/theme" element={<MusicThemePage />} />
+      <Route path="/music" element={<MusicSelectPage />} />
 
       {/* 🔹 미리보기 화면 */}
       <Route path="/preview" element={<PreviewPage />} />
