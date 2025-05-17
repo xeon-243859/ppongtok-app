@@ -70,7 +70,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: background-color 0.3s;
   width: 100%;
-  max-width: 220px; /* ✅ PC에서 너무 커지지 않게 */
+  max-width: 180px; /* ✅ PC에서 너무 커지지 않게 */
 }
 
 .back-button:hover {
@@ -80,9 +80,9 @@
 /* ✅ 모바일 대응: 살짝 줄여주기 */
 @media (max-width: 480px) {
   .back-button {
-    font-size: 0.95rem;
-    padding: 10px 18px;
-    max-width: 90vw;
+    font-size: 0.8rem;
+    padding: 10px 16px;
+    max-width: 70vw;
   }
 }
 
