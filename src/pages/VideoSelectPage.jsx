@@ -14,18 +14,13 @@ const VideoSelectPage = () => {
     return () => clearTimeout(timer1);
   }, []);
 
-  // ✅ 불필요한 음악선택 자동 이동 방지
-  useEffect(() => {
-    const hasMusic = localStorage.getItem("selected-music");
-    const hasVideo = localStorage.getItem("selected-video");
-
-    if (hasVideo && !hasMusic) {
-      console.log("🛑 자동 음악선택 이동 방지: 음악 선택 전 상태입니다.");
-    }
-  }, []);
+  // 🎯 저장된 이전 페이지 가져오기
+  const lastPage = localStorage.getItem("last-page") || "/";
 
   const handleThemeSelect = () => {
-    navigate("/video/theme");
+    localStorage.setItem("selected-video-source", "theme");
+    setSelectedVideo("theme-video.mp4"); // 예시 경로
+    localStorage.setItem("selected-video", "theme-video.mp4");
   };
 
   const handleLocalSelect = () => {
@@ -38,12 +33,14 @@ const VideoSelectPage = () => {
       const videoUrl = URL.createObjectURL(file);
       setSelectedVideo(videoUrl);
       localStorage.setItem("selected-video", videoUrl);
+      localStorage.setItem("selected-video-source", "local");
     }
   };
 
   const handleDelete = () => {
     setSelectedVideo(null);
     localStorage.removeItem("selected-video");
+    localStorage.removeItem("selected-video-source");
   };
 
   return (
@@ -75,10 +72,12 @@ const VideoSelectPage = () => {
       </div>
 
       <div className="video-button-nav">
-         <button onClick={() => window.location.replace("/style/select")}>
-    뒤로가기
-  </button>
-        <button onClick={() => navigate("/music/select")}>다음으로</button>
+        <button onClick={() => navigate(lastPage, { replace: true })}>
+          뒤로가기
+        </button>
+        <button onClick={() => navigate("/music/select")}>
+          다음으로
+        </button>
       </div>
     </div>
   );
