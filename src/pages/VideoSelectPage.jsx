@@ -75,7 +75,9 @@ const VideoSelectPage = () => {
       </div>
 
       <div className="video-button-nav">
-        <button onClick={() => navigate("/style/select", { replace: true })}>뒤로가기</button>
+         <button onClick={() => window.location.replace("/style/select")}>
+    뒤로가기
+  </button>
         <button onClick={() => navigate("/music/select")}>다음으로</button>
       </div>
     </div>
