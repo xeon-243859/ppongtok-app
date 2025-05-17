@@ -79,3 +79,20 @@
   text-align: center;
   font-style: italic;
 }
+
+.app-slogan {
+  margin-top: 1.5rem; /* 📌 버튼과의 여백 확보 */
+  font-size: 0.85rem;
+  color: #aaa;
+  text-align: center;
+  font-style: italic;
+  letter-spacing: 0.3px;
+}
+
+.app-credit {
+  margin-top: 0.3rem;  /* 📌 위 슬로건과 적당히 붙이기 */
+  font-size: 0.9rem;
+  color: #888;
+  text-align: center;
+  font-style: italic;
+}

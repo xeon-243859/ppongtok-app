@@ -29,6 +29,7 @@ function IntroPage() {
       <button className="start-button" onClick={handleStart}>
         시작하기
       </button>
+      <p className="app-slogan">for love, for courage, for memories.</p>
       <p className="app-credit">by boribori & Xeon</p>
     </div>
   );
