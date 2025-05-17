@@ -38,6 +38,8 @@ function App() {
       <Route path="/music/select" element={<MusicSelectPage />} />
       <Route path="/music/theme" element={<MusicThemePage />} />
       <Route path="/music" element={<MusicSelectPage />} />
+      <Route path="/image" element={<ImageSelectPage />} />
+      <Route path="/video" element={<VideoSelectPage />} />
 
       {/* 🔹 미리보기 화면 */}
       <Route path="/preview" element={<PreviewPage />} />
