@@ -29,7 +29,7 @@ const VideoSelectPage = () => {
   }, []);
 
   const handleThemeSelect = () => {
-    navigate("/video/theme");
+     navigate("/style/select");
   };
 
   const handleLocalSelect = () => {
