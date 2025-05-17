@@ -5,7 +5,7 @@ import "./VideoSelectPage.css";
 const VideoSelectPage = () => {
   const navigate = useNavigate();
    const handleBack = () => {
-    navigate("/style/select");
+    navigate("/style/select", { replace: true }); // ✅ 강제이동
   };
   const fileInputRef = useRef(null);
   const [selectedVideo, setSelectedVideo] = useState(null);
