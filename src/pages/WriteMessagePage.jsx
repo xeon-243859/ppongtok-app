@@ -29,7 +29,19 @@ const WriteMessagePage = () => {
         rows={5}
       />
 
-      <button className="next-button" onClick={handleNext}>
+      <button
+      className="next-button"
+      style={{
+        width: "33vw",
+        maxWidth: "33vw",
+        minWidth: "100px",
+        margin: "1.5rem auto",
+        display: "block",
+        textAlign: "center",
+      }}
+      onClick={handleNext}
+    >
+
         다음으로
       </button>
     </div>
