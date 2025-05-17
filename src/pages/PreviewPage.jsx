@@ -26,7 +26,6 @@ const PreviewPage = () => {
     const validImages = Array.isArray(rawImages)
       ? rawImages.filter((img) => typeof img === "string" && img.trim() !== "")
       : [];
-
     setSelectedImages(validImages);
 
     const hasImages = validImages.length > 0;
@@ -74,43 +73,46 @@ const PreviewPage = () => {
   const repeatedMessage = message.length < 20 ? message.repeat(3) : message;
 
   return (
-  <div className="preview-wrapper">
-    <div className="preview-page">
-      <div className="media-box">
-        <div className="moving-box">
-          {mediaType === "image" && selectedImages.length > 0 ? (
-            <img
-              src={selectedImages[currentImageIndex % selectedImages.length]}
-              alt="preview"
-              className="media-display"
-            />
-          ) : mediaType === "video" ? (
-            <video
-              src={selectedVideo}
-              autoPlay
-              muted
-              playsInline
-              className="media-display"
-              onLoadedMetadata={(e) => {
-                e.target.currentTime = 0;
-                setTimeout(() => {
-                  e.target.pause();
-                }, 30000);
-              }}
-            />
-          ) : (
-            <div className="media-fallback">배경이 없습니다</div>
-          )}
+    <div className="preview-wrapper">
+      <div className="preview-page">
+        <div className="media-box">
+          <div className="moving-box">
+            {mediaType === "image" && selectedImages.length > 0 ? (
+              <img
+                src={selectedImages[currentImageIndex % selectedImages.length]}
+                alt="preview"
+                className="media-display"
+              />
+            ) : mediaType === "video" ? (
+              <video
+                src={selectedVideo}
+                autoPlay
+                muted
+                playsInline
+                className="media-display"
+                onLoadedMetadata={(e) => {
+                  e.target.currentTime = 0;
+                  setTimeout(() => {
+                    e.target.pause();
+                  }, 30000);
+                }}
+              />
+            ) : (
+              <div className="media-fallback">배경이 없습니다</div>
+            )}
 
-          <div className="scrolling-caption">
-            <span>{repeatedMessage}</span>
+            <div className="scrolling-caption">
+              <span>{repeatedMessage}</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div className="preview-container">
-      <div className="preview-content">
+      <div className="preview-container">
+        <div className="preview-content">
+          {/* 필요한 경우 추가 콘텐츠 삽입 */}
+        </div>
+
         <div className="preview-buttons">
           <button className="styled-button" onClick={() => window.history.back()}>
             뒤로가기
@@ -125,9 +127,7 @@ const PreviewPage = () => {
         )}
       </div>
     </div>
-  </div>
-);
+  );
 };
-
 
 export default PreviewPage;
