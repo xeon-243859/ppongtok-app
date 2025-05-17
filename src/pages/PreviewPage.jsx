@@ -114,12 +114,15 @@ const PreviewPage = () => {
         </div>
 
         <div className="preview-buttons">
-          <button className="styled-button" onClick={() => window.history.back()}>
-            뒤로가기
+        <button className="styled-button" onClick={() => (window.location.href = "/music")}>
+               뒤로가기
           </button>
+  
           <button className="styled-button" onClick={() => (window.location.href = "/share")}>
             다음 - 공유하기
           </button>
+
+
         </div>
 
         {selectedMusic && (
