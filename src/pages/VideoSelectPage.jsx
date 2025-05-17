@@ -1,35 +1,31 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./VideoSelectPage.css";
 
 const VideoSelectPage = () => {
   const navigate = useNavigate();
-   const handleBack = () => {
-    navigate("/style/select", { replace: true }); // ✅ 강제이동
-  };
   const fileInputRef = useRef(null);
   const [selectedVideo, setSelectedVideo] = useState(null);
-  const [showLine1, setShowLine1] = useState(false);
+  const [showLine1, setShowLine1] = useState(true);
   const [showLine2, setShowLine2] = useState(false);
 
   useEffect(() => {
-    const savedVideo = localStorage.getItem("selected-video");
-    if (savedVideo) {
-      setSelectedVideo(savedVideo);
+    const timer1 = setTimeout(() => setShowLine2(true), 1500);
+    return () => clearTimeout(timer1);
+  }, []);
+
+  // ✅ 불필요한 음악선택 자동 이동 방지
+  useEffect(() => {
+    const hasMusic = localStorage.getItem("selected-music");
+    const hasVideo = localStorage.getItem("selected-video");
+
+    if (hasVideo && !hasMusic) {
+      console.log("🛑 자동 음악선택 이동 방지: 음악 선택 전 상태입니다.");
     }
   }, []);
 
-  useEffect(() => {
-    const t1 = setTimeout(() => setShowLine1(true), 300);
-    const t2 = setTimeout(() => setShowLine2(true), 1800);
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-    };
-  }, []);
-
   const handleThemeSelect = () => {
-     navigate("/style/select");
+    navigate("/video/theme");
   };
 
   const handleLocalSelect = () => {
@@ -37,63 +33,53 @@ const VideoSelectPage = () => {
   };
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const url = URL.createObjectURL(file);
-    setSelectedVideo(url);
-    localStorage.setItem("selected-video", url);
-    navigate("/video/theme");
-  };
-
-  const handleVideoSelect = (url) => {
-    setSelectedVideo(url);
-    localStorage.setItem("selected-video", url);
-    console.log("✅ 영상 저장됨:", url);
-    navigate("/video");
+    const file = e.target.files?.[0];
+    if (file) {
+      const videoUrl = URL.createObjectURL(file);
+      setSelectedVideo(videoUrl);
+      localStorage.setItem("selected-video", videoUrl);
+    }
   };
 
   const handleDelete = () => {
-    localStorage.removeItem("selected-video");
     setSelectedVideo(null);
+    localStorage.removeItem("selected-video");
   };
 
-return (
-  <div className="video-select-container">
-    {showLine1 && <h2 className="video-title-line1">배경으로 사용할 영상파일 1개를</h2>}
-    {showLine2 && <h2 className="video-title-line2">선택해 주세요</h2>}
+  return (
+    <div className="video-select-container">
+      {showLine1 && <h2 className="video-title-line1">배경으로 사용할 영상파일 1개를</h2>}
+      {showLine2 && <h2 className="video-title-line2">선택해 주세요</h2>}
 
-    <div className="video-button-group">
-      <button onClick={handleThemeSelect}>동영상파일</button>
-      <button onClick={handleLocalSelect}>내파일선택</button>
-      <input
-        type="file"
-        accept="video/*"
-        ref={fileInputRef}
-        onChange={handleFileChange}
-        style={{ display: "none" }}
-      />
-    </div>
+      <div className="video-button-group">
+        <button onClick={handleThemeSelect}>동영상파일</button>
+        <button onClick={handleLocalSelect}>내파일선택</button>
+        <input
+          type="file"
+          accept="video/*"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          style={{ display: "none" }}
+        />
+      </div>
 
-    <div className="moving-box">
-      {selectedVideo ? (
-        <>
-          <video src={selectedVideo} autoPlay loop muted />
-          <button className="delete-button" onClick={handleDelete}>X</button>
-        </>
-      ) : (
-        <p className="moving-placeholder">moving file</p>
-      )}
-    </div>
+      <div className="moving-box">
+        {selectedVideo ? (
+          <>
+            <video src={selectedVideo} autoPlay loop muted />
+            <button className="delete-button" onClick={handleDelete}>X</button>
+          </>
+        ) : (
+          <p className="moving-placeholder">moving file</p>
+        )}
+      </div>
 
-    <div className="video-button-nav">
-      <button onClick={() => navigate("/style/select", { replace: true })}>
-      뒤로가기
-       </button>
-      <button onClick={() => navigate("/music/select")}>다음으로</button>
+      <div className="video-button-nav">
+        <button onClick={() => navigate("/style/select", { replace: true })}>뒤로가기</button>
+        <button onClick={() => navigate("/music/select")}>다음으로</button>
+      </div>
     </div>
-  </div>
-);
-  
+  );
 };
 
 export default VideoSelectPage;
