@@ -31,7 +31,7 @@ const ImageSelectPage = () => {
     const selectedImages = images.filter((img) => img);
     localStorage.setItem("selected-images", JSON.stringify(selectedImages));
     localStorage.setItem("allow-music", "true"); // ✅ 음악 페이지 진입 허용
-    
+
     setTimeout(() => {
       navigate("/music/select");
     }, 100);
@@ -113,7 +113,13 @@ const ImageSelectPage = () => {
       </div>
 
       <div className="button-group">
-        <button onClick={() => navigate(-1)}>뒤로가기</button>
+         <button
+    onClick={() => {
+      window.location.replace("/style/select");
+    }}
+  >
+    뒤로가기
+  </button>
         <button onClick={handleNext}>다음으로</button>
       </div>
     </div>
