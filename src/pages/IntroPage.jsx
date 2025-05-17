@@ -22,7 +22,12 @@ function IntroPage() {
       <div className="intro-text">
         <p className="intro-title-line1">뿅!톡</p>
         <p className="intro-title-line2">환영합니다</p>
-        <p className="intro-subtitle">따뜻한 마음을 여기에 담아주세요</p>
+        <p className="philosophy-quote">
+            추억을 만들며 사랑을 고백하고,<br/>
+            축하하고, 또 잘못한 일은 사과하고,<br/>
+            감사하며 사는 인생.
+       </p>
+
       </div>
 
       {/* 시작하기 버튼 */}
