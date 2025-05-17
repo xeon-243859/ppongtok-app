@@ -35,6 +35,7 @@ const StyleSelectPage = () => {
       </div>
 
       <button
+      className="back-button"
   onClick={() => {
     window.location.replace("/write/message"); // ✅ 강제 이동
   }}
