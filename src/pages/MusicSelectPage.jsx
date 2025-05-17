@@ -36,7 +36,16 @@ const MusicSelectPage = () => {
     localStorage.setItem("selected-music-label", file.name);
   };
 
-  const handleBack = () => navigate(-1);
+  const handleBack = () => {
+  const mediaType = localStorage.getItem("media-type"); // 예: "image" 또는 "video"
+
+  if (mediaType === "video") {
+    navigate("/video");
+  } else {
+    navigate("/image");
+  }
+};
+
 
   const handleNext = () => {
     const selectedType = localStorage.getItem("selected-type");
