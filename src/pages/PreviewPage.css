@@ -1,13 +1,9 @@
 .preview-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: black;
-  height: 100vh;
   width: 100%;
-  overflow: hidden;
-  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+  margin-top: 40px; /* 👈 추가 */
 }
 
 .preview-container {
@@ -20,11 +16,11 @@
 
 .preview-wrapper {
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
+  align-items: center;
+  justify-content: center; /* 👈 중앙 정렬 핵심 */
   min-height: 100vh;
-  padding: 20px;
+  padding: 20px 0;
   box-sizing: border-box;
 }
 
@@ -46,9 +42,8 @@
   display: flex;
   gap: 16px;
   justify-content: center;
-  margin-top: 24px;
+  margin-top: 16px; /* 👈 너무 크면 줄이기 */
 }
-
 
 .media-box {
   position: relative;
