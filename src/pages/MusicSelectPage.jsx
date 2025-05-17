@@ -8,6 +8,14 @@ const MusicSelectPage = () => {
 
   const [selectedMusic, setSelectedMusic] = useState(null);
   const [musicName, setMusicName] = useState("");
+  
+  useEffect(() => {
+  const allowed = localStorage.getItem("allow-music");
+  if (allowed !== "true") {
+    console.warn("🚫 비인가 접근. 스타일 선택으로 되돌림.");
+    navigate("/style/select", { replace: true });
+  }
+}, [navigate]);
 
   useEffect(() => {
     const storedMusic = localStorage.getItem("selected-music");
