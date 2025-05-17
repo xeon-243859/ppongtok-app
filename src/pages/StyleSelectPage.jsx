@@ -34,9 +34,14 @@ const StyleSelectPage = () => {
         <button onClick={handleVideoClick}>영상 배경 선택</button>
       </div>
 
-      <button className="back-button" onClick={() => navigate(-1)}>
-        ← 뒤로가기
-      </button>
+      <button
+  onClick={() => {
+    window.location.replace("/write/message"); // ✅ 강제 이동
+  }}
+>
+  뒤로가기
+</button>
+
     </div>
   );
 };
