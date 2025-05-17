@@ -66,31 +66,25 @@
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  margin-top: 20px;
+  margin: 1.5rem auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: background-color 0.3s;
   width: 100%;
-  max-width: 180px; /* ✅ PC에서 너무 커지지 않게 */
+  max-width: 180px;
+  display: block;
+  text-align: center;
 }
 
 .back-button:hover {
   background-color: #ec407a;
 }
 
-/* ✅ 모바일 대응: 살짝 줄여주기 */
 @media (max-width: 480px) {
   .back-button {
-    font-size: 0.8rem;
-    padding: 10px 16px;
-    max-width: 70vw;
-  }
-}
-
-
-@media (max-width: 480px) {
-  .back-button {
-    width: 100%;
-    font-size: 1rem;
-    padding: 12px 0;
+    width: 90%;
+    max-width: 300px;
+    font-size: 0.95rem;
+    padding: 12px 18px;
+    margin: 1.5rem auto;
   }
 }
