@@ -59,21 +59,26 @@
 }
 
 .back-button {
-  position: fixed; /* ✅ 화면 오른쪽 하단 고정 */
-  bottom: 20px;
-  right: 20px;
-  padding: 10px 20px;
-  font-size: 0.95rem;
-  background-color: #ffdada;
-  color: #333;
+  background-color: #f06292;
+  color: white;
+  font-size: 1.2rem;        /* ✅ 크기 키움 */
+  padding: 14px 28px;       /* ✅ 여백 확대 */
   border: none;
-  border-radius: 30px;
-  font-weight: 500;
+  border-radius: 12px;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease;
+  margin-top: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s;
 }
 
 .back-button:hover {
-  background-color: #ffbcbc;
+  background-color: #ec407a;
+}
+
+@media (max-width: 480px) {
+  .back-button {
+    width: 100%;
+    font-size: 1rem;
+    padding: 12px 0;
+  }
 }
