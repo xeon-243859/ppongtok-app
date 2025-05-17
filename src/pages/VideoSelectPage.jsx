@@ -21,6 +21,7 @@ const VideoSelectPage = () => {
     localStorage.setItem("selected-video-source", "theme");
     setSelectedVideo("theme-video.mp4");
     localStorage.setItem("selected-video", "theme-video.mp4");
+    navigate("/style/select"); // ✅ 이 줄만 추가!
   };
 
   const handleLocalSelect = () => {
