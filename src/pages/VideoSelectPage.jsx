@@ -4,6 +4,9 @@ import "./VideoSelectPage.css";
 
 const VideoSelectPage = () => {
   const navigate = useNavigate();
+   const handleBack = () => {
+    navigate("/style/select");
+  };
   const fileInputRef = useRef(null);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [showLine1, setShowLine1] = useState(false);
@@ -54,40 +57,41 @@ const VideoSelectPage = () => {
     setSelectedVideo(null);
   };
 
-  return (
-    <div className="video-select-container">
-      {showLine1 && <h2 className="video-title-line1">배경으로 사용할 영상파일 1개를</h2>}
-      {showLine2 && <h2 className="video-title-line2">선택해 주세요</h2>}
+return (
+  <div className="video-select-container">
+    {showLine1 && <h2 className="video-title-line1">배경으로 사용할 영상파일 1개를</h2>}
+    {showLine2 && <h2 className="video-title-line2">선택해 주세요</h2>}
 
-      <div className="video-button-group">
-        <button onClick={handleThemeSelect}>동영상파일</button>
-        <button onClick={handleLocalSelect}>내파일선택</button>
-        <input
-          type="file"
-          accept="video/*"
-          ref={fileInputRef}
-          onChange={handleFileChange}
-          style={{ display: "none" }}
-        />
-      </div>
-
-      <div className="moving-box">
-        {selectedVideo ? (
-          <>
-            <video src={selectedVideo} autoPlay loop muted />
-            <button className="delete-button" onClick={handleDelete}>X</button>
-          </>
-        ) : (
-          <p className="moving-placeholder">moving file</p>
-        )}
-      </div>
-
-      <div className="video-button-nav">
-        <button onClick={() => navigate(-1)}>뒤로가기</button>
-        <button onClick={() => navigate("/music/select")}>다음으로</button>
-      </div>
+    <div className="video-button-group">
+      <button onClick={handleThemeSelect}>동영상파일</button>
+      <button onClick={handleLocalSelect}>내파일선택</button>
+      <input
+        type="file"
+        accept="video/*"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        style={{ display: "none" }}
+      />
     </div>
-  );
+
+    <div className="moving-box">
+      {selectedVideo ? (
+        <>
+          <video src={selectedVideo} autoPlay loop muted />
+          <button className="delete-button" onClick={handleDelete}>X</button>
+        </>
+      ) : (
+        <p className="moving-placeholder">moving file</p>
+      )}
+    </div>
+
+    <div className="video-button-nav">
+      <button onClick={handleBack}>뒤로가기</button> {/* ✅ 수정된 부분 */}
+      <button onClick={() => navigate("/music/select")}>다음으로</button>
+    </div>
+  </div>
+);
+  
 };
 
 export default VideoSelectPage;
