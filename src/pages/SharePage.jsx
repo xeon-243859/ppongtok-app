@@ -108,7 +108,7 @@ const SharePage = () => {
         <p>🖼️ <strong>이미지 저장:</strong> 메시지 화면이 이미지로 저장되며, 역시 <strong>다운로드 폴더</strong>에서 찾을 수 있어요. 모바일에선 저장 알림이 뜨기도 해요.</p>
       </div>
 
-      <div className="button-box" style={{ marginTop: "30px" }}>
+      <div className="button-box" style={{ marginTop: "8px" }}>
         <button className="styled-button" onClick={() => navigate("/preview")}>뒤로가기</button>
       </div>
     </div>

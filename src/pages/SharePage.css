@@ -36,3 +36,6 @@
   background-color: #e0f7ff;
   transform: scale(1.05);
 }
+.button-box {
+  margin-top: 8px;  /*뒤로가기 원하는 위치로 조정 */
+}
