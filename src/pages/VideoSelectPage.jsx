@@ -81,12 +81,18 @@ const VideoSelectPage = () => {
       </div>
 
       <div className="video-button-nav">
-        <button onClick={() => navigate("/prepare-style")}>
-        뒤로가기
-      </button>
-      <button
+  <button
     onClick={() => {
-      localStorage.setItem("allow-music", "true");  // ✅ 진입 허용 키 저장
+      // ✅ 완전한 히스토리 초기화를 위해 강제 브라우저 이동
+      window.location.replace("/style/select");
+    }}
+  >
+    뒤로가기
+  </button>
+
+  <button
+    onClick={() => {
+      localStorage.setItem("allow-music", "true"); // ✅ 음악 선택 페이지 진입 허용
       navigate("/music/select");
     }}
   >
