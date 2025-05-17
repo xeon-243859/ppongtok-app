@@ -81,7 +81,10 @@ const VideoSelectPage = () => {
       </div>
 
       <div className="video-button-nav">
-        <button onClick={handleBack}>뒤로가기</button>
+        <button onClick={() => navigate("/redirect-style")}>
+       뒤로가기
+      </button>
+
         <button onClick={() => navigate("/music/select")}>다음으로</button>
       </div>
     </div>

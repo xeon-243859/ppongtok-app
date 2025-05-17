@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
+import RedirectToStyle from "./pages/RedirectToStyle";
 import IntroPage from "./pages/IntroPage";
 import StyleSelectPage from "./pages/StyleSelectPage";
 import ImageSelectPage from "./pages/ImageSelectPage";
@@ -40,6 +41,7 @@ function App() {
       <Route path="/music" element={<MusicSelectPage />} />
       <Route path="/image" element={<ImageSelectPage />} />
       <Route path="/video" element={<VideoSelectPage />} />
+      <Route path="/redirect-style" element={<RedirectToStyle />} />
 
       {/* 🔹 미리보기 화면 */}
       <Route path="/preview" element={<PreviewPage />} />
