@@ -1,8 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import "./PreviewPage.css";
+import { useNavigate } from "react-router-dom";
 
 const PreviewPage = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const forcedMediaType = params.get("type");
