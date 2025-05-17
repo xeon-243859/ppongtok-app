@@ -21,7 +21,7 @@ const StyleSelectPage = () => {
   };
 
   const handleVideoClick = () => {
-    navigate("/video/select");
+    navigate("/prepare-video"); // ✅ 중간 허브 페이지로 이동
   };
 
   return (

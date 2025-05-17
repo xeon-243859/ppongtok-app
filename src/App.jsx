@@ -14,6 +14,8 @@ import MusicThemePage from "./pages/MusicThemePage";
 import LoveFormPage from "./pages/LoveFormPage";           // ✅ 고백 메시지 입력 화면
 import PreviewPage from "./pages/PreviewPage";             // ✅ 최종 미리보기 화면
 import SharePage from "./pages/SharePage";
+import PrepareVideo from "./pages/PrepareVideo";
+import PrepareStyle from "./pages/PrepareStyle";
 
 // ❌ 더 이상 사용하지 않음 (사용 중단됨)
 // import ImageThemeSlotPage from "./pages/ImageThemeSlotPage";
@@ -42,7 +44,9 @@ function App() {
       <Route path="/image" element={<ImageSelectPage />} />
       <Route path="/video" element={<VideoSelectPage />} />
       <Route path="/redirect-style" element={<RedirectToStyle />} />
-
+      <Route path="/prepare-video" element={<PrepareVideo />} />
+      <Route path="/prepare-style" element={<PrepareStyle />} />
+      
       {/* 🔹 미리보기 화면 */}
       <Route path="/preview" element={<PreviewPage />} />
       <Route path="/share" element={<SharePage />} />
