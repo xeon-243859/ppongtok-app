@@ -2,36 +2,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const categories = [
-  {
-    id: "memory",
-    title: "추억 만들기",
-    description: "함께한 순간들을 기록해요",
-    image: "/images/category_memory.jpg"
-  },
-  {
-    id: "confess",
-    title: "사랑 고백",
-    description: "마음을 전하는 설레는 고백",
-    image: "/images/category_confess.jpg"
-  },
-  {
-    id: "celebrate",
-    title: "축하하기",
-    description: "기쁨을 함께 나누어요",
-    image: "/images/category_celebrate.jpg"
-  },
-  {
-    id: "apology",
-    title: "사과하기",
-    description: "진심 어린 미안함을 전해요",
-    image: "/images/category_apology_v2.jpg"
-  },
-  {
-    id: "thanks",
-    title: "감사하기",
-    description: "고마운 마음을 전해요",
-    image: "/images/category_thanks.jpg"
-  }
+  { id: "memory", label: "📸 추억 만들기" },
+  { id: "confess", label: "💌 사랑 고백" },
+  { id: "celebrate", label: "🎉 축하하기" },
+  { id: "apology", label: "🙇 사과하기" },
+  { id: "thanks", label: "🙏 감사하기" }
 ];
 
 export default function CategorySelectPage() {
@@ -43,32 +18,20 @@ export default function CategorySelectPage() {
   };
 
   return (
-    <div className="min-h-screen bg-pink-50 px-6 py-10">
-      <h1 className="text-3xl font-bold text-center text-rose-500 mb-8">
+    <div className="min-h-screen bg-pink-50 flex flex-col items-center justify-center px-4 py-10">
+      <h1 className="text-2xl font-bold text-rose-500 mb-8">
         어떤 마음을 전하고 싶나요?
       </h1>
-
-      {/* 가로 스크롤 카드 영역 */}
-      <div className="overflow-x-auto">
-        <div className="flex gap-5 w-max">
-          {categories.map((cat) => (
-            <div
-              key={cat.id}
-              className="w-60 min-w-[240px] rounded-2xl shadow-md bg-white overflow-hidden cursor-pointer hover:scale-105 transition-transform"
-              onClick={() => handleSelect(cat.id)}
-            >
-              <img
-                src={cat.image}
-                alt={cat.title}
-                className="w-full h-40 object-cover"
-              />
-              <div className="p-4 text-center">
-                <h2 className="text-lg font-bold text-gray-800">{cat.title}</h2>
-                <p className="text-sm text-gray-500 mt-1">{cat.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-md">
+        {categories.map((cat) => (
+          <button
+            key={cat.id}
+            onClick={() => handleSelect(cat.id)}
+            className="bg-white hover:bg-rose-100 text-gray-700 font-semibold py-4 px-6 rounded-xl shadow transition"
+          >
+            {cat.label}
+          </button>
+        ))}
       </div>
     </div>
   );
