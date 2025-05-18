@@ -28,8 +28,7 @@ function App() {
     <Routes>
       {/* 🔹 기본 진입 화면 */}
       <Route path="/" element={<IntroPage />} />
-      <Route path="/intro" element={<IntroPage />} />
-      <Route path="/" element={<StartPage />} />
+      <Route path="/start" element={<StartPage />} />
 
       {/* 🔹 메시지 입력 화면 */}
       <Route path="/love/form" element={<LoveFormPage />} />

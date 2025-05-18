@@ -6,7 +6,7 @@ function IntroPage() {
   const navigate = useNavigate();
 
   const handleStart = () => {
-    navigate("/love/form");
+    navigate("/start");
   };
 
   return (
