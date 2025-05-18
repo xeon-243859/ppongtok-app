@@ -6,7 +6,7 @@ function IntroPage() {
   const navigate = useNavigate();
 
   const handleStart = () => {
-    navigate("/start");
+    navigate("/select-category");
   };
 
   return (
