@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
+import CategorySelectPage from './pages/CategorySelectPage';
 import RedirectToStyle from "./pages/RedirectToStyle";
 import IntroPage from "./pages/IntroPage";
 import StyleSelectPage from "./pages/StyleSelectPage";
@@ -48,7 +49,7 @@ function App() {
       <Route path="/redirect-style" element={<RedirectToStyle />} />
       <Route path="/prepare-video" element={<PrepareVideo />} />
       <Route path="/prepare-style" element={<PrepareStyle />} />
-
+      <Route path="/select-category" element={<CategorySelectPage />} />
       {/* 🔹 미리보기 화면 */}
       <Route path="/preview" element={<PreviewPage />} />
       <Route path="/share" element={<SharePage />} />

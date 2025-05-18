@@ -4,6 +4,18 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./WriteMessagePage.css"; // CSS 따로 적용
 
+const categoryId = localStorage.getItem("selectedCategory");
+
+const categoryMap = {
+  memory: "추억 만들기",
+  confess: "사랑 고백",
+  celebrate: "축하하기",
+  apology: "사과하기",
+  thanks: "감사하기"
+};
+
+const categoryLabel = categoryMap[categoryId] || "카테고리 없음";
+
 const WriteMessagePage = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -17,6 +29,10 @@ const WriteMessagePage = () => {
     <div className="write-message-container">
       <h2>마음속 사랑을 살며시 남겨보세요</h2>
 
+      <p className="text-lg text-rose-500 font-semibold mb-4">
+       선택한 카테고리: {categoryLabel}
+     </p>
+   
       <p className="progress-bar">
         시작하기 - 메시지입력 - 이미지 or 영상선택 - 음원선택 - 완성
       </p>
