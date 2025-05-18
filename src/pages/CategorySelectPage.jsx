@@ -24,7 +24,7 @@ const categories = [
     id: "apology",
     title: "사과하기",
     description: "진심 어린 미안함을 전해요",
-    image: "/images/category_apology.jpg"
+    image: "/images/category_apology_v2.jpg"
   },
   {
     id: "thanks",
@@ -43,28 +43,32 @@ export default function CategorySelectPage() {
   };
 
   return (
-    <div className="min-h-screen bg-pink-50 p-4 flex flex-col items-center">
-      <h1 className="text-3xl font-bold mb-6 mt-4 text-center text-rose-500">
+    <div className="min-h-screen bg-pink-50 px-6 py-10">
+      <h1 className="text-3xl font-bold text-center text-rose-500 mb-8">
         어떤 마음을 전하고 싶나요?
       </h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl">
-        {categories.map((cat) => (
-          <div
-            key={cat.id}
-            className="bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer hover:scale-105 transition-transform"
-            onClick={() => handleSelect(cat.id)}
-          >
-            <img
-              src={cat.image}
-              alt={cat.title}
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-4">
-              <h2 className="text-xl font-semibold text-gray-800">{cat.title}</h2>
-              <p className="text-sm text-gray-500 mt-1">{cat.description}</p>
+
+      {/* 가로 스크롤 카드 영역 */}
+      <div className="overflow-x-auto">
+        <div className="flex gap-5 w-max">
+          {categories.map((cat) => (
+            <div
+              key={cat.id}
+              className="w-60 min-w-[240px] rounded-2xl shadow-md bg-white overflow-hidden cursor-pointer hover:scale-105 transition-transform"
+              onClick={() => handleSelect(cat.id)}
+            >
+              <img
+                src={cat.image}
+                alt={cat.title}
+                className="w-full h-40 object-cover"
+              />
+              <div className="p-4 text-center">
+                <h2 className="text-lg font-bold text-gray-800">{cat.title}</h2>
+                <p className="text-sm text-gray-500 mt-1">{cat.description}</p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
