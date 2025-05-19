@@ -112,7 +112,7 @@
   display: flex;
   justify-content: center;
   gap: 10px;
-  margin-top: 30px;
+  margin-bottom: 20px;
 }
 
 /* 버튼 박스 */
@@ -124,10 +124,20 @@
 }
 
 .nav-button {
-  padding: 8px 16px;
+  padding: 10px 20px;
   font-size: 14px;
+  border: none;
+  border-radius: 20px;
+  background-color: #b2ebf2;
+  color: #333;
+  cursor: pointer;
+  transition: 0.2s ease;
 }
 
+.nav-button:hover {
+  background-color: #4dd0e1;
+  transform: scale(1.03);
+}
 
 .styled-button {
   padding: 10px 20px;
@@ -145,7 +155,6 @@
 }
 
 .go-home-button-wrapper {
-  margin-top: 20px;
   display: flex;
   justify-content: center;
 }

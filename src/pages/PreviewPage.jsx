@@ -113,27 +113,30 @@ const PreviewPage = () => {
       </div>
 
       <div className="preview-container">
-        <div className="preview-content">
-          {/* 필요한 경우 추가 콘텐츠 삽입 */}
-        </div>
+  <div className="preview-content">
+    {/* 필요한 경우 추가 콘텐츠 삽입 */}
+  </div>
 
-        <div className="preview-buttons">
-        <button className="styled-button" onClick={() => (window.location.href = "/music")}>
-               뒤로가기
-          </button>
-  
-          <button className="styled-button" onClick={() => (window.location.href = "/share")}>
-            다음 - 공유하기
-          </button>
+  {/* 버튼 영역 */}
+  <div className="preview-buttons">
+    <div className="button-group">
+      <button className="nav-button" onClick={() => (window.location.href = "/music")}>
+        뒤로가기
+      </button>
 
-          
-        <div className="go-home-button-wrapper">
-        <button className="go-home-button" onClick={handleGoHome}>
-          처음으로
-         </button>
-        </div>
+      <button className="nav-button" onClick={() => (window.location.href = "/share")}>
+        다음 - 공유하기
+      </button>
+    </div>
 
-        </div>
+    <div className="go-home-button-wrapper">
+      <button className="go-home-button" onClick={handleGoHome}>
+        처음으로
+      </button>
+    </div>
+  </div>
+
+
 
         {selectedMusic && (
           <audio src={selectedMusic} autoPlay ref={audioRef} />
