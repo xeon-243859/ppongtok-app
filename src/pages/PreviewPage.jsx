@@ -125,6 +125,8 @@ const PreviewPage = () => {
           <button className="styled-button" onClick={() => (window.location.href = "/share")}>
             다음 - 공유하기
           </button>
+
+          
         <div className="go-home-button-wrapper">
         <button className="go-home-button" onClick={handleGoHome}>
           처음으로
