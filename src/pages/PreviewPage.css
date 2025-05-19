@@ -68,9 +68,9 @@
 .fixed-under-media {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin-top: 16px;
-  margin-bottom: 24px;
+  gap: 20px;
+  margin-top: 20px;
+  margin-bottom: 30px;
 }
 
 .media-display {
