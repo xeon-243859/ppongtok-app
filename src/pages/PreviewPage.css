@@ -140,8 +140,8 @@
 }
 
 .nav-button {
-  padding: 10px 20px;
-  font-size: 14px;
+  padding: 12px 28px;     /* ⬅️ 좀 더 큼직하게 */
+  font-size: 16px;        /* 기존보다 살짝 키움 */
   border: none;
   border-radius: 20px;
   background-color: #b2ebf2;
@@ -149,6 +149,7 @@
   cursor: pointer;
   transition: 0.2s ease;
 }
+
 
 .nav-button:hover {
   background-color: #4dd0e1;
@@ -177,8 +178,8 @@
 }
 
 .go-home-button {
-  padding: 5px 10px;
-  font-size: 16px;
+  padding: 14px 32px;     /* ⬅️ 좀 더 큼직하게 */
+  font-size: 18px;        /* 시원하게! */
   background-color: #ffc1e3;
   border: none;
   border-radius: 30px;
