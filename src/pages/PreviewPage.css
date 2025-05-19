@@ -35,7 +35,7 @@
 .preview-image {
   max-width: 90%;
   height: auto;
-  margin-bottom: 40px; /* 이미지 아래 여백 */
+  margin-bottom: 30px; /* 이미지 아래 여백 */
 }
 
 .preview-buttons {
@@ -111,7 +111,7 @@
 .button-group {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   margin-bottom: 20px;
 }
 
@@ -155,13 +155,14 @@
 }
 
 .go-home-button-wrapper {
-  display: flex;
-  justify-content: center;
+  display: flex;               /* 정렬을 위해 flex 사용 */
+  justify-content: center;     /* 가로 중앙 정렬 */
+  margin-top: 20px;            /* 위 버튼들과의 간격 */
 }
 
 .go-home-button {
-  padding: 12px 28px;
-  font-size: 16px;
+  padding: 10px 20px;
+  font-size: 18px;
   background-color: #ffc1e3;
   border: none;
   border-radius: 30px;
