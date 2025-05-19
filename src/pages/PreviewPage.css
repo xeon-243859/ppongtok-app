@@ -65,6 +65,14 @@
   background-color: #000;    /* 필요시 배경색 확인 */
 }
 
+.under-media-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+  margin-bottom: 16px;
+}
+
 .fixed-under-media {
   display: flex;
   justify-content: center;
@@ -165,7 +173,7 @@
 .go-home-button-wrapper {
   display: flex;               /* 정렬을 위해 flex 사용 */
   justify-content: center;     /* 가로 중앙 정렬 */
-  margin-top: 60px;            /* 위 버튼들과의 간격 */
+  margin-top: 10px;            /* 위 버튼들과의 간격 */
 }
 
 .go-home-button {

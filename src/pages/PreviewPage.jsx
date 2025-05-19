@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./PreviewPage.css";
-import { useNavigate } from "react-router-dom";
 
 const PreviewPage = () => {
   const navigate = useNavigate();
@@ -17,9 +16,11 @@ const PreviewPage = () => {
   const selectedVideo = localStorage.getItem("selected-video");
   const selectedMusic = localStorage.getItem("selected-music");
   const audioRef = useRef(null);
+
   const handleGoHome = () => {
-  navigate("/");
-};
+    navigate("/");
+  };
+
   useEffect(() => {
     const storedMessage = localStorage.getItem("message");
     if (storedMessage) setMessage(storedMessage);
@@ -112,37 +113,25 @@ const PreviewPage = () => {
         </div>
       </div>
 
-      <div className="preview-container">
-  <div className="preview-content">
-    {/* 필요한 경우 추가 콘텐츠 삽입 */}
-  </div>
-
-  {/* 버튼 영역 */}
-  <div className="preview-buttons">
-    <div className="button-group">
-      <div className="button-group fixed-under-media"></div>
-      <button className="nav-button" onClick={() => (window.location.href = "/music")}>
-        뒤로가기
-      </button>
-
-      <button className="nav-button" onClick={() => (window.location.href = "/share")}>
-        다음 - 공유하기
-      </button>
-    </div>
-
-    <div className="go-home-button-wrapper">
-      <button className="go-home-button" onClick={handleGoHome}>
-        처음으로
-      </button>
-    </div>
-  </div>
-
-
-
-        {selectedMusic && (
-          <audio src={selectedMusic} autoPlay ref={audioRef} />
-        )}
+      {/* ✅ 무빙박스 아래 정렬된 버튼들 */}
+      <div className="under-media-buttons">
+        <button className="nav-button" onClick={() => (window.location.href = "/music")}>
+          뒤로가기
+        </button>
+        <button className="nav-button" onClick={() => (window.location.href = "/share")}>
+          다음 - 공유하기
+        </button>
       </div>
+
+      <div className="go-home-button-wrapper">
+        <button className="go-home-button" onClick={handleGoHome}>
+          처음으로
+        </button>
+      </div>
+
+      {selectedMusic && (
+        <audio src={selectedMusic} autoPlay ref={audioRef} />
+      )}
     </div>
   );
 };
