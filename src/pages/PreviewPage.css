@@ -157,11 +157,11 @@
 .go-home-button-wrapper {
   display: flex;               /* 정렬을 위해 flex 사용 */
   justify-content: center;     /* 가로 중앙 정렬 */
-  margin-top: 20px;            /* 위 버튼들과의 간격 */
+  margin-top: 40px;            /* 위 버튼들과의 간격 */
 }
 
 .go-home-button {
-  padding: 10px 20px;
+  padding: 8px 16px;
   font-size: 18px;
   background-color: #ffc1e3;
   border: none;
