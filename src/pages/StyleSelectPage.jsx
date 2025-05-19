@@ -27,7 +27,7 @@ const StyleSelectPage = () => {
   return (
     <div className="style-select-container">
       {showLine1 && <h2 className="style-title-line1">어떤 배경으로</h2>}
-      {showLine2 && <h2 className="style-title-line2">사랑을 담아볼까요?</h2>}
+      {showLine2 && <h2 className="style-title-line2">깊은 속마음을 담아볼까요?</h2>}
 
       <div className="style-button-group">
         <button onClick={handleImageClick}>이미지 배경 선택</button>
