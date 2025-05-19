@@ -19,8 +19,8 @@
 }
 
 .message-input {
-  width: 80%;         /* 가로 길이 */
-  max-width: 600px;    /* 최대 가로 길이 제한 (원하면 줄일 수 있어) */
+  width: 65%;         /* 가로 길이 */
+  max-width: 300px;    /* 최대 가로 길이 제한 (원하면 줄일 수 있어) */
   height: 150px;       /* 세로 길이 → 이걸로 높이 조절! */
   padding: 16px;
   font-size: 16px;
