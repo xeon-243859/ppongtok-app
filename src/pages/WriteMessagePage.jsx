@@ -27,19 +27,13 @@ const WriteMessagePage = () => {
 
   return (
     <div className="write-message-container">
-      <h2>마음속 사랑을 살며시 남겨보세요</h2>
-
-      <p className="text-lg text-rose-500 font-semibold mb-4">
-       선택한 카테고리: {categoryLabel}
-     </p>
+      <h2>깊은 속마음을 살며시 남겨보세요</h2>
    
-      <p className="progress-bar">
-        시작하기 - 메시지입력 - 이미지 or 영상선택 - 음원선택 - 완성
-      </p>
+    
 
       <textarea
         className="message-input"
-        placeholder="여기에 마음을 담아 적어주세요..."
+        placeholder="시작하기 - 메시지입력 - 이미지 or 영상선택 - 음원선택 - 완성 "
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         rows={5}
