@@ -120,6 +120,7 @@ const PreviewPage = () => {
   {/* 버튼 영역 */}
   <div className="preview-buttons">
     <div className="button-group">
+      <div className="button-group fixed-under-media"></div>
       <button className="nav-button" onClick={() => (window.location.href = "/music")}>
         뒤로가기
       </button>

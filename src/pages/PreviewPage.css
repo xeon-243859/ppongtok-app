@@ -65,6 +65,14 @@
   background-color: #000;    /* 필요시 배경색 확인 */
 }
 
+.fixed-under-media {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+  margin-bottom: 24px;
+}
+
 .media-display {
   width: 100%;
   height: 100%;               /* ✅ 이미지/영상이 화면 꽉 차게 */
