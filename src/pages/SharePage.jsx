@@ -9,7 +9,7 @@ const SharePage = () => {
 
   useEffect(() => {
     if (window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.init("여기에_자바스크립트_키");
+      window.Kakao.init("4abf45cca92e802defcd2c15a6615155");
       console.log("✅ Kakao 초기화 완료");
     }
   }, []);
