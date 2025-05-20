@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./PreviewPage.css";
+import html2canvas from "html2canvas";
 
 const PreviewPage = () => {
   const navigate = useNavigate();
@@ -25,6 +26,19 @@ const PreviewPage = () => {
     const storedMessage = localStorage.getItem("message");
     if (storedMessage) setMessage(storedMessage);
   }, []);
+  
+  useEffect(() => {
+  const capturePreview = async () => {
+    const target = document.querySelector(".preview-wrapper"); // ✅ 프리뷰 전체 감싸는 div
+    if (!target) return;
+    const canvas = await html2canvas(target);
+    const dataUrl = canvas.toDataURL("image/jpeg");
+    localStorage.setItem("shared-preview-image", dataUrl);
+    console.log("✅ 프리뷰 이미지 저장됨");
+  };
+
+  capturePreview(); // ✅ 이거 있어야 실행돼!
+}, []);
 
   useEffect(() => {
     const rawImages = JSON.parse(localStorage.getItem("selected-images") || "[]");

@@ -25,7 +25,8 @@ const SharePage = () => {
     const category = localStorage.getItem("selected-category") || "love";
     const url = `https://ppongtok-app.vercel.app/share_${category}.html`;
 
-    const imageUrl = `https://ppongtok-app.vercel.app/images/category_${category}.jpg`;
+    const previewImage = localStorage.getItem("shared-preview-image"); // ✅ 보리 추가
+    const imageUrl = previewImage || `https://ppongtok-app.vercel.app/images/category_${category}.jpg`; // ✅ 보리 추가
 
     switch (type) {
       case "kakao":
@@ -35,7 +36,7 @@ const SharePage = () => {
             content: {
               title: "감정을 담은 뿅!톡 메시지",
               description: "내 마음을 전하는 감성 메시지를 확인해보세요 💌",
-              imageUrl,
+               imageUrl: imageUrl, // ✅ 여기 적용!
               link: {
                 mobileWebUrl: url,
                 webUrl: url,
