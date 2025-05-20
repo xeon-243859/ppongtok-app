@@ -15,23 +15,24 @@ const SharePage = () => {
   }, []);
 
   const handleShare = (type) => {
-    switch (type) {
-      case "kakao":
-        if (window.Kakao && window.Kakao.Share) {
-          window.Kakao.Share.sendDefault({
-            objectType: "feed",
-            content: {
-              title: "감정을 담은 뿅!톡 메시지",
-              description: "내 마음을 전하는 감성 메시지를 확인해보세요 💌",
-              imageUrl: "https://yourdomain.com/preview-thumbnail.jpg",
-              link: {
-                mobileWebUrl: window.location.href,
-                webUrl: window.location.href,
-              },
+  switch (type) {
+    case "kakao":
+      if (window.Kakao && window.Kakao.Share) {
+        window.Kakao.Share.sendDefault({
+          objectType: "feed",
+          content: {
+            title: "감정을 담은 뿅!톡 메시지",
+            description: "내 마음을 전하는 감성 메시지를 확인해보세요 💌",
+            imageUrl: "https://ppongtok-app.vercel.app/images/category_apology.jpg", // 실제 이미지 경로로 바꿔줘!
+            link: {
+              mobileWebUrl: window.location.href,
+              webUrl: window.location.href,
             },
-            buttons: [
-              {
-                title: "지금 확인하기",
+          },
+          buttons: [
+            {
+              title: "지금 확인하기",
+
                 link: {
                   mobileWebUrl: window.location.href,
                   webUrl: window.location.href,
