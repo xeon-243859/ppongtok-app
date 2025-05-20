@@ -22,8 +22,9 @@ const SharePage = () => {
   }, []);
 
   const handleShare = (type) => {
-    const category = localStorage.getItem("selected-category") || "apology"; // ✅ 카테고리 설정
+    const category = localStorage.getItem("selected-category") || "love";
     const url = `https://ppongtok-app.vercel.app/share_${category}.html`;
+
     const imageUrl = `https://ppongtok-app.vercel.app/images/category_${category}.jpg`;
 
     switch (type) {
