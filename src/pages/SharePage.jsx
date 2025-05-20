@@ -8,41 +8,44 @@ const SharePage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-     const script = document.createElement("script");
-  script.src = "https://t1.kakaocdn.net/kakao_js_sdk/2.5.0/kakao.min.js";
-  script.async = true;
-  document.head.appendChild(script);
+    const script = document.createElement("script");
+    script.src = "https://t1.kakaocdn.net/kakao_js_sdk/2.5.0/kakao.min.js";
+    script.async = true;
+    document.head.appendChild(script);
 
-  script.onload = () => {
-    if (window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.init("4abf45cca92e802defcd2c15a6615155");
-      console.log("✅ Kakao 초기화 완료");
-    }
+    script.onload = () => {
+      if (window.Kakao && !window.Kakao.isInitialized()) {
+        window.Kakao.init("4abf45cca92e802defcd2c15a6615155");
+        console.log("✅ Kakao 초기화 완료");
+      }
     };
   }, []);
 
   const handleShare = (type) => {
-  switch (type) {
-    case "kakao":
-      if (window.Kakao && window.Kakao.Share) {
-        window.Kakao.Share.sendDefault({
-          objectType: "feed",
-          content: {
-            title: "감정을 담은 뿅!톡 메시지",
-            description: "내 마음을 전하는 감성 메시지를 확인해보세요 💌",
-            imageUrl: "https://ppongtok-app.vercel.app/images/category_apology.jpg", // 실제 이미지 경로로 바꿔줘!
-            link: {
-              mobileWebUrl: window.location.href,
-              webUrl: window.location.href,
-            },
-          },
-          buttons: [
-            {
-              title: "지금 확인하기",
+    const category = localStorage.getItem("selected-category") || "apology"; // ✅ 카테고리 설정
+    const url = `https://ppongtok-app.vercel.app/share_${category}.html`;
+    const imageUrl = `https://ppongtok-app.vercel.app/images/category_${category}.jpg`;
 
+    switch (type) {
+      case "kakao":
+        if (window.Kakao && window.Kakao.Share) {
+          window.Kakao.Share.sendDefault({
+            objectType: "feed",
+            content: {
+              title: "감정을 담은 뿅!톡 메시지",
+              description: "내 마음을 전하는 감성 메시지를 확인해보세요 💌",
+              imageUrl,
+              link: {
+                mobileWebUrl: url,
+                webUrl: url,
+              },
+            },
+            buttons: [
+              {
+                title: "지금 확인하기",
                 link: {
-                  mobileWebUrl: window.location.href,
-                  webUrl: window.location.href,
+                  mobileWebUrl: url,
+                  webUrl: url,
                 },
               },
             ],
@@ -109,7 +112,7 @@ const SharePage = () => {
         <button className="share-button" onClick={() => handleShare("image")}>이미지 저장</button>
       </div>
 
-      {/* 📌 공유 방식 안내 문구 추가 */}
+      {/* 📌 공유 방식 안내 문구 */}
       <div className="share-guide" style={{ marginTop: "40px", textAlign: "left", maxWidth: "500px", fontSize: "14px", color: "#444", lineHeight: "1.6" }}>
         <p>🔗 <strong>링크 복사:</strong> 복사된 링크는 클립보드에 저장되며, 카카오톡이나 문자창에 붙여넣을 수 있어요. (Ctrl+V 또는 길게 눌러 붙여넣기)</p>
         <p>📄 <strong>PDF 저장:</strong> 화면 전체가 PDF 파일로 저장되며, 보통 <strong>다운로드 폴더</strong>에서 확인할 수 있어요.</p>
