@@ -8,10 +8,17 @@ const SharePage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+     const script = document.createElement("script");
+  script.src = "https://t1.kakaocdn.net/kakao_js_sdk/2.5.0/kakao.min.js";
+  script.async = true;
+  document.head.appendChild(script);
+
+  script.onload = () => {
     if (window.Kakao && !window.Kakao.isInitialized()) {
       window.Kakao.init("4abf45cca92e802defcd2c15a6615155");
       console.log("✅ Kakao 초기화 완료");
     }
+    };
   }, []);
 
   const handleShare = (type) => {
