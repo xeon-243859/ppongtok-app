@@ -2,8 +2,11 @@
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider, db } from "../firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+
   const handleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
@@ -19,14 +22,15 @@ const LoginPage = () => {
           name: user.displayName || "이름 없음",
           photoURL: user.photoURL || "",
           createdAt: new Date(),
-          freePassRemaining: 3
+          freePassRemaining: 3,
         });
         console.log("🎉 Firestore에 유저 정보 저장 완료!");
       } else {
         console.log("✅ 기존 사용자입니다.");
       }
 
-      // 로그인 후 리디렉션 or 상태 저장 (필요시)
+      // ✅ 로그인 성공 후 이동
+      navigate("/");  // 또는 "/category", "/intro" 등 원하는 페이지로
     } catch (err) {
       console.error("❌ 로그인 실패:", err);
     }
