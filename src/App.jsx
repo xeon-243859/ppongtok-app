@@ -2,6 +2,8 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 import LoginPage from "./pages/LoginPage";
+import { AuthProvider } from "./context/AuthContext"; 
+import ProtectedRoute from "./components/ProtectedRoute";
 import CategorySelectPage from './pages/CategorySelectPage';
 import RedirectToStyle from "./pages/RedirectToStyle";
 import IntroPage from "./pages/IntroPage";
@@ -21,10 +23,38 @@ import PrepareStyle from "./pages/PrepareStyle";
 
 function App() {
   return (
+    
+    <AuthProvider>
     <Routes>
       {/* 🔹 기본 진입 화면 */}
       <Route path="/" element={<IntroPage />} />
       <Route path="/login" element={<LoginPage />} />
+
+       {/* ✅ 로그인한 사람만 접근 가능하게 보호된 페이지들 */}
+        <Route
+          path="/write/message"
+          element={
+            <ProtectedRoute>
+              <WriteMessagePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/preview"
+          element={
+            <ProtectedRoute>
+              <PreviewPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/share"
+          element={
+            <ProtectedRoute>
+              <SharePage />
+            </ProtectedRoute>
+          }
+        />
 
       {/* 🔹 메시지 입력 화면 */}
       <Route path="/love/form" element={<LoveFormPage />} />
@@ -54,6 +84,7 @@ function App() {
       <Route path="/preview" element={<PreviewPage />} />
       <Route path="/share" element={<SharePage />} />
     </Routes>
+    </AuthProvider>
   );
 }
 
