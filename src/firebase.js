@@ -1,8 +1,9 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA5aUb0fPDRHeVZYx3jMFx8uwGTYVVMqk4",
+  apiKey: "AIzaSyA5aUBf0PDRHeVZYx3jMFx8uwGTYVVMqk4",
   authDomain: "ppongtok-project.firebaseapp.com",
   projectId: "ppongtok-project",
   storageBucket: "ppongtok-project.appspot.com",
