@@ -23,7 +23,7 @@ import PrepareStyle from "./pages/PrepareStyle";
 // ❌ 더 이상 사용하지 않음 (사용 중단됨)
 // import ImageThemeSlotPage from "./pages/ImageThemeSlotPage";
 
-function App() {
+
   return (
     <Routes>
       {/* 🔹 기본 진입 화면 */}
@@ -55,7 +55,7 @@ function App() {
       <Route path="/share" element={<SharePage />} />
     </Routes>
   );
-}
+
 
 function App() {
   return (
