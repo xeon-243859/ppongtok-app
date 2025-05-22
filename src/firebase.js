@@ -1,0 +1,15 @@
+import { initializeApp } from "firebase/app";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA5aUb0fPDRHeVZYx3jMFx8uwGTYVVMqk4",
+  authDomain: "ppongtok-project.firebaseapp.com",
+  projectId: "ppongtok-project",
+  storageBucket: "ppongtok-project.appspot.com",
+  messagingSenderId: "183327414536",
+  appId: "1:183327414536:web:f2442c9799b3ba150ef4bd"
+};
+
+const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+export const provider = new GoogleAuthProvider();

@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "./PreviewPage.css";
 import html2canvas from "html2canvas";
 
+import { ref, uploadString, getDownloadURL } from "firebase/storage";
+import { storage } from "../firebase"; // 경로는 네 구조에 맞게 수정
 const PreviewPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -26,7 +28,9 @@ const PreviewPage = () => {
     const storedMessage = localStorage.getItem("message");
     if (storedMessage) setMessage(storedMessage);
   }, []);
-  
+
+
+
   useEffect(() => {
   const capturePreview = async () => {
     const target = document.querySelector(".preview-wrapper"); // ✅ 프리뷰 전체 감싸는 div
@@ -34,6 +38,20 @@ const PreviewPage = () => {
     const canvas = await html2canvas(target);
     const dataUrl = canvas.toDataURL("image/jpeg");
     localStorage.setItem("shared-preview-image", dataUrl);
+  // ✅ Firebase 업로드
+    window.location.href = `/share/${Date.now()}?image=${encodeURIComponent(downloadUrl)}`;
+
+
+const fileName = `thumbnails/${Date.now()}.jpg`;
+const storageRef = ref(storage, fileName);
+
+await uploadString(storageRef, dataUrl, "data_url"); // base64 업로드
+
+const downloadUrl = await getDownloadURL(storageRef); // 다운로드 URL 얻기
+localStorage.setItem("thumbnail-url", downloadUrl); // 공유 페이지에서 쓸 수 있게 저장
+
+console.log("🟢 Firebase 업로드 완료:", downloadUrl);
+  
     console.log("✅ 프리뷰 이미지 저장됨");
   };
 
