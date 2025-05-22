@@ -7,28 +7,25 @@ import RedirectToStyle from "./pages/RedirectToStyle";
 import IntroPage from "./pages/IntroPage";
 import StyleSelectPage from "./pages/StyleSelectPage";
 import ImageSelectPage from "./pages/ImageSelectPage";
-import ImageThemePage from "./pages/ImageThemePage";       // ✅ 우리가 수정한 진짜 저장소
+import ImageThemePage from "./pages/ImageThemePage";
 import VideoThemePage from "./pages/VideoThemePage";
 import VideoSelectPage from "./pages/VideoSelectPage";
 import WriteMessagePage from "./pages/WriteMessagePage";
-
 import MusicSelectPage from "./pages/MusicSelectPage";
 import MusicThemePage from "./pages/MusicThemePage";
-import LoveFormPage from "./pages/LoveFormPage";           // ✅ 고백 메시지 입력 화면
-import PreviewPage from "./pages/PreviewPage";             // ✅ 최종 미리보기 화면
+import LoveFormPage from "./pages/LoveFormPage";
+import PreviewPage from "./pages/PreviewPage";
 import SharePage from "./pages/SharePage";
 import PrepareVideo from "./pages/PrepareVideo";
 import PrepareStyle from "./pages/PrepareStyle";
 
-// ❌ 더 이상 사용하지 않음 (사용 중단됨)
-// import ImageThemeSlotPage from "./pages/ImageThemeSlotPage";
-
-
+function App() {
   return (
     <Routes>
       {/* 🔹 기본 진입 화면 */}
       <Route path="/" element={<IntroPage />} />
-       <Route path="/login" element={<LoginPage />} />
+      <Route path="/login" element={<LoginPage />} />
+
       {/* 🔹 메시지 입력 화면 */}
       <Route path="/love/form" element={<LoveFormPage />} />
       <Route path="/write/message" element={<WriteMessagePage />} />
@@ -36,13 +33,15 @@ import PrepareStyle from "./pages/PrepareStyle";
       {/* 🔹 배경 스타일 선택 화면 */}
       <Route path="/style/select" element={<StyleSelectPage />} />
       <Route path="/image/select" element={<ImageSelectPage />} />
-      <Route path="/image/theme" element={<ImageThemePage />} />   {/* ✅ 여기에 연결됨 */}
+      <Route path="/image/theme" element={<ImageThemePage />} />
       <Route path="/video/theme" element={<VideoThemePage />} />
       <Route path="/video/select" element={<VideoSelectPage />} />
 
       {/* 🔹 음악 선택 화면 */}
       <Route path="/music/select" element={<MusicSelectPage />} />
       <Route path="/music/theme" element={<MusicThemePage />} />
+
+      {/* 🔹 리디렉션 및 기타 */}
       <Route path="/music" element={<MusicSelectPage />} />
       <Route path="/image" element={<ImageSelectPage />} />
       <Route path="/video" element={<VideoSelectPage />} />
@@ -50,18 +49,10 @@ import PrepareStyle from "./pages/PrepareStyle";
       <Route path="/prepare-video" element={<PrepareVideo />} />
       <Route path="/prepare-style" element={<PrepareStyle />} />
       <Route path="/select-category" element={<CategorySelectPage />} />
-      {/* 🔹 미리보기 화면 */}
+
+      {/* 🔹 미리보기 및 공유 */}
       <Route path="/preview" element={<PreviewPage />} />
       <Route path="/share" element={<SharePage />} />
-    </Routes>
-  );
-
-
-function App() {
-  return (
-    <Routes>
-
-      {/* 위에서 구성한 라우트들 여기에 위치 */}
     </Routes>
   );
 }
