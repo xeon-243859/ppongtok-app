@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
+import LoginPage from "./pages/LoginPage";
 import CategorySelectPage from './pages/CategorySelectPage';
 import RedirectToStyle from "./pages/RedirectToStyle";
 import IntroPage from "./pages/IntroPage";
@@ -27,7 +28,7 @@ function App() {
     <Routes>
       {/* 🔹 기본 진입 화면 */}
       <Route path="/" element={<IntroPage />} />
-
+       <Route path="/login" element={<LoginPage />} />
       {/* 🔹 메시지 입력 화면 */}
       <Route path="/love/form" element={<LoveFormPage />} />
       <Route path="/write/message" element={<WriteMessagePage />} />
@@ -52,6 +53,15 @@ function App() {
       {/* 🔹 미리보기 화면 */}
       <Route path="/preview" element={<PreviewPage />} />
       <Route path="/share" element={<SharePage />} />
+    </Routes>
+  );
+}
+
+function App() {
+  return (
+    <Routes>
+
+      {/* 위에서 구성한 라우트들 여기에 위치 */}
     </Routes>
   );
 }
