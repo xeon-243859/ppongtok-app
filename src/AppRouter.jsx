@@ -11,9 +11,9 @@ import IntroPage from "./pages/IntroPage";
 import PreviewPage from "./pages/PreviewPage";
 
 function AppRouter() {
-  const { currentUser } = useAuth();
+  const { currentUser } = useAuth() || {};
   console.log("🔐 로그인 상태:", currentUser);
-  
+
   return (
     <Routes>
       {/* 로그인한 사람만 진입 가능 */}
