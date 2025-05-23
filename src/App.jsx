@@ -20,7 +20,7 @@ import PreviewPage from "./pages/PreviewPage";
 import SharePage from "./pages/SharePage";
 import PrepareVideo from "./pages/PrepareVideo";
 import PrepareStyle from "./pages/PrepareStyle";
-import Header from "../components/Header";
+import Header from "./components/Header";
 
 function App() {
   return (
