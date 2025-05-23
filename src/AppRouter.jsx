@@ -8,7 +8,6 @@ import WritePage from "./pages/WriteMessagePage";
 // 페이지 컴포넌트 불러오기
 import LoginPage from "./pages/LoginPage";
 import IntroPage from "./pages/IntroPage";
-import WritePage from "./pages/WritePage";
 import PreviewPage from "./pages/PreviewPage";
 
 function AppRouter() {
