@@ -1,5 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./contexts/AuthContext";  // ✅ 새로 추가
 
 import LoginPage from "./pages/LoginPage";
 import { AuthProvider } from "./context/AuthContext"; 
@@ -24,8 +25,15 @@ import Header from "./components/Header";
 
 function App() {
   return (
-    
-    <AuthProvider>
+    <>
+      <AuthProvider>
+        <Router>
+          <AppRouter />
+        </Router>
+      </AuthProvider>
+
+   
+  
       <Header /> 
     <Routes>
       {/* 🔹 기본 진입 화면 */}
@@ -86,7 +94,7 @@ function App() {
       <Route path="/preview" element={<PreviewPage />} />
       <Route path="/share" element={<SharePage />} />
     </Routes>
-    </AuthProvider>
+      </>
   );
 }
 
