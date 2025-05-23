@@ -4,7 +4,7 @@ import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 
 const MyHeader = () => {
-  const { user } = useAuth();
+  const { currentUser } = useAuth() || {};
   const navigate = useNavigate();
 
   const handleLogout = () => {
