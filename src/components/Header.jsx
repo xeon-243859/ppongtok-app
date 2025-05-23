@@ -2,6 +2,7 @@ import { useAuth } from "../context/AuthContext";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
+import Header from "../components/Header";
 
 const Header = () => {
   const { user } = useAuth();
