@@ -25,9 +25,10 @@ const SharePage = () => {
     const category = localStorage.getItem("selected-category") || "love";
     const url = `https://ppongtok-app.vercel.app/share_${category}.html`;
 
-    const previewImage = localStorage.getItem("shared-preview-image"); // ✅ 보리 추가
+    const previewImage =localStorage.setItem("shared-preview-image", "https://firebasestorage.googleapis.com/v0/b/ppongtok-project.appspot.com/o/love1.jpg?alt=media&token=...");
+ 
     const imageUrl = previewImage || `https://ppongtok-app.vercel.app/images/category_${category}.jpg`; // ✅ 보리 추가
-
+    console.log("공유 이미지:", imageUrl); // ✅ 이 줄을 여기 추가
     switch (type) {
       case "kakao":
         if (window.Kakao && window.Kakao.Share) {

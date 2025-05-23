@@ -25,6 +25,7 @@ function App() {
   return (
     
     <AuthProvider>
+      <Header /> 
     <Routes>
       {/* 🔹 기본 진입 화면 */}
       <Route path="/" element={<IntroPage />} />
