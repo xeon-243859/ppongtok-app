@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";  // ✅ 새로 추가
 import AppRouter from "./AppRouter";
 
+import Header from "./components/Header";
 import LoginPage from "./pages/LoginPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CategorySelectPage from './pages/CategorySelectPage';
@@ -21,7 +22,7 @@ import PreviewPage from "./pages/PreviewPage";
 import SharePage from "./pages/SharePage";
 import PrepareVideo from "./pages/PrepareVideo";
 import PrepareStyle from "./pages/PrepareStyle";
-import Header from "./components/Header";
+
 
 function App() {
   return (
