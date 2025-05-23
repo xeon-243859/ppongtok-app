@@ -27,4 +27,4 @@ const MyHeader = () => {
   );
 };
 
-export default MyHeader;
+export default Header;
