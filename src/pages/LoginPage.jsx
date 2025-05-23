@@ -1,4 +1,5 @@
 // src/pages/LoginPage.jsx
+
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider, db } from "../firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
@@ -30,7 +31,8 @@ const LoginPage = () => {
       }
 
       // ✅ 로그인 성공 후 이동
-      navigate("/");  // 또는 "/category", "/intro" 등 원하는 페이지로
+      navigate("/");
+
     } catch (err) {
       console.error("❌ 로그인 실패:", err);
     }

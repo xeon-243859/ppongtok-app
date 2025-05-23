@@ -1,49 +1,29 @@
-// src/pages/LoginPage.jsx
+// src/pages/LoveFinalPage.jsx
 
-import { signInWithPopup } from "firebase/auth";
-import { auth, provider, db } from "../firebase";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import React from "react";
 import { useNavigate } from "react-router-dom";
+import "./LoveFinalPage.css"; // 필요 시 스타일링
 
-const LoginPage = () => {
+const LoveFinalPage = () => {
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-
-      const userRef = doc(db, "users", user.uid);
-      const snapshot = await getDoc(userRef);
-
-      if (!snapshot.exists()) {
-        await setDoc(userRef, {
-          uid: user.uid,
-          email: user.email,
-          name: user.displayName || "이름 없음",
-          photoURL: user.photoURL || "",
-          createdAt: new Date(),
-          freePassRemaining: 3,
-        });
-        console.log("🎉 Firestore에 유저 정보 저장 완료!");
-      } else {
-        console.log("✅ 기존 사용자입니다.");
-      }
-
-      // ✅ 로그인 성공 후 이동
-      navigate("/");
-
-    } catch (err) {
-      console.error("❌ 로그인 실패:", err);
-    }
+  const handleGoHome = () => {
+    navigate("/");
   };
 
   return (
-    <div>
-      <h2>로그인하고 시작하세요</h2>
-      <button onClick={handleLogin}>구글로 로그인</button>
+    <div className="final-page-container">
+      <h1>💕 사랑의 메시지가 완성되었습니다! 💕</h1>
+      <p>
+        당신의 마음이 전해졌어요.
+        <br />
+        따뜻한 사랑이 누군가의 하루를 밝혀줄 거예요.
+      </p>
+      <button className="go-home-button" onClick={handleGoHome}>
+        처음으로
+      </button>
     </div>
   );
 };
 
-export default LoginPage;
+export default LoveFinalPage;
