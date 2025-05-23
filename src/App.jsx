@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";  // ✅ 새로 추가
 
 import LoginPage from "./pages/LoginPage";
-import { AuthProvider } from "./context/AuthContext"; 
 import ProtectedRoute from "./components/ProtectedRoute";
 import CategorySelectPage from './pages/CategorySelectPage';
 import RedirectToStyle from "./pages/RedirectToStyle";
