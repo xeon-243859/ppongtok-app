@@ -1,27 +1,40 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../firebase";
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useAuth } from "./contexts/AuthContext";
 
-const AuthContext = createContext();
+import WritePage from "./pages/WriteMessagePage";
+import LoginPage from "./pages/LoginPage";
+import IntroPage from "./pages/IntroPage";
+import PreviewPage from "./pages/PreviewPage";
 
-export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+function AppRouter() {
+  const { currentUser, loading } = useAuth() || {};
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      setLoading(false);
-    });
+  console.log("🔐 로그인 상태:", currentUser);
 
-    return () => unsubscribe();
-  }, []);
+  if (loading) return <div>로딩 중입니다...</div>;
 
   return (
-    <AuthContext.Provider value={{ user, loading }}>
-      {!loading && children}
-    </AuthContext.Provider>
+    <Routes>
+      <Route
+        path="/write"
+        element={currentUser ? <WritePage /> : <Navigate to="/login" />}
+      />
+      <Route
+        path="/preview"
+        element={currentUser ? <PreviewPage /> : <Navigate to="/login" />}
+      />
+      <Route
+        path="/login"
+        element={!currentUser ? <LoginPage /> : <Navigate to="/write" />}
+      />
+      <Route
+        path="/"
+        element={<Navigate to={currentUser ? "/write" : "/login"} />}
+      />
+      {/* <Route path="/intro" element={<IntroPage />} /> */}
+    </Routes>
   );
-};
+}
 
-export const useAuth = () => useContext(AuthContext);
+export default AppRouter;

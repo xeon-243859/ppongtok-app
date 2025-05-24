@@ -3,16 +3,19 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./contexts/AuthContext";
-import WritePage from "./pages/WriteMessagePage";
 
 // 페이지 컴포넌트 불러오기
+import WritePage from "./pages/WriteMessagePage";
 import LoginPage from "./pages/LoginPage";
 import IntroPage from "./pages/IntroPage";
 import PreviewPage from "./pages/PreviewPage";
 
 function AppRouter() {
-  const { currentUser } = useAuth() || {};
+  const { currentUser, loading } = useAuth() || {};
+
   console.log("🔐 로그인 상태:", currentUser);
+
+  if (loading) return <div>로딩 중입니다...</div>;
 
   return (
     <Routes>
@@ -38,7 +41,7 @@ function AppRouter() {
         element={<Navigate to={currentUser ? "/write" : "/login"} />}
       />
 
-      {/* 소개 페이지 (로그인 여부 상관 없음) 필요시 */}
+      {/* 소개 페이지 (필요 시 사용) */}
       {/* <Route path="/intro" element={<IntroPage />} /> */}
     </Routes>
   );
