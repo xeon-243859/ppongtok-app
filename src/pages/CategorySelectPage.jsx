@@ -1,5 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+
 import "./CategorySelectPage.css";
 
 const categories = [
@@ -12,8 +14,15 @@ const categories = [
 
 const CategorySelectPage = () => {
   const navigate = useNavigate();
+  const { currentUser } = useAuth(); // 🔒 로그인 상태 확인
 
   const handleSelect = (value) => {
+    if (!currentUser) {
+      navigate("/login"); // 로그인 안 되어 있으면 로그인 페이지로
+      return;
+    }
+
+    // 로그인 되어 있으면 선택한 카테고리 저장 후 이동
     localStorage.setItem("selected-category", value);
     navigate("/write/message");
   };
