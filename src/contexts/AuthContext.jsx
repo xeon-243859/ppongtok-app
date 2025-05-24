@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }) => {
   }, [auth]);
 
   const login = async () => {
+    console.log("🟡 login 함수 진입"); 
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
