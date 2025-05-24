@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await signInWithPopup(auth, provider);
     } catch (error) {
-      console.error("로그인 실패:", error);
+        console.error("🔴 로그인 실패:", error.code, error.message, error);
     }
   };
 
