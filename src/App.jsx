@@ -25,7 +25,7 @@ import PrepareStyle from "./pages/PrepareStyle";
 
 function App() {
   return (
-  
+    <AuthProvider>     
       <Routes>
       {/* 🔹 기본 진입 화면 */}
       <Route path="/" element={<IntroPage />} />
@@ -59,8 +59,8 @@ function App() {
       <Route path="/preview" element={<PreviewPage />} />
       <Route path="/share" element={<SharePage />} />
     </Routes>
-  
-  );
+    </AuthProvider>
+      );
 }
 
 export default App;
