@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useAuth } from "./contexts/AuthContext.jsx";
+import { useAuth } from "./contexts/AuthContext";
 
 
 // 페이지 컴포넌트 불러오기
