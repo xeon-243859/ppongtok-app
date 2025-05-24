@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./contexts/AuthContext";  // ✅ 새로 추가
+import { AuthProvider } from "./contexts/AuthContext"; // ✅ 정확히 이렇게
 import AppRouter from "./AppRouter";
 
 import Header from "./components/Header";
