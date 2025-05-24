@@ -26,12 +26,12 @@ import PrepareStyle from "./pages/PrepareStyle";
 
 function App() {
  return (
-    <AuthProvider>
-      <Router>
-        <Header />
-        <AppRouter />
-      </Router>
-    </AuthProvider>
+     <Router>
+      <Routes>
+        <Route path="/" element={<IntroPage />} />
+        <Route path="/login" element={<LoginPage />} />
+      </Routes>
+    </Router>
   );
 }
 
