@@ -1,40 +1,42 @@
-import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
-import { useAuth } from "./contexts/AuthContext";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
+import { app } from "../firebase"; // 너의 firebase 설정 파일 경로에 맞춰 수정해줘
 
-import WritePage from "./pages/WriteMessagePage";
-import LoginPage from "./pages/LoginPage";
-import IntroPage from "./pages/IntroPage";
-import PreviewPage from "./pages/PreviewPage";
+const AuthContext = createContext();
 
-function AppRouter() {
-  const { currentUser, loading } = useAuth() || {};
+export const AuthProvider = ({ children }) => {
+  const [currentUser, setCurrentUser] = useState(null);
+  const auth = getAuth(app);
 
-  console.log("🔐 로그인 상태:", currentUser);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+    });
+    return () => unsubscribe();
+  }, [auth]);
 
-  if (loading) return <div>로딩 중입니다...</div>;
+  const login = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (error) {
+      console.error("로그인 실패:", error);
+    }
+  };
+
+  const logout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("로그아웃 실패:", error);
+    }
+  };
 
   return (
-    <Routes>
-      <Route
-        path="/write"
-        element={currentUser ? <WritePage /> : <Navigate to="/login" />}
-      />
-      <Route
-        path="/preview"
-        element={currentUser ? <PreviewPage /> : <Navigate to="/login" />}
-      />
-      <Route
-        path="/login"
-        element={!currentUser ? <LoginPage /> : <Navigate to="/write" />}
-      />
-      <Route
-        path="/"
-        element={<Navigate to={currentUser ? "/write" : "/login"} />}
-      />
-      {/* <Route path="/intro" element={<IntroPage />} /> */}
-    </Routes>
+    <AuthContext.Provider value={{ currentUser, login, logout }}>
+      {children}
+    </AuthContext.Provider>
   );
-}
+};
 
-export default AppRouter;
+export const useAuth = () => useContext(AuthContext);
