@@ -22,6 +22,7 @@ import PreviewPage from "./pages/PreviewPage";
 import SharePage from "./pages/SharePage";
 import PrepareVideo from "./pages/PrepareVideo";
 import PrepareStyle from "./pages/PrepareStyle";
+import PaymentPage from "./pages/PaymentPage";
 
 function App() {
   return (
@@ -58,6 +59,7 @@ function App() {
       {/* 🔹 미리보기 및 공유 */}
       <Route path="/preview" element={<PreviewPage />} />
       <Route path="/share" element={<SharePage />} />
+      <Route path="/payment" element={<PaymentPage />} />
     </Routes>
     </AuthProvider>
       );
