@@ -63,22 +63,23 @@ const SharePage = () => {
   };
 
   const buttonStyle = {
-    padding: "12px 0",
-    width: "240px",
-    fontSize: "15px",
-    borderRadius: "10px",
-    border: "1px solid #ddd",
-    backgroundColor: "#fff",
-    color: "#333",
-    boxShadow: "2px 2px 6px rgba(0,0,0,0.05)",
-    cursor: "pointer",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "8px",
-    margin: "6px auto",
-    textDecoration: "none"
-  };
+  padding: "8px 0",
+  width: "150px", // ✅ 작게
+  fontSize: "13px", // ✅ 작게
+  borderRadius: "8px",
+  border: "1px solid #ccc",
+  backgroundColor: "#fff",
+  color: "#333",
+  boxShadow: "1px 1px 4px rgba(0,0,0,0.05)",
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  gap: "6px",
+  margin: "4px auto",
+  textDecoration: "none"
+};
+
 
   return (
     <div style={styles.wrapper}>
@@ -125,23 +126,27 @@ const styles = {
     marginBottom: "20px",
     color: "#333",
   },
+ 
   qrImage: {
-    width: "200px",
-    margin: "0 auto"
-  },
+  width: "150px",
+  margin: "0 auto"
+},
+
   caption: {
     marginTop: "16px",
     fontSize: "14px",
     color: "#666"
   },
+
   buttonGroup: {
-    marginTop: "24px",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: "10px"
-  },
-  navGroup: {
+  marginTop: "20px",
+  display: "flex",
+  flexWrap: "wrap",
+  justifyContent: "center",
+  gap: "10px"
+},
+
+   navGroup: {
     marginTop: "40px",
     display: "flex",
     flexDirection: "column",
