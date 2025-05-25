@@ -1,132 +1,111 @@
-import React, { useEffect } from "react";
-import "./SharePage.css";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import QRCode from "qrcode";
 
 const SharePage = () => {
+  const [qrUrl, setQrUrl] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://t1.kakaocdn.net/kakao_js_sdk/2.5.0/kakao.min.js";
-    script.async = true;
-    document.head.appendChild(script);
+  const shareUrl = "https://ppongtok-app.vercel.app/share/abc123"; // 실제 메시지 링크
+  const videoUrl = "https://firebasestorage.googleapis.com/v0/b/ppongtok-project.appspot.com/o/sample-video.mp4?alt=media";
 
-    script.onload = () => {
-      if (window.Kakao && !window.Kakao.isInitialized()) {
-        window.Kakao.init("4abf45cca92e802defcd2c15a6615155");
-        console.log("✅ Kakao 초기화 완료");
-      }
-    };
+  // QR 코드 생성
+  useEffect(() => {
+    QRCode.toDataURL(shareUrl).then(setQrUrl);
   }, []);
 
-  const handleShare = (type) => {
-    const category = localStorage.getItem("selected-category") || "love";
-    const url = `https://ppongtok-app.vercel.app/share_${category}.html`;
+  // 공유 핸들러
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(shareUrl);
+    alert("링크가 복사되었어요!");
+  };
 
-    const previewImage =localStorage.setItem("shared-preview-image", "https://firebasestorage.googleapis.com/v0/b/ppongtok-project.appspot.com/o/love1.jpg?alt=media&token=...");
- 
-    const imageUrl = previewImage || `https://ppongtok-app.vercel.app/images/category_${category}.jpg`; // ✅ 보리 추가
-    console.log("공유 이미지:", imageUrl); // ✅ 이 줄을 여기 추가
-    switch (type) {
-      case "kakao":
-        if (window.Kakao && window.Kakao.Share) {
-          window.Kakao.Share.sendDefault({
-            objectType: "feed",
-            content: {
-              title: "감정을 담은 뿅!톡 메시지",
-              description: "내 마음을 전하는 감성 메시지를 확인해보세요 💌",
-               imageUrl: imageUrl, // ✅ 여기 적용!
-              link: {
-                mobileWebUrl: url,
-                webUrl: url,
-              },
-            },
-            buttons: [
-              {
-                title: "지금 확인하기",
-                link: {
-                  mobileWebUrl: url,
-                  webUrl: url,
-                },
-              },
-            ],
-          });
-        }
-        break;
+  const handleKakaoShare = () => {
+    if (!window.Kakao) return alert("카카오 SDK가 로드되지 않았어요!");
+    window.Kakao.Share.sendDefault({
+      objectType: "feed",
+      content: {
+        title: "뿅!톡 메시지 도착 💌",
+        description: "누군가 당신에게 마음을 보냈어요",
+        imageUrl: qrUrl,
+        link: { mobileWebUrl: shareUrl, webUrl: shareUrl }
+      },
+    });
+  };
 
-      case "facebook":
-        window.open("https://www.facebook.com/sharer/sharer.php?u=" + window.location.href);
-        break;
+  const handleFacebookShare = () => {
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`);
+  };
 
-      case "twitter":
-        window.open("https://twitter.com/intent/tweet?url=" + window.location.href);
-        break;
-
-      case "copy":
-        navigator.clipboard.writeText(window.location.href);
-        alert("링크가 복사되었습니다!");
-        break;
-
-      case "pdf":
-        const captureTarget = document.body;
-        html2canvas(captureTarget).then((canvas) => {
-          const imgData = canvas.toDataURL("image/png");
-          const pdf = new jsPDF({
-            orientation: "portrait",
-            unit: "mm",
-            format: "a4",
-          });
-
-          const pageWidth = pdf.internal.pageSize.getWidth();
-          const imgHeight = (canvas.height * pageWidth) / canvas.width;
-
-          pdf.addImage(imgData, "PNG", 0, 0, pageWidth, imgHeight);
-          pdf.save("ppongtok-message.pdf");
-        });
-        break;
-
-      case "image":
-        const target = document.body;
-        html2canvas(target).then((canvas) => {
-          const link = document.createElement("a");
-          link.href = canvas.toDataURL("image/png");
-          link.download = "ppongtok-message.png";
-          link.click();
-        });
-        break;
-
-      default:
-        break;
-    }
+  const handleTwitterShare = () => {
+    window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=누군가 당신에게 마음을 보냈어요`);
   };
 
   return (
-    <div className="share-page">
-      <h1 className="share-title">이제 이 감정을<br />함께 나눠볼까요?</h1>
+    <div className="share-container" style={styles.container}>
+      <h2 style={styles.title}>💌 공유하기</h2>
 
-      <div className="share-button-group responsive">
-        <button className="share-button" onClick={() => handleShare("kakao")}>카카오톡</button>
-        <button className="share-button" onClick={() => handleShare("facebook")}>Facebook</button>
-        <button className="share-button" onClick={() => handleShare("twitter")}>Twitter</button>
-        <button className="share-button" onClick={() => handleShare("copy")}>링크 복사</button>
-        <button className="share-button" onClick={() => handleShare("pdf")}>PDF 저장</button>
-        <button className="share-button" onClick={() => handleShare("image")}>이미지 저장</button>
+      {qrUrl && <img src={qrUrl} alt="QR 코드" style={styles.qrImage} />}
+
+      <p style={styles.caption}>이 QR을 스캔하면 누군가에게 마음이 전해져요</p>
+
+      <div style={styles.buttonGroup}>
+        <button onClick={handleCopyLink}>🔗 링크 복사</button>
+        <button onClick={handleKakaoShare}>💬 카카오톡</button>
+        <button onClick={handleFacebookShare}>🟦 페이스북</button>
+        <button onClick={handleTwitterShare}>🐦 트위터</button>
+        <a href={videoUrl} download style={styles.downloadLink}>🎥 영상 저장</a>
       </div>
 
-      {/* 📌 공유 방식 안내 문구 */}
-      <div className="share-guide" style={{ marginTop: "40px", textAlign: "left", maxWidth: "500px", fontSize: "14px", color: "#444", lineHeight: "1.6" }}>
-        <p>🔗 <strong>링크 복사:</strong> 복사된 링크는 클립보드에 저장되며, 카카오톡이나 문자창에 붙여넣을 수 있어요. (Ctrl+V 또는 길게 눌러 붙여넣기)</p>
-        <p>📄 <strong>PDF 저장:</strong> 화면 전체가 PDF 파일로 저장되며, 보통 <strong>다운로드 폴더</strong>에서 확인할 수 있어요.</p>
-        <p>🖼️ <strong>이미지 저장:</strong> 메시지 화면이 이미지로 저장되며, 역시 <strong>다운로드 폴더</strong>에서 찾을 수 있어요. 모바일에선 저장 알림이 뜨기도 해요.</p>
-      </div>
-
-      <div className="button-box" style={{ marginTop: "8px" }}>
-        <button className="styled-button" onClick={() => navigate("/preview")}>뒤로가기</button>
+      <div style={styles.navGroup}>
+        <button onClick={() => navigate("/")}>🏠 처음으로</button>
+        <button onClick={() => navigate("/select-category")}>🔄 다시 만들기</button>
       </div>
     </div>
   );
+};
+
+const styles = {
+  container: {
+    textAlign: "center",
+    padding: "40px 20px",
+    backgroundColor: "#fffdf8",
+    fontFamily: "Apple SD Gothic Neo, sans-serif"
+  },
+  title: {
+    fontSize: "24px",
+    marginBottom: "20px",
+    color: "#333"
+  },
+  qrImage: {
+    width: "200px",
+    margin: "0 auto"
+  },
+  caption: {
+    marginTop: "16px",
+    fontSize: "14px",
+    color: "#666"
+  },
+  buttonGroup: {
+    marginTop: "24px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+    alignItems: "center"
+  },
+  downloadLink: {
+    textDecoration: "none",
+    color: "#000",
+    background: "#f0f0f0",
+    padding: "8px 12px",
+    borderRadius: "8px"
+  },
+  navGroup: {
+    marginTop: "40px",
+    display: "flex",
+    gap: "16px",
+    justifyContent: "center"
+  }
 };
 
 export default SharePage;
