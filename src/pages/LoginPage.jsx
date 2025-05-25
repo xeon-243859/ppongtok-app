@@ -11,13 +11,14 @@ const LoginPage = () => {
     try {
       await signInWithRedirect(auth, provider);
     } catch (err) {
-      console.error("❌ 로그인 실패:", err);
+      console.error("❌ 로그인 요청 실패:", err);
     }
   };
 
   useEffect(() => {
     const fetchRedirectResult = async () => {
       try {
+        console.log("🚀 로그인 리디렉션 결과 감지 시작");
         const result = await getRedirectResult(auth);
 
         if (result && result.user) {
@@ -36,20 +37,17 @@ const LoginPage = () => {
               createdAt: new Date(),
               freePassRemaining: 3,
             });
-            console.log("🎉 유저 정보 저장 완료!");
+            console.log("🎉 Firestore에 새 유저 저장 완료");
           } else {
-            console.log("✅ 기존 유저 로그인!");
+            console.log("✅ 기존 유저 Firestore 확인됨");
           }
 
+          navigate("/"); // 로그인 성공 후 메인 페이지로 이동
+        } else if (auth.currentUser) {
+          console.log("🔄 이미 로그인 상태:", auth.currentUser.email);
           navigate("/");
         } else {
-          // 🔎 auth에 이미 로그인된 유저가 있으면 처리
-          if (auth.currentUser) {
-            console.log("🔄 이미 로그인 상태:", auth.currentUser.email);
-            navigate("/");
-          } else {
-            console.log("❓ 리디렉션 결과에 유저 없음 + 로그인 상태 아님");
-          }
+          console.log("❓ 로그인 정보 없음. 사용자 미인증 상태");
         }
       } catch (err) {
         console.error("🔴 getRedirectResult 실패:", err);
@@ -58,7 +56,6 @@ const LoginPage = () => {
 
     fetchRedirectResult();
   }, [navigate]);
-  console.log("🐾 로그인 흐름 진입 확인");
 
   return (
     <div>
