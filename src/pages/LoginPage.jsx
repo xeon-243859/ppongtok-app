@@ -58,6 +58,7 @@ const LoginPage = () => {
 
     fetchRedirectResult();
   }, [navigate]);
+  console.log("🐾 로그인 흐름 진입 확인");
 
   return (
     <div>
