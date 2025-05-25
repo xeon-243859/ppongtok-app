@@ -91,6 +91,25 @@ const SharePage = () => {
   );
 };
 
+const buttonStyle = {
+  padding: "12px 0",
+  width: "240px", // ✅ 고정 너비
+  fontSize: "15px",
+  borderRadius: "10px",
+  border: "1px solid #ddd",
+  backgroundColor: "#fff",
+  color: "#333",
+  boxShadow: "2px 2px 6px rgba(0,0,0,0.05)",
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  gap: "8px",
+  margin: "6px auto", // ✅ 중앙 정렬
+};
+
+
+
 const styles = {
   wrapper: {
     display: "flex",

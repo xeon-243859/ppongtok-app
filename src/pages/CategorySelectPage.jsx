@@ -21,6 +21,10 @@ const CategorySelectPage = () => {
       navigate("/login"); // 로그인 안 되어 있으면 로그인 페이지로
       return;
     }
+   // if (!currentUser) {
+   //   navigate("/login");
+   //   return;
+   // }
 
     // 로그인 되어 있으면 선택한 카테고리 저장 후 이동
     localStorage.setItem("selected-category", value);
