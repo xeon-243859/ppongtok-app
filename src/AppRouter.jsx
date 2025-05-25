@@ -7,6 +7,7 @@ import LoginPage from "./pages/LoginPage";
 import IntroPage from "./pages/IntroPage";
 import PreviewPage from "./pages/PreviewPage";
 import SharePage from "./pages/SharePage";
+import PaymentPage from "./pages/PaymentPage";
 
 function ProtectedRoute({ children }) {
   const { currentUser } = useAuth();
@@ -50,9 +51,16 @@ function AppRouter() {
       />
 
       <Route
+      path="/payment"
+      element={currentUser ? <PaymentPage /> : <Navigate to="/login" />}
+      />
+
+      <Route
         path="/login"
         element={!currentUser ? <LoginPage /> : <Navigate to="/write" />}
       />
+
+
     </Routes>
   );
 }
