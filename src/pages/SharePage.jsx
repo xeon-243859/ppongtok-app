@@ -6,20 +6,34 @@ const SharePage = () => {
   const navigate = useNavigate();
   const [qrUrl, setQrUrl] = useState("");
 
-  const shareUrl = "https://ppongtok-app.vercel.app/share/abc123"; // 👉 실제 공유 링크로 바꿔줘
+  const shareUrl = "https://ppongtok-app.vercel.app/share/abc123"; // 👉 실제 메시지 링크로 교체
   const videoUrl = "https://firebasestorage.googleapis.com/v0/b/ppongtok-project.appspot.com/o/sample-video.mp4?alt=media";
 
+  // QR 생성 (안전하게 처리)
   useEffect(() => {
-    QRCode.toDataURL(shareUrl).then(setQrUrl);
+    const generateQR = async () => {
+      try {
+        const url = await QRCode.toDataURL(shareUrl);
+        setQrUrl(url);
+      } catch (error) {
+        console.error("QR 코드 생성 오류:", error);
+      }
+    };
+    generateQR();
   }, []);
 
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(shareUrl);
-    alert("링크가 복사되었어요!");
-  };
-
+  // 카카오 공유
   const handleKakaoShare = () => {
-    if (!window.Kakao) return alert("카카오 SDK가 로드되지 않았어요!");
+    if (!window.Kakao) {
+      alert("카카오 SDK가 로드되지 않았어요!");
+      return;
+    }
+
+    if (!window.Kakao.isInitialized?.()) {
+      alert("Kakao 초기화가 되지 않았어요!");
+      return;
+    }
+
     window.Kakao.Share.sendDefault({
       objectType: "feed",
       content: {
@@ -34,6 +48,12 @@ const SharePage = () => {
     });
   };
 
+  // 기타 공유
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(shareUrl);
+    alert("링크가 복사되었어요!");
+  };
+
   const handleFacebookShare = () => {
     window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`);
   };
@@ -43,8 +63,8 @@ const SharePage = () => {
   };
 
   const buttonStyle = {
-    padding: "10px 20px",
-    margin: "6px 0",
+    padding: "12px 0",
+    width: "240px",
     fontSize: "15px",
     borderRadius: "10px",
     border: "1px solid #ddd",
@@ -56,13 +76,8 @@ const SharePage = () => {
     alignItems: "center",
     justifyContent: "center",
     gap: "8px",
-    width: "220px",
-  };
-
-  const navButtonStyle = {
-    ...buttonStyle,
-    backgroundColor: "#f9f9f9",
-    border: "1.5px solid #ccc",
+    margin: "6px auto",
+    textDecoration: "none"
   };
 
   return (
@@ -79,36 +94,17 @@ const SharePage = () => {
           <button style={buttonStyle} onClick={handleKakaoShare}>💬 카카오톡</button>
           <button style={buttonStyle} onClick={handleFacebookShare}>🟦 페이스북</button>
           <button style={buttonStyle} onClick={handleTwitterShare}>🐦 트위터</button>
-          <a href={videoUrl} download style={{ ...buttonStyle, textDecoration: "none" }}>🎥 영상 저장</a>
+          <a href={videoUrl} download style={buttonStyle}>🎥 영상 저장</a>
         </div>
 
         <div style={styles.navGroup}>
-          <button style={navButtonStyle} onClick={() => navigate("/")}>🏠 처음으로</button>
-          <button style={navButtonStyle} onClick={() => navigate("/select-category")}>✨ 시작하기</button>
+          <button style={buttonStyle} onClick={() => navigate("/")}>🏠 처음으로</button>
+          <button style={buttonStyle} onClick={() => navigate("/select-category")}>✨ 시작하기</button>
         </div>
       </div>
     </div>
   );
 };
-
-const buttonStyle = {
-  padding: "12px 0",
-  width: "240px", // ✅ 고정 너비
-  fontSize: "15px",
-  borderRadius: "10px",
-  border: "1px solid #ddd",
-  backgroundColor: "#fff",
-  color: "#333",
-  boxShadow: "2px 2px 6px rgba(0,0,0,0.05)",
-  cursor: "pointer",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  gap: "8px",
-  margin: "6px auto", // ✅ 중앙 정렬
-};
-
-
 
 const styles = {
   wrapper: {
@@ -131,27 +127,26 @@ const styles = {
   },
   qrImage: {
     width: "200px",
-    margin: "0 auto",
+    margin: "0 auto"
   },
   caption: {
     marginTop: "16px",
     fontSize: "14px",
-    color: "#666",
+    color: "#666"
   },
   buttonGroup: {
     marginTop: "24px",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    gap: "10px",
+    gap: "10px"
   },
   navGroup: {
     marginTop: "40px",
     display: "flex",
-    gap: "16px",
-    justifyContent: "center",
-    flexWrap: "wrap",
-  },
+    flexDirection: "column",
+    gap: "12px"
+  }
 };
 
 export default SharePage;
