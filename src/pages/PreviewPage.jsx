@@ -4,9 +4,10 @@ import "./PreviewPage.css";
 import html2canvas from "html2canvas";
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import { useAuth } from "../contexts/AuthContext";
-
+import { getAuth } from "firebase/auth";
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase"; // 경로는 네 구조에 맞게 수정
+
 const PreviewPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -26,70 +27,61 @@ const PreviewPage = () => {
     navigate("/");
   };
 
-const { currentUser } = useAuth();
-const db = getFirestore();
+  const { currentUser } = useAuth();
+  const db = getFirestore();
 
-const handleNext = async () => {
-  if (!currentUser) {
-    alert("로그인이 필요해요 💌");
-    navigate("/login");
-    return;
-  }
+  const handleNext = async () => {
+    if (!currentUser) {
+      alert("로그인이 필요해요 💌");
+      navigate("/login");
+      return;
+    }
 
-  const userRef = doc(db, "users", currentUser.uid);
-  const userSnap = await getDoc(userRef);
+    const userRef = doc(db, "users", currentUser.uid);
+    const userSnap = await getDoc(userRef);
 
-  if (!userSnap.exists()) {
-    alert("유저 정보가 없습니다.");
-    return;
-  }
+    if (!userSnap.exists()) {
+      alert("유저 정보가 없습니다.");
+      return;
+    }
 
-  const freePass = userSnap.data().freePassCount || 0;
+    const freePass = userSnap.data().freePassCount || 0;
 
-  if (freePass > 0) {
-    await updateDoc(userRef, {
-      freePassCount: freePass - 1,
-    });
-    navigate("/share");
-  } else {
-    alert("무료 이용권이 모두 소진되었습니다. 결제가 필요해요 🛍️");
-    navigate("/payment");
-  }
-};
+    if (freePass > 0) {
+      await updateDoc(userRef, {
+        freePassCount: freePass - 1,
+      });
+      navigate("/share");
+    } else {
+      alert("무료 이용권이 모두 소진되었습니다. 결제가 필요해요 🛍️");
+      navigate("/payment");
+    }
+  };
 
   useEffect(() => {
     const storedMessage = localStorage.getItem("message");
     if (storedMessage) setMessage(storedMessage);
   }, []);
 
-
-
   useEffect(() => {
-  const capturePreview = async () => {
-    const target = document.querySelector(".preview-wrapper"); // ✅ 프리뷰 전체 감싸는 div
-    if (!target) return;
-    const canvas = await html2canvas(target);
-    const dataUrl = canvas.toDataURL("image/jpeg");
-    localStorage.setItem("shared-preview-image", dataUrl);
-  // ✅ Firebase 업로드
-    window.location.href = `/share/${Date.now()}?image=${encodeURIComponent(downloadUrl)}`;
+    const capturePreview = async () => {
+      const target = document.querySelector(".preview-wrapper");
+      if (!target) return;
+      const canvas = await html2canvas(target);
+      const dataUrl = canvas.toDataURL("image/jpeg");
+      localStorage.setItem("shared-preview-image", dataUrl);
 
+      const fileName = `thumbnails/${Date.now()}.jpg`;
+      const storageRef = ref(storage, fileName);
+      await uploadString(storageRef, dataUrl, "data_url");
+      const downloadUrl = await getDownloadURL(storageRef);
+      localStorage.setItem("thumbnail-url", downloadUrl);
 
-const fileName = `thumbnails/${Date.now()}.jpg`;
-const storageRef = ref(storage, fileName);
+      console.log("🟢 Firebase 업로드 완료:", downloadUrl);
+    };
 
-await uploadString(storageRef, dataUrl, "data_url"); // base64 업로드
-
-const downloadUrl = await getDownloadURL(storageRef); // 다운로드 URL 얻기
-localStorage.setItem("thumbnail-url", downloadUrl); // 공유 페이지에서 쓸 수 있게 저장
-
-console.log("🟢 Firebase 업로드 완료:", downloadUrl);
-  
-    console.log("✅ 프리뷰 이미지 저장됨");
-  };
-
-  capturePreview(); // ✅ 이거 있어야 실행돼!
-}, []);
+    capturePreview();
+  }, []);
 
   useEffect(() => {
     const rawImages = JSON.parse(localStorage.getItem("selected-images") || "[]");
@@ -178,7 +170,6 @@ console.log("🟢 Firebase 업로드 완료:", downloadUrl);
         </div>
       </div>
 
-      {/* ✅ 무빙박스 아래 정렬된 버튼들 */}
       <div className="under-media-buttons">
         <button className="nav-button" onClick={() => (window.location.href = "/music")}>
           뒤로가기
@@ -186,7 +177,6 @@ console.log("🟢 Firebase 업로드 완료:", downloadUrl);
         <button className="nav-button" onClick={handleNext}>
           다음 - 공유하기
         </button>
-
       </div>
 
       <div className="go-home-button-wrapper">
@@ -195,9 +185,7 @@ console.log("🟢 Firebase 업로드 완료:", downloadUrl);
         </button>
       </div>
 
-      {selectedMusic && (
-        <audio src={selectedMusic} autoPlay ref={audioRef} />
-      )}
+      {selectedMusic && <audio src={selectedMusic} autoPlay ref={audioRef} />}
     </div>
   );
 };

@@ -8,6 +8,11 @@ import IntroPage from "./pages/IntroPage";
 import PreviewPage from "./pages/PreviewPage";
 import SharePage from "./pages/SharePage";
 
+function ProtectedRoute({ children }) {
+  const { currentUser } = useAuth();
+  return currentUser ? children : <Navigate to="/login" />;
+}
+
 function AppRouter() {
   const { currentUser, loading } = useAuth();
 
@@ -16,18 +21,34 @@ function AppRouter() {
   return (
     <Routes>
       <Route path="/" element={<IntroPage />} />
+
       <Route
         path="/write"
-        element={currentUser ? <WriteMessagePage /> : <Navigate to="/login" />}
+        element={
+          <ProtectedRoute>
+            <WriteMessagePage />
+          </ProtectedRoute>
+        }
       />
+
       <Route
         path="/preview"
-        element={currentUser ? <PreviewPage /> : <Navigate to="/login" />}
+        element={
+          <ProtectedRoute>
+            <PreviewPage />
+          </ProtectedRoute>
+        }
       />
+
       <Route
         path="/share"
-        element={currentUser ? <SharePage /> : <Navigate to="/login" />}
+        element={
+          <ProtectedRoute>
+            <SharePage />
+          </ProtectedRoute>
+        }
       />
+
       <Route
         path="/login"
         element={!currentUser ? <LoginPage /> : <Navigate to="/write" />}
