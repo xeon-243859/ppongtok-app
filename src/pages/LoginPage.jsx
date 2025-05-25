@@ -1,5 +1,3 @@
-// src/pages/LoginPage.jsx
-
 import { signInWithRedirect, getRedirectResult } from "firebase/auth";
 import { auth, provider, db } from "../firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
@@ -9,22 +7,23 @@ import { useNavigate } from "react-router-dom";
 const LoginPage = () => {
   const navigate = useNavigate();
 
-  // ✅ 로그인 버튼 클릭 시
   const handleLogin = async () => {
     try {
-      await signInWithRedirect(auth, provider); // 리디렉션 방식
+      await signInWithRedirect(auth, provider);
     } catch (err) {
       console.error("❌ 로그인 실패:", err);
     }
   };
 
-  // ✅ 로그인 리디렉션 결과 처리
   useEffect(() => {
     const fetchRedirectResult = async () => {
       try {
         const result = await getRedirectResult(auth);
+
         if (result && result.user) {
           const user = result.user;
+          console.log("✅ 로그인된 유저:", user.email);
+
           const userRef = doc(db, "users", user.uid);
           const snapshot = await getDoc(userRef);
 
@@ -37,15 +36,23 @@ const LoginPage = () => {
               createdAt: new Date(),
               freePassRemaining: 3,
             });
-            console.log("🎉 Firestore에 유저 정보 저장 완료!");
+            console.log("🎉 유저 정보 저장 완료!");
           } else {
-            console.log("✅ 기존 사용자입니다.");
+            console.log("✅ 기존 유저 로그인!");
           }
 
           navigate("/");
+        } else {
+          // 🔎 auth에 이미 로그인된 유저가 있으면 처리
+          if (auth.currentUser) {
+            console.log("🔄 이미 로그인 상태:", auth.currentUser.email);
+            navigate("/");
+          } else {
+            console.log("❓ 리디렉션 결과에 유저 없음 + 로그인 상태 아님");
+          }
         }
       } catch (err) {
-        console.error("🔴 리디렉션 결과 처리 실패:", err);
+        console.error("🔴 getRedirectResult 실패:", err);
       }
     };
 
