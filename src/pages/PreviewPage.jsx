@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import "./PreviewPage.css";
+import "./PreviewPage.css";	
 import html2canvas from "html2canvas";
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import { useAuth } from "../contexts/AuthContext";
@@ -191,3 +191,5 @@ const PreviewPage = () => {
 };
 
 export default PreviewPage;
+
+
