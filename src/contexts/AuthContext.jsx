@@ -23,7 +23,6 @@ export const AuthProvider = ({ children }) => {
     console.log("🟡 login 함수 진입"); 
     const provider = new GoogleAuthProvider();
     try {
-      await setPersistence(auth, browserLocalPersistence); 
       await signInWithPopup(auth, provider);
     } catch (error) {
         console.error("🔴 로그인 실패:", error.code, error.message, error);
