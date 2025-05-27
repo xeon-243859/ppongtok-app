@@ -74,10 +74,13 @@ const PreviewPage = () => {
       const fileName = `thumbnails/${Date.now()}.jpg`;
       const storageRef = ref(storage, fileName);
       await uploadString(storageRef, dataUrl, "data_url");
+      try {
       const downloadUrl = await getDownloadURL(storageRef);
       localStorage.setItem("thumbnail-url", downloadUrl);
-
       console.log("🟢 Firebase 업로드 완료:", downloadUrl);
+      } catch (error) {
+      console.error("🔴 Firebase 썸네일 다운로드 실패:", error);
+      }  
     };
 
     capturePreview();
