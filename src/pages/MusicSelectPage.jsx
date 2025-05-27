@@ -18,11 +18,22 @@ const MusicSelectPage = () => {
 }, [navigate]);
 
   useEffect(() => {
-    const storedMusic = localStorage.getItem("selected-music");
-    const storedLabel = localStorage.getItem("selected-music-label");
-    if (storedMusic) setSelectedMusic(storedMusic);
-    if (storedLabel) setMusicName(storedLabel);
-  }, []);
+  const storedMusic = localStorage.getItem("selected-music");
+  const storedLabel = localStorage.getItem("selected-music-label");
+
+  if (storedMusic) {
+    console.log("📁 localStorage → selectedMusic:", storedMusic);
+    setSelectedMusic(storedMusic);
+  } else {
+    console.warn("⚠️ storedMusic is null or undefined");
+  }
+
+  if (storedLabel) {
+    console.log("📁 localStorage → musicName:", storedLabel);
+    setMusicName(storedLabel);
+  }
+}, []);
+
 
   const handleDelete = () => {
     setSelectedMusic(null);
@@ -84,14 +95,17 @@ const MusicSelectPage = () => {
       </div>
 
       {selectedMusic && (
+         <>
+    {console.log("🎧 조건부 렌더링 selectedMusic:", selectedMusic)}
         <div className="music-box">
           <span className="music-label">{musicName}</span>
           <div className="audio-wrapper">
             <audio controls autoPlay src={selectedMusic} />
+            </div>
             <button className="delete-button" onClick={handleDelete}>❌</button>
-          </div>
-        </div>
-      )}
+             </div>
+           </>
+        )}
 
       <div className="button-group">
         <button onClick={handleBack}>뒤로가기</button>
