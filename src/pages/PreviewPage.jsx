@@ -10,6 +10,36 @@ import { storage } from "../firebase"; // 경로는 네 구조에 맞게 수정
 
 const PreviewPage = () => {
   const navigate = useNavigate();
+
+  const handleSaveAndShare = async () => {
+  const messageData = {
+    imageUrl: generatedImageUrl,
+    caption: captionText,
+    videoUrl: optionalVideoUrl,
+    createdAt: new Date(),
+  };
+
+  try {
+    const docRef = await addDoc(collection(db, "messages"), messageData);
+    const messageId = docRef.id;
+
+    window.Kakao.Share.sendDefault({
+      objectType: "feed",
+      content: {
+        title: "뿅!톡 메시지 도착 💌",
+        description: "누군가 당신에게 마음을 보냈어요",
+        imageUrl: messageData.imageUrl,
+        link: {
+          mobileWebUrl: `https://ppongtok-app.vercel.app/view/${messageId}`,
+          webUrl: `https://ppongtok-app.vercel.app/view/${messageId}`,
+        },
+      },
+    });
+  } catch (error) {
+    console.error("❌ 메시지 저장 실패:", error);
+  }
+};
+  
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const forcedMediaType = params.get("type");
@@ -138,6 +168,15 @@ const PreviewPage = () => {
   const repeatedMessage = message.length < 20 ? message.repeat(3) : message;
 
   return (
+  <>
+    {/* 공유 버튼 영역 */}
+    <div>
+      <img src={generatedImageUrl} alt="썸네일" />
+      <p>{captionText}</p>
+      <button onClick={handleSaveAndShare}>카카오톡 공유하기</button>
+    </div>
+
+    {/* 미디어 프리뷰 영역 */}
     <div className="preview-wrapper">
       <div className="preview-page">
         <div className="media-box">
@@ -190,9 +229,8 @@ const PreviewPage = () => {
 
       {selectedMusic && <audio src={selectedMusic} autoPlay ref={audioRef} />}
     </div>
-  );
-};
+  </>
+);
+}; 
 
 export default PreviewPage;
-
-

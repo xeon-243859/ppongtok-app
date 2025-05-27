@@ -49,8 +49,8 @@ const SharePage = () => {
         description: "누군가 당신에게 마음을 보냈어요",
         imageUrl: qrUrl,
         link: {
-          mobileWebUrl: "https://ppongtok-app.vercel.app/share",
-          webUrl: "https://ppongtok-app.vercel.app/share",
+           mobileWebUrl: `https://ppongtok-app.vercel.app/view/${messageId}`,
+           webUrl: `https://ppongtok-app.vercel.app/view/${messageId}`,
         },
       },
     });

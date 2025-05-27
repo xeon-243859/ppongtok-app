@@ -23,6 +23,7 @@ import SharePage from "./pages/SharePage";
 import PrepareVideo from "./pages/PrepareVideo";
 import PrepareStyle from "./pages/PrepareStyle";
 import PaymentPage from "./pages/PaymentPage";
+import MessageViewerPage from "./pages/MessageViewerPage"; 
 console.log("🧩 App 컴포넌트 렌더링됨");
 
 function App() {
@@ -60,6 +61,7 @@ function App() {
       {/* 🔹 미리보기 및 공유 */}
       <Route path="/preview" element={<PreviewPage />} />
       <Route path="/share" element={<SharePage />} />
+      <Route path="/view/:id" element={<MessageViewerPage />} /> 
       <Route path="/payment" element={<PaymentPage />} />
     </Routes>
     </AuthProvider>
