@@ -6,7 +6,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyA5aUBf0PDRHeVZYx3jMFx8uwGTYVVMqk4",
   authDomain: "ppongtok-project.firebaseapp.com",
   projectId: "ppongtok-project",
-  storageBucket: "ppongtok-project.appspot.com", // ❗ .com 으로 수정함!
+  storageBucket: "ppongtok-project.firebasestorage.app",
   messagingSenderId: "183327414536",
   appId: "1:183327414536:web:f2442c9799b3ba150ef4bd",
   measurementId: "G-XSKQ8EB0VB"
