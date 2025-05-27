@@ -7,6 +7,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { getAuth } from "firebase/auth";
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase"; // 경로는 네 구조에 맞게 수정
+import { generatedImageUrl } from "../utils/ImageCapture";
 
 const PreviewPage = () => {
   const navigate = useNavigate();
