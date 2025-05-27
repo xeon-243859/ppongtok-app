@@ -23,6 +23,7 @@ import SharePage from "./pages/SharePage";
 import PrepareVideo from "./pages/PrepareVideo";
 import PrepareStyle from "./pages/PrepareStyle";
 import PaymentPage from "./pages/PaymentPage";
+console.log("🧩 App 컴포넌트 렌더링됨");
 
 function App() {
   return (

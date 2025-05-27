@@ -27,6 +27,8 @@ export const AuthProvider = ({ children }) => {
     });
     return () => unsubscribe();
   }, [auth]);
+  console.log("🧩 AuthProvider 작동 시작됨");
+
 
   // ✅ 로그인 함수 (popup + 로그인 유지 설정)
   const login = async () => {
