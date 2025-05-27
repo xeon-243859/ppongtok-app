@@ -1,5 +1,7 @@
 {
   "projects": {
     "default": "ppongtok-project"
-  }
+  },
+  "targets": {},
+  "etags": {}
 }

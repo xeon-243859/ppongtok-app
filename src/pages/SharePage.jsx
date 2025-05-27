@@ -7,7 +7,7 @@ const SharePage = () => {
   const [qrUrl, setQrUrl] = useState("");
 
   const shareUrl = "https://ppongtok-app.vercel.app/share/abc123"; // 👉 실제 메시지 링크로 교체
-  const videoUrl = "https://firebasestorage.googleapis.com/v0/b/ppongtok-project.appspot.com/o/sample-video.mp4?alt=media";
+  const videoUrl = "https://firebasestorage.googleapis.com/v0/b/ppongtok-project.firebasestorage.app/o/sample-video.mp4?alt=media";
 
   // QR 생성 (안전하게 처리)
   useEffect(() => {
