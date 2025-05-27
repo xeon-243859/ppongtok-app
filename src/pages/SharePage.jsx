@@ -11,6 +11,13 @@ const SharePage = () => {
 
   // QR 생성 (안전하게 처리)
   useEffect(() => {
+    if (window.Kakao && !window.Kakao.isInitialized()) {
+      window.Kakao.init("4abf45cca92e802defcd2c15a6615155"); // 🔑 꼭 JavaScript 키!
+      console.log("✅ Kakao SDK 초기화 완료");
+    }
+  }, []);
+
+  useEffect(() => {
     const generateQR = async () => {
       try {
         const url = await QRCode.toDataURL(shareUrl);
@@ -29,10 +36,11 @@ const SharePage = () => {
       return;
     }
 
-    if (!window.Kakao.isInitialized?.()) {
+    if (!window.Kakao.isInitialized()) {
       alert("Kakao 초기화가 되지 않았어요!");
-      return;
+    return;
     }
+
 
     window.Kakao.Share.sendDefault({
       objectType: "feed",
@@ -41,8 +49,8 @@ const SharePage = () => {
         description: "누군가 당신에게 마음을 보냈어요",
         imageUrl: qrUrl,
         link: {
-          webUrl: shareUrl,
-          mobileWebUrl: shareUrl,
+          mobileWebUrl: "https://ppongtok-app.vercel.app/share",
+          webUrl: "https://ppongtok-app.vercel.app/share",
         },
       },
     });
