@@ -1,16 +1,16 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
-import { auth } from "../firebase";
 import { useAuth } from "../contexts/AuthContext"; // ✅ 경로와 이름 확인
 
 const Header = () => {
   const navigate = useNavigate();
-  const { currentUser } = useAuth() || {}; // ✅ null-safe 구조분해
+  const { currentUser, logout } = useAuth() || {}; // ✅ null-safe + 효율적
+
 
   const handleLogout = async () => {
     try {
-      await signOut(auth);
+      await logout(); // ✅ context에 정의한 logout 함수 사용
       navigate("/login");
     } catch (error) {
       console.error("로그아웃 실패:", error);

@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { getFirestore, doc, updateDoc, getDoc } from "firebase/firestore";
 import { useAuth } from "../contexts/AuthContext";
-import { getAuth } from "firebase/auth";
+
 
 const PaymentPage = () => {
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ const PaymentPage = () => {
   const db = getFirestore();
 
  const handlePurchase = async (passCount, bonus = 0) => {
-  const user = auth.currentUser;
+  const user = currentUser;
 
   if (!user) {
     alert("로그인 후 이용권을 구매할 수 있습니다!");
