@@ -11,6 +11,7 @@ const SharePage = () => {
   const [qrUrl, setQrUrl] = useState("");
   const [messageId, setMessageId] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
+  const [videoUrl, setVideoUrl] = useState("");
 
   // URL에서 messageId 파싱
   useEffect(() => {
@@ -19,7 +20,7 @@ const SharePage = () => {
     setMessageId(id);
   }, [location.search]);
 
-  // Firestore에서 이미지 불러오기
+  // Firestore에서 메시지 불러오기
   useEffect(() => {
     const fetchMessage = async () => {
       if (!messageId) return;
@@ -28,10 +29,13 @@ const SharePage = () => {
       if (docSnap.exists()) {
         const data = docSnap.data();
         setImageUrl(data.imageUrl || "");
+        setVideoUrl(data.videoUrl || "");
+      } else {
+        alert("공유할 메시지를 찾을 수 없어요.");
       }
     };
     fetchMessage();
-  }, [messageId, db]);
+  }, [messageId]);
 
   // Kakao SDK 초기화
   useEffect(() => {
@@ -66,13 +70,12 @@ const SharePage = () => {
       alert("공유할 메시지를 찾을 수 없어요.");
       return;
     }
-
     window.Kakao.Share.sendDefault({
       objectType: "feed",
       content: {
         title: "뿅!톡 메시지 도착 💌",
         description: "누군가 당신에게 마음을 보냈어요",
-        imageUrl: imageUrl,
+        imageUrl,
         link: {
           mobileWebUrl: shareUrl,
           webUrl: shareUrl,
@@ -93,8 +96,6 @@ const SharePage = () => {
   const handleTwitterShare = () => {
     window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=누군가 당신에게 마음을 보냈어요`);
   };
-
-  const videoUrl = ""; // 필요 시 videoUrl도 Firestore에서 받아오도록 수정 가능
 
   const buttonStyle = {
     padding: "8px 0",
@@ -118,7 +119,9 @@ const SharePage = () => {
     <div style={styles.wrapper}>
       <div style={styles.container}>
         <h2 style={styles.title}>💌 공유하기</h2>
+
         {qrUrl && <img src={qrUrl} alt="QR 코드" style={styles.qrImage} />}
+
         <p style={styles.caption}>이 QR을 스캔하면 누군가에게 마음이 전해져요</p>
 
         <div style={styles.buttonGroup}>
@@ -126,7 +129,11 @@ const SharePage = () => {
           <button style={buttonStyle} onClick={handleKakaoShare}>💬 카카오톡</button>
           <button style={buttonStyle} onClick={handleFacebookShare}>🟦 페이스북</button>
           <button style={buttonStyle} onClick={handleTwitterShare}>🐦 트위터</button>
-          {videoUrl && <a href={videoUrl} download style={buttonStyle}>🎥 영상 저장</a>}
+          {videoUrl ? (
+            <a href={videoUrl} download style={buttonStyle}>🎥 영상 저장</a>
+          ) : (
+            <div style={{ ...buttonStyle, opacity: 0.5 }}>영상 없음</div>
+          )}
         </div>
 
         <div style={styles.navGroup}>
