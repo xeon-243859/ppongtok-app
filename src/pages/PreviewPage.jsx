@@ -15,10 +15,10 @@ function PreviewPage() {
 
   useEffect(() => {
   if (window.Kakao && !window.Kakao.isInitialized()) {
-    window.Kakao.init("4abf45cca92e802edfc..."); // 진짜 앱 키
+    window.Kakao.init("4abf45cca92e802defcd2c15a6615155"); // 진짜 앱 키
     console.log("✅ Kakao SDK 초기화 완료");
   }
-}, []);
+}, []);            
 
   const [captionText, setCaptionText] = useState("💌 뿅!톡 테스트 자막입니다");
   const [generatedImageUrl, setGeneratedImageUrl] = useState("");
