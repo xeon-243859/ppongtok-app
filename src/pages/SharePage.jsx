@@ -14,14 +14,12 @@ const SharePage = () => {
   const [videoUrl, setVideoUrl] = useState("");
   const [caption, setCaption] = useState("");
 
-  // URL에서 messageId 파싱
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const id = params.get("id");
     setMessageId(id);
   }, [location.search]);
 
-  // Firestore에서 메시지 불러오기
   useEffect(() => {
     const fetchMessage = async () => {
       if (!messageId) return;
@@ -39,7 +37,6 @@ const SharePage = () => {
     fetchMessage();
   }, [messageId]);
 
-  // Kakao SDK 초기화
   useEffect(() => {
     if (window.Kakao && !window.Kakao.isInitialized()) {
       window.Kakao.init("4abf45cca92e802defcd2c15a6615155");
@@ -47,7 +44,6 @@ const SharePage = () => {
     }
   }, []);
 
-  // QR 생성
   const shareUrl = messageId ? `https://ppongtok-app.vercel.app/view/${messageId}` : "";
 
   useEffect(() => {
@@ -76,7 +72,7 @@ const SharePage = () => {
       objectType: "feed",
       content: {
         title: "뿅!톡 메시지 도착 💌",
-        description: "누군가 당신에게 마음을 보냈어요",
+        description: caption || "누군가 당신에게 마음을 보냈어요",
         imageUrl,
         link: {
           mobileWebUrl: shareUrl,
@@ -122,15 +118,20 @@ const SharePage = () => {
       <div style={styles.container}>
         <h2 style={styles.title}>💌 공유하기</h2>
 
+        {videoUrl ? (
+          <video src={videoUrl} controls style={styles.mediaDisplay} />
+        ) : (
+          <img src={imageUrl} alt="공유 이미지" style={styles.mediaDisplay} />
+        )}
+
+        {caption && (
+          <p className="shared-caption" style={styles.sharedCaption}>{caption}</p>
+        )}
+
         {qrUrl && <img src={qrUrl} alt="QR 코드" style={styles.qrImage} />}
 
         <p style={styles.caption}>이 QR을 스캔하면 누군가에게 마음이 전해져요</p>
-        
-        {caption && ( // ✅ 자막 보여주기
-  <p className="shared-caption" style={{ marginTop: "16px", fontSize: "18px", color: "#444", textAlign: "center" }}>
-    {caption}
-  </p>
-)}
+
         <div style={styles.buttonGroup}>
           <button style={buttonStyle} onClick={handleCopyLink}>🔗 링크 복사</button>
           <button style={buttonStyle} onClick={handleKakaoShare}>💬 카카오톡</button>
@@ -157,19 +158,33 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    height: "100vh",
+    minHeight: "100vh",
     backgroundColor: "#fffdf8",
     padding: "20px",
   },
   container: {
     textAlign: "center",
-    maxWidth: "400px",
+    maxWidth: "600px",
     width: "100%",
   },
   title: {
     fontSize: "24px",
     marginBottom: "20px",
     color: "#333",
+  },
+  mediaDisplay: {
+    width: "100%",
+    maxHeight: "60vh",
+    objectFit: "contain",
+    marginBottom: "16px",
+    borderRadius: "12px",
+    boxShadow: "0 0 10px rgba(0,0,0,0.1)"
+  },
+  sharedCaption: {
+    fontSize: "18px",
+    color: "#444",
+    textAlign: "center",
+    marginBottom: "20px"
   },
   qrImage: {
     width: "150px",
@@ -196,5 +211,3 @@ const styles = {
 };
 
 export default SharePage;
-
-
