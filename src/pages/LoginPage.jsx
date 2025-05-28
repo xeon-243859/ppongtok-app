@@ -40,9 +40,18 @@ const LoginPage = () => {
           console.log("✅ 기존 유저 Firestore 확인됨");
         }
 
-        navigate("/"); // 로그인 후 홈으로 이동
+      
+          // ✅ 로그인 후 리디렉션 처리
+        const redirectTo = localStorage.getItem("afterLoginRedirect");
+        if (redirectTo) {
+          navigate(redirectTo);
+          localStorage.removeItem("afterLoginRedirect");
+        } else {
+          navigate("/"); // 기본값
+        }
       }
     };
+    
 
     checkAndSaveUser();
   }, [currentUser, navigate]);

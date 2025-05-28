@@ -8,12 +8,57 @@ import { getAuth } from "firebase/auth";
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase"; // 경로는 네 구조에 맞게 수정
 
-const generatedImageUrl = "https://via.placeholder.com/480x270.png?text=미리보기";
-const captionText = "💌 뿅!톡 테스트 자막입니다"; 
-const PreviewPage = () => {
-  const navigate = useNavigate();
+const [captionText, setCaptionText] = useState("💌 뿅!톡 테스트 자막입니다");
 
-  const handleSaveAndShare = async () => {
+const PreviewPage = async () => {
+
+  const navigate = useNavigate();
+  const [generatedImageUrl, setGeneratedImageUrl] = useState("");
+  const [captionText, setCaptionText] = useState("💌 뿅!톡 테스트 자막입니다");
+  
+  const handleGenerateAndUploadImage = async () => {
+  
+  const handleFullShare = async () => {
+  try {
+    await handleGenerateAndUploadImage(); // 1️⃣ 이미지 생성 및 업로드
+
+    if (!generatedImageUrl) {
+      alert("이미지가 아직 준비되지 않았어요!");
+      return;
+    }
+
+    await handleSaveAndShare(); // 2️⃣ 공유 실행
+  } catch (error) {
+    console.error("❌ 전체 공유 흐름 실패:", error);
+    alert("공유에 실패했어요 😢");
+  }
+};
+
+  const target = document.getElementById("preview-target");
+  if (!target) {
+    alert("캡처할 요소가 없어요!");
+    return;
+  }
+
+  const canvas = await html2canvas(target);
+  const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+
+  const fileName = `preview_${Date.now()}.png`;
+  const imageRef = ref(storage, `previews/${fileName}`);
+  await uploadBytes(imageRef, blob);
+
+  const downloadUrl = await getDownloadURL(imageRef);
+  setGeneratedImageUrl(downloadUrl);
+
+  console.log("🟢 이미지 저장 완료:", downloadUrl);
+};
+
+    if (!currentUser) {
+    localStorage.setItem("afterLoginRedirect", "/preview");
+    alert("로그인이 필요해요 💌");
+    navigate("/login");
+    return;
+  }
   const messageData = {
     imageUrl: generatedImageUrl,
     caption: captionText,
@@ -24,7 +69,8 @@ const PreviewPage = () => {
   try {
     const docRef = await addDoc(collection(db, "messages"), messageData);
     const messageId = docRef.id;
-
+    const shareUrl = `https://ppongtok-app.vercel.app/view/${messageId}`;
+    
     window.Kakao.Share.sendDefault({
       objectType: "feed",
       content: {
@@ -175,11 +221,12 @@ const PreviewPage = () => {
     <div>
       <img src={generatedImageUrl} alt="썸네일" />
       <p>{captionText}</p>
-      <button onClick={handleSaveAndShare}>카카오톡 공유하기</button>
+      <button onClick={handleFullShare}>카카오톡 공유하기</button>
+
     </div>
 
     {/* 미디어 프리뷰 영역 */}
-    <div className="preview-wrapper">
+    <div id="preview-target" className="preview-wrapper">
       <div className="preview-page">
         <div className="media-box">
           <div className="moving-box">
@@ -233,6 +280,6 @@ const PreviewPage = () => {
     </div>
   </>
 );
-}; 
+
 
 export default PreviewPage;
