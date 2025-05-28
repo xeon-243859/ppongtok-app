@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { addDoc, collection, getFirestore } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import "./PreviewPage.css";
 
-function PreviewPage({ selectedImages, selectedVideo, mediaType }) {
+function PreviewPage() {
+  const location = useLocation();
+  const { selectedImages, selectedVideo, mediaType } = location.state || {};
+
   const [captionText, setCaptionText] = useState("");
   const [generatedImageUrl, setGeneratedImageUrl] = useState(null);
   const { currentUser } = useAuth();
