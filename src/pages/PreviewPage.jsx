@@ -130,7 +130,7 @@ function PreviewPage() {
     // ✅ 공유는 이용권 차감 후 실행!
   
     const messageId = await handleFullShare(); 
-    navigate(`/view/${messageId}`); 
+    navigate(`/share?id=${messageId}`);  
 
   } else {
     alert("무료 이용권이 모두 소진되었습니다. 결제가 필요해요 🛍️");

@@ -1,24 +1,52 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import QRCode from "qrcode";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 
 const SharePage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const db = getFirestore();
+
   const [qrUrl, setQrUrl] = useState("");
+  const [messageId, setMessageId] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
 
-  const shareUrl = "https://ppongtok-app.vercel.app/share/abc123"; // 👉 실제 메시지 링크로 교체
-  const videoUrl = "https://firebasestorage.googleapis.com/v0/b/ppongtok-project.firebasestorage.app/o/sample-video.mp4?alt=media";
+  // URL에서 messageId 파싱
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const id = params.get("id");
+    setMessageId(id);
+  }, [location.search]);
 
-  // QR 생성 (안전하게 처리)
+  // Firestore에서 이미지 불러오기
+  useEffect(() => {
+    const fetchMessage = async () => {
+      if (!messageId) return;
+      const docRef = doc(db, "messages", messageId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setImageUrl(data.imageUrl || "");
+      }
+    };
+    fetchMessage();
+  }, [messageId, db]);
+
+  // Kakao SDK 초기화
   useEffect(() => {
     if (window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.init("4abf45cca92e802defcd2c15a6615155"); // 🔑 꼭 JavaScript 키!
+      window.Kakao.init("4abf45cca92e802defcd2c15a6615155");
       console.log("✅ Kakao SDK 초기화 완료");
     }
   }, []);
 
+  // QR 생성
+  const shareUrl = messageId ? `https://ppongtok-app.vercel.app/view/${messageId}` : "";
+
   useEffect(() => {
     const generateQR = async () => {
+      if (!shareUrl) return;
       try {
         const url = await QRCode.toDataURL(shareUrl);
         setQrUrl(url);
@@ -27,36 +55,32 @@ const SharePage = () => {
       }
     };
     generateQR();
-  }, []);
+  }, [shareUrl]);
 
-  // 카카오 공유
   const handleKakaoShare = () => {
-    if (!window.Kakao) {
-      alert("카카오 SDK가 로드되지 않았어요!");
+    if (!window.Kakao || !window.Kakao.isInitialized()) {
+      alert("카카오톡 공유를 사용할 수 없습니다.");
       return;
     }
-
-    if (!window.Kakao.isInitialized()) {
-      alert("Kakao 초기화가 되지 않았어요!");
-    return;
+    if (!imageUrl || !messageId) {
+      alert("공유할 메시지를 찾을 수 없어요.");
+      return;
     }
-
 
     window.Kakao.Share.sendDefault({
       objectType: "feed",
       content: {
         title: "뿅!톡 메시지 도착 💌",
         description: "누군가 당신에게 마음을 보냈어요",
-        imageUrl: qrUrl,
+        imageUrl: imageUrl,
         link: {
-           mobileWebUrl: `https://ppongtok-app.vercel.app/view/${messageId}`,
-           webUrl: `https://ppongtok-app.vercel.app/view/${messageId}`,
+          mobileWebUrl: shareUrl,
+          webUrl: shareUrl,
         },
       },
     });
   };
 
-  // 기타 공유
   const handleCopyLink = () => {
     navigator.clipboard.writeText(shareUrl);
     alert("링크가 복사되었어요!");
@@ -70,32 +94,31 @@ const SharePage = () => {
     window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=누군가 당신에게 마음을 보냈어요`);
   };
 
-  const buttonStyle = {
-  padding: "8px 0",
-  width: "150px", // ✅ 작게
-  fontSize: "13px", // ✅ 작게
-  borderRadius: "8px",
-  border: "1px solid #ccc",
-  backgroundColor: "#fff",
-  color: "#333",
-  boxShadow: "1px 1px 4px rgba(0,0,0,0.05)",
-  cursor: "pointer",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  gap: "6px",
-  margin: "4px auto",
-  textDecoration: "none"
-};
+  const videoUrl = ""; // 필요 시 videoUrl도 Firestore에서 받아오도록 수정 가능
 
+  const buttonStyle = {
+    padding: "8px 0",
+    width: "150px",
+    fontSize: "13px",
+    borderRadius: "8px",
+    border: "1px solid #ccc",
+    backgroundColor: "#fff",
+    color: "#333",
+    boxShadow: "1px 1px 4px rgba(0,0,0,0.05)",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "6px",
+    margin: "4px auto",
+    textDecoration: "none"
+  };
 
   return (
     <div style={styles.wrapper}>
       <div style={styles.container}>
         <h2 style={styles.title}>💌 공유하기</h2>
-
         {qrUrl && <img src={qrUrl} alt="QR 코드" style={styles.qrImage} />}
-
         <p style={styles.caption}>이 QR을 스캔하면 누군가에게 마음이 전해져요</p>
 
         <div style={styles.buttonGroup}>
@@ -103,7 +126,7 @@ const SharePage = () => {
           <button style={buttonStyle} onClick={handleKakaoShare}>💬 카카오톡</button>
           <button style={buttonStyle} onClick={handleFacebookShare}>🟦 페이스북</button>
           <button style={buttonStyle} onClick={handleTwitterShare}>🐦 트위터</button>
-          <a href={videoUrl} download style={buttonStyle}>🎥 영상 저장</a>
+          {videoUrl && <a href={videoUrl} download style={buttonStyle}>🎥 영상 저장</a>}
         </div>
 
         <div style={styles.navGroup}>
@@ -134,27 +157,23 @@ const styles = {
     marginBottom: "20px",
     color: "#333",
   },
- 
   qrImage: {
-  width: "150px",
-  margin: "0 auto"
-},
-
+    width: "150px",
+    margin: "0 auto"
+  },
   caption: {
     marginTop: "16px",
     fontSize: "14px",
     color: "#666"
   },
-
   buttonGroup: {
-  marginTop: "20px",
-  display: "flex",
-  flexWrap: "wrap",
-  justifyContent: "center",
-  gap: "10px"
-},
-
-   navGroup: {
+    marginTop: "20px",
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    gap: "10px"
+  },
+  navGroup: {
     marginTop: "40px",
     display: "flex",
     flexDirection: "column",
