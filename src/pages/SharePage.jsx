@@ -1,47 +1,54 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import QRCode from "qrcode";
-import { getFirestore, doc, getDoc, setDoc, collection, addDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 
 const SharePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const db = getFirestore();
 
-  const { selectedImages, selectedVideo, mediaType, captionText } = location.state || {};
   const [qrUrl, setQrUrl] = useState("");
   const [messageId, setMessageId] = useState(null);
-  const [shareUrl, setShareUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [videoUrl, setVideoUrl] = useState("");
+  const [caption, setCaption] = useState("");
 
+  // URL에서 messageId 파싱
   useEffect(() => {
-    const saveMessage = async () => {
-      if (!selectedImages && !selectedVideo) return;
+    const params = new URLSearchParams(location.search);
+    const id = params.get("id");
+    setMessageId(id);
+  }, [location.search]);
 
-      const newMessage = {
-        imageUrl: selectedImages?.[0] || "",
-        videoUrl: selectedVideo || "",
-        caption: captionText || "",
-        createdAt: new Date(),
-      };
-
-      try {
-        const docRef = await addDoc(collection(db, "messages"), newMessage);
-        const id = docRef.id;
-        setMessageId(id);
-        setShareUrl(`https://ppongtok-app.vercel.app/view/${id}`);
-      } catch (err) {
-        console.error("메시지 저장 실패", err);
+  // Firestore에서 메시지 불러오기
+  useEffect(() => {
+    const fetchMessage = async () => {
+      if (!messageId) return;
+      const docRef = doc(db, "messages", messageId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setImageUrl(data.imageUrl || "");
+        setVideoUrl(data.videoUrl || "");
+        setCaption(data.caption || "");
+      } else {
+        alert("공유할 메시지를 찾을 수 없어요.");
       }
     };
+    fetchMessage();
+  }, [messageId]);
 
-    saveMessage();
-  }, [selectedImages, selectedVideo, captionText]);
-
+  // Kakao SDK 초기화
   useEffect(() => {
     if (window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.init("YOUR_KAKAO_JAVASCRIPT_KEY");
+      window.Kakao.init("4abf45cca92e802defcd2c15a6615155");
+      console.log("✅ Kakao SDK 초기화 완료");
     }
   }, []);
+
+  // QR 생성
+  const shareUrl = messageId ? `https://ppongtok-app.vercel.app/view/${messageId}` : "";
 
   useEffect(() => {
     const generateQR = async () => {
@@ -61,13 +68,16 @@ const SharePage = () => {
       alert("카카오톡 공유를 사용할 수 없습니다.");
       return;
     }
-
+    if (!imageUrl || !messageId) {
+      alert("공유할 메시지를 찾을 수 없어요.");
+      return;
+    }
     window.Kakao.Share.sendDefault({
       objectType: "feed",
       content: {
         title: "뿅!톡 메시지 도착 💌",
-        description: captionText || "누군가 당신에게 마음을 보냈어요",
-        imageUrl: selectedImages?.[0] || "",
+        description: "누군가 당신에게 마음을 보냈어요",
+        imageUrl,
         link: {
           mobileWebUrl: shareUrl,
           webUrl: shareUrl,
@@ -77,35 +87,114 @@ const SharePage = () => {
   };
 
   const handleCopyLink = () => {
-    if (!shareUrl) return;
     navigator.clipboard.writeText(shareUrl);
     alert("링크가 복사되었어요!");
   };
 
+  const handleFacebookShare = () => {
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`);
+  };
+
+  const handleTwitterShare = () => {
+    window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=누군가 당신에게 마음을 보냈어요`);
+  };
+
+  const buttonStyle = {
+    padding: "8px 0",
+    width: "150px",
+    fontSize: "13px",
+    borderRadius: "8px",
+    border: "1px solid #ccc",
+    backgroundColor: "#fff",
+    color: "#333",
+    boxShadow: "1px 1px 4px rgba(0,0,0,0.05)",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "6px",
+    margin: "4px auto",
+    textDecoration: "none"
+  };
+
   return (
-    <div style={{ textAlign: "center", padding: "30px" }}>
-      <h2>💌 공유하기</h2>
+    <div style={styles.wrapper}>
+      <div style={styles.container}>
+        <h2 style={styles.title}>💌 공유하기</h2>
 
-      {qrUrl && <img src={qrUrl} alt="QR 코드" style={{ width: "150px" }} />}
+        {qrUrl && <img src={qrUrl} alt="QR 코드" style={styles.qrImage} />}
 
-      <p>이 QR을 스캔하면 누군가에게 마음이 전해져요</p>
+        <p style={styles.caption}>이 QR을 스캔하면 누군가에게 마음이 전해져요</p>
+        
+        {caption && ( // ✅ 자막 보여주기
+  <p className="shared-caption" style={{ marginTop: "16px", fontSize: "18px", color: "#444", textAlign: "center" }}>
+    {caption}
+  </p>
+)}
+        <div style={styles.buttonGroup}>
+          <button style={buttonStyle} onClick={handleCopyLink}>🔗 링크 복사</button>
+          <button style={buttonStyle} onClick={handleKakaoShare}>💬 카카오톡</button>
+          <button style={buttonStyle} onClick={handleFacebookShare}>🟦 페이스북</button>
+          <button style={buttonStyle} onClick={handleTwitterShare}>🐦 트위터</button>
+          {videoUrl ? (
+            <a href={videoUrl} download style={buttonStyle}>🎥 영상 저장</a>
+          ) : (
+            <div style={{ ...buttonStyle, opacity: 0.5 }}>영상 없음</div>
+          )}
+        </div>
 
-      <div>
-        <button onClick={handleCopyLink}>🔗 링크 복사</button>
-        <button onClick={handleKakaoShare}>💬 카카오톡</button>
-        {selectedVideo ? (
-          <a href={selectedVideo} download>🎥 영상 저장</a>
-        ) : (
-          <p style={{ opacity: 0.5 }}>영상 없음</p>
-        )}
-      </div>
-
-      <div style={{ marginTop: "40px" }}>
-        <button onClick={() => navigate("/")}>🏠 처음으로</button>
-        <button onClick={() => navigate("/select-category")}>✨ 시작하기</button>
+        <div style={styles.navGroup}>
+          <button style={buttonStyle} onClick={() => navigate("/")}>🏠 처음으로</button>
+          <button style={buttonStyle} onClick={() => navigate("/select-category")}>✨ 시작하기</button>
+        </div>
       </div>
     </div>
   );
 };
 
+const styles = {
+  wrapper: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100vh",
+    backgroundColor: "#fffdf8",
+    padding: "20px",
+  },
+  container: {
+    textAlign: "center",
+    maxWidth: "400px",
+    width: "100%",
+  },
+  title: {
+    fontSize: "24px",
+    marginBottom: "20px",
+    color: "#333",
+  },
+  qrImage: {
+    width: "150px",
+    margin: "0 auto"
+  },
+  caption: {
+    marginTop: "16px",
+    fontSize: "14px",
+    color: "#666"
+  },
+  buttonGroup: {
+    marginTop: "20px",
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    gap: "10px"
+  },
+  navGroup: {
+    marginTop: "40px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "12px"
+  }
+};
+
 export default SharePage;
+
+
