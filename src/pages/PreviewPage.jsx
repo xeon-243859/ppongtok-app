@@ -94,6 +94,8 @@ function PreviewPage() {
           },
         },
       });
+      return messageId; // ✅ 이걸 추가!
+
     } catch (error) {
       console.error("❌ 공유 실패:", error);
       alert("공유 중 오류가 발생했어요 😢");
@@ -126,9 +128,10 @@ function PreviewPage() {
     await updateDoc(userRef, { freePassCount: freePass - 1 });
 
     // ✅ 공유는 이용권 차감 후 실행!
-    await handleFullShare();
+  
+    const messageId = await handleFullShare(); 
+    navigate(`/view/${messageId}`); 
 
-    navigate("/share");
   } else {
     alert("무료 이용권이 모두 소진되었습니다. 결제가 필요해요 🛍️");
     navigate("/payment");
