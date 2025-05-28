@@ -105,11 +105,15 @@ function PreviewPage() {
   };
 
   const handleNext = async () => {
-    if (!currentUser) {
-      alert("로그인이 필요해요 💌");
-      navigate("/login");
-      return;
-    }
+  if (!currentUser) {
+    localStorage.setItem("afterLoginRedirect", "/preview");
+    alert("로그인이 필요해요 💌");
+    navigate("/login");
+    return;
+  }
+
+  // 로그인 되어 있으면 공유 흐름 시작
+  await handleFullShare();
 
     const userRef = doc(db, "users", currentUser.uid);
     const userSnap = await getDoc(userRef);
