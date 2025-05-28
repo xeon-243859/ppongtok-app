@@ -6,12 +6,20 @@ import { ref, uploadBytes, uploadString, getDownloadURL } from "firebase/storage
 import { storage } from "../firebase";
 import { useAuth } from "../contexts/AuthContext";
 import "./PreviewPage.css";
+import { addDoc, collection } from "firebase/firestore";
 
 function PreviewPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { currentUser } = useAuth();
   const db = getFirestore();
+
+  useEffect(() => {
+  if (window.Kakao && !window.Kakao.isInitialized()) {
+    window.Kakao.init("4abf45cca92e802edfc..."); // 진짜 앱 키
+    console.log("✅ Kakao SDK 초기화 완료");
+  }
+}, []);
 
   const [captionText, setCaptionText] = useState("💌 뿅!톡 테스트 자막입니다");
   const [generatedImageUrl, setGeneratedImageUrl] = useState("");
@@ -28,6 +36,16 @@ function PreviewPage() {
   const audioRef = useRef(null);
 
   const handleFullShare = async () => {
+    
+
+    if (!window.Kakao || !window.Kakao.Share) {
+  alert("카카오 공유 기능을 사용할 수 없어요 😢");
+ 
+
+  return;
+   }
+
+
     if (!currentUser) {
       localStorage.setItem("afterLoginRedirect", "/preview");
       alert("로그인이 필요해요 💌");
@@ -62,6 +80,7 @@ function PreviewPage() {
       const docRef = await addDoc(collection(db, "messages"), messageData);
       const messageId = docRef.id;
       const shareUrl = `https://ppongtok-app.vercel.app/view/${messageId}`;
+      
 
       // 카카오톡 공유
       window.Kakao.Share.sendDefault({
