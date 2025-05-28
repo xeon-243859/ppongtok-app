@@ -46,19 +46,14 @@ function PreviewPage() {
       return;
     }
 
-    const target = document.getElementById("preview-target");
-    if (!target) {
-      alert("캡처할 요소가 없어요!");
-      return;
-    }
-
     try {
-      const canvas = await html2canvas(target);
-      const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
-      const fileName = `preview_${Date.now()}.png`;
-      const imageRef = ref(storage, `previews/${fileName}`);
-      await uploadBytes(imageRef, blob);
-      const downloadUrl = await getDownloadURL(imageRef);
+      // 이미지 URL은 사용자가 선택한 원본으로 설정
+      const downloadUrl = mediaType === "image" && selectedImages.length > 0
+        ? selectedImages[0]
+        : mediaType === "video" && selectedVideo
+        ? selectedVideo
+        : "https://via.placeholder.com/600x400.png?text=뿅!톡"; // fallback 이미지
+
       setGeneratedImageUrl(downloadUrl);
 
       const messageData = {
