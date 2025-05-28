@@ -23,14 +23,17 @@ const SharePage = () => {
   useEffect(() => {
     const fetchMessage = async () => {
       if (!messageId) return;
+      console.log("📌 messageId 로딩 중:", messageId);
       const docRef = doc(db, "messages", messageId);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         const data = docSnap.data();
+        console.log("✅ Firestore 문서 찾음:", data);
         setImageUrl(data.imageUrl || "");
         setVideoUrl(data.videoUrl || "");
         setCaption(data.caption || "");
       } else {
+        console.error("❌ Firestore 문서 없음:", messageId); 
         alert("공유할 메시지를 찾을 수 없어요.");
       }
     };
