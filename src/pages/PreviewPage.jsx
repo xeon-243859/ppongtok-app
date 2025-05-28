@@ -112,27 +112,29 @@ function PreviewPage() {
     return;
   }
 
-  // 로그인 되어 있으면 공유 흐름 시작
-  await handleFullShare();
+  const userRef = doc(db, "users", currentUser.uid);
+  const userSnap = await getDoc(userRef);
 
-    const userRef = doc(db, "users", currentUser.uid);
-    const userSnap = await getDoc(userRef);
+  if (!userSnap.exists()) {
+    alert("유저 정보가 없습니다.");
+    return;
+  }
 
-    if (!userSnap.exists()) {
-      alert("유저 정보가 없습니다.");
-      return;
-    }
+  const freePass = userSnap.data().freePassCount || 0;
 
-    const freePass = userSnap.data().freePassCount || 0;
+  if (freePass > 0) {
+    await updateDoc(userRef, { freePassCount: freePass - 1 });
 
-    if (freePass > 0) {
-      await updateDoc(userRef, { freePassCount: freePass - 1 });
-      navigate("/share");
-    } else {
-      alert("무료 이용권이 모두 소진되었습니다. 결제가 필요해요 🛍️");
-      navigate("/payment");
-    }
-  };
+    // ✅ 공유는 이용권 차감 후 실행!
+    await handleFullShare();
+
+    navigate("/share");
+  } else {
+    alert("무료 이용권이 모두 소진되었습니다. 결제가 필요해요 🛍️");
+    navigate("/payment");
+  }
+};
+
 
   useEffect(() => {
     const storedMessage = localStorage.getItem("message");
