@@ -6,7 +6,6 @@ import { ref, uploadBytes, uploadString, getDownloadURL } from "firebase/storage
 import { storage } from "../firebase";
 import { useAuth } from "../contexts/AuthContext";
 import "./PreviewPage.css";
-import { addDoc, collection } from "firebase/firestore";
 
 function PreviewPage() {
   const navigate = useNavigate();
