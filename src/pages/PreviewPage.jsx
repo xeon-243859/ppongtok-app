@@ -147,13 +147,7 @@ function PreviewPage() {
 
   return (
     <>
-      <div>
-        <img src={generatedImageUrl} alt="썸네일" />
-        <p>{captionText}</p>
-        {/* ❌ Preview에서는 카카오톡 공유 제거 */}
-        {/* <button onClick={handleFullShare}>카카오톡 공유하기</button> */}
-      </div>
-
+      
       <div id="preview-target" className="preview-wrapper">
         <div className="preview-page">
           <div className="media-box">
