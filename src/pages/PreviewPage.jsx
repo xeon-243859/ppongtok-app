@@ -3,6 +3,7 @@ import { addDoc, collection, getFirestore } from "firebase/firestore";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import "./PreviewPage.css";
+import { useEffect } from "react";
 
 function PreviewPage() {
   const location = useLocation();
@@ -13,6 +14,12 @@ function PreviewPage() {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
   const db = getFirestore();
+
+  useEffect(() => {
+  if (window.Kakao && !window.Kakao.isInitialized()) {
+    window.Kakao.init("4abf45cca92e802defcd2c15a6615155");
+  }
+}, []);
 
   const handleFullShare = async () => {
     if (!window.Kakao || !window.Kakao.Share) {
