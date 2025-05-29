@@ -1,4 +1,4 @@
-// ✅ SharePage.jsx - 공유화면 유지 + messageId가 없어도 공유 시도 가능하도록 예외 처리 완화
+// ✅ SharePage.jsx - 카카오톡 공유 시 사용자 콘텐츠 (영상/이미지)로 미리보기 적용
 
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -88,12 +88,14 @@ const SharePage = () => {
 
     await updateDoc(userRef, { freePassCount: freePass - 1 });
 
+    const previewImage = imageUrl || (videoUrl ? "https://via.placeholder.com/600x400.png?text=🎥+Video+Message" : "https://via.placeholder.com/600x400.png?text=PPONGTOK");
+
     window.Kakao.Share.sendDefault({
       objectType: "feed",
       content: {
         title: "뿅!톡 메시지 도착 💌",
         description: caption || "누군가 당신에게 마음을 보냈어요",
-        imageUrl: imageUrl || "https://via.placeholder.com/600x400.png?text=PPONGTOK",
+        imageUrl: previewImage,
         link: {
           mobileWebUrl: shareUrl,
           webUrl: shareUrl,
