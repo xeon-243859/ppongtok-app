@@ -66,8 +66,9 @@ const PreviewPage = () => {
       try {
         const docRef = await addDoc(collection(db, "messages"), messageData);
         const messageId = docRef.id;
+        const shareUrl = `https://ppongtok-app.vercel.app/api/view/${messageId}`; // <-- 여기로 바꿔야 해!
         console.log("✅ messageId:", messageId);
-        navigate(`/share?id=${messageId}`);
+        window.open(shareUrl, "_blank");
       } catch (error) {
         console.error("❌ 메시지 저장 실패:", error);
         alert("메시지 저장에 실패했어요. 다시 시도해 주세요.");
