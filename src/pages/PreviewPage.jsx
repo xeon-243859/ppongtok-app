@@ -1,4 +1,4 @@
-// ✅ PreviewPage.jsx - 원본 최대 유지 + Firestore messageId 로그 추가
+// ✅ PreviewPage.jsx - 원본 최대 유지 + 상단 썸네일/자막/공유버튼 제거 + currentUser 로그 추가
 
 import React, { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -95,6 +95,8 @@ function PreviewPage() {
   };
 
   const handleNext = async () => {
+    console.log("🔐 currentUser:", currentUser);
+
     if (!currentUser) {
       localStorage.setItem("afterLoginRedirect", "/preview");
       alert("로그인이 필요해요 💌");
@@ -175,12 +177,6 @@ function PreviewPage() {
 
   return (
     <>
-      <div>
-        <img src={generatedImageUrl} alt="썸네일" />
-        <p>{captionText}</p>
-        <button onClick={handleFullShare}>카카오톡 공유하기</button>
-      </div>
-
       <div id="preview-target" className="preview-wrapper">
         <div className="preview-page">
           <div className="media-box">
