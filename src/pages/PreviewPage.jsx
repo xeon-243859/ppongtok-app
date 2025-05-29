@@ -41,7 +41,7 @@ function PreviewPage() {
 
     
 
-      const docRef = await addDoc(collection(db, "sharedMessages"), {
+      const docRef = await addDoc(collection(db, "messages"), {
         imageUrl,
         caption,
         createdAt: new Date(),
