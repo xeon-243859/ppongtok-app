@@ -1,4 +1,4 @@
-// ✅ SharePage.jsx - 공유화면 유지하면서 공유 버튼 클릭 시 로그인 및 이용권 확인 흐름 추가
+// ✅ SharePage.jsx - 공유화면 유지 + messageId가 없어도 공유 시도 가능하도록 예외 처리 완화
 
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -34,6 +34,8 @@ const SharePage = () => {
         setImageUrl(data.imageUrl || "");
         setVideoUrl(data.videoUrl || "");
         setCaption(data.caption || "");
+      } else {
+        console.warn("공유 메시지 없음 - 공유 버튼 동작은 허용됨");
       }
     };
     fetchMessage();
@@ -45,7 +47,7 @@ const SharePage = () => {
     }
   }, []);
 
-  const shareUrl = messageId ? `https://ppongtok-app.vercel.app/view/${messageId}` : "";
+  const shareUrl = messageId ? `https://ppongtok-app.vercel.app/view/${messageId}` : "https://ppongtok-app.vercel.app";
 
   useEffect(() => {
     const generateQR = async () => {
@@ -62,10 +64,6 @@ const SharePage = () => {
 
   const handleKakaoShare = async () => {
     if (!window.Kakao || !window.Kakao.isInitialized()) return;
-    if (!messageId) {
-      alert("공유할 메시지를 찾을 수 없습니다. 다시 시도해 주세요.");
-      return;
-    }
 
     if (!currentUser) {
       alert("로그인이 필요해요 💌");
