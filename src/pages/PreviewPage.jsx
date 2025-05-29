@@ -109,7 +109,8 @@ function PreviewPage() {
 
       const docRef = await addDoc(collection(db, "messages"), messageData);
       const messageId = docRef.id;
-      console.log("✅ messageId:", messageId);
+      
+      console.log("✅ 저장된 Firestore 문서 ID:", messageId);
 
       const shareUrl = `https://ppongtok-app.vercel.app/view/${messageId}`;
 
@@ -149,7 +150,7 @@ function PreviewPage() {
 
     const userRef = doc(db, "users", currentUser.uid);
     const userSnap = await getDoc(userRef);
-
+    console.log("🔍 Firestore에서 확인된 존재 여부:", docSnap.exists());
     if (!userSnap.exists()) {
       alert("유저 정보가 없습니다.");
       return;
@@ -185,7 +186,7 @@ function PreviewPage() {
         const docRef = await addDoc(collection(db, "messages"), messageData);
         const messageId = docRef.id;
         console.log("✅ messageId:", messageId);
-        navigate(`/share?id=${messageId}`);
+        navigate(`/view/${messageId}`);
       } catch (error) {
         console.error("❌ 메시지 저장 실패:", error);
         alert("메시지 저장에 실패했어요. 다시 시도해 주세요.");
