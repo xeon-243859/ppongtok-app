@@ -1,4 +1,4 @@
-// ✅ SharePage.jsx - 카카오톡 공유 시 사용자 콘텐츠 (영상/이미지)로 미리보기 적용
+// ✅ SharePage.jsx - 카카오톡 공유 썸네일 문제 보완 + 공유화면 스타일 정리
 
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -105,15 +105,20 @@ const SharePage = () => {
   };
 
   return (
-    <div>
-      <h2>💌 공유하기</h2>
-      {caption && <p>{caption}</p>}
-      {qrUrl && <img src={qrUrl} alt="QR 코드" style={{ width: "120px", margin: "20px auto" }} />}
-      <p>이 QR을 스캔하면 누군가에게 마음이 전해져요</p>
+    <div style={{ maxWidth: "480px", margin: "0 auto", padding: "32px 16px", textAlign: "center", fontFamily: "sans-serif" }}>
+      <h2 style={{ fontSize: "20px", marginBottom: "16px" }}>💌 공유하기</h2>
+      {caption && <p style={{ fontSize: "16px", color: "#444", marginBottom: "24px" }}>{caption}</p>}
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "10px", alignItems: "center", marginTop: "20px" }}>
-        <button onClick={handleKakaoShare}>💬 카카오톡 공유하기</button>
-        <button onClick={() => navigate("/")}>🏠 처음으로</button>
+      {qrUrl && <img src={qrUrl} alt="QR 코드" style={{ width: "150px", margin: "0 auto 16px" }} />}
+      <p style={{ fontSize: "14px", color: "#777" }}>이 QR을 스캔하면 누군가에게 마음이 전해져요</p>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginTop: "32px" }}>
+        <button onClick={handleKakaoShare} style={{ padding: "12px", borderRadius: "8px", background: "#FAE100", border: "none", fontWeight: "bold" }}>
+          💬 카카오톡 공유하기
+        </button>
+        <button onClick={() => navigate("/")} style={{ padding: "12px", borderRadius: "8px", background: "#eee", border: "none", fontWeight: "bold" }}>
+          🏠 처음으로
+        </button>
       </div>
     </div>
   );
