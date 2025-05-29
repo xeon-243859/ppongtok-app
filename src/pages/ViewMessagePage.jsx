@@ -1,119 +1,87 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
-import "./PreviewPage.css";
+// ViewMessagePage.jsx (최종본)
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { doc, getDoc, addDoc, collection } from 'firebase/firestore';
+import { db } from '../firebase';
 
-function ViewMessagePage() {
-  const { id } = useParams();
-  const db = getFirestore();
+const ViewMessagePage = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [messageData, setMessageData] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const messageId = new URLSearchParams(location.search).get('id');
+
   useEffect(() => {
     const fetchMessage = async () => {
+      if (!messageId) return;
       try {
-        console.log("🔍 ViewMessagePage - 받은 id:", id);
-        const docRef = doc(db, "messages", id);
+        const docRef = doc(db, 'messages', messageId);
         const docSnap = await getDoc(docRef);
-
         if (docSnap.exists()) {
           setMessageData(docSnap.data());
         } else {
-          alert("공유할 메시지를 찾을 수 없습니다.");
-          console.log("🔍 ViewMessagePage - id param:", id);
+          alert('메시지를 찾을 수 없습니다.');
         }
       } catch (error) {
-        console.error("메시지 불러오기 오류:", error);
-        alert("메시지를 불러오는 중 오류가 발생했습니다.");
+        console.error('메시지 불러오기 실패:', error);
       } finally {
         setLoading(false);
       }
     };
-
     fetchMessage();
-  }, [id]);
+  }, [messageId]);
 
-  if (loading) return <p>로딩 중...</p>;
-  if (!messageData) return <p>메시지를 표시할 수 없습니다.</p>;
-
-  const { imageUrl, videoUrl, caption } = messageData;
-  const shareUrl = `https://ppongtok-app.vercel.app/view/${id}`;
-
-  const handleKakaoShare = () => {
-    if (!window.Kakao || !window.Kakao.isInitialized()) {
-      alert("카카오 SDK가 초기화되지 않았습니다.");
-      return;
-    }
-
-    window.Kakao.Share.sendDefault({
-      objectType: "feed",
-      content: {
-        title: "뿅!톡 메시지 도착 💌",
-        description: caption || "당신을 위한 마음이 도착했어요!",
-        imageUrl: imageUrl || "",
-        link: {
-          mobileWebUrl: shareUrl,
-          webUrl: shareUrl,
-        },
-      },
-      buttons: [
-        {
-          title: "메시지 보기",
-          link: {
-            mobileWebUrl: shareUrl,
-            webUrl: shareUrl,
-          },
-        },
-      ],
-    });
+  const handleShare = () => {
+    navigate(`/share?id=${messageId}`);
   };
 
-  return (
-    <div className="preview-wrapper">
-      <div className="preview-page">
-        <div className="media-box">
-          <div className="moving-box">
-            {videoUrl ? (
-              <video
-                src={videoUrl}
-                autoPlay
-                muted
-                playsInline
-                className="media-display"
-                onLoadedMetadata={(e) => {
-                  e.target.currentTime = 0;
-                  setTimeout(() => e.target.pause(), 30000);
-                }}
-              />
-            ) : (
-              <img src={imageUrl} alt="shared" className="media-display" />
-            )}
-            <div className="scrolling-caption">
-              <span>{caption}</span>
-            </div>
-          </div>
-        </div>
+  if (loading) return <div>불러오는 중...</div>;
 
-        {/* ✅ 공유 버튼 추가 */}
-        <div style={{ marginTop: "24px", textAlign: "center" }}>
-          <button
-            onClick={handleKakaoShare}
-            style={{
-              padding: "10px 16px",
-              fontSize: "16px",
-              backgroundColor: "#FEE500",
-              border: "none",
-              borderRadius: "8px",
-              cursor: "pointer",
-              fontWeight: "bold",
-            }}
-          >
-            💛 카카오톡으로 공유하기
-          </button>
-        </div>
-      </div>
+  return (
+    <div className="view-container">
+      <h2>미리보기</h2>
+      {messageData?.videoUrl ? (
+        <video src={messageData.videoUrl} controls />
+      ) : (
+        messageData?.imageUrls?.map((url, idx) => (
+          <img key={idx} src={url} alt="preview" style={{ maxWidth: '100%' }} />
+        ))
+      )}
+      <p>{messageData?.caption}</p>
+      {messageData?.musicUrl && (
+        <audio controls src={messageData.musicUrl} />
+      )}
+      <button onClick={handleShare}>공유하기</button>
     </div>
   );
-}
+};
 
 export default ViewMessagePage;
+
+
+// MusicSelectPage.jsx 내 handleNext 함수 (추가/수정)
+
+import { addDoc, collection } from 'firebase/firestore';
+import { db } from '../firebase';
+import { useNavigate } from 'react-router-dom';
+
+const navigate = useNavigate();
+
+const handleNext = async () => {
+  try {
+    const docRef = await addDoc(collection(db, 'messages'), {
+      imageUrls: selectedImages,
+      videoUrl: selectedVideo,
+      musicUrl: selectedMusic,
+      caption: caption,
+      createdAt: new Date(),
+    });
+    navigate(`/view-message?id=${docRef.id}`);
+  } catch (error) {
+    console.error('저장 실패:', error);
+    alert('메시지 저장에 실패했습니다.');
+  }
+};
+
+
