@@ -1,4 +1,4 @@
-// ✅ SharePage.jsx - messageId 유효성 검사 강화 + 공유 오류 방지
+// ✅ SharePage.jsx - 원본 복원 버전 (최소 구조만 유지, 유효성 검사 제거)
 
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -18,11 +18,6 @@ const SharePage = () => {
 
   useEffect(() => {
     const id = new URLSearchParams(location.search).get("id");
-    if (!id || id === "undefined" || id.trim() === "") {
-      alert("유효하지 않은 공유 링크입니다. 처음부터 다시 시도해 주세요.");
-      navigate("/");
-      return;
-    }
     setMessageId(id);
   }, [location.search]);
 
@@ -36,9 +31,6 @@ const SharePage = () => {
         setImageUrl(data.imageUrl || "");
         setVideoUrl(data.videoUrl || "");
         setCaption(data.caption || "");
-      } else {
-        alert("공유할 메시지를 찾을 수 없어요. 처음부터 다시 시도해 주세요.");
-        navigate("/");
       }
     };
     fetchMessage();
@@ -47,7 +39,6 @@ const SharePage = () => {
   useEffect(() => {
     if (window.Kakao && !window.Kakao.isInitialized()) {
       window.Kakao.init("4abf45cca92e802defcd2c15a6615155");
-      console.log("✅ Kakao SDK 초기화 완료");
     }
   }, []);
 
@@ -67,14 +58,9 @@ const SharePage = () => {
   }, [shareUrl]);
 
   const handleKakaoShare = () => {
-    if (!window.Kakao || !window.Kakao.isInitialized()) {
-      alert("카카오톡 공유를 사용할 수 없습니다.");
-      return;
-    }
-    if (!imageUrl || !messageId || messageId === "undefined") {
-      alert("공유할 메시지를 찾을 수 없어요. 다시 시도해 주세요.");
-      return;
-    }
+    if (!window.Kakao || !window.Kakao.isInitialized()) return;
+    if (!imageUrl || !messageId) return;
+
     window.Kakao.Share.sendDefault({
       objectType: "feed",
       content: {
