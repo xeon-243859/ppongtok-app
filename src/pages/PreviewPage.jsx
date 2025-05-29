@@ -27,10 +27,19 @@ function PreviewPage() {
 
       const canvas = await html2canvas(target);
       const dataUrl = canvas.toDataURL("image/png");
-
+      console.log("📸 캡처 dataUrl 길이:", dataUrl.length);
+      if (!dataUrl || dataUrl.length < 100) {
+  alert("이미지 캡처에 실패했어요. 다시 시도해주세요.");
+  return;
+}
       const fileRef = ref(storage, `previews/${Date.now()}.png`);
+      console.log("📌 업로드 시작");
       await uploadString(fileRef, dataUrl, "data_url");
+      console.log("✅ 업로드 성공, 이미지 URL 생성 시도");
       const imageUrl = await getDownloadURL(fileRef);
+      console.log("🎯 최종 imageUrl:", imageUrl);
+
+    
 
       const docRef = await addDoc(collection(db, "sharedMessages"), {
         imageUrl,
