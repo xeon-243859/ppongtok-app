@@ -1,17 +1,14 @@
-// ✅ SharePage.jsx - 이미지 제거 + 버튼 정리 + 공유 시 이용권 소진 및 결제 확인 흐름 반영
+// ✅ SharePage.jsx - 로그인 없어도 공유 가능하게 수정 (messageId만 있으면 카카오 공유 허용)
 
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import QRCode from "qrcode";
-import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 
 const SharePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const db = getFirestore();
-  const auth = getAuth();
-  const currentUser = auth.currentUser;
 
   const [qrUrl, setQrUrl] = useState("");
   const [messageId, setMessageId] = useState(null);
@@ -60,29 +57,12 @@ const SharePage = () => {
     generateQR();
   }, [shareUrl]);
 
-  const handleKakaoShare = async () => {
+  const handleKakaoShare = () => {
     if (!window.Kakao || !window.Kakao.isInitialized()) return;
-    if (!messageId || !currentUser) {
-      alert("로그인 또는 메시지 정보가 없습니다. 다시 시도해 주세요.");
+    if (!messageId) {
+      alert("공유할 메시지를 찾을 수 없습니다. 다시 시도해 주세요.");
       return;
     }
-
-    const userRef = doc(db, "users", currentUser.uid);
-    const userSnap = await getDoc(userRef);
-
-    if (!userSnap.exists()) {
-      alert("유저 정보를 찾을 수 없습니다.");
-      return;
-    }
-
-    const freePass = userSnap.data().freePassCount || 0;
-    if (freePass < 1) {
-      alert("무료 이용권이 소진되었습니다. 결제가 필요해요.");
-      navigate("/payment");
-      return;
-    }
-
-    await updateDoc(userRef, { freePassCount: freePass - 1 });
 
     window.Kakao.Share.sendDefault({
       objectType: "feed",
