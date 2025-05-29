@@ -1,7 +1,7 @@
 // ViewMessagePage.jsx (최종본)
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { doc, getDoc, addDoc, collection } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 
 const ViewMessagePage = () => {
@@ -58,30 +58,3 @@ const ViewMessagePage = () => {
 };
 
 export default ViewMessagePage;
-
-
-// MusicSelectPage.jsx 내 handleNext 함수 (추가/수정)
-
-import { addDoc, collection } from 'firebase/firestore';
-import { db } from '../firebase';
-import { useNavigate } from 'react-router-dom';
-
-const navigate = useNavigate();
-
-const handleNext = async () => {
-  try {
-    const docRef = await addDoc(collection(db, 'messages'), {
-      imageUrls: selectedImages,
-      videoUrl: selectedVideo,
-      musicUrl: selectedMusic,
-      caption: caption,
-      createdAt: new Date(),
-    });
-    navigate(`/view-message?id=${docRef.id}`);
-  } catch (error) {
-    console.error('저장 실패:', error);
-    alert('메시지 저장에 실패했습니다.');
-  }
-};
-
-
