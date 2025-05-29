@@ -64,6 +64,7 @@ const ViewMessagePage = () => {
     </div>
   );
 };
+
 return (
   <div style={{ padding: "20px" }}>
     <h2>공유된 메시지</h2>
