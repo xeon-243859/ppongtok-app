@@ -162,6 +162,13 @@ function PreviewPage() {
         videoUrl: selectedVideo || null,
         createdAt: new Date(),
       };
+       // ✅ 이 부분에 콘솔 로그 추가!
+    console.log("💬 messageData:", messageData);
+    console.log("📸 downloadUrl:", downloadUrl);
+    console.log("🎬 selectedVideo:", selectedVideo);
+    console.log("🖼️ selectedImages:", selectedImages);
+    console.log("🧭 mediaType:", mediaType);
+
 
       try {
         const docRef = await addDoc(collection(db, "messages"), messageData);
