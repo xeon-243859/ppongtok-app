@@ -8,6 +8,13 @@ const ViewMessagePage = () => {
   const navigate = useNavigate();
 
   const handleShare = async () => {
+      // 1. 유효하지 않은 이미지일 경우 return
+  if (!isImageValid) {
+    alert("이미지를 다시 선택해주세요.");
+    return;
+  }
+  console.log("imageUrl:", imageUrl);
+  console.log("isImageValid:", isImageValid);
     try {
       const messageData = {
         imageUrl: localStorage.getItem("selectedImage"),
@@ -27,6 +34,8 @@ const ViewMessagePage = () => {
   };
 
   const imageUrl = localStorage.getItem("selectedImage");
+  // base64 유효성 검사 (간단하게 길이로)
+const isImageValid = imageUrl && imageUrl.startsWith("data:image") && imageUrl.length > 1000;
   const caption = localStorage.getItem("captionText");
   const music = localStorage.getItem("selectedMusic");
 

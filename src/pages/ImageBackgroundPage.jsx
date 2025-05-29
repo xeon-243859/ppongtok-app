@@ -13,10 +13,25 @@ export default function ImageBackgroundPage({ setSelectedImage }) {
   const navigate = useNavigate();
   const [selected, setSelected] = useState(null);
 
-  const handleSelect = (img) => {
-    setSelected(img);
-    setSelectedImage(img);
-  };
+  const handleSelect = (imgPath) => {
+  fetch(imgPath)
+    .then(res => res.blob())
+    .then(blob => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64Image = reader.result;
+
+        // ✅ base64 저장
+        localStorage.setItem("selectedImage", base64Image);
+
+        // ✅ 상태 업데이트 (UI용)
+        setSelected(imgPath);
+        setSelectedImage(base64Image);
+      };
+      reader.readAsDataURL(blob);
+    });
+};
+
 
   return (
     <div className="image-background-container">
