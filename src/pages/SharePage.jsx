@@ -1,3 +1,5 @@
+// ✅ SharePage.jsx - 원본 최대 유지 + 자막(caption) 출력 추가
+
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import QRCode from "qrcode";
@@ -23,17 +25,14 @@ const SharePage = () => {
   useEffect(() => {
     const fetchMessage = async () => {
       if (!messageId) return;
-      console.log("📌 messageId 로딩 중:", messageId);
       const docRef = doc(db, "messages", messageId);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         const data = docSnap.data();
-        console.log("✅ Firestore 문서 찾음:", data);
         setImageUrl(data.imageUrl || "");
         setVideoUrl(data.videoUrl || "");
         setCaption(data.caption || "");
       } else {
-        console.error("❌ Firestore 문서 없음:", messageId); 
         alert("공유할 메시지를 찾을 수 없어요.");
       }
     };
@@ -121,17 +120,11 @@ const SharePage = () => {
       <div style={styles.container}>
         <h2 style={styles.title}>💌 공유하기</h2>
 
-        {videoUrl ? (
-          <video src={videoUrl} controls style={styles.mediaDisplay} />
-        ) : (
-          <img src={imageUrl} alt="공유 이미지" style={styles.mediaDisplay} />
-        )}
+        {qrUrl && <img src={qrUrl} alt="QR 코드" style={styles.qrImage} />}
 
         {caption && (
-          <p className="shared-caption" style={styles.sharedCaption}>{caption}</p>
+          <p style={{ marginTop: "16px", fontSize: "18px", color: "#444", textAlign: "center" }}>{caption}</p>
         )}
-
-        {qrUrl && <img src={qrUrl} alt="QR 코드" style={styles.qrImage} />}
 
         <p style={styles.caption}>이 QR을 스캔하면 누군가에게 마음이 전해져요</p>
 
@@ -161,33 +154,19 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    minHeight: "100vh",
+    height: "100vh",
     backgroundColor: "#fffdf8",
     padding: "20px",
   },
   container: {
     textAlign: "center",
-    maxWidth: "600px",
+    maxWidth: "400px",
     width: "100%",
   },
   title: {
     fontSize: "24px",
     marginBottom: "20px",
     color: "#333",
-  },
-  mediaDisplay: {
-    width: "100%",
-    maxHeight: "60vh",
-    objectFit: "contain",
-    marginBottom: "16px",
-    borderRadius: "12px",
-    boxShadow: "0 0 10px rgba(0,0,0,0.1)"
-  },
-  sharedCaption: {
-    fontSize: "18px",
-    color: "#444",
-    textAlign: "center",
-    marginBottom: "20px"
   },
   qrImage: {
     width: "150px",
