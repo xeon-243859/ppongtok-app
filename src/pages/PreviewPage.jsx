@@ -116,16 +116,36 @@ function PreviewPage() {
 
     if (freePass > 0) {
       await updateDoc(userRef, { freePassCount: freePass - 1 });
-      const messageId = await handleFullShare();
-      if (messageId) {
+
+      // 🔒 공유 실행 제거: Firestore 저장만 수행
+      const downloadUrl = mediaType === "image" && selectedImages.length > 0
+        ? selectedImages[0]
+        : mediaType === "video" && selectedVideo
+        ? selectedVideo
+        : "https://via.placeholder.com/600x400.png?text=뿅!톡";
+
+      const messageData = {
+        imageUrl: downloadUrl,
+        caption: captionText,
+        videoUrl: selectedVideo || null,
+        createdAt: new Date(),
+      };
+
+      try {
+        const docRef = await addDoc(collection(db, "messages"), messageData);
+        const messageId = docRef.id;
+        console.log("✅ messageId:", messageId);
         navigate(`/share?id=${messageId}`);
-      } else {
-        alert("메시지 생성에 실패했어요. 로그인 상태를 다시 확인해 주세요.");
+      } catch (error) {
+        console.error("❌ 메시지 저장 실패:", error);
+        alert("메시지 저장에 실패했어요. 다시 시도해 주세요.");
       }
+
     } else {
       alert("무료 이용권이 모두 소진되었습니다. 결제가 필요해요 🛍️");
       navigate("/payment");
     }
+
 
   };
 
