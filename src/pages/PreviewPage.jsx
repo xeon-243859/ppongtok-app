@@ -48,6 +48,7 @@ function PreviewPage() {
       });
 
       const messageId = docRef.id;
+      console.log("🚀 공유 페이지로 이동할 messageId:", messageId);
       const shareUrl = `https://ppongtok-app.vercel.app/view/${messageId}`;
 
       window.open(shareUrl, "_blank");

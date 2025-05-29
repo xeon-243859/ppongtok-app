@@ -12,12 +12,15 @@ function ViewMessagePage() {
   useEffect(() => {
     const fetchMessage = async () => {
       try {
+        console.log("🔍 ViewMessagePage - 받은 id:", id);
         const docRef = doc(db, "messages", id);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           setMessageData(docSnap.data());
         } else {
           alert("공유할 메시지를 찾을 수 없습니다.");
+          console.log("🔍 ViewMessagePage - id param:", id);
+
         }
       } catch (error) {
         console.error("메시지 불러오기 오류:", error);
