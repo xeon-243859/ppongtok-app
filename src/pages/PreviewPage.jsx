@@ -117,11 +117,16 @@ function PreviewPage() {
     if (freePass > 0) {
       await updateDoc(userRef, { freePassCount: freePass - 1 });
       const messageId = await handleFullShare();
-      navigate(`/share?id=${messageId}`);
+      if (messageId) {
+        navigate(`/share?id=${messageId}`);
+      } else {
+        alert("메시지 생성에 실패했어요. 로그인 상태를 다시 확인해 주세요.");
+      }
     } else {
       alert("무료 이용권이 모두 소진되었습니다. 결제가 필요해요 🛍️");
       navigate("/payment");
     }
+
   };
 
   useEffect(() => {
