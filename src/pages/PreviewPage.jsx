@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import html2canvas from "html2canvas";
 import { getFirestore, doc, getDoc, updateDoc, addDoc, collection } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage } from "../firebase";
+import { db , storage } from "../firebase";
 import { useAuth } from "../contexts/AuthContext";
 import "./PreviewPage.css";
 
@@ -14,6 +14,38 @@ function PreviewPage() {
   const location = useLocation();
   const { currentUser } = useAuth();
   const db = getFirestore();
+
+  const handleShare = async () => {
+    try {
+      const caption = localStorage.getItem("caption");
+      const target = document.getElementById("preview-content");
+
+      if (!target) {
+        alert("프리뷰 영역을 찾을 수 없습니다.");
+        return;
+      }
+
+      const canvas = await html2canvas(target);
+      const dataUrl = canvas.toDataURL("image/png");
+
+      const fileRef = ref(storage, `previews/${Date.now()}.png`);
+      await uploadString(fileRef, dataUrl, "data_url");
+      const imageUrl = await getDownloadURL(fileRef);
+
+      const docRef = await addDoc(collection(db, "sharedMessages"), {
+        imageUrl,
+        caption,
+        createdAt: new Date(),
+      });
+
+      const messageId = docRef.id;
+      const shareUrl = `https://ppongtok-app.vercel.app/api/view/${messageId}`;
+      window.open(shareUrl, "_blank");
+    } catch (error) {
+      console.error("❌ 메시지 저장 실패:", error);
+      alert("메시지 저장에 실패했어요. 다시 시도해 주세요.");
+    }
+  };
 
   useEffect(() => {
     if (window.Kakao && !window.Kakao.isInitialized()) {
@@ -201,7 +233,7 @@ function PreviewPage() {
 
   return (
     <>
-      <div id="preview-target" className="preview-wrapper">
+      <div id="preview-content" className="preview-wrapper">
         <div className="preview-page">
           <div className="media-box">
             <div className="moving-box">
@@ -224,6 +256,7 @@ function PreviewPage() {
               )}
               <div className="scrolling-caption">
                 <span>{repeatedMessage}</span>
+                 
               </div>
             </div>
           </div>
@@ -231,13 +264,13 @@ function PreviewPage() {
 
         <div className="under-media-buttons">
           <button className="nav-button" onClick={() => (window.location.href = "/music")}>뒤로가기</button>
-          <button className="nav-button" onClick={handleNext}>다음 - 공유하기</button>
+          <button className="nav-button" onClick={handleShare}>다음 - 공유하기</button>
         </div>
 
         <div className="go-home-button-wrapper">
           <button className="go-home-button" onClick={handleGoHome}>처음으로</button>
         </div>
-
+        
         {selectedMusic && <audio src={selectedMusic} autoPlay ref={audioRef} />}
       </div>
     </>
