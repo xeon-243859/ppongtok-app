@@ -4,7 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import html2canvas from "html2canvas";
 import { getFirestore, doc, getDoc, updateDoc, addDoc, collection } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, uploadString, getDownloadURL } from "firebase/storage";
 import { db , storage } from "../firebase";
 import { useAuth } from "../contexts/AuthContext";
 import "./PreviewPage.css";
