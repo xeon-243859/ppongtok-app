@@ -62,7 +62,7 @@ function App() {
       <Route path="/preview" element={<PreviewPage />} />
       <Route path="/share" element={<SharePage />} />
       <Route path="/payment" element={<PaymentPage />} />
-      <Route path="/view-message" element={<ViewMessagePage />} />
+      <Route path="/view/:id" element={<ViewMessagePage />} />
     </Routes>
     </AuthProvider>
       );

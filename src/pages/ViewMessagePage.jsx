@@ -1,81 +1,63 @@
-// 전체 코드 다시 안내 (위와 동일)
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { addDoc, collection } from "firebase/firestore";
+// src/pages/ViewMessagePage.jsx
+
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
 const ViewMessagePage = () => {
-  const navigate = useNavigate();
+  const { id } = useParams(); // URL에서 messageId 추출
+  const [message, setMessage] = useState(null);
 
-  const handleShare = async () => {
-      // 1. 유효하지 않은 이미지일 경우 return
-  if (!isImageValid) {
-    alert("이미지를 다시 선택해주세요.");
-    return;
+  useEffect(() => {
+    const fetchMessage = async () => {
+      try {
+        const docRef = doc(db, "messages", id);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          setMessage(docSnap.data());
+        } else {
+          console.log("❌ 해당 메시지를 찾을 수 없습니다.");
+        }
+      } catch (error) {
+        console.error("🔥 메시지 불러오기 실패:", error);
+      }
+    };
+
+    fetchMessage();
+  }, [id]);
+
+  if (!message) {
+    return <p style={{ padding: "20px" }}>메시지를 불러오는 중입니다...</p>;
   }
-  console.log("imageUrl:", imageUrl);
-  console.log("isImageValid:", isImageValid);
-    try {
-      const messageData = {
-        imageUrl: localStorage.getItem("selectedImage"),
-        caption: localStorage.getItem("captionText"),
-        music: localStorage.getItem("selectedMusic"),
-        createdAt: new Date(),
-      };
-
-      const docRef = await addDoc(collection(db, "messages"), messageData);
-      const messageId = docRef.id;
-
-      navigate(`/share?id=${messageId}`);
-    } catch (error) {
-      alert("메시지 저장에 실패했어요. 다시 시도해 주세요.");
-      console.error("Error saving message:", error);
-    }
-  };
-
-  const imageUrl = localStorage.getItem("selectedImage");
-  // base64 유효성 검사 (간단하게 길이로)
-const isImageValid = imageUrl && imageUrl.startsWith("data:image") && imageUrl.length > 1000;
-  const caption = localStorage.getItem("captionText");
-  const music = localStorage.getItem("selectedMusic");
 
   return (
     <div style={{ padding: "20px" }}>
-      <h2>미리보기 화면</h2>
+      <h2>💌 공유된 메시지</h2>
 
-      {imageUrl && (
+      {message.imageUrl && (
         <img
-          src={imageUrl}
-          alt="선택한 이미지"
-          style={{ maxWidth: "100%", borderRadius: "10px" }}
+          src={message.imageUrl}
+          alt="공유 이미지"
+          style={{
+            maxWidth: "100%",
+            borderRadius: "10px",
+            marginBottom: "15px",
+          }}
         />
       )}
 
-      {caption && (
-        <p style={{ fontSize: "18px", marginTop: "10px" }}>{caption}</p>
+      {message.caption && (
+        <p style={{ fontSize: "18px", marginBottom: "15px" }}>{message.caption}</p>
       )}
 
-      {music && (
-        <audio controls style={{ marginTop: "10px" }}>
-          <source src={music} type="audio/mp3" />
-          브라우저가 오디오를 지원하지 않아요.
+      {message.music && (
+        <audio controls>
+          <source src={message.music} type="audio/mp3" />
+          브라우저가 오디오를 지원하지 않습니다.
         </audio>
       )}
-
-      <button
-        onClick={handleShare}
-        style={{
-          marginTop: "20px",
-          padding: "10px 20px",
-          fontSize: "16px",
-          borderRadius: "8px",
-          backgroundColor: "#ff5f5f",
-          color: "#fff",
-          border: "none",
-        }}
-      >
-        공유하기
-      </button>
     </div>
   );
 };
