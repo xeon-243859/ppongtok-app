@@ -1,4 +1,4 @@
-// ✅ SharePage.jsx - 카카오톡 공유 썸네일 문제 보완 + 공유화면 스타일 정리
+// ✅ SharePage.jsx - 공유 썸네일 및 UI 기능 확장 버전
 
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -34,8 +34,6 @@ const SharePage = () => {
         setImageUrl(data.imageUrl || "");
         setVideoUrl(data.videoUrl || "");
         setCaption(data.caption || "");
-      } else {
-        console.warn("공유 메시지 없음 - 공유 버튼 동작은 허용됨");
       }
     };
     fetchMessage();
@@ -104,6 +102,19 @@ const SharePage = () => {
     });
   };
 
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(shareUrl);
+    alert("링크가 복사되었습니다 ✨");
+  };
+
+  const handleImageDownload = () => {
+    if (!imageUrl) return;
+    const link = document.createElement("a");
+    link.href = imageUrl;
+    link.download = "ppongtok-image.jpg";
+    link.click();
+  };
+
   return (
     <div style={{ maxWidth: "480px", margin: "0 auto", padding: "32px 16px", textAlign: "center", fontFamily: "sans-serif" }}>
       <h2 style={{ fontSize: "20px", marginBottom: "16px" }}>💌 공유하기</h2>
@@ -116,8 +127,25 @@ const SharePage = () => {
         <button onClick={handleKakaoShare} style={{ padding: "12px", borderRadius: "8px", background: "#FAE100", border: "none", fontWeight: "bold" }}>
           💬 카카오톡 공유하기
         </button>
+        <button onClick={handleCopy} style={{ padding: "12px", borderRadius: "8px", background: "#cce5ff", border: "none", fontWeight: "bold" }}>
+          🔗 링크 복사
+        </button>
+        {imageUrl && (
+          <button onClick={handleImageDownload} style={{ padding: "12px", borderRadius: "8px", background: "#d4edda", border: "none", fontWeight: "bold" }}>
+            🖼️ 이미지 저장
+          </button>
+        )}
+        <button onClick={() => window.open("https://twitter.com/intent/tweet?url=" + encodeURIComponent(shareUrl), "_blank")} style={{ padding: "12px", borderRadius: "8px", background: "#1DA1F2", color: "white", fontWeight: "bold" }}>
+          🐦 트위터 공유
+        </button>
+        <button onClick={() => window.open("https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(shareUrl), "_blank")} style={{ padding: "12px", borderRadius: "8px", background: "#4267B2", color: "white", fontWeight: "bold" }}>
+          📘 페이스북 공유
+        </button>
         <button onClick={() => navigate("/")} style={{ padding: "12px", borderRadius: "8px", background: "#eee", border: "none", fontWeight: "bold" }}>
           🏠 처음으로
+        </button>
+        <button onClick={() => navigate("/intro")} style={{ padding: "12px", borderRadius: "8px", background: "#f8d7da", border: "none", fontWeight: "bold" }}>
+          🚀 시작하기
         </button>
       </div>
     </div>
