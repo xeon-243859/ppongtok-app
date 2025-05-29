@@ -66,8 +66,8 @@ const SharePage = () => {
       alert("카카오톡 공유를 사용할 수 없습니다.");
       return;
     }
-    if (!imageUrl || !messageId) {
-      alert("공유할 메시지를 찾을 수 없어요.");
+    if (!imageUrl || !messageId || messageId === "undefined") {
+      alert("공유할 메시지를 찾을 수 없어요. 다시 시도해 주세요.");
       return;
     }
     window.Kakao.Share.sendDefault({
@@ -83,6 +83,7 @@ const SharePage = () => {
       },
     });
   };
+
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(shareUrl);
