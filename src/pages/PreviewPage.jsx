@@ -48,7 +48,8 @@ function PreviewPage() {
       });
 
       const messageId = docRef.id;
-      const shareUrl = `https://ppongtok-app.vercel.app/api/view/${messageId}`;
+      const shareUrl = `https://ppongtok-app.vercel.app/view/${messageId}`;
+
       window.open(shareUrl, "_blank");
     } catch (error) {
       console.error("❌ 메시지 저장 실패:", error);
