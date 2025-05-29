@@ -8,7 +8,6 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase";
 import { useAuth } from "../contexts/AuthContext";
 import "./PreviewPage.css";
-import React from "react";
 
 function PreviewPage() {
   const navigate = useNavigate();
