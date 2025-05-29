@@ -1,4 +1,4 @@
-// ✅ PreviewPage.jsx - 원본 최대 유지 + handleNext만 수정
+// ✅ PreviewPage.jsx - localStorage 기반으로 리팩토링 완료 (원본 최대 유지)
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -6,10 +6,26 @@ import { getAuth } from "firebase/auth";
 import { doc, getDoc, updateDoc, addDoc, collection } from "firebase/firestore";
 import { db } from "../firebase";
 
-const PreviewPage = ({ selectedImages, selectedVideo, captionText, mediaType }) => {
+const PreviewPage = () => {
   const navigate = useNavigate();
   const auth = getAuth();
   const currentUser = auth.currentUser;
+
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedVideo, setSelectedVideo] = useState("");
+  const [captionText, setCaptionText] = useState("");
+  const [mediaType, setMediaType] = useState("");
+
+  useEffect(() => {
+    const images = JSON.parse(localStorage.getItem("selectedImages")) || [];
+    const video = localStorage.getItem("selectedVideo") || "";
+    const caption = localStorage.getItem("captionText") || "";
+    const type = localStorage.getItem("mediaType") || "";
+    setSelectedImages(images);
+    setSelectedVideo(video);
+    setCaptionText(caption);
+    setMediaType(type);
+  }, []);
 
   const handleNext = async () => {
     console.log("🔐 currentUser:", currentUser);
@@ -51,7 +67,7 @@ const PreviewPage = ({ selectedImages, selectedVideo, captionText, mediaType }) 
         const docRef = await addDoc(collection(db, "messages"), messageData);
         const messageId = docRef.id;
         console.log("✅ messageId:", messageId);
-        navigate(`/share?id=${messageId}`); // 🔥 공유화면으로 이동
+        navigate(`/share?id=${messageId}`);
       } catch (error) {
         console.error("❌ 메시지 저장 실패:", error);
         alert("메시지 저장에 실패했어요. 다시 시도해 주세요.");
