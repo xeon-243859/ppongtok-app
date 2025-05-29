@@ -1,58 +1,72 @@
-// ViewMessagePage.jsx (최종본)
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../firebase';
+// 전체 코드 다시 안내 (위와 동일)
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../firebase";
 
 const ViewMessagePage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const [messageData, setMessageData] = useState(null);
-  const [loading, setLoading] = useState(true);
 
-  const messageId = new URLSearchParams(location.search).get('id');
+  const handleShare = async () => {
+    try {
+      const messageData = {
+        imageUrl: localStorage.getItem("selectedImage"),
+        caption: localStorage.getItem("captionText"),
+        music: localStorage.getItem("selectedMusic"),
+        createdAt: new Date(),
+      };
 
-  useEffect(() => {
-    const fetchMessage = async () => {
-      if (!messageId) return;
-      try {
-        const docRef = doc(db, 'messages', messageId);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setMessageData(docSnap.data());
-        } else {
-          alert('메시지를 찾을 수 없습니다.');
-        }
-      } catch (error) {
-        console.error('메시지 불러오기 실패:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchMessage();
-  }, [messageId]);
+      const docRef = await addDoc(collection(db, "messages"), messageData);
+      const messageId = docRef.id;
 
-  const handleShare = () => {
-    navigate(`/share?id=${messageId}`);
+      navigate(`/share?id=${messageId}`);
+    } catch (error) {
+      alert("메시지 저장에 실패했어요. 다시 시도해 주세요.");
+      console.error("Error saving message:", error);
+    }
   };
 
-  if (loading) return <div>불러오는 중...</div>;
+  const imageUrl = localStorage.getItem("selectedImage");
+  const caption = localStorage.getItem("captionText");
+  const music = localStorage.getItem("selectedMusic");
 
   return (
-    <div className="view-container">
-      <h2>미리보기</h2>
-      {messageData?.videoUrl ? (
-        <video src={messageData.videoUrl} controls />
-      ) : (
-        messageData?.imageUrls?.map((url, idx) => (
-          <img key={idx} src={url} alt="preview" style={{ maxWidth: '100%' }} />
-        ))
+    <div style={{ padding: "20px" }}>
+      <h2>미리보기 화면</h2>
+
+      {imageUrl && (
+        <img
+          src={imageUrl}
+          alt="선택한 이미지"
+          style={{ maxWidth: "100%", borderRadius: "10px" }}
+        />
       )}
-      <p>{messageData?.caption}</p>
-      {messageData?.musicUrl && (
-        <audio controls src={messageData.musicUrl} />
+
+      {caption && (
+        <p style={{ fontSize: "18px", marginTop: "10px" }}>{caption}</p>
       )}
-      <button onClick={handleShare}>공유하기</button>
+
+      {music && (
+        <audio controls style={{ marginTop: "10px" }}>
+          <source src={music} type="audio/mp3" />
+          브라우저가 오디오를 지원하지 않아요.
+        </audio>
+      )}
+
+      <button
+        onClick={handleShare}
+        style={{
+          marginTop: "20px",
+          padding: "10px 20px",
+          fontSize: "16px",
+          borderRadius: "8px",
+          backgroundColor: "#ff5f5f",
+          color: "#fff",
+          border: "none",
+        }}
+      >
+        공유하기
+      </button>
     </div>
   );
 };
