@@ -1,3 +1,5 @@
+// ✅ PreviewPage.jsx - 원본 최대 유지 + Firestore messageId 로그 추가
+
 import React, { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import html2canvas from "html2canvas";
@@ -33,14 +35,27 @@ function PreviewPage() {
   const selectedMusic = localStorage.getItem("selected-music");
   const audioRef = useRef(null);
 
-  // ✅ 메시지 생성 전용 함수
-  const createMessageAndGetId = async () => {
+  const handleFullShare = async () => {
+    if (!window.Kakao || !window.Kakao.Share) {
+      alert("카카오 공유 기능을 사용할 수 없어요 😢");
+      return;
+    }
+
+    if (!currentUser) {
+      localStorage.setItem("afterLoginRedirect", "/preview");
+      alert("로그인이 필요해요 💌");
+      navigate("/login");
+      return;
+    }
+
     try {
       const downloadUrl = mediaType === "image" && selectedImages.length > 0
         ? selectedImages[0]
         : mediaType === "video" && selectedVideo
         ? selectedVideo
         : "https://via.placeholder.com/600x400.png?text=뿅!톡";
+
+      setGeneratedImageUrl(downloadUrl);
 
       const messageData = {
         imageUrl: downloadUrl,
@@ -50,10 +65,28 @@ function PreviewPage() {
       };
 
       const docRef = await addDoc(collection(db, "messages"), messageData);
-      return docRef.id;
-    } catch (err) {
-      console.error("❌ 메시지 생성 실패:", err);
-      return null;
+      const messageId = docRef.id;
+      console.log("✅ messageId:", messageId);
+
+      const shareUrl = `https://ppongtok-app.vercel.app/view/${messageId}`;
+
+      window.Kakao.Share.sendDefault({
+        objectType: "feed",
+        content: {
+          title: "뿅!톡 메시지 도착 💌",
+          description: captionText,
+          imageUrl: downloadUrl,
+          link: {
+            mobileWebUrl: shareUrl,
+            webUrl: shareUrl,
+          },
+        },
+      });
+
+      return messageId;
+    } catch (error) {
+      console.error("❌ 공유 실패:", error);
+      alert("공유 중 오류가 발생했어요 😢");
     }
   };
 
@@ -61,7 +94,6 @@ function PreviewPage() {
     navigate("/");
   };
 
-  // ✅ 공유 페이지로만 연결
   const handleNext = async () => {
     if (!currentUser) {
       localStorage.setItem("afterLoginRedirect", "/preview");
@@ -82,12 +114,8 @@ function PreviewPage() {
 
     if (freePass > 0) {
       await updateDoc(userRef, { freePassCount: freePass - 1 });
-      const messageId = await createMessageAndGetId();
-      if (messageId) {
-        navigate(`/share?id=${messageId}`);
-      } else {
-        alert("메시지 생성에 실패했어요 😢");
-      }
+      const messageId = await handleFullShare();
+      navigate(`/share?id=${messageId}`);
     } else {
       alert("무료 이용권이 모두 소진되었습니다. 결제가 필요해요 🛍️");
       navigate("/payment");
@@ -147,7 +175,12 @@ function PreviewPage() {
 
   return (
     <>
-      
+      <div>
+        <img src={generatedImageUrl} alt="썸네일" />
+        <p>{captionText}</p>
+        <button onClick={handleFullShare}>카카오톡 공유하기</button>
+      </div>
+
       <div id="preview-target" className="preview-wrapper">
         <div className="preview-page">
           <div className="media-box">
