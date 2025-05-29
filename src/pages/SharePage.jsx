@@ -1,4 +1,4 @@
-// ✅ SharePage.jsx - 원본 복원 버전 (최소 구조만 유지, 유효성 검사 제거)
+// ✅ SharePage.jsx - 이미지 제거 + 버튼 정리
 
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -59,14 +59,14 @@ const SharePage = () => {
 
   const handleKakaoShare = () => {
     if (!window.Kakao || !window.Kakao.isInitialized()) return;
-    if (!imageUrl || !messageId) return;
+    if (!messageId) return;
 
     window.Kakao.Share.sendDefault({
       objectType: "feed",
       content: {
         title: "뿅!톡 메시지 도착 💌",
         description: caption || "누군가 당신에게 마음을 보냈어요",
-        imageUrl,
+        imageUrl: imageUrl || "https://via.placeholder.com/600x400.png?text=PPONGTOK",
         link: {
           mobileWebUrl: shareUrl,
           webUrl: shareUrl,
@@ -79,11 +79,13 @@ const SharePage = () => {
     <div>
       <h2>💌 공유하기</h2>
       {caption && <p>{caption}</p>}
-      {imageUrl && <img src={imageUrl} alt="미리보기" style={{ maxWidth: "100%" }} />}
       {qrUrl && <img src={qrUrl} alt="QR 코드" style={{ width: "120px", margin: "20px auto" }} />}
       <p>이 QR을 스캔하면 누군가에게 마음이 전해져요</p>
-      <button onClick={handleKakaoShare}>💬 카카오톡 공유하기</button>
-      <button onClick={() => navigate("/")}>🏠 처음으로</button>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: "10px", alignItems: "center", marginTop: "20px" }}>
+        <button onClick={handleKakaoShare}>💬 카카오톡 공유하기</button>
+        <button onClick={() => navigate("/")}>🏠 처음으로</button>
+      </div>
     </div>
   );
 };
