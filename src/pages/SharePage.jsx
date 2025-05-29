@@ -117,34 +117,43 @@ const SharePage = () => {
 
   return (
     <div style={{ maxWidth: "480px", margin: "0 auto", padding: "32px 16px", textAlign: "center", fontFamily: "sans-serif" }}>
-      <h2 style={{ fontSize: "20px", marginBottom: "16px" }}>💌 공유하기</h2>
+      <h2 style={{ fontSize: "24px", marginBottom: "16px" }}>💌 공유하기</h2>
+
+      {imageUrl && (
+        <img
+          src={imageUrl}
+          alt="공유 이미지"
+          style={{ width: "100%", maxHeight: "500px", objectFit: "cover", borderRadius: "12px", marginBottom: "16px" }}
+        />
+      )}
+
       {caption && <p style={{ fontSize: "16px", color: "#444", marginBottom: "24px" }}>{caption}</p>}
 
       {qrUrl && <img src={qrUrl} alt="QR 코드" style={{ width: "150px", margin: "0 auto 16px" }} />}
       <p style={{ fontSize: "14px", color: "#777" }}>이 QR을 스캔하면 누군가에게 마음이 전해져요</p>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginTop: "32px" }}>
-        <button onClick={handleKakaoShare} style={{ padding: "12px", borderRadius: "8px", background: "#FAE100", border: "none", fontWeight: "bold" }}>
+        <button onClick={handleKakaoShare} style={{ padding: "6px", fontSize: "14px", borderRadius: "8px", background: "#FAE100", border: "none", fontWeight: "bold" }}>
           💬 카카오톡 공유하기
         </button>
-        <button onClick={handleCopy} style={{ padding: "12px", borderRadius: "8px", background: "#cce5ff", border: "none", fontWeight: "bold" }}>
+        <button onClick={handleCopy} style={{ padding: "6px", fontSize: "14px", borderRadius: "8px", background: "#cce5ff", border: "none", fontWeight: "bold" }}>
           🔗 링크 복사
         </button>
         {imageUrl && (
-          <button onClick={handleImageDownload} style={{ padding: "12px", borderRadius: "8px", background: "#d4edda", border: "none", fontWeight: "bold" }}>
+          <button onClick={handleImageDownload} style={{ padding: "6px", fontSize: "14px", borderRadius: "8px", background: "#d4edda", border: "none", fontWeight: "bold" }}>
             🖼️ 이미지 저장
           </button>
         )}
-        <button onClick={() => window.open("https://twitter.com/intent/tweet?url=" + encodeURIComponent(shareUrl), "_blank")} style={{ padding: "12px", borderRadius: "8px", background: "#1DA1F2", color: "white", fontWeight: "bold" }}>
+        <button onClick={() => window.open("https://twitter.com/intent/tweet?url=" + encodeURIComponent(shareUrl), "_blank")} style={{ padding: "6px", fontSize: "14px", borderRadius: "8px", background: "#1DA1F2", color: "white", fontWeight: "bold" }}>
           🐦 트위터 공유
         </button>
-        <button onClick={() => window.open("https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(shareUrl), "_blank")} style={{ padding: "12px", borderRadius: "8px", background: "#4267B2", color: "white", fontWeight: "bold" }}>
+        <button onClick={() => window.open("https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(shareUrl), "_blank")} style={{ padding: "6px", fontSize: "14px", borderRadius: "8px", background: "#4267B2", color: "white", fontWeight: "bold" }}>
           📘 페이스북 공유
         </button>
-        <button onClick={() => navigate("/")} style={{ padding: "12px", borderRadius: "8px", background: "#eee", border: "none", fontWeight: "bold" }}>
+        <button onClick={() => navigate("/")} style={{ padding: "6px", fontSize: "14px", borderRadius: "8px", background: "#eee", border: "none", fontWeight: "bold" }}>
           🏠 처음으로
         </button>
-        <button onClick={() => navigate("/intro")} style={{ padding: "12px", borderRadius: "8px", background: "#f8d7da", border: "none", fontWeight: "bold" }}>
+        <button onClick={() => navigate("/intro")} style={{ padding: "6px", fontSize: "14px", borderRadius: "8px", background: "#f8d7da", border: "none", fontWeight: "bold" }}>
           🚀 시작하기
         </button>
       </div>
