@@ -1,4 +1,4 @@
-// ✅ SharePage.jsx - 원본 최대 유지 + 자막(caption) 출력 추가
+// ✅ SharePage.jsx - messageId 유효성 검사 강화 + 공유 오류 방지
 
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -17,8 +17,12 @@ const SharePage = () => {
   const [caption, setCaption] = useState("");
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const id = params.get("id");
+    const id = new URLSearchParams(location.search).get("id");
+    if (!id || id === "undefined" || id.trim() === "") {
+      alert("유효하지 않은 공유 링크입니다. 처음부터 다시 시도해 주세요.");
+      navigate("/");
+      return;
+    }
     setMessageId(id);
   }, [location.search]);
 
@@ -33,7 +37,8 @@ const SharePage = () => {
         setVideoUrl(data.videoUrl || "");
         setCaption(data.caption || "");
       } else {
-        alert("공유할 메시지를 찾을 수 없어요.");
+        alert("공유할 메시지를 찾을 수 없어요. 처음부터 다시 시도해 주세요.");
+        navigate("/");
       }
     };
     fetchMessage();
@@ -84,113 +89,17 @@ const SharePage = () => {
     });
   };
 
-
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(shareUrl);
-    alert("링크가 복사되었어요!");
-  };
-
-  const handleFacebookShare = () => {
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`);
-  };
-
-  const handleTwitterShare = () => {
-    window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=누군가 당신에게 마음을 보냈어요`);
-  };
-
-  const buttonStyle = {
-    padding: "8px 0",
-    width: "150px",
-    fontSize: "13px",
-    borderRadius: "8px",
-    border: "1px solid #ccc",
-    backgroundColor: "#fff",
-    color: "#333",
-    boxShadow: "1px 1px 4px rgba(0,0,0,0.05)",
-    cursor: "pointer",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "6px",
-    margin: "4px auto",
-    textDecoration: "none"
-  };
-
   return (
-    <div style={styles.wrapper}>
-      <div style={styles.container}>
-        <h2 style={styles.title}>💌 공유하기</h2>
-
-        {qrUrl && <img src={qrUrl} alt="QR 코드" style={styles.qrImage} />}
-
-        {caption && (
-          <p style={{ marginTop: "16px", fontSize: "18px", color: "#444", textAlign: "center" }}>{caption}</p>
-        )}
-
-        <p style={styles.caption}>이 QR을 스캔하면 누군가에게 마음이 전해져요</p>
-
-        <div style={styles.buttonGroup}>
-          <button style={buttonStyle} onClick={handleCopyLink}>🔗 링크 복사</button>
-          <button style={buttonStyle} onClick={handleKakaoShare}>💬 카카오톡</button>
-          <button style={buttonStyle} onClick={handleFacebookShare}>🟦 페이스북</button>
-          <button style={buttonStyle} onClick={handleTwitterShare}>🐦 트위터</button>
-          {videoUrl ? (
-            <a href={videoUrl} download style={buttonStyle}>🎥 영상 저장</a>
-          ) : (
-            <div style={{ ...buttonStyle, opacity: 0.5 }}>영상 없음</div>
-          )}
-        </div>
-
-        <div style={styles.navGroup}>
-          <button style={buttonStyle} onClick={() => navigate("/")}>🏠 처음으로</button>
-          <button style={buttonStyle} onClick={() => navigate("/select-category")}>✨ 시작하기</button>
-        </div>
-      </div>
+    <div>
+      <h2>💌 공유하기</h2>
+      {caption && <p>{caption}</p>}
+      {imageUrl && <img src={imageUrl} alt="미리보기" style={{ maxWidth: "100%" }} />}
+      {qrUrl && <img src={qrUrl} alt="QR 코드" style={{ width: "120px", margin: "20px auto" }} />}
+      <p>이 QR을 스캔하면 누군가에게 마음이 전해져요</p>
+      <button onClick={handleKakaoShare}>💬 카카오톡 공유하기</button>
+      <button onClick={() => navigate("/")}>🏠 처음으로</button>
     </div>
   );
-};
-
-const styles = {
-  wrapper: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "100vh",
-    backgroundColor: "#fffdf8",
-    padding: "20px",
-  },
-  container: {
-    textAlign: "center",
-    maxWidth: "400px",
-    width: "100%",
-  },
-  title: {
-    fontSize: "24px",
-    marginBottom: "20px",
-    color: "#333",
-  },
-  qrImage: {
-    width: "150px",
-    margin: "0 auto"
-  },
-  caption: {
-    marginTop: "16px",
-    fontSize: "14px",
-    color: "#666"
-  },
-  buttonGroup: {
-    marginTop: "20px",
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    gap: "10px"
-  },
-  navGroup: {
-    marginTop: "40px",
-    display: "flex",
-    flexDirection: "column",
-    gap: "12px"
-  }
 };
 
 export default SharePage;
