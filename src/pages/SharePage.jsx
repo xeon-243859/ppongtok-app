@@ -128,12 +128,21 @@ const SharePage = () => {
       <h2 style={{ fontSize: "24px", marginBottom: "16px" }}>💌 공유하기</h2>
 
       {imageUrl && (
-        <img
-          src={imageUrl}
-          alt="공유 이미지"
-          style={{ width: "100%", maxHeight: "500px", objectFit: "cover", borderRadius: "12px", marginBottom: "16px" }}
-        />
-      )}
+  <img
+    src={imageUrl}
+    alt="공유 이미지"
+    style={{ width: "100%", maxHeight: "500px", objectFit: "cover", borderRadius: "12px", marginBottom: "16px" }}
+  />
+)}
+
+{videoUrl && (
+  <video
+    src={videoUrl}
+    controls
+    style={{ width: "100%", maxHeight: "500px", borderRadius: "12px", marginBottom: "16px" }}
+  />
+)}
+
 
       {caption && <p style={{ fontSize: "16px", color: "#444", marginBottom: "24px" }}>{caption}</p>}
 
