@@ -1,3 +1,5 @@
+// 파일 경로: /api/view/[id].js
+
 import { initializeApp } from "firebase/app";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 
@@ -18,34 +20,40 @@ export default async function handler(req, res) {
     query: { id },
   } = req;
 
-  const docRef = doc(db, "sharedMessages", id);
-  const docSnap = await getDoc(docRef);
+  try {
+    const docRef = doc(db, "sharedMessages", id);
+    const docSnap = await getDoc(docRef);
 
-  if (!docSnap.exists()) {
-    return res.status(404).send("Not Found");
+    if (!docSnap.exists()) {
+      return res.status(404).send("메시지를 찾을 수 없습니다.");
+    }
+
+    const { imageUrl, caption } = docSnap.data();
+
+    const html = `
+      <!DOCTYPE html>
+      <html lang="ko">
+        <head>
+          <meta property="og:title" content="뿅!톡에서 메시지가 도착했어요 💌" />
+          <meta property="og:description" content="${caption}" />
+          <meta property="og:image" content="${imageUrl}" />
+          <meta property="og:url" content="https://ppongtok-app.vercel.app/view/${id}" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta charset="UTF-8" />
+          <title>뿅!톡 메시지 보기</title>
+        </head>
+        <body>
+          <script>
+            window.location.href = "/view/${id}";
+          </script>
+        </body>
+      </html>
+    `;
+
+    res.setHeader("Content-Type", "text/html");
+    res.status(200).send(html);
+  } catch (error) {
+    console.error("❌ SSR 공유 페이지 로드 오류:", error);
+    res.status(500).send("서버 오류");
   }
-
-  const { imageUrl, caption } = docSnap.data();
-
-  const html = `
-    <!DOCTYPE html>
-    <html lang="ko">
-    <head>
-      <meta charset="UTF-8" />
-      <title>감동 메시지 도착 💌</title>
-      <meta property="og:title" content="감동 메시지 도착 💌" />
-      <meta property="og:description" content="${caption}" />
-      <meta property="og:image" content="${imageUrl}" />
-      <meta property="og:url" content="https://ppongtok-app.vercel.app/view/${id}" />
-      <meta name="twitter:card" content="summary_large_image" />
-    </head>
-    <body>
-      <p>공유 메시지를 불러오는 중입니다...</p>
-      <script>location.href = "/view/${id}";</script>
-    </body>
-    </html>
-  `;
-
-  res.setHeader("Content-Type", "text/html");
-  return res.status(200).send(html);
 }
