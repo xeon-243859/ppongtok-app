@@ -256,13 +256,14 @@ function PreviewPage() {
 
     {/* ✅ 무빙박스 (이미지 or 영상 + 자막) */}
     <div className="moving-box" style={{
-      width: "100%",
-      maxWidth: "600px",
-      background: "#fff",
-      borderRadius: "24px",
-      boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-      padding: "16px",
-      textAlign: "center"
+    width: "80%",             // 💡 가로 너비를 부모 요소(보통 화면 전체)에 맞춤. 반응형 적용됨
+    maxWidth: "300px",         // 📏 너무 커지지 않게 최대 너비 제한 (데스크탑용)
+    minHeight: "360px",        // 🔳 콘텐츠가 없을 때도 일정 높이를 유지하여 레이아웃 안정화
+    background: "#fff",        // 🎨 배경색 (흰색), 박스를 강조
+    borderRadius: "24px",      // 🌿 둥근 모서리로 감성적인 느낌
+    padding: "16px",           // 🧱 내부 여백 확보 (이미지/자막이 바깥에 닿지 않게)
+    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",  // ☁️ 그림자 효과로 입체감 부여
+    textAlign: "center"        // 📌 자막 등 텍스트를 가운데 정렬
     }}>
       {/* 🎬 미디어 렌더링 */}
       {mediaType === "image" && selectedImages.length > 0 ? (
