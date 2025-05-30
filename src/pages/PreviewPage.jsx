@@ -204,6 +204,17 @@ function PreviewPage() {
     if (storedMessage) setMessage(storedMessage);
   }, []);
 
+  // 📍 useEffect 안에 자막 세팅
+useEffect(() => {
+  const message = localStorage.getItem("message");
+  console.log("자막 원문:", message); // 콘솔 확인용
+
+  if (message) {
+    setRepeatedMessage(message.repeat(50));
+  }
+}, []);
+
+
   useEffect(() => {
     const rawImages = JSON.parse(localStorage.getItem("selected-images") || "[]");
     const validImages = Array.isArray(rawImages) ? rawImages.filter((img) => typeof img === "string" && img.trim() !== "") : [];
@@ -293,10 +304,10 @@ function PreviewPage() {
       {/* ✨ 자막 */}
       <div style={{
         marginTop: "16px",
-        whiteSpace: "nowrap",
+        height: "32px", // 자막 공간 확보
         overflow: "hidden",
-        height: "100px",               // ✨ 자막 줄 높이 확보
-        lineHeight: "64px"            // ✨ 텍스트 정렬
+        whiteSpace: "nowrap",
+        lineHeight: "32px"
       }}>
         <span style={{
           display: "inline-block",
