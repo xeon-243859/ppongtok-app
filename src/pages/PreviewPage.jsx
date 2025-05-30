@@ -44,6 +44,10 @@ const PreviewPage = () => {
     return () => clearInterval(interval);
    }
    }, [mediaType, selectedImages]);
+  
+    useEffect(() => {
+    console.log("currentImageIndex:", currentImageIndex);
+  }, [currentImageIndex]);
 
   const handleNext = () => {
     navigate("/share");
