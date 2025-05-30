@@ -295,7 +295,7 @@ function PreviewPage() {
         marginTop: "16px",
         whiteSpace: "nowrap",
         overflow: "hidden",
-        height: "32px",               // ✨ 자막 줄 높이 확보
+        height: "64px",               // ✨ 자막 줄 높이 확보
         lineHeight: "32px"            // ✨ 텍스트 정렬
       }}>
         <span style={{
