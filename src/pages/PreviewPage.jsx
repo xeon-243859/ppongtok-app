@@ -251,50 +251,83 @@ function PreviewPage() {
   const repeatedMessage = message.length < 20 ? message.repeat(3) : message;
 
   return (
-    <>
-      <div id="preview-content" className="preview-wrapper">
-        <div className="preview-page">
-          <div className="media-box">
-            <div className="moving-box">
-              {mediaType === "image" && selectedImages.length > 0 ? (
-                <img src={selectedImages[currentImageIndex]} alt="preview" className="media-display" />
-              ) : mediaType === "video" ? (
-                <video
-                  src={selectedVideo}
-                  autoPlay
-                  muted
-                  playsInline
-                  className="media-display"
-                  onLoadedMetadata={(e) => {
-                    e.target.currentTime = 0;
-                    setTimeout(() => e.target.pause(), 30000);
-                  }}
-                />
-              ) : (
-                <div className="media-fallback">배경이 없습니다</div>
-              )}
-              <div className="scrolling-caption">
-                <span>{repeatedMessage}</span>
-                 
-              </div>
-            </div>
-          </div>
-        </div>
+  <div className="preview-wrapper" style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "24px" }}>
+    <h2 style={{ marginBottom: "16px" }}>💌 미리보기</h2>
 
-        <div className="under-media-buttons">
-          <button className="nav-button" onClick={() => (window.location.href = "/music")}>뒤로가기</button>
-          <button className="nav-button" onClick={handleShare}>다음 - 공유하기</button>
+    {/* ✅ 무빙박스 (이미지 or 영상 + 자막) */}
+    <div className="moving-box" style={{
+      width: "100%",
+      maxWidth: "600px",
+      background: "#fff",
+      borderRadius: "24px",
+      boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+      padding: "16px",
+      textAlign: "center"
+    }}>
+      {/* 🎬 미디어 렌더링 */}
+      {mediaType === "image" && selectedImages.length > 0 ? (
+        <img
+          src={selectedImages[currentImageIndex]}
+          alt="preview"
+          style={{ width: "100%", borderRadius: "16px" }}
+        />
+      ) : mediaType === "video" && selectedVideo ? (
+        <video
+          src={selectedVideo}
+          autoPlay
+          muted
+          playsInline
+          style={{ width: "100%", borderRadius: "16px" }}
+          onLoadedMetadata={(e) => {
+            e.target.currentTime = 0;
+            setTimeout(() => e.target.pause(), 30000);
+          }}
+        />
+      ) : (
+        <div style={{ height: "200px", display: "flex", justifyContent: "center", alignItems: "center", color: "#999" }}>
+          배경이 없습니다
         </div>
+      )}
 
-        <div className="go-home-button-wrapper">
-          <button className="go-home-button" onClick={handleGoHome}>처음으로</button>
-        </div>
-        
-        {selectedMusic && <audio src={selectedMusic} autoPlay ref={audioRef} />}
+      {/* ✨ 자막 */}
+      <div style={{
+        marginTop: "16px",
+        whiteSpace: "nowrap",
+        overflow: "hidden"
+      }}>
+        <span style={{
+          display: "inline-block",
+          animation: "scrollText 12s linear infinite",
+          fontSize: "18px"
+        }}>
+          {repeatedMessage}
+        </span>
       </div>
-    </>
-  );
+    </div>
+
+    {/* ✅ 버튼은 무빙박스 아래 */}
+    <div style={{ display: "flex", justifyContent: "center", gap: "12px", marginTop: "28px", flexWrap: "wrap" }}>
+      <button onClick={() => navigate("/music")} style={buttonStyle}>뒤로가기</button>
+      <button onClick={handleNext} style={buttonStyle}>다음 - 공유하기</button>
+      <button onClick={handleGoHome} style={buttonStyle}>처음으로</button>
+    </div>
+
+    {/* ✅ 음악 오디오 */}
+    {selectedMusic && <audio ref={audioRef} src={selectedMusic} autoPlay loop />}
+  </div>
+);
+
 }
+const buttonStyle = {
+  padding: "12px 20px",
+  fontSize: "16px",
+  borderRadius: "12px",
+  border: "none",
+  backgroundColor: "#ff8fab",
+  color: "#fff",
+  fontWeight: "bold",
+  cursor: "pointer"
+};
 
 export default PreviewPage;
 
