@@ -15,17 +15,10 @@ const PreviewPage = () => {
 
   useEffect(() => {
     const images = JSON.parse(localStorage.getItem("selectedImages") || "[]");
-    console.log("images in localStorage:", images);
     const video = localStorage.getItem("selectedVideo");
     const type = localStorage.getItem("mediaType");
     const msg = localStorage.getItem("message");
     const music = localStorage.getItem("selectedMusic");
-
-     console.log("selectedImages:", images);
-     console.log("selectedVideo:", video);
-     console.log("mediaType:", type);
-     console.log("message:", msg);
-     console.log("selectedMusic:", music);
 
     setSelectedImages(images);
     setSelectedVideo(video);
@@ -37,17 +30,13 @@ const PreviewPage = () => {
       setRepeatedMessage(msg.repeat(50));
     }
 
-     if (mediaType === "image" && selectedImages.length > 0) {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % selectedImages.length);
-    }, 3000);
-    return () => clearInterval(interval);
-   }
-   }, [mediaType, selectedImages]);
-  
-    useEffect(() => {
-    console.log("currentImageIndex:", currentImageIndex);
-  }, [currentImageIndex]);
+    if (type === "image" && images.length > 0) {
+      const interval = setInterval(() => {
+        setCurrentImageIndex((prev) => (prev + 1) % images.length);
+      }, 3000);
+      return () => clearInterval(interval);
+    }
+  }, []);
 
   const handleNext = () => {
     navigate("/share");
@@ -150,4 +139,5 @@ const PreviewPage = () => {
 };
 
 export default PreviewPage;
+
 
