@@ -294,11 +294,13 @@ function PreviewPage() {
       <div style={{
         marginTop: "16px",
         whiteSpace: "nowrap",
-        overflow: "hidden"
+        overflow: "hidden",
+        height: "32px",               // ✨ 자막 줄 높이 확보
+        lineHeight: "32px"            // ✨ 텍스트 정렬
       }}>
         <span style={{
           display: "inline-block",
-          animation: "scrollText 12s linear infinite",
+          animation: "scrollText 30s linear infinite",// ✅ 여기 숫자가 클수록 느려요!
           fontSize: "18px"
         }}>
           {repeatedMessage}
