@@ -71,7 +71,7 @@ function PreviewPage() {
   const [selectedImages, setSelectedImages] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [mediaType, setMediaType] = useState("none");
-
+  
   const params = new URLSearchParams(location.search);
   const forcedMediaType = params.get("type");
   const selectedVideo = localStorage.getItem("selected-video");
