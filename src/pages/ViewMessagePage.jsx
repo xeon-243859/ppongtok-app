@@ -62,12 +62,16 @@ return (
           src={url}
           alt={`공유 이미지 ${index + 1}`}
           style={{
-            width: "90%",
-            maxWidth: "600px",
-            borderRadius: 16,
-            margin: "20px auto",
-            display: "block",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+             overflow: "hidden",
+  whiteSpace: "nowrap",
+  position: "relative",
+  height: "48px", // 세로 높이 키워줘야 해!
+  margin: "30px auto",
+  maxWidth: "600px",
+  borderRadius: "12px",
+  border: "1px solid #ddd",
+  background: "#fff",
+  boxShadow: "0 4px 10px rgba(0,0,0,0.05)",
           }}
         />
       ))}
@@ -75,10 +79,11 @@ return (
     {/* 자막 */}
     {message.caption && (
       <p style={{
-        fontSize: 18,
-        marginBottom: 15,
-        textAlign: "center",
-        whiteSpace: "pre-wrap",
+         position: "absolute",
+    animation: "scrollText 12s linear infinite",
+    fontSize: "18px",
+    fontWeight: "500",
+    color: "#333",
       }}>
         {message.caption}
       </p>
