@@ -6,6 +6,7 @@ const PreviewPage = () => {
   const audioRef = useRef(null);
 
   const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedVideo, setSelectedVideo] = useState(null);
   const [mediaType, setMediaType] = useState("image");
   const [caption, setCaption] = useState("");
   const [repeatedMessage, setRepeatedMessage] = useState("");
@@ -14,15 +15,19 @@ const PreviewPage = () => {
 
   useEffect(() => {
     const images = JSON.parse(localStorage.getItem("selectedImages") || "[]");
+    const video = localStorage.getItem("selectedVideo");
+    const type = localStorage.getItem("selected-type") || "image";
     const msg = localStorage.getItem("message") || "";
     const music = localStorage.getItem("selectedMusic");
 
     setSelectedImages(images);
+    setSelectedVideo(video);
+    setMediaType(type);
     setCaption(msg);
     setSelectedMusic(music);
     setRepeatedMessage(msg.repeat(50));
 
-    if (images.length > 0) {
+    if (type === "image" && images.length > 0) {
       const interval = setInterval(() => {
         setCurrentImageIndex((prev) => (prev + 1) % images.length);
       }, 3000);
@@ -50,6 +55,7 @@ const PreviewPage = () => {
 
       <div
         style={{
+          position: "relative", // ✅ 자막 흐르게 하려면 필수
           width: "100%",
           maxWidth: 600,
           height: 360,
@@ -57,16 +63,24 @@ const PreviewPage = () => {
           borderRadius: 24,
           boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
           overflow: "hidden",
-          position: "relative",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
         }}
       >
-        {selectedImages.length > 0 ? (
+        {mediaType === "image" && selectedImages.length > 0 ? (
           <img
             src={selectedImages[currentImageIndex]}
             alt="preview"
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
+        ) : mediaType === "video" && selectedVideo ? (
+          <video
+            src={selectedVideo}
+            autoPlay
+            muted
+            loop
+            playsInline
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         ) : (
