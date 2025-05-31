@@ -80,11 +80,16 @@ const PreviewPage = () => {
           alignItems: "center",
         }}
       >
-        {mediaType === "image" && selectedImages.length > 0 ? (
+        {mediaType === "image" && selectedImages.length > 0 &&
+        selectedImages[currentImageIndex]?.startsWith("data:image/") ? (
           <img
             src={selectedImages[currentImageIndex]}
             alt="preview"
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+              console.warn("❌ 이미지 불러오기 실패:", selectedImages[currentImageIndex]);
+            }}
           />
         ) : mediaType === "video" && selectedVideo ? (
           <video
@@ -95,7 +100,7 @@ const PreviewPage = () => {
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
             onLoadedMetadata={(e) => {
               e.target.currentTime = 0;
-              setTimeout(() => e.target.pause(), 30000);
+              setTimeout(() => e.target.pause(), 30000); // 30초 제한
             }}
           />
         ) : (
