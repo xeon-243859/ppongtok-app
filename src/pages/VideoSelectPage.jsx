@@ -18,10 +18,10 @@ const VideoSelectPage = () => {
   const lastPage = localStorage.getItem("last-page") || "/";
 
   const handleThemeSelect = () => {
-    localStorage.setItem("selected-video-source", "theme");
-    setSelectedVideo("theme-video.mp4");
-    localStorage.setItem("selected-video", "theme-video.mp4");
-    navigate("/video/theme");  // ← 이걸로 수정!
+   localStorage.setItem("selectedVideo", "/videos/theme-video.mp4"); // ✅ PreviewPage에서 읽는 키
+   localStorage.setItem("selected-type", "video");                   // ✅ 타입도 함께 저장
+   navigate("/preview");                                             // ✅ 바로 미리보기로 이동
+
   };
 
   const handleLocalSelect = () => {
