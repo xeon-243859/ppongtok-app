@@ -1,131 +1,94 @@
-import React, { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+// ✅ PreviewPage.jsx (최종 완성형) - 이미지/영상/자막/음악 반영
+
+import React, { useEffect, useState } from "react";
 
 const PreviewPage = () => {
-  const navigate = useNavigate();
-  const audioRef = useRef(null);
-
+  const [mediaType, setMediaType] = useState("image");
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
-  const [mediaType, setMediaType] = useState("image");
   const [caption, setCaption] = useState("");
-  const [repeatedMessage, setRepeatedMessage] = useState("");
+  const [music, setMusic] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [selectedMusic, setSelectedMusic] = useState(null);
 
   useEffect(() => {
-    const images = JSON.parse(localStorage.getItem("selectedImages") || "[]");
+    const images = JSON.parse(localStorage.getItem("selectedImages"));
     const video = localStorage.getItem("selectedVideo");
-    const type = localStorage.getItem("selected-type") || "image";
-    const msg = localStorage.getItem("message") || "";
-    const music = localStorage.getItem("selectedMusic");
-    
-    localStorage.setItem("selectedVideo", "/videos/river.mp4");
-    localStorage.setItem("selected-type", "video");
+    const type = localStorage.getItem("selected-type");
+    const storedCaption = localStorage.getItem("caption");
+    const storedMusic = localStorage.getItem("selectedMusic");
 
-    setSelectedImages(images);
-    setSelectedVideo(video);
-    setMediaType(type);
-    setCaption(msg);
-    setSelectedMusic(music);
-    setRepeatedMessage(msg.repeat(50));
-
-    if (type === "image" && images.length > 0) {
-      const interval = setInterval(() => {
-        setCurrentImageIndex((prev) => (prev + 1) % images.length);
-      }, 3000);
-      return () => clearInterval(interval);
-    }
+    if (images) setSelectedImages(images);
+    if (video) setSelectedVideo(video);
+    if (type) setMediaType(type);
+    if (storedCaption) setCaption(storedCaption);
+    if (storedMusic) setMusic(storedMusic);
   }, []);
 
-  const handleNext = () => navigate("/share");
-  const handleGoHome = () => navigate("/");
+  // 이미지 자동 넘기기
+  useEffect(() => {
+    if (mediaType === "image" && selectedImages.length > 1) {
+      const interval = setInterval(() => {
+        setCurrentImageIndex((prev) => (prev + 1) % selectedImages.length);
+      }, 3000); // 3초마다 변경
+      return () => clearInterval(interval);
+    }
+  }, [mediaType, selectedImages]);
 
-  const buttonStyle = {
-    padding: "12px 20px",
-    fontSize: "16px",
-    borderRadius: "12px",
-    border: "none",
-    backgroundColor: "#ff8fab",
-    color: "#fff",
-    fontWeight: "bold",
-    cursor: "pointer",
-  };
+  // 자막 흐름 반복 처리
+  const repeatedMessage = caption ? caption.repeat(20) : "";
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: 24 }}>
-      <h2 style={{ marginBottom: 16 }}>💌 미리보기</h2>
+    <div style={{ position: "relative", width: "100%", height: "100vh", overflow: "hidden" }}>
+      {/* 배경 렌더링 */}
+      {mediaType === "image" && selectedImages.length > 0 ? (
+        <img
+          src={selectedImages[currentImageIndex]}
+          alt="preview"
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        />
+      ) : mediaType === "video" && selectedVideo ? (
+        <video
+          src={selectedVideo}
+          autoPlay
+          muted
+          loop
+          playsInline
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        />
+      ) : (
+        <div style={{ color: "#999" }}>배경이 없습니다</div>
+      )}
 
-      <div
-        style={{
-          position: "relative", // ✅ 자막 흐르게 하려면 필수
-          width: "100%",
-          maxWidth: 600,
-          height: 360,
-          background: "#000",
-          borderRadius: 24,
-          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-          overflow: "hidden",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        {mediaType === "image" && selectedImages.length > 0 ? (
-          <img
-            src={selectedImages[currentImageIndex]}
-            alt="preview"
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-          />
-        ) : mediaType === "video" && selectedVideo ? (
-          <video
-            src={selectedVideo}
-            autoPlay
-            muted
-            loop
-            playsInline
-             onError={() => console.error("❌ 영상 로딩 실패", selectedVideo)}
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-          />
-        ) : (
-          <div style={{ color: "#999" }}>배경이 없습니다</div>
-        )}
-
-        {repeatedMessage && (
-          <div
+      {/* 자막 무빙 텍스트 */}
+      {caption && (
+        <div
+          style={{
+            position: "absolute",
+            bottom: 24,
+            width: "100%",
+            overflow: "hidden",
+            height: "40px",
+            whiteSpace: "nowrap",
+          }}
+        >
+          <p
             style={{
               position: "absolute",
-              bottom: 24,
-              width: "100%",
-              overflow: "hidden",
-              whiteSpace: "nowrap",
-              height: "40px",
+              animation: "scrollText 30s linear infinite",
+              fontSize: "20px",
+              fontWeight: "bold",
+              color: "white",
+              textShadow: "0 0 6px rgba(0,0,0,0.7)",
             }}
           >
-            <p
-              style={{
-                position: "absolute",
-                animation: "scrollText 20s linear infinite",
-                fontSize: "18px",
-                fontWeight: "bold",
-                color: "white",
-                textShadow: "0 0 6px rgba(0,0,0,0.7)",
-              }}
-            >
-              {repeatedMessage}
-            </p>
-          </div>
-        )}
-      </div>
+            {repeatedMessage}
+          </p>
+        </div>
+      )}
 
-      <div style={{ display: "flex", justifyContent: "center", gap: 12, marginTop: 28, flexWrap: "wrap" }}>
-        <button onClick={() => navigate("/music")} style={buttonStyle}>뒤로가기</button>
-        <button onClick={handleNext} style={buttonStyle}>다음 - 공유하기</button>
-        <button onClick={handleGoHome} style={buttonStyle}>처음으로</button>
-      </div>
-
-      {selectedMusic && (
-        <audio ref={audioRef} src={selectedMusic} autoPlay loop />
+      {/* 음악 재생 */}
+      {music && (
+        <audio autoPlay loop src={music} style={{ display: "none" }} />
       )}
     </div>
   );
