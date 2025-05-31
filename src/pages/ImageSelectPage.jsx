@@ -7,6 +7,16 @@ const ImageSelectPage = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [images, setImages] = useState(["", "", "", ""]);
+  const handleImageSelect = (e) => {
+    const files = Array.from(e.target.files);
+    const urls = files.map((file) => URL.createObjectURL(file));
+
+    localStorage.setItem("selectedImages", JSON.stringify(urls));
+    localStorage.setItem("selected-type", "image");
+    localStorage.removeItem("selectedVideo");
+
+    setImages(urls); // 상태 저장 (선택사항)
+  };
 
   useEffect(() => {
     const loadedImages = [];
@@ -85,11 +95,10 @@ const ImageSelectPage = () => {
         <button onClick={handleImageFile}>배경이미지 파일</button>
         <button onClick={handleLocalFile}>내 파일 선택</button>
         <input
-          type="file"
-          accept="image/*"
-          ref={fileInputRef}
-          onChange={handleFileChange}
-          style={{ display: "none" }}
+  type="file"
+  accept="image/*"
+  multiple
+  onChange={handleImageSelect}
         />
       </div>
 
