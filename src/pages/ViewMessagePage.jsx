@@ -27,14 +27,32 @@ const ViewMessagePage = () => {
 
   if (!message) return <p style={{ padding: "20px" }}>메시지를 불러오는 중입니다...</p>;
 
-  return (
-    <div style={{ padding: "20px", maxWidth: 700, margin: "0 auto" }}>
-      <h2>💌 공유된 메시지</h2>
+return (
+  <div style={{ padding: "20px", maxWidth: 700, margin: "0 auto" }}>
+    <h2>💌 공유된 메시지</h2>
 
-      {message.imageUrl && (
+    {/* 영상 우선 렌더링 */}
+    {message.videoUrl && (
+      <video
+        src={message.videoUrl}
+        controls
+        style={{
+          width: "90%",
+          maxWidth: "600px",
+          borderRadius: 16,
+          margin: "20px auto",
+          display: "block",
+        }}
+      />
+    )}
+
+    {/* 영상이 없을 때만 이미지 배열 렌더링 */}
+    {!message.videoUrl && message.imageUrls?.length > 0 &&
+      message.imageUrls.map((url, index) => (
         <img
-          src={message.imageUrl}
-          alt="공유 이미지"
+          key={index}
+          src={url}
+          alt={`공유 이미지 ${index + 1}`}
           style={{
             width: "90%",
             maxWidth: "600px",
@@ -44,51 +62,46 @@ const ViewMessagePage = () => {
             boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
           }}
         />
-      )}
+      ))}
 
-      {message.videoUrl && (
-        <video
-          src={message.videoUrl}
-          controls
-          style={{
-            width: "90%",
-            maxWidth: "600px",
-            borderRadius: 16,
-            margin: "20px auto",
-            display: "block",
-          }}
-        />
-      )}
+    {/* 자막 */}
+    {message.caption && (
+      <p style={{
+        fontSize: 18,
+        marginBottom: 15,
+        textAlign: "center",
+        whiteSpace: "pre-wrap",
+      }}>
+        {message.caption}
+      </p>
+    )}
 
-      {message.caption && (
-        <p style={{ fontSize: 18, marginBottom: 15, textAlign: "center", whiteSpace: "pre-wrap" }}>
-          {message.caption}
-        </p>
-      )}
-
-      {message.music && (
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: 20 }}>
-          <audio controls src={message.music}>
-            브라우저가 오디오를 지원하지 않습니다.
-          </audio>
-        </div>
-      )}
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: 12,
-          marginTop: 30,
-          flexWrap: "wrap",
-        }}
-      >
-        <button onClick={() => navigate(-1)}>뒤로가기</button>
-        <button onClick={() => navigate(`/share/${id}`)}>다음 - 공유하기</button>
-        <button onClick={() => navigate("/")}>처음으로</button>
+    {/* 음악 */}
+    {message.music && (
+      <div style={{ display: "flex", justifyContent: "center", marginBottom: 20 }}>
+        <audio controls src={message.music}>
+          브라우저가 오디오를 지원하지 않습니다.
+        </audio>
       </div>
+    )}
+
+    {/* 버튼 */}
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        gap: 12,
+        marginTop: 30,
+        flexWrap: "wrap",
+      }}
+    >
+      <button onClick={() => navigate(-1)}>뒤로가기</button>
+      <button onClick={() => navigate(`/share/${id}`)}>다음 - 공유하기</button>
+      <button onClick={() => navigate("/")}>처음으로</button>
     </div>
-  );
+  </div>
+);
+
 };
 
 export default ViewMessagePage;
