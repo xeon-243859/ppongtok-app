@@ -24,8 +24,16 @@ const ViewMessagePage = () => {
     };
     fetchMessage();
   }, [id]);
-
-  if (!message) return <p style={{ padding: "20px" }}>메시지를 불러오는 중입니다...</p>;
+   useEffect(() => {
+   if (message) {
+    console.log("🔥 전체 message 객체", message);
+    console.log("🖼️ imageUrls", message.imageUrls);
+    console.log("🎞️ videoUrl", message.videoUrl);
+    console.log("📝 caption", message.caption);
+    console.log("🎵 music", message.music);
+  }
+}, [message]);
+ if (!message) return <p style={{ padding: "20px" }}>메시지를 불러오는 중입니다...</p>;
 
 return (
   <div style={{ padding: "20px", maxWidth: 700, margin: "0 auto" }}>
