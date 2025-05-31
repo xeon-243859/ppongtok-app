@@ -45,17 +45,15 @@ const ImageSelectPage = () => {
   localStorage.removeItem("selected-video");
   localStorage.setItem("selected-type", "image");
 
-  // ✅ File 객체 → 미리보기 URL로 변환
-  const validFiles = images.filter((img) => img instanceof File);
-  const previewUrls = validFiles.map((file) => URL.createObjectURL(file));
+  const cleanedImages = images.filter(Boolean); // null, 빈 값 제거
+localStorage.setItem("selectedImages", JSON.stringify(cleanedImages));
+localStorage.setItem("selected-type", "image");
+localStorage.removeItem("selected-video");
+localStorage.setItem("allow-music", "true");
 
-  // ✅ localStorage에 저장
-  localStorage.setItem("selectedImages", JSON.stringify(previewUrls));
-  localStorage.setItem("allow-music", "true");
-
-  setTimeout(() => {
-    navigate("/music/select");
-  }, 100);
+setTimeout(() => {
+  navigate("/music/select");
+}, 100);
 };
 
 
