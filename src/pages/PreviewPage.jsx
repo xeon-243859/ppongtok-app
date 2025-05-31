@@ -19,6 +19,9 @@ const PreviewPage = () => {
     const type = localStorage.getItem("selected-type") || "image";
     const msg = localStorage.getItem("message") || "";
     const music = localStorage.getItem("selectedMusic");
+    
+    localStorage.setItem("selectedVideo", "/videos/river.mp4");
+    localStorage.setItem("selected-type", "video");
 
     setSelectedImages(images);
     setSelectedVideo(video);
@@ -81,6 +84,7 @@ const PreviewPage = () => {
             muted
             loop
             playsInline
+             onError={() => console.error("❌ 영상 로딩 실패", selectedVideo)}
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         ) : (
