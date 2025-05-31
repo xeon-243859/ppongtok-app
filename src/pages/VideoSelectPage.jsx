@@ -20,7 +20,7 @@ const VideoSelectPage = () => {
   const handleThemeSelect = () => {
    localStorage.setItem("selectedVideo", "/videos/theme-video.mp4"); // ✅ PreviewPage에서 읽는 키
    localStorage.setItem("selected-type", "video");                   // ✅ 타입도 함께 저장
-   navigate("/preview");                                             // ✅ 바로 미리보기로 이동
+  
 
   };
 
