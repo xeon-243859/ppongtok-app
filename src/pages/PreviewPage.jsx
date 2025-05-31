@@ -38,13 +38,8 @@ const PreviewPage = () => {
     }
   }, []);
 
-  const handleNext = () => {
-    navigate("/share");
-  };
-
-  const handleGoHome = () => {
-    navigate("/");
-  };
+  const handleNext = () => navigate("/share");
+  const handleGoHome = () => navigate("/");
 
   const buttonStyle = {
     padding: "12px 20px",
@@ -60,7 +55,12 @@ const PreviewPage = () => {
   return (
     <div
       className="preview-wrapper"
-      style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: 24 }}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        padding: 24,
+      }}
     >
       <h2 style={{ marginBottom: 16 }}>💌 미리보기</h2>
 
@@ -69,18 +69,22 @@ const PreviewPage = () => {
         style={{
           width: "100%",
           maxWidth: 600,
-          background: "#fff",
+          height: 360,
+          background: "#000",
           borderRadius: 24,
           boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-          padding: 16,
-          textAlign: "center",
+          overflow: "hidden",
+          position: "relative",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         {mediaType === "image" && selectedImages.length > 0 ? (
           <img
             src={selectedImages[currentImageIndex]}
             alt="preview"
-            style={{ width: "100%", borderRadius: 16 }}
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         ) : mediaType === "video" && selectedVideo ? (
           <video
@@ -88,40 +92,52 @@ const PreviewPage = () => {
             autoPlay
             muted
             playsInline
-            style={{ width: "100%", borderRadius: 16 }}
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
             onLoadedMetadata={(e) => {
               e.target.currentTime = 0;
-              setTimeout(() => e.target.pause(), 30000); // 30초 재생 제한
+              setTimeout(() => e.target.pause(), 30000);
             }}
           />
         ) : (
-          <div style={{ height: 200, display: "flex", justifyContent: "center", alignItems: "center", color: "#999" }}>
-            배경이 없습니다
-          </div>
+          <div style={{ color: "#999" }}>배경이 없습니다</div>
         )}
 
-        <div
-          style={{
-            marginTop: 16,
-            height: 32,
-            overflow: "hidden",
-            whiteSpace: "nowrap",
-            lineHeight: "32px",
-          }}
-        >
-          <span
+        {repeatedMessage && (
+          <div
             style={{
-              display: "inline-block",
-              animation: "scrollText 30s linear infinite",
-              fontSize: 18,
+              position: "absolute",
+              bottom: 24,
+              width: "100%",
+              overflow: "hidden",
+              whiteSpace: "nowrap",
+              height: "40px",
             }}
           >
-            {repeatedMessage}
-          </span>
-        </div>
+            <p
+              style={{
+                position: "absolute",
+                animation: "scrollText 20s linear infinite",
+                fontSize: "18px",
+                fontWeight: "bold",
+                color: "white",
+                textShadow: "0 0 6px rgba(0,0,0,0.7)",
+              }}
+            >
+              {repeatedMessage}
+            </p>
+          </div>
+        )}
       </div>
 
-      <div style={{ display: "flex", justifyContent: "center", gap: 12, marginTop: 28, flexWrap: "wrap" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: 12,
+          marginTop: 28,
+          flexWrap: "wrap",
+        }}
+      >
         <button onClick={() => navigate("/music")} style={buttonStyle}>
           뒤로가기
         </button>
@@ -133,11 +149,11 @@ const PreviewPage = () => {
         </button>
       </div>
 
-      {selectedMusic && <audio ref={audioRef} src={selectedMusic} autoPlay loop />}
+      {selectedMusic && (
+        <audio ref={audioRef} src={selectedMusic} autoPlay loop />
+      )}
     </div>
   );
 };
 
 export default PreviewPage;
-
-
