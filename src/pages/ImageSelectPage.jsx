@@ -24,18 +24,23 @@ const ImageSelectPage = () => {
   };
 
   const handleNext = () => {
-    // ✅ 영상 관련 localStorage 흔적 완전 제거
-    localStorage.removeItem("selected-video");
-    localStorage.setItem("selected-type", "image");
+  // ✅ 영상 흔적 제거
+  localStorage.removeItem("selected-video");
+  localStorage.setItem("selected-type", "image");
 
-    const selectedImages = images.filter((img) => img);
-    localStorage.setItem("selected-images", JSON.stringify(selectedImages));
-    localStorage.setItem("allow-music", "true"); // ✅ 음악 페이지 진입 허용
+  // ✅ File 객체 → 미리보기 URL로 변환
+  const validFiles = images.filter((img) => img instanceof File);
+  const previewUrls = validFiles.map((file) => URL.createObjectURL(file));
 
-    setTimeout(() => {
-      navigate("/music/select");
-    }, 100);
-  };
+  // ✅ localStorage에 저장
+  localStorage.setItem("selectedImages", JSON.stringify(previewUrls));
+  localStorage.setItem("allow-music", "true");
+
+  setTimeout(() => {
+    navigate("/music/select");
+  }, 100);
+};
+
 
   const saveImage = (dataUrl) => {
     const updated = [...images];
