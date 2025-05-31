@@ -15,16 +15,13 @@ const PreviewPage = () => {
 
   useEffect(() => {
     const images = JSON.parse(localStorage.getItem("selectedImages") || "[]");
-    const video = localStorage.getItem("selectedVideo");
+    const video = localStorage.getItem("selectedVideo"); // ✅ 사용자가 선택한 영상
     const type = localStorage.getItem("selected-type") || "image";
     const msg = localStorage.getItem("message") || "";
     const music = localStorage.getItem("selectedMusic");
-    
-    localStorage.setItem("selectedVideo", "/videos/river.mp4");
-    localStorage.setItem("selected-type", "video");
 
     setSelectedImages(images);
-    setSelectedVideo(video);
+    setSelectedVideo(video); // ✅ 강물 고정 제거
     setMediaType(type);
     setCaption(msg);
     setSelectedMusic(music);
@@ -58,7 +55,7 @@ const PreviewPage = () => {
 
       <div
         style={{
-          position: "relative", // ✅ 자막 흐르게 하려면 필수
+          position: "relative",
           width: "100%",
           maxWidth: 600,
           height: 360,
@@ -84,7 +81,7 @@ const PreviewPage = () => {
             muted
             loop
             playsInline
-             onError={() => console.error("❌ 영상 로딩 실패", selectedVideo)}
+            onError={() => console.error("❌ 영상 로딩 실패", selectedVideo)}
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         ) : (
@@ -132,5 +129,3 @@ const PreviewPage = () => {
 };
 
 export default PreviewPage;
-
-
