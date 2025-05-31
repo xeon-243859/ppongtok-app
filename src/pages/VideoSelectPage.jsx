@@ -18,10 +18,10 @@ const VideoSelectPage = () => {
   const lastPage = localStorage.getItem("last-page") || "/";
 
   const handleThemeSelect = () => {
-   localStorage.setItem("selectedVideo", "/videos/theme-video.mp4"); // ✅ PreviewPage에서 읽는 키
-   localStorage.setItem("selected-type", "video");                   // ✅ 타입도 함께 저장
-  
-
+    localStorage.setItem("selected-video-source", "theme");
+    setSelectedVideo("theme-video.mp4");
+    localStorage.setItem("selected-video", "theme-video.mp4");
+    navigate("/video/theme");  // ← 이걸로 수정!
   };
 
   const handleLocalSelect = () => {
@@ -29,18 +29,12 @@ const VideoSelectPage = () => {
   };
 
   const handleFileChange = (e) => {
-     try {
     const file = e.target.files?.[0];
     if (file) {
       const videoUrl = URL.createObjectURL(file);
       setSelectedVideo(videoUrl);
       localStorage.setItem("selected-video", videoUrl);
       localStorage.setItem("selected-video-source", "local");
-        } else {
-      console.warn("파일이 선택되지 않았습니다.");
-    }
-  } catch (error) {
-    console.error("🚨 비디오 파일 선택 중 오류 발생:", error);
     }
   };
 
@@ -111,3 +105,5 @@ const VideoSelectPage = () => {
 };
 
 export default VideoSelectPage;
+
+
