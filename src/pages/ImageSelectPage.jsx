@@ -32,8 +32,15 @@ const ImageSelectPage = () => {
     setImages(updated);
     localStorage.removeItem(`img-${index + 1}`);
   };
+ 
 
   const handleNext = () => {
+  console.log("🔥 images 상태", images);
+  images.forEach((img, i) => {
+  console.log(`📦 image[${i}]`, img);
+  console.log(`👉 image[${i}] instanceof File ?`, img instanceof File);
+});
+
   // ✅ 영상 흔적 제거
   localStorage.removeItem("selected-video");
   localStorage.setItem("selected-type", "image");
