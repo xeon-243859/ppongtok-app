@@ -6,8 +6,7 @@ const PreviewPage = () => {
   const audioRef = useRef(null);
 
   const [selectedImages, setSelectedImages] = useState([]);
-  const [selectedVideo, setSelectedVideo] = useState(null);
-  const [mediaType, setMediaType] = useState(null);
+  const [mediaType, setMediaType] = useState("image");
   const [caption, setCaption] = useState("");
   const [repeatedMessage, setRepeatedMessage] = useState("");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -15,22 +14,15 @@ const PreviewPage = () => {
 
   useEffect(() => {
     const images = JSON.parse(localStorage.getItem("selectedImages") || "[]");
-    const video = localStorage.getItem("selectedVideo");
-    const type = localStorage.getItem("mediaType");
-    const msg = localStorage.getItem("message");
+    const msg = localStorage.getItem("message") || "";
     const music = localStorage.getItem("selectedMusic");
 
     setSelectedImages(images);
-    setSelectedVideo(video);
-    setMediaType(type);
-    setCaption(msg || "");
+    setCaption(msg);
     setSelectedMusic(music);
+    setRepeatedMessage(msg.repeat(50));
 
-    if (msg) {
-      setRepeatedMessage(msg.repeat(50));
-    }
-
-    if (type === "image" && images.length > 0) {
+    if (images.length > 0) {
       const interval = setInterval(() => {
         setCurrentImageIndex((prev) => (prev + 1) % images.length);
       }, 3000);
@@ -53,19 +45,10 @@ const PreviewPage = () => {
   };
 
   return (
-    <div
-      className="preview-wrapper"
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: 24,
-      }}
-    >
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: 24 }}>
       <h2 style={{ marginBottom: 16 }}>💌 미리보기</h2>
 
       <div
-        className="moving-box"
         style={{
           width: "100%",
           maxWidth: 600,
@@ -80,28 +63,11 @@ const PreviewPage = () => {
           alignItems: "center",
         }}
       >
-        {mediaType === "image" && selectedImages.length > 0 &&
-        selectedImages[currentImageIndex]?.startsWith("data:image/") ? (
+        {selectedImages.length > 0 ? (
           <img
             src={selectedImages[currentImageIndex]}
             alt="preview"
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
-            onError={(e) => {
-              e.currentTarget.style.display = "none";
-              console.warn("❌ 이미지 불러오기 실패:", selectedImages[currentImageIndex]);
-            }}
-          />
-        ) : mediaType === "video" && selectedVideo ? (
-          <video
-            src={selectedVideo}
-            autoPlay
-            muted
-            playsInline
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-            onLoadedMetadata={(e) => {
-              e.target.currentTime = 0;
-              setTimeout(() => e.target.pause(), 30000); // 30초 제한
-            }}
           />
         ) : (
           <div style={{ color: "#999" }}>배경이 없습니다</div>
@@ -134,24 +100,10 @@ const PreviewPage = () => {
         )}
       </div>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: 12,
-          marginTop: 28,
-          flexWrap: "wrap",
-        }}
-      >
-        <button onClick={() => navigate("/music")} style={buttonStyle}>
-          뒤로가기
-        </button>
-        <button onClick={handleNext} style={buttonStyle}>
-          다음 - 공유하기
-        </button>
-        <button onClick={handleGoHome} style={buttonStyle}>
-          처음으로
-        </button>
+      <div style={{ display: "flex", justifyContent: "center", gap: 12, marginTop: 28, flexWrap: "wrap" }}>
+        <button onClick={() => navigate("/music")} style={buttonStyle}>뒤로가기</button>
+        <button onClick={handleNext} style={buttonStyle}>다음 - 공유하기</button>
+        <button onClick={handleGoHome} style={buttonStyle}>처음으로</button>
       </div>
 
       {selectedMusic && (
