@@ -12,8 +12,7 @@ const PreviewPage = () => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [mediaType, setMediaType] = useState("image");
-  const [caption, setCaption] = useState("");
-  const [repeatedMessage, setRepeatedMessage] = useState("");
+  
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedMusic, setSelectedMusic] = useState(null);
 
