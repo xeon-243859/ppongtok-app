@@ -40,7 +40,7 @@ const PreviewPage = () => {
       setDisplayedCaption(caption.slice(0, i)); // ✅ 이것만 바꾸면 자막이 쌓이지 않게 됩니다!
       i++;
       if (i >= caption.length) clearInterval(interval);
-    }, 200); // 한 글자당 100ms 속도
+    }, 250); // 한 글자당 100ms 속도
 
     return () => clearInterval(interval);
   }, [caption]);
