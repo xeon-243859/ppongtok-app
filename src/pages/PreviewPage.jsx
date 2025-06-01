@@ -38,7 +38,7 @@ const PreviewPage = () => {
     setMediaType(type);
     setCaption(msg);
     setSelectedMusic(music);
-    setRepeatedMessage(msg.repeat(50));
+    setRepeatedMessage(msg.repeat(20));
 
     if (type === "image" && images.length > 0) {
       const interval = setInterval(() => {
@@ -120,7 +120,7 @@ const PreviewPage = () => {
             <p
               style={{
                 position: "absolute",
-                animation: "scrollText 60s linear infinite", // 🎯 느리게 흐름
+                animation: "scrollText 30s linear infinite", // 🎯 느리게 흐름
                 fontSize: "18px",
                 fontWeight: "bold",
                 color: "white",
