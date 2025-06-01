@@ -14,6 +14,16 @@ const VideoSelectPage = () => {
     return () => clearTimeout(timer1);
   }, []);
 
+  useEffect(() => {
+  const storedVideo = localStorage.getItem("selected-video");
+  const storedType = localStorage.getItem("selected-type");
+
+  if (storedVideo && storedType === "video") {
+    setSelectedVideo(storedVideo);
+    console.log("🎥 VideoSelectPage 불러온 영상:", storedVideo);
+  }
+}, []);
+
   // 🧭 저장된 이전 페이지 (ex. "/style/select")
   const lastPage = localStorage.getItem("last-page") || "/";
 
