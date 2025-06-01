@@ -16,7 +16,17 @@ const PreviewPage = () => {
   const [selectedMusic, setSelectedMusic] = useState(null);
 
   const [mediaLoaded, setMediaLoaded] = useState(false);
-
+   useEffect(() => {
+    // ✅ 자막 애니메이션 정의
+    const style = document.createElement("style");
+    style.innerHTML = `
+      @keyframes marquee {
+        0% { transform: translateX(100%); }
+        100% { transform: translateX(-100%); }
+      }
+    `;
+    document.head.appendChild(style);
+  }, []);
 
   useEffect(() => {
     const images = JSON.parse(localStorage.getItem("selectedImages") || "[]");
@@ -44,13 +54,8 @@ const PreviewPage = () => {
       }, 3000);
       return () => clearInterval(interval);
     }
-
-    const timeout = setTimeout(() => {
-      navigate("/share");
-    }, 30000); // 30초 후 자동 이동
-
-    return () => clearTimeout(timeout);
   }, []);
+   
 
   const handleNext = () => navigate("/share");
   const handleGoHome = () => navigate("/");
@@ -72,16 +77,12 @@ const PreviewPage = () => {
 
     <div
       style={{
-        position: "relative",
-        width: "100%",
-        maxWidth: 600,
-        height: 360,
-        background: "#000",
-        borderRadius: 24,
-        overflow: "hidden",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
+        display: "inline-block",
+    fontSize: "18px",
+    fontWeight: "bold",
+    color: "white",
+    animation: "marquee 30s linear forwards",
+    whiteSpace: "nowrap",
       }}
     >
       {mediaType === "image" && selectedImages.length > 0 ? (
