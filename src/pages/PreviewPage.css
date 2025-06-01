@@ -202,3 +202,20 @@
     transform: translateX(-50%);
   }
 }
+
+.caption-container {
+  position: absolute;
+  bottom: 5%;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* 실제 자막 내용 */
+.caption-marquee {
+  position: relative;
+  display: inline-block;
+  font-size: 1.8rem;
+  color: white;
+  will-change: transform;
+}
