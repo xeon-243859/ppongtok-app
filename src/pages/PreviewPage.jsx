@@ -1,12 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
+const [caption, setCaption] = useState("");
+const [displayedCaption, setDisplayedCaption] = useState("");
 const PreviewPage = () => {
   const navigate = useNavigate();
   const audioRef = useRef(null);
   const containerRef = useRef(null);
   const captionRef = useRef(null);
-
+  
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [mediaType, setMediaType] = useState("image");
@@ -16,6 +18,7 @@ const PreviewPage = () => {
   const [selectedMusic, setSelectedMusic] = useState(null);
 
   const [mediaLoaded, setMediaLoaded] = useState(false);
+  
    useEffect(() => {
     // ✅ 자막 애니메이션 정의
     const style = document.createElement("style");
@@ -27,6 +30,23 @@ const PreviewPage = () => {
     `;
     document.head.appendChild(style);
   }, []);
+
+  useEffect(() => {
+  const msg = localStorage.getItem("message") || "";
+  setCaption(msg); // 자막 원문 저장
+}, []);
+
+  useEffect(() => {
+  let i = 0;
+  const interval = setInterval(() => {
+    setDisplayedCaption((prev) => prev + caption[i]);
+    i++;
+    if (i >= caption.length) clearInterval(interval);
+  }, 100); // 100ms = 한 글자당 0.1초
+
+  return () => clearInterval(interval);
+}, [caption]);
+  
 
   useEffect(() => {
     const images = JSON.parse(localStorage.getItem("selectedImages") || "[]");
@@ -73,19 +93,19 @@ const PreviewPage = () => {
     cursor: "pointer",
   };
 
-  return (
+return (
   <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: 24 }}>
     <h2 style={{ marginBottom: 16 }}>💌 미리보기</h2>
 
     <div
       style={{
         position: "relative",
-    width: "100%",
-    maxWidth: "720px",
-    aspectRatio: "16 / 9",  // ✅ 비율 고정
-    overflow: "hidden",
-    borderRadius: "24px",
-    backgroundColor: "#000",
+        width: "100%",
+        maxWidth: "720px",
+        aspectRatio: "16 / 9", // ✅ 비율 고정
+        overflow: "hidden",
+        borderRadius: "24px",
+        backgroundColor: "#000",
       }}
     >
       {mediaType === "image" && selectedImages.length > 0 ? (
@@ -118,42 +138,35 @@ const PreviewPage = () => {
         <div style={{ color: "#999" }}>🎞️ 배경이 없습니다</div>
       )}
 
-      {/* ✅ 자막은 미디어 로드 후에만 보이도록 조건 추가 */}
+      {/* ✅ 타자기 자막 효과 (미디어 로드 후에만 노출) */}
       {caption && mediaLoaded && (
         <div
           style={{
             position: "absolute",
-            bottom: 20,
+            bottom: "10%",
             width: "100%",
-            overflow: "hidden",
-            whiteSpace: "nowrap",
-            padding: "0 20px",
+            textAlign: "center",
+            color: "white",
+            fontSize: "20px",
+            fontWeight: "bold",
+            textShadow: "0 0 5px rgba(0, 0, 0, 0.7)",
           }}
         >
-          <p
-            style={{
-              display: "inline-block",
-              fontSize: "18px",
-              fontWeight: "bold",
-              color: "white",
-              animation: "marquee 8s linear forwards",
-            }}
-          >
-            {repeatedMessage}
-          </p>
+          {displayedCaption}
         </div>
       )}
     </div>
 
+    {/* ✅ 하단 버튼들 */}
     <div style={{ display: "flex", justifyContent: "center", gap: 12, marginTop: 28 }}>
       <button onClick={() => navigate("/music")} style={buttonStyle}>뒤로가기</button>
       <button onClick={handleNext} style={buttonStyle}>다음 - 공유하기</button>
       <button onClick={handleGoHome} style={buttonStyle}>처음으로</button>
     </div>
 
+    {/* ✅ 음악 */}
     {selectedMusic && <audio ref={audioRef} src={selectedMusic} autoPlay loop />}
   </div>
-)}
-
-
+  );
+};
 export default PreviewPage;
