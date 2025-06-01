@@ -13,20 +13,32 @@ const PreviewPage = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedMusic, setSelectedMusic] = useState(null);
 
+  // 🎯 자막 애니메이션용 CSS를 <head>에 삽입
+  useEffect(() => {
+    const style = document.createElement("style");
+    style.innerHTML = `
+      @keyframes scrollText {
+        0% { transform: translateX(100%); }
+        100% { transform: translateX(-100%); }
+      }
+    `;
+    document.head.appendChild(style);
+    return () => document.head.removeChild(style);
+  }, []);
+
   useEffect(() => {
     const images = JSON.parse(localStorage.getItem("selectedImages") || "[]");
-    const video = localStorage.getItem("selectedVideo"); // ✅ 사용자가 선택한 영상
-    console.log("불러온 영상 주소:", video); // ← 이 줄을 꼭 추가!
+    const video = localStorage.getItem("selectedVideo");
     const type = localStorage.getItem("selected-type") || "image";
     const msg = localStorage.getItem("message") || "";
     const music = localStorage.getItem("selectedMusic");
 
     setSelectedImages(images);
-    setSelectedVideo(video); // ✅ 강물 고정 제거
+    setSelectedVideo(video);
     setMediaType(type);
     setCaption(msg);
     setSelectedMusic(music);
-    setRepeatedMessage(msg.repeat(50));
+    setRepeatedMessage(msg.repeat(50)); // 자막 스크롤용
 
     if (type === "image" && images.length > 0) {
       const interval = setInterval(() => {
@@ -49,7 +61,7 @@ const PreviewPage = () => {
     fontWeight: "bold",
     cursor: "pointer",
   };
-   console.log("선택된 영상:", selectedVideo);
+
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: 24 }}>
       <h2 style={{ marginBottom: 16 }}>💌 미리보기</h2>
@@ -76,21 +88,22 @@ const PreviewPage = () => {
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         ) : mediaType === "video" && selectedVideo ? (
-           <video
-    src={selectedVideo}
-    autoPlay
-    loop
-    controls // ← 재생 버튼 보이게!
-    style={{
-      width: "100%",
-      maxWidth: "600px",
-      borderRadius: "16px",
-      backgroundColor: "#000", // 영상 없을 때 확인 용도
-    }}
-  />
-) : (
-  <div style={{ color: "#999" }}>🎞️ 배경이 없습니다</div>
-)}
+          <video
+            src={selectedVideo}
+            autoPlay
+            loop
+            controls
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              borderRadius: "16px",
+              backgroundColor: "#000",
+            }}
+          />
+        ) : (
+          <div style={{ color: "#999" }}>🎞️ 배경이 없습니다</div>
+        )}
 
         {repeatedMessage && (
           <div
