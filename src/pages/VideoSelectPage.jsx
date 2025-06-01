@@ -19,10 +19,10 @@ const VideoSelectPage = () => {
 
   const handleThemeSelect = () => {
     localStorage.setItem("selected-video-source", "theme");
-    setSelectedVideo("theme-video.mp4");
-    localStorage.setItem("selected-video", "theme-video.mp4");
-    navigate("/video/theme");  // ← 이걸로 수정!
-  };
+  setSelectedVideo("/videos/flower.mp4"); // ← 여기 바꿔주세요!
+  localStorage.setItem("selected-video", "/videos/flower.mp4");
+  navigate("/video/theme");
+};
 
   const handleLocalSelect = () => {
     fileInputRef.current.click();
