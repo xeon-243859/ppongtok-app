@@ -12,8 +12,9 @@ const PreviewPage = () => {
   const [repeatedMessage, setRepeatedMessage] = useState("");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedMusic, setSelectedMusic] = useState(null);
+  const [isMediaLoaded, setIsMediaLoaded] = useState(false); // ✅ 로딩 상태
 
-  // 🎯 애니메이션 정의: 자막 흐름 느리게 (60초 설정)
+  // 자막 애니메이션 정의
   useEffect(() => {
     const style = document.createElement("style");
     style.innerHTML = `
@@ -26,6 +27,7 @@ const PreviewPage = () => {
     return () => document.head.removeChild(style);
   }, []);
 
+  // 초기값 불러오기
   useEffect(() => {
     const images = JSON.parse(localStorage.getItem("selectedImages") || "[]");
     const video = localStorage.getItem("selectedVideo");
@@ -38,7 +40,7 @@ const PreviewPage = () => {
     setMediaType(type);
     setCaption(msg);
     setSelectedMusic(music);
-    setRepeatedMessage(msg.repeat(20));
+    setRepeatedMessage(msg.repeat(5)); // ✅ 반복 횟수 줄임
 
     if (type === "image" && images.length > 0) {
       const interval = setInterval(() => {
@@ -85,6 +87,7 @@ const PreviewPage = () => {
           <img
             src={selectedImages[currentImageIndex]}
             alt="preview"
+            onLoad={() => setIsMediaLoaded(true)} // ✅ 이미지 로딩 완료 시
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         ) : mediaType === "video" && selectedVideo ? (
@@ -93,6 +96,7 @@ const PreviewPage = () => {
             autoPlay
             loop
             controls
+            onLoadedData={() => setIsMediaLoaded(true)} // ✅ 영상 로딩 완료 시
             style={{
               width: "100%",
               height: "100%",
@@ -105,8 +109,8 @@ const PreviewPage = () => {
           <div style={{ color: "#999" }}>🎞️ 배경이 없습니다</div>
         )}
 
-        {/* 자막: 영상/이미지 시작과 동시에 즉시 흐름 시작 */}
-        {repeatedMessage && (
+        {/* 자막: 로딩 완료된 후에만 표시 */}
+        {repeatedMessage && isMediaLoaded && (
           <div
             style={{
               position: "absolute",
@@ -120,7 +124,7 @@ const PreviewPage = () => {
             <p
               style={{
                 position: "absolute",
-                animation: "scrollText 30s linear infinite", // 🎯 느리게 흐름
+                animation: "scrollText 90s linear infinite", // ✅ 느리게 흐름
                 fontSize: "18px",
                 fontWeight: "bold",
                 color: "white",
