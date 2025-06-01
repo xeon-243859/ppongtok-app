@@ -34,6 +34,8 @@ const PreviewPage = () => {
     const type = localStorage.getItem("selected-type") || "image";
     const msg = localStorage.getItem("message") || "";
     const music = localStorage.getItem("selectedMusic");
+    
+  
 
     if (!video || video.includes("river") || type !== "video") {
       console.warn("⚠️ 주의: river.mp4 제외됨");
@@ -45,9 +47,9 @@ const PreviewPage = () => {
     setSelectedImages(images);
     setMediaType(type);
     setCaption(msg);
-    setRepeatedMessage(msg.repeat(20));
+    setRepeatedMessage(msg.repeat(80)); // ✅ 자막을 길게 반복해서 천천히 흐르게 만듦
     setSelectedMusic(music);
-
+      
     if (type === "image" && images.length > 0) {
       const interval = setInterval(() => {
         setCurrentImageIndex((prev) => (prev + 1) % images.length);
