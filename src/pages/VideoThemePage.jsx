@@ -16,7 +16,7 @@ const VideoThemePage = () => {
     localStorage.setItem("selected-video", src);
     localStorage.setItem("selected-type", "video");
     localStorage.removeItem("selected-images"); // 이미지가 있으면 충돌방지
-    navigate("/video/select");
+    navigate("/preview"); // ✅ 사용자 영상 선택 후 바로 preview로 이동
 
   };
 
