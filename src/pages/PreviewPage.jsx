@@ -49,7 +49,7 @@ const PreviewPage = () => {
     fontWeight: "bold",
     cursor: "pointer",
   };
-
+   console.log("선택된 영상:", selectedVideo);
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: 24 }}>
       <h2 style={{ marginBottom: 16 }}>💌 미리보기</h2>
