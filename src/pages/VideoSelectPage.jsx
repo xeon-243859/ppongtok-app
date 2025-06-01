@@ -32,7 +32,7 @@ const handleVideoSelect = (filename) => {
   localStorage.setItem("selected-video-source", "theme");
   localStorage.setItem("selected-type", "video"); // ✅ 이 줄 추가!
   setSelectedVideo(videoPath);
-  navigate("/video/theme");
+  navigate("/preview");
 };
 
 
