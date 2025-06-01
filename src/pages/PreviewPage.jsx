@@ -35,15 +35,21 @@ const PreviewPage = () => {
 
   // 자막 타자기 효과
   useEffect(() => {
-    let i = 0;
-    const interval = setInterval(() => {
-      setDisplayedCaption(caption.slice(0, i)); // ✅ 이것만 바꾸면 자막이 쌓이지 않게 됩니다!
-      i++;
-      if (i >= caption.length) clearInterval(interval);
-    }, 250); // 한 글자당 100ms 속도
+  let intervalId;
 
-    return () => clearInterval(interval);
-  }, [caption]);
+  if (caption) {
+    let i = 0;
+    setDisplayedCaption(""); // 🔥 초기화로 쌓임 방지!
+
+    intervalId = setInterval(() => {
+      setDisplayedCaption(caption.slice(0, i));
+      i++;
+      if (i > caption.length) clearInterval(intervalId);
+    }, 250); //숫자를 높일수록 속도가 느려짐//
+  }
+
+  return () => clearInterval(intervalId);
+}, [caption]);
 
   // 이미지/영상/음악 등 선택 데이터 가져오기
   useEffect(() => {
