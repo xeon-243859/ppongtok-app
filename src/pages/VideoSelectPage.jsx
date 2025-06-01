@@ -47,6 +47,7 @@ const handleVideoSelect = (filename) => {
       setSelectedVideo(videoUrl);
       localStorage.setItem("selected-video", videoUrl);
       localStorage.setItem("selected-video-source", "local");
+      localStorage.setItem("selected-type", "video"); // ✅ 이 줄을 반드시 추가!
     }
   };
 
