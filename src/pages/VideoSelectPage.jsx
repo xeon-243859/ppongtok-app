@@ -66,12 +66,7 @@ const handleVideoSelect = (filename) => {
       {showLine1 && <h2 className="video-title-line1">배경으로 사용할 영상파일 1개를</h2>}
       {showLine2 && <h2 className="video-title-line2">선택해 주세요</h2>}
 
-  <div>
-  <h2>영상 테마 선택</h2>
-  <button onClick={() => handleVideoSelect("flower.mp4")}>🌸 꽃 영상</button>
-  <button onClick={() => handleVideoSelect("sky.mp4")}>☁️ 하늘 영상</button>
-  <button onClick={() => handleVideoSelect("sunset.mp4")}>🌇 노을 영상</button>
-  </div>
+  
 
       <div className="video-button-group">
         <button onClick={handleThemeSelect}>동영상파일</button>
