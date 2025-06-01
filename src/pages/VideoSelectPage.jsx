@@ -17,20 +17,20 @@ const VideoSelectPage = () => {
   // 🧭 저장된 이전 페이지 (ex. "/style/select")
   const lastPage = localStorage.getItem("last-page") || "/";
 
- // ✅ theme용으로 기본 flower.mp4 대신 원하는 영상 이름 넘기도록 변경
-const handleThemeSelect = (filename = "flower.mp4") => {
+  const handleThemeSelect = (filename = "flower.mp4") => {
   const videoPath = `/videos/${filename}`;
   localStorage.setItem("selected-video-source", "theme");
-  setSelectedVideo(videoPath); // ✅ 유동적으로 경로 적용
-  localStorage.setItem("selected-video", videoPath); // ✅ 강물.mp4 고정 제거
-  navigate("/preview"); // ✅ 미리보기로 바로 연결 (또는 /video/theme 유지 가능)
+  localStorage.setItem("selected-video", videoPath);
+  localStorage.setItem("selected-type", "video"); // ✅ 이 줄 추가!
+  setSelectedVideo(videoPath);
+  navigate("/preview"); // 또는 navigate("/video/select")로 되돌려도 됨
 };
 
-// ✅ 파일명 기반 선택은 그대로 사용 (이미 잘 되어 있음)
 const handleVideoSelect = (filename) => {
   const videoPath = `/videos/${filename}`;
   localStorage.setItem("selected-video", videoPath);
   localStorage.setItem("selected-video-source", "theme");
+  localStorage.setItem("selected-type", "video"); // ✅ 이 줄 추가!
   setSelectedVideo(videoPath);
   navigate("/preview");
 };
