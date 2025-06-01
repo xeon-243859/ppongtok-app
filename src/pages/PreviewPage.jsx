@@ -66,7 +66,6 @@ const PreviewPage = () => {
     setSelectedImages(images);
     setMediaType(type);
     setCaption(msg);
-    setRepeatedMessage(msg.repeat(80)); // ✅ 자막을 길게 반복해서 천천히 흐르게 만듦
     setSelectedMusic(music);
       
     if (type === "image" && images.length > 0) {
