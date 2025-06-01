@@ -13,29 +13,29 @@ const PreviewPage = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedMusic, setSelectedMusic] = useState(null);
 
-  useEffect(() => {
-    const images = JSON.parse(localStorage.getItem("selectedImages") || "[]");
-    const video = localStorage.getItem("selectedVideo"); // ✅ 사용자가 선택한 영상
-    console.log("불러온 영상 주소:", video); // ← 이 줄을 꼭 추가!
-    const type = localStorage.getItem("selected-type") || "image";
-    const msg = localStorage.getItem("message") || "";
-    const music = localStorage.getItem("selectedMusic");
-    
- // ✅ 추가 시작
+useEffect(() => {
+  const images = JSON.parse(localStorage.getItem("selectedImages") || "[]");
+  const video = localStorage.getItem("selected-video");
+  console.log("📦 불러온 영상 주소:", video);
+  const type = localStorage.getItem("selected-type") || "image";
+  const msg = localStorage.getItem("message") || "";
+  const music = localStorage.getItem("selectedMusic");
+
+  // ✅ 강물.mp4 방지 조건
   if (!video || video.includes("river") || type !== "video") {
     console.warn("⚠️ 주의: 현재 선택된 영상이 '사용자 선택'이 아닐 수 있습니다.");
+    setSelectedVideo(null); // ✅ 강물 제거
+  } else {
+    setSelectedVideo(video); // ✅ 정상 영상 반영
   }
-  // ✅ 추가 끝
-
-    console.log("🎥 최종 selected-video:", video); // ✅ 올바른 위치
 
     setSelectedImages(images);
     setSelectedVideo(video); // ✅ 강물 고정 제거
     setMediaType(type);
     setCaption(msg);
     setSelectedMusic(music);
-    setRepeatedMessage(msg.repeat(50));
-
+    setRepeatedMessage(msg.repeat(5));
+    
     if (type === "image" && images.length > 0) {
       const interval = setInterval(() => {
         setCurrentImageIndex((prev) => (prev + 1) % images.length);
