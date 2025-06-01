@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 const PreviewPage = () => {
   const navigate = useNavigate();
   const audioRef = useRef(null);
+  const containerRef = useRef(null);
+  const captionRef = useRef(null);
 
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
@@ -13,35 +15,38 @@ const PreviewPage = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedMusic, setSelectedMusic] = useState(null);
 
-useEffect(() => {
-  const images = JSON.parse(localStorage.getItem("selectedImages") || "[]");
-  const video = localStorage.getItem("selected-video");
-  console.log("📦 불러온 영상 주소:", video);
-  const type = localStorage.getItem("selected-type") || "image";
-  const msg = localStorage.getItem("message") || "";
-  const music = localStorage.getItem("selectedMusic");
+  useEffect(() => {
+    const images = JSON.parse(localStorage.getItem("selectedImages") || "[]");
+    const video = localStorage.getItem("selected-video");
+    const type = localStorage.getItem("selected-type") || "image";
+    const msg = localStorage.getItem("message") || "";
+    const music = localStorage.getItem("selectedMusic");
 
-  // ✅ 강물.mp4 방지 조건
-  if (!video || video.includes("river") || type !== "video") {
-    console.warn("⚠️ 주의: 현재 선택된 영상이 '사용자 선택'이 아닐 수 있습니다.");
-    setSelectedVideo(null); // ✅ 강물 제거
-  } else {
-    setSelectedVideo(video); // ✅ 정상 영상 반영
-  }
+    if (!video || video.includes("river") || type !== "video") {
+      console.warn("⚠️ 주의: river.mp4 제외됨");
+      setSelectedVideo(null);
+    } else {
+      setSelectedVideo(video);
+    }
 
     setSelectedImages(images);
-    setSelectedVideo(video); // ✅ 강물 고정 제거
     setMediaType(type);
     setCaption(msg);
+    setRepeatedMessage(msg.repeat(20));
     setSelectedMusic(music);
-    setRepeatedMessage(msg.repeat(5));
-    
+
     if (type === "image" && images.length > 0) {
       const interval = setInterval(() => {
         setCurrentImageIndex((prev) => (prev + 1) % images.length);
       }, 3000);
       return () => clearInterval(interval);
     }
+
+    const timeout = setTimeout(() => {
+      navigate("/share");
+    }, 30000); // 30초 후 자동 이동
+
+    return () => clearTimeout(timeout);
   }, []);
 
   const handleNext = () => navigate("/share");
@@ -57,7 +62,7 @@ useEffect(() => {
     fontWeight: "bold",
     cursor: "pointer",
   };
-   console.log("선택된 영상:", selectedVideo);
+
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: 24 }}>
       <h2 style={{ marginBottom: 16 }}>💌 미리보기</h2>
@@ -70,7 +75,6 @@ useEffect(() => {
           height: 360,
           background: "#000",
           borderRadius: 24,
-          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
           overflow: "hidden",
           display: "flex",
           justifyContent: "center",
@@ -84,41 +88,40 @@ useEffect(() => {
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         ) : mediaType === "video" && selectedVideo ? (
-           <video
-    src={selectedVideo}
-    autoPlay
-    loop
-    controls // ← 재생 버튼 보이게!
-    style={{
-      width: "100%",
-      maxWidth: "600px",
-      borderRadius: "16px",
-      backgroundColor: "#000", // 영상 없을 때 확인 용도
-    }}
-  />
-) : (
-  <div style={{ color: "#999" }}>🎞️ 배경이 없습니다</div>
-)}
+          <video
+            src={selectedVideo}
+            autoPlay
+            loop
+            muted
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              borderRadius: "16px",
+            }}
+          />
+        ) : (
+          <div style={{ color: "#999" }}>🎞️ 배경이 없습니다</div>
+        )}
 
-        {repeatedMessage && (
+        {caption && (
           <div
             style={{
               position: "absolute",
-              bottom: 24,
+              bottom: 20,
               width: "100%",
               overflow: "hidden",
               whiteSpace: "nowrap",
-              height: "40px",
+              padding: "0 20px",
             }}
           >
             <p
               style={{
-                position: "absolute",
-                animation: "scrollText 20s linear infinite",
+                display: "inline-block",
                 fontSize: "18px",
                 fontWeight: "bold",
                 color: "white",
-                textShadow: "0 0 6px rgba(0,0,0,0.7)",
+                animation: "marquee 30s linear forwards",
               }}
             >
               {repeatedMessage}
@@ -127,19 +130,31 @@ useEffect(() => {
         )}
       </div>
 
-      <div style={{ display: "flex", justifyContent: "center", gap: 12, marginTop: 28, flexWrap: "wrap" }}>
-        <button onClick={() => navigate("/music")} style={buttonStyle}>뒤로가기</button>
-        <button onClick={handleNext} style={buttonStyle}>다음 - 공유하기</button>
-        <button onClick={handleGoHome} style={buttonStyle}>처음으로</button>
+      <div style={{ display: "flex", justifyContent: "center", gap: 12, marginTop: 28 }}>
+        <button onClick={() => navigate("/music")} style={buttonStyle}>
+          뒤로가기
+        </button>
+        <button onClick={handleNext} style={buttonStyle}>
+          다음 - 공유하기
+        </button>
+        <button onClick={handleGoHome} style={buttonStyle}>
+          처음으로
+        </button>
       </div>
 
-      {selectedMusic && (
-        <audio ref={audioRef} src={selectedMusic} autoPlay loop />
-      )}
+      {selectedMusic && <audio ref={audioRef} src={selectedMusic} autoPlay loop />}
     </div>
   );
 };
 
+// ✨ CSS 애니메이션 (전역 스타일에 추가 필요)
+const style = document.createElement("style");
+style.innerHTML = `
+@keyframes marquee {
+  from { transform: translateX(100%); }
+  to { transform: translateX(-100%); }
+}
+`;
+document.head.appendChild(style);
+
 export default PreviewPage;
-
-
