@@ -12,9 +12,9 @@ const PreviewPage = () => {
   const [repeatedMessage, setRepeatedMessage] = useState("");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedMusic, setSelectedMusic] = useState(null);
-  const [isMediaLoaded, setIsMediaLoaded] = useState(false); // ✅ 로딩 상태
+  const [isMediaLoaded, setIsMediaLoaded] = useState(false);
 
-  // 자막 애니메이션 정의
+  // 애니메이션 정의 (자막 흐름)
   useEffect(() => {
     const style = document.createElement("style");
     style.innerHTML = `
@@ -27,7 +27,7 @@ const PreviewPage = () => {
     return () => document.head.removeChild(style);
   }, []);
 
-  // 초기값 불러오기
+  // 초기 미디어/자막 정보 불러오기
   useEffect(() => {
     const images = JSON.parse(localStorage.getItem("selectedImages") || "[]");
     const video = localStorage.getItem("selectedVideo");
@@ -40,17 +40,16 @@ const PreviewPage = () => {
     setMediaType(type);
     setCaption(msg);
     setSelectedMusic(music);
-    setRepeatedMessage(msg.repeat(5)); // ✅ 반복 횟수 줄임
+    setRepeatedMessage(msg.repeat(5)); // 자막 반복
 
-    if (type === "image" && images.length > 0) {
-      const interval = setInterval(() => {
-        setCurrentImageIndex((prev) => (prev + 1) % images.length);
-      }, 3000);
-      return () => clearInterval(interval);
-    }
+    // 30초 후 자동으로 다음 페이지 이동
+    const timeout = setTimeout(() => {
+      navigate("/share");
+    }, 30000);
+
+    return () => clearTimeout(timeout);
   }, []);
 
-  const handleNext = () => navigate("/share");
   const handleGoHome = () => navigate("/");
 
   const buttonStyle = {
@@ -85,9 +84,9 @@ const PreviewPage = () => {
       >
         {mediaType === "image" && selectedImages.length > 0 ? (
           <img
-            src={selectedImages[currentImageIndex]}
+            src={selectedImages[0]} // 첫 번째 이미지 고정
             alt="preview"
-            onLoad={() => setIsMediaLoaded(true)} // ✅ 이미지 로딩 완료 시
+            onLoad={() => setIsMediaLoaded(true)}
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         ) : mediaType === "video" && selectedVideo ? (
@@ -96,7 +95,7 @@ const PreviewPage = () => {
             autoPlay
             loop
             controls
-            onLoadedData={() => setIsMediaLoaded(true)} // ✅ 영상 로딩 완료 시
+            onLoadedData={() => setIsMediaLoaded(true)}
             style={{
               width: "100%",
               height: "100%",
@@ -109,7 +108,7 @@ const PreviewPage = () => {
           <div style={{ color: "#999" }}>🎞️ 배경이 없습니다</div>
         )}
 
-        {/* 자막: 로딩 완료된 후에만 표시 */}
+        {/* 자막: 미디어 로딩 완료 시 즉시 출력 */}
         {repeatedMessage && isMediaLoaded && (
           <div
             style={{
@@ -124,7 +123,7 @@ const PreviewPage = () => {
             <p
               style={{
                 position: "absolute",
-                animation: "scrollText 90s linear infinite", // ✅ 느리게 흐름
+                animation: "scrollText 90s linear infinite",
                 fontSize: "18px",
                 fontWeight: "bold",
                 color: "white",
@@ -138,8 +137,6 @@ const PreviewPage = () => {
       </div>
 
       <div style={{ display: "flex", justifyContent: "center", gap: 12, marginTop: 28, flexWrap: "wrap" }}>
-        <button onClick={() => navigate("/music")} style={buttonStyle}>뒤로가기</button>
-        <button onClick={handleNext} style={buttonStyle}>다음 - 공유하기</button>
         <button onClick={handleGoHome} style={buttonStyle}>처음으로</button>
       </div>
 
