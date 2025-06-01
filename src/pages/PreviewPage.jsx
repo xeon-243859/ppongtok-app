@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-const [caption, setCaption] = useState("");
-const [displayedCaption, setDisplayedCaption] = useState("");
 const PreviewPage = () => {
+  const [caption, setCaption] = useState(""); // ✅ 함수 안
+  const [mediaLoaded, setMediaLoaded] = useState(false);
+  const [displayedCaption, setDisplayedCaption] = useState("");
   const navigate = useNavigate();
   const audioRef = useRef(null);
   const containerRef = useRef(null);
@@ -16,7 +17,6 @@ const PreviewPage = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedMusic, setSelectedMusic] = useState(null);
 
-  const [mediaLoaded, setMediaLoaded] = useState(false);
   
    useEffect(() => {
     // ✅ 자막 애니메이션 정의
