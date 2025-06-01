@@ -17,11 +17,19 @@ const VideoSelectPage = () => {
   useEffect(() => {
   const storedVideo = localStorage.getItem("selected-video");
   const storedType = localStorage.getItem("selected-type");
+  const confirmed = localStorage.getItem("video-theme-confirmed"); // ✅ 새로 추가됨
 
-  if (storedVideo && storedType === "video") {
-    setSelectedVideo(storedVideo);
-    console.log("🎥 VideoSelectPage 불러온 영상:", storedVideo);
-  }
+  if (
+  storedVideo &&
+  storedType === "video" &&
+  !storedVideo.includes("river") // ✅ 강물.mp4가 아닌 경우만 허용
+) {
+  setSelectedVideo(storedVideo);
+  console.log("🎥 VideoSelectPage 사용자 영상 불러옴:", storedVideo);
+} else {
+  console.warn("⚠️ 강물.mp4 또는 타입 오류 → 사용자 선택 영상 아님. 무시됨:", storedVideo);
+
+}
 }, []);
 
   // 🧭 저장된 이전 페이지 (ex. "/style/select")
