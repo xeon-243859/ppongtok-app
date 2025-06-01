@@ -98,14 +98,31 @@ setTimeout(() => {
 
       <div className="file-button-group">
         <button onClick={handleImageFile}>배경이미지 파일</button>
-        <button onClick={handleLocalFile}>내 파일 선택</button>
-        <input
-  type="file"
-  accept="image/*"
-  multiple
-  onChange={handleImageSelect}
-        />
-      </div>
+        {/* ✅ 새로 만든 label 버튼 → input과 연결됨 */}
+    <label htmlFor="local-file" style={{ 
+      backgroundColor: "#fcdede",
+      padding: "10px 18px",
+      borderRadius: "20px",
+      border: "none",
+      fontWeight: "bold",
+      cursor: "pointer",
+      marginLeft: "12px"
+    }}>
+      내 파일 선택
+    </label>
+
+    {/* ✅ 숨겨진 input 연결 */}
+    <input
+      id="local-file"
+      type="file"
+      accept="image/*"
+      multiple
+      onChange={handleImageSelect}
+      style={{ display: "none" }}
+    />
+  </div>
+
+     
 
       <div className="image-slots-grid">
         {images.map((src, i) => (
