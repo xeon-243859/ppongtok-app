@@ -134,7 +134,7 @@ const PreviewPage = () => {
               fontSize: "18px",
               fontWeight: "bold",
               color: "white",
-              animation: "marquee 30s linear forwards",
+              animation: "marquee 60s linear forwards",
             }}
           >
             {repeatedMessage}

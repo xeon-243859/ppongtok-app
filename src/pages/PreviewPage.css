@@ -105,8 +105,8 @@
   display: inline-block;
   white-space: nowrap;
   transform: translateX(0);
-  animation: scroll-later 50s ease-in-out forwards;
-  animation-delay: 1s;
+  
+  
 }
 
 @keyframes scroll-later {
