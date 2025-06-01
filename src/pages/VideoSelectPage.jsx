@@ -23,7 +23,7 @@ const VideoSelectPage = () => {
   localStorage.setItem("selected-video", videoPath);
   localStorage.setItem("selected-type", "video"); // ✅ 이 줄 추가!
   setSelectedVideo(videoPath);
-  navigate("/preview"); // 또는 navigate("/video/select")로 되돌려도 됨
+  navigate("/video/theme"); // 또는 navigate("/video/select")로 되돌려도 됨
 };
 
 const handleVideoSelect = (filename) => {
@@ -32,7 +32,7 @@ const handleVideoSelect = (filename) => {
   localStorage.setItem("selected-video-source", "theme");
   localStorage.setItem("selected-type", "video"); // ✅ 이 줄 추가!
   setSelectedVideo(videoPath);
-  navigate("/preview");
+  navigate("/video/theme");
 };
 
 
