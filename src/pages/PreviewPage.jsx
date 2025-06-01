@@ -16,6 +16,7 @@ const PreviewPage = () => {
   useEffect(() => {
     const images = JSON.parse(localStorage.getItem("selectedImages") || "[]");
     const video = localStorage.getItem("selectedVideo"); // ✅ 사용자가 선택한 영상
+    console.log("불러온 영상 주소:", video); // ← 이 줄을 꼭 추가!
     const type = localStorage.getItem("selected-type") || "image";
     const msg = localStorage.getItem("message") || "";
     const music = localStorage.getItem("selectedMusic");
@@ -75,18 +76,21 @@ const PreviewPage = () => {
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         ) : mediaType === "video" && selectedVideo ? (
-          <video
-            src={selectedVideo}
-            autoPlay
-            muted
-            loop
-            playsInline
-            onError={() => console.error("❌ 영상 로딩 실패", selectedVideo)}
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-          />
-        ) : (
-          <div style={{ color: "#999" }}>배경이 없습니다</div>
-        )}
+           <video
+    src={selectedVideo}
+    autoPlay
+    loop
+    controls // ← 재생 버튼 보이게!
+    style={{
+      width: "100%",
+      maxWidth: "600px",
+      borderRadius: "16px",
+      backgroundColor: "#000", // 영상 없을 때 확인 용도
+    }}
+  />
+) : (
+  <div style={{ color: "#999" }}>🎞️ 배경이 없습니다</div>
+)}
 
         {repeatedMessage && (
           <div
