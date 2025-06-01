@@ -77,12 +77,13 @@ const PreviewPage = () => {
 
     <div
       style={{
-        display: "inline-block",
-    fontSize: "18px",
-    fontWeight: "bold",
-    color: "white",
-    animation: "marquee 30s linear forwards",
-    whiteSpace: "nowrap",
+        position: "relative",
+    width: "100%",
+    maxWidth: "720px",
+    aspectRatio: "16 / 9",  // ✅ 비율 고정
+    overflow: "hidden",
+    borderRadius: "24px",
+    backgroundColor: "#000",
       }}
     >
       {mediaType === "image" && selectedImages.length > 0 ? (
