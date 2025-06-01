@@ -14,7 +14,9 @@ const PreviewPage = () => {
   const [mediaType, setMediaType] = useState("image");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedMusic, setSelectedMusic] = useState(null);
+  const videoRef = useRef(null);
 
+  
   // 자막 CSS 애니메이션 정의 (현재 사용 안 함)
   useEffect(() => {
     const style = document.createElement("style");
@@ -70,14 +72,24 @@ const PreviewPage = () => {
     setMediaType(type);
     setCaption(msg);
     setSelectedMusic(music);
+    
+    let slideInterval;
+    let stopTimeout;
 
     if (type === "image" && images.length > 0) {
-      const interval = setInterval(() => {
+       slideInterval = setInterval(() => {
         setCurrentImageIndex((prev) => (prev + 1) % images.length);
-      }, 5000);
-      return () => clearInterval(interval);
-    }
-  }, []);
+      }, 5000); //5초간격으로 이미지 바뀜//
+
+       stopTimeout = setTimeout(() => {
+      clearInterval(slideInterval); // ✅ 30초 후 멈춤
+    }, 30000); // 30초
+  }
+      return () => {
+    clearInterval(slideInterval);
+    clearTimeout(stopTimeout);
+  };
+}, []);
 
   const handleNext = () => navigate("/share");
   const handleGoHome = () => navigate("/");
@@ -122,9 +134,9 @@ const PreviewPage = () => {
           />
         ) : mediaType === "video" && selectedVideo ? (
           <video
+            ref={videoRef} // ✅ 추가
             src={selectedVideo}
             autoPlay
-            loop
             muted
             onCanPlay={() => setMediaLoaded(true)}
             style={{
@@ -168,6 +180,29 @@ const PreviewPage = () => {
       {selectedMusic && <audio ref={audioRef} src={selectedMusic} autoPlay loop />}
     </div>
   );
+
+ useEffect(() => {
+  if (mediaType === "video" && videoRef.current) {
+    const timeout = setTimeout(() => {
+      videoRef.current.pause(); // ✅ 정지
+      videoRef.current.currentTime = 0; // ⏮️ 처음으로 되감기 (선택사항)
+    }, 30000); // 30초
+
+    return () => clearTimeout(timeout);
+  }
+}, [mediaType, selectedVideo]);
+
+
+ useEffect(() => {
+  if (selectedMusic && audioRef.current) {
+    const timeout = setTimeout(() => {
+      audioRef.current.pause(); // ⛔️ 음악 정지
+      audioRef.current.currentTime = 0; // ⏮️ 처음으로 되감기 (선택)
+    }, 30000); // 30초 후 실행
+
+    return () => clearTimeout(timeout); // 컴포넌트 unmount 시 정리
+  }
+}, [selectedMusic]); 
 };
 
 export default PreviewPage;
