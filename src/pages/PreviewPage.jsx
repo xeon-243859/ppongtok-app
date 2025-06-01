@@ -20,6 +20,14 @@ const PreviewPage = () => {
     const type = localStorage.getItem("selected-type") || "image";
     const msg = localStorage.getItem("message") || "";
     const music = localStorage.getItem("selectedMusic");
+    
+ // ✅ 추가 시작
+  if (!video || video.includes("river") || type !== "video") {
+    console.warn("⚠️ 주의: 현재 선택된 영상이 '사용자 선택'이 아닐 수 있습니다.");
+  }
+  // ✅ 추가 끝
+
+    console.log("🎥 최종 selected-video:", video); // ✅ 올바른 위치
 
     setSelectedImages(images);
     setSelectedVideo(video); // ✅ 강물 고정 제거
