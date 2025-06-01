@@ -16,7 +16,7 @@ const PreviewPage = () => {
   const [selectedMusic, setSelectedMusic] = useState(null);
   const videoRef = useRef(null);
 
-  
+
   // 자막 CSS 애니메이션 정의 (현재 사용 안 함)
   useEffect(() => {
     const style = document.createElement("style");
@@ -177,7 +177,7 @@ const PreviewPage = () => {
       </div>
 
       {/* 음악 출력 */}
-      {selectedMusic && <audio ref={audioRef} src={selectedMusic} autoPlay loop />}
+      {selectedMusic && <audio ref={audioRef} src={selectedMusic} autoPlay />}
     </div>
   );
 
@@ -203,6 +203,27 @@ const PreviewPage = () => {
     return () => clearTimeout(timeout); // 컴포넌트 unmount 시 정리
   }
 }, [selectedMusic]); 
+
+useEffect(() => {
+  if (!selectedMusic) return;
+
+  const audio = audioRef.current;
+
+  if (!audio) return;
+
+  // ✅ audio 재생 시작 후 30초 후 정지
+  const stopTimeout = setTimeout(() => {
+    audio.pause();               // 정지
+    audio.currentTime = 0;       // 선택: 처음으로 되감기
+  }, 30000); // 30초
+
+  return () => {
+    clearTimeout(stopTimeout);
+    audio.pause(); // 페이지 전환 시에도 정지
+  };
+}, [selectedMusic]);
+
+
 };
 
 export default PreviewPage;
