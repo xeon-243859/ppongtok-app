@@ -97,11 +97,19 @@ const handleVideoSelect = (filename) => {
 
       <div className="moving-box">
         {selectedVideo ? (
-          <>
-            <video src={selectedVideo} autoPlay loop muted />
-            <button className="delete-button" onClick={handleDelete}>X</button>
-          </>
-        ) : (
+    <video
+      src={selectedVideo}
+      autoPlay
+      loop
+      muted
+      style={{
+        width: "320px",           // ✅ 원하는 가로 크기
+        height: "180px",          // ✅ 원하는 세로 크기
+        objectFit: "cover",       // ✅ 꽉 차게 맞춤 (비율 유지하며 자르기)
+        borderRadius: "10px",
+      }}
+    />
+  ) : (
           <p className="moving-placeholder">moving file</p>
         )}
       </div>
