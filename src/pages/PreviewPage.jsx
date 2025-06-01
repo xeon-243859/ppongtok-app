@@ -192,17 +192,30 @@ const PreviewPage = () => {
   }
 }, [mediaType, selectedVideo]);
 
+useEffect(() => {
+  const audio = audioRef.current;
 
- useEffect(() => {
-  if (selectedMusic && audioRef.current) {
-    const timeout = setTimeout(() => {
-      audioRef.current.pause(); // ⛔️ 음악 정지
-      audioRef.current.currentTime = 0; // ⏮️ 처음으로 되감기 (선택)
-    }, 30000); // 30초 후 실행
+  if (!selectedMusic || !audio) return;
 
-    return () => clearTimeout(timeout); // 컴포넌트 unmount 시 정리
-  }
-}, [selectedMusic]); 
+  const handleCanPlay = () => {
+    // 오디오가 완전히 로드되었을 때 30초 후 정지
+    const stopTimeout = setTimeout(() => {
+      audio.pause();
+      audio.currentTime = 0;
+    }, 30000);
+
+    audio.removeEventListener("canplaythrough", handleCanPlay); // 중복 방지
+  };
+
+  audio.addEventListener("canplaythrough", handleCanPlay);
+
+  return () => {
+    audio.pause();
+    audio.currentTime = 0;
+    audio.removeEventListener("canplaythrough", handleCanPlay);
+  };
+}, [selectedMusic]);
+
 
 useEffect(() => {
   if (!selectedMusic) return;
