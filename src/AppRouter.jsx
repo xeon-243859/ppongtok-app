@@ -59,7 +59,7 @@ function AppRouter() {
         path="/login"
         element={!currentUser ? <LoginPage /> : <Navigate to="/write" />}
       />
-
+      <Route path="/view/:id" element={<ViewMessagePage />} />
 
     </Routes>
   );
