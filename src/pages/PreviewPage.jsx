@@ -13,7 +13,7 @@ const PreviewPage = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedMusic, setSelectedMusic] = useState(null);
 
-  // 🎯 자막 애니메이션용 CSS를 <head>에 삽입
+  // 🎯 애니메이션 정의: 자막 흐름 느리게 (60초 설정)
   useEffect(() => {
     const style = document.createElement("style");
     style.innerHTML = `
@@ -38,7 +38,7 @@ const PreviewPage = () => {
     setMediaType(type);
     setCaption(msg);
     setSelectedMusic(music);
-    setRepeatedMessage(msg.repeat(50)); // 자막 스크롤용
+    setRepeatedMessage(msg.repeat(50));
 
     if (type === "image" && images.length > 0) {
       const interval = setInterval(() => {
@@ -105,6 +105,7 @@ const PreviewPage = () => {
           <div style={{ color: "#999" }}>🎞️ 배경이 없습니다</div>
         )}
 
+        {/* 자막: 영상/이미지 시작과 동시에 즉시 흐름 시작 */}
         {repeatedMessage && (
           <div
             style={{
@@ -119,7 +120,7 @@ const PreviewPage = () => {
             <p
               style={{
                 position: "absolute",
-                animation: "scrollText 20s linear infinite",
+                animation: "scrollText 60s linear infinite", // 🎯 느리게 흐름
                 fontSize: "18px",
                 fontWeight: "bold",
                 color: "white",
