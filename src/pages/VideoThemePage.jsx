@@ -4,7 +4,7 @@ import "./VideoThemePage.css";
 
 const videos = [
   { id: 1, src: "/videos/flower.mp4", label: "꽃 배경" },
-  { id: 2, src: "/videos/river.mp4", label: "강물 배경" },
+  { id: 2, src: "/videos/sunflower.mp4", label: "해바라기 배경" },
   { id: 3, src: "/videos/sky.mp4", label: "하늘 배경" },
   { id: 4, src: "/videos/sunset.mp4", label: "노을 배경" },
 ];
