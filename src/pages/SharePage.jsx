@@ -3,6 +3,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import QRCode from "qrcode";
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { db } from "../firebase";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
 
 const SharePage = () => {
   const navigate = useNavigate();
@@ -17,10 +19,43 @@ const SharePage = () => {
   const [videoUrl, setVideoUrl] = useState("");
   const [caption, setCaption] = useState("");
 
+const saveMessage = async ({ caption, imageUrl, videoUrl, musicUrl }) => {
+  try {
+    const docRef = await addDoc(collection(db, "messages"), {
+      caption,
+      imageUrl: imageUrl || null,
+      videoUrl: videoUrl || null,
+      musicUrl: musicUrl || null,
+      createdAt: Timestamp.now()
+    });
+    return docRef.id;
+  } catch (error) {
+    console.error("메시지 저장 실패:", error);
+    return null;
+  }
+};
+
+
   useEffect(() => {
     const id = new URLSearchParams(location.search).get("id");
     setMessageId(id);
   }, [location.search]);
+
+  useEffect(() => {
+  const caption = localStorage.getItem("caption");
+  const imageUrl = localStorage.getItem("selected-image");
+  const videoUrl = localStorage.getItem("selected-video");
+  const musicUrl = localStorage.getItem("selected-music");
+
+  if (!messageId && caption && (imageUrl || videoUrl)) {
+    saveMessage({ caption, imageUrl, videoUrl, musicUrl }).then((id) => {
+      if (id) {
+        setMessageId(id);
+      }
+    });
+  }
+}, []);
+
 
   useEffect(() => {
     const fetchMessage = async () => {

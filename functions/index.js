@@ -18,7 +18,7 @@ exports.ogMeta = functions.https.onRequest(async (req, res) => {
 
     const data = docSnap.data();
 
-    const image = data.imageUrl || data.videoUrl || "https://via.placeholder.com/600x400.png?text=PPONGTOK";
+    const image = data.imageUrl || "https://via.placeholder.com/600x400.png?text=PPONGTOK";
     const caption = data.caption || "누군가 당신에게 마음을 보냈어요";
 
     const html = `
@@ -26,15 +26,23 @@ exports.ogMeta = functions.https.onRequest(async (req, res) => {
       <html lang="ko">
       <head>
         <meta charset="UTF-8" />
-        <meta property="og:title" content="뿅!톡 메시지 도착 💌" />
+        <title>뿅!톡 메시지</title>
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="💌 뿅!톡 감성 메시지가 도착했어요" />
         <meta property="og:description" content="${caption}" />
         <meta property="og:image" content="${image}" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
         <meta property="og:url" content="https://ppongtok-app.vercel.app/view/${id}" />
+
+        <!-- Twitter -->
         <meta name="twitter:card" content="summary_large_image" />
-        <title>뿅!톡 메시지</title>
+        <meta name="twitter:title" content="💌 뿅!톡 감성 메시지가 도착했어요" />
+        <meta name="twitter:description" content="${caption}" />
+        <meta name="twitter:image" content="${image}" />
       </head>
       <body>
-        <p>메타태그가 설정되었습니다. 이 페이지는 미리보기를 위한 용도입니다.</p>
+        <p>메타태그가 설정되었습니다. 이 페이지는 카카오톡 미리보기를 위한 용도입니다.</p>
       </body>
       </html>
     `;
