@@ -1,8 +1,8 @@
 {
   "name": "functions",
   "description": "Cloud Functions for Firebase",
-  "main": "index.js",
-    "scripts": {
+  "main": "index.js", 
+  "scripts": {
     "serve": "firebase emulators:start --only functions",
     "shell": "firebase functions:shell",
     "start": "npm run shell",
@@ -21,3 +21,5 @@
   },
   "private": true
 }
+
+
