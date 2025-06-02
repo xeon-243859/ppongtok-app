@@ -44,8 +44,8 @@ const SharePage = () => {
   }, []);
 
   const shareUrl = messageId
-    ? `https://ppongtok-app.vercel.app/view/${messageId}`
-    : "https://ppongtok-app.vercel.app";
+     ? `https://us-central1-ppongtok-project.cloudfunctions.net/ogMeta/${messageId}`
+     : "https://ppongtok-app.vercel.app";
 
   useEffect(() => {
     const generateQR = async () => {
