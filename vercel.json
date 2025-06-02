@@ -1,5 +1,15 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
+    {
+      "source": "/view/:id",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*facebookexternalhit.*|.*Twitterbot.*|.*Slackbot.*|.*WhatsApp.*|.*Kakao.*"
+        }
+      ],
+      "destination": "/api/view/:id"
+    }
   ]
 }
