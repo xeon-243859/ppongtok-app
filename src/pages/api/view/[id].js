@@ -3,14 +3,18 @@ import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 
 // 🔐 Firebase 구성 - 필요한 값으로 교체
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+
+ 
+  const firebaseConfig = {
+  apiKey: "AIzaSyA5aUBf0PDRHeVZYx3jMFx8uwGTYVVMqk4",
+  authDomain: "ppongtok-project.firebaseapp.com",
+  projectId: "ppongtok-project",
+  storageBucket: "ppongtok-project.firebasestorage.app",
+  messagingSenderId: "183327414536",
+  appId: "1:183327414536:web:f2442c9799b3ba150ef4bd"
 };
+
+ 
 
 export async function getServerSideProps(context) {
   const { id } = context.params;
