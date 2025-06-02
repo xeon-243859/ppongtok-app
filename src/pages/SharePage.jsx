@@ -1,5 +1,3 @@
-// ✅ SharePage.jsx - 공유 썸네일 및 UI 기능 확장 버전 + 버튼 절반 크기 + 영상저장 버튼 추가
-
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import QRCode from "qrcode";
@@ -45,7 +43,9 @@ const SharePage = () => {
     }
   }, []);
 
-  const shareUrl = messageId ? `https://ppongtok-app.vercel.app/view/${messageId}` : "https://ppongtok-app.vercel.app";
+  const shareUrl = messageId
+    ? `https://ppongtok-app.vercel.app/view/${messageId}`
+    : "https://ppongtok-app.vercel.app";
 
   useEffect(() => {
     const generateQR = async () => {
@@ -60,6 +60,7 @@ const SharePage = () => {
     generateQR();
   }, [shareUrl]);
 
+  // ✅ handleKakaoShare 수정
   const handleKakaoShare = async () => {
     if (!window.Kakao || !window.Kakao.isInitialized()) return;
 
@@ -86,7 +87,11 @@ const SharePage = () => {
 
     await updateDoc(userRef, { freePassCount: freePass - 1 });
 
-    const previewImage = imageUrl || (videoUrl ? "https://via.placeholder.com/600x400.png?text=🎥+Video+Message" : "https://via.placeholder.com/600x400.png?text=PPONGTOK");
+    const previewImage =
+      imageUrl ||
+      (videoUrl
+        ? "https://ppongtok-app.vercel.app/thumbnail/video-default.jpg"
+        : "https://via.placeholder.com/600x400.png?text=PPONGTOK");
 
     window.Kakao.Share.sendDefault({
       objectType: "feed",
@@ -128,21 +133,20 @@ const SharePage = () => {
       <h2 style={{ fontSize: "24px", marginBottom: "16px" }}>💌 공유하기</h2>
 
       {imageUrl && (
-  <img
-    src={imageUrl}
-    alt="공유 이미지"
-    style={{ width: "100%", maxHeight: "500px", objectFit: "cover", borderRadius: "12px", marginBottom: "16px" }}
-  />
-)}
+        <img
+          src={imageUrl}
+          alt="공유 이미지"
+          style={{ width: "100%", maxHeight: "500px", objectFit: "cover", borderRadius: "12px", marginBottom: "16px" }}
+        />
+      )}
 
-{videoUrl && (
-  <video
-    src={videoUrl}
-    controls
-    style={{ width: "100%", maxHeight: "500px", borderRadius: "12px", marginBottom: "16px" }}
-  />
-)}
-
+      {videoUrl && (
+        <video
+          src={videoUrl}
+          controls
+          style={{ width: "100%", maxHeight: "500px", borderRadius: "12px", marginBottom: "16px" }}
+        />
+      )}
 
       {caption && <p style={{ fontSize: "16px", color: "#444", marginBottom: "24px" }}>{caption}</p>}
 
@@ -184,5 +188,3 @@ const SharePage = () => {
 };
 
 export default SharePage;
-
-
