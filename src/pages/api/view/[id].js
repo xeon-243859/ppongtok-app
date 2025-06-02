@@ -1,57 +1,63 @@
-import admin from "firebase-admin";
+// src/pages/view/[id].js
+import { doc, getDoc, getFirestore } from "firebase/firestore";
+import { initializeApp } from "firebase/app";
 
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.applicationDefault(),
-  });
+// 🔐 Firebase 구성 - 필요한 값으로 교체
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+export async function getServerSideProps(context) {
+  const { id } = context.params;
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const docRef = doc(db, "messages", id);
+  const docSnap = await getDoc(docRef);
+
+  if (!docSnap.exists()) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: {
+      data: docSnap.data(),
+    },
+  };
 }
 
-const db = admin.firestore();
+export default function ViewMessagePage({ data }) {
+  const { caption, imageUrls = [], videoUrl } = data;
 
-export default async function handler(req, res) {
-  const { id } = req.query;
+  return (
+    <div style={{ padding: 20 }}>
+      <h1>💌 공유된 메시지</h1>
 
-  try {
-    const docRef = db.collection("messages").doc(id);
-    const doc = await docRef.get();
+      {imageUrls.length > 0 &&
+        imageUrls.map((url, index) => (
+          <div key={index}>
+            <img
+              src={url}
+              alt={`공유 이미지 ${index + 1}`}
+              style={{ maxWidth: "100%", marginBottom: 16 }}
+            />
+          </div>
+        ))}
 
-    if (!doc.exists) {
-      res.status(404).send("Message not found");
-      return;
-    }
+      {videoUrl && (
+        <video controls style={{ width: "100%", marginTop: 16 }}>
+          <source src={videoUrl} type="video/mp4" />
+        </video>
+      )}
 
-    const data = doc.data();
-    const { caption = "감동적인 영상 메시지를 확인해보세요.", imageUrls, videoUrl } = data;
-
-    const ogTitle = "누군가 당신에게 메시지를 보냈어요!";
-    const ogDescription = caption;
-    const ogImage = imageUrls && imageUrls.length > 0 ? imageUrls[0] : null;
-    const ogVideo = videoUrl || null;
-
-    const html = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="utf-8" />
-        <meta property="og:title" content="${ogTitle}" />
-        <meta property="og:description" content="${ogDescription}" />
-        ${ogImage ? `<meta property="og:image" content="${ogImage}" />` : ""}
-        ${ogVideo ? `<meta property="og:video" content="${ogVideo}" />` : ""}
-        <meta property="og:url" content="https://ppongtok-app.vercel.app/view/${id}" />
-        <meta name="twitter:card" content="summary_large_image" />
-      </head>
-      <body>
-        <script>
-          window.location.href = "https://ppongtok-app.vercel.app/view/${id}";
-        </script>
-      </body>
-      </html>
-    `;
-
-    res.setHeader("Content-Type", "text/html");
-    res.status(200).send(html);
-  } catch (error) {
-    console.error("Error generating OG meta:", error);
-    res.status(500).send("Server error");
-  }
+      <p style={{ background: "#fee", padding: "1rem", fontSize: "1.2rem" }}>{caption}</p>
+    </div>
+  );
 }
