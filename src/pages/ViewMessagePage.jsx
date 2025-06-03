@@ -1,41 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
 const ViewMessagePage = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [message, setMessage] = useState(null);
 
-  // 메시지 가져오기
   useEffect(() => {
     const fetchMessage = async () => {
-      try {
-        const docRef = doc(db, "messages", id);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setMessage(docSnap.data());
-        } else {
-          console.log("❌ 해당 메시지를 찾을 수 없습니다.");
-        }
-      } catch (error) {
-        console.error("🔥 메시지 불러오기 실패:", error);
+      const docRef = doc(db, "messages", id);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setMessage(docSnap.data());
+        console.log("🔥 전체 message 객체:", docSnap.data());
+      } else {
+        console.log("No such document!");
       }
     };
     fetchMessage();
   }, [id]);
-
-  // 개발용 콘솔 출력
-  useEffect(() => {
-    if (message) {
-      console.log("🔥 전체 message 객체", message);
-      console.log("🖼️ imageUrls", message.imageUrls);
-      console.log("🎞️ videoUrl", message.videoUrl);
-      console.log("📝 caption", message.caption);
-      console.log("🎵 music", message.music);
-    }
-  }, [message]);
 
   if (!message) {
     return <p style={{ padding: "20px" }}>메시지를 불러오는 중입니다...</p>;
@@ -45,83 +29,69 @@ const ViewMessagePage = () => {
     <div style={{ padding: "20px", maxWidth: 700, margin: "0 auto" }}>
       <h2>💌 공유된 메시지</h2>
 
-      {/* 영상 우선 렌더링 */}
-      {message.videoUrl && (
+      {/* 🎥 영상 렌더링 */}
+      {message.type === "video" && message.videoUrl && (
         <video
           src={message.videoUrl}
           controls
-          style={{
-            width: "90%",
-            maxWidth: "600px",
-            borderRadius: 16,
-            margin: "20px auto",
-            display: "block",
-          }}
+          style={{ width: "100%", marginBottom: "20px", borderRadius: "12px" }}
         />
       )}
 
-      {/* 영상이 없을 때만 이미지 배열 렌더링 */}
-      {!message.videoUrl &&
-        message.imageUrls?.length > 0 &&
-        message.imageUrls.map((url, index) => (
-          <img
-            key={index}
-            src={url}
-            alt={`공유 이미지 ${index + 1}`}
-            style={{
-              width: "90%",
-              maxWidth: "600px",
-              borderRadius: "12px",
-              border: "1px solid #ddd",
-              background: "#fff",
-              boxShadow: "0 4px 10px rgba(0,0,0,0.05)",
-              margin: "20px auto",
-              display: "block",
-            }}
-          />
-        ))}
-
-      {/* 자막 */}
-      {message.caption && (
-        <p
+      {/* 🖼 이미지 4장 렌더링 */}
+      {message.type === "image" && Array.isArray(message.imageUrls) && (
+        <div
           style={{
-            marginTop: "24px",
-            padding: "16px",
-            background: "#fff0f5",
-            borderRadius: "12px",
-            fontSize: "18px",
-            fontWeight: "500",
-            color: "#333",
-            textAlign: "center",
-            boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            gap: "10px",
+            marginBottom: "20px",
           }}
         >
-          {message.caption}
-        </p>
-      )}
-
-      {/* 음악 */}
-      {message.music && (
-        <div style={{ display: "flex", justifyContent: "center", margin: "20px 0" }}>
-          <audio controls src={message.music}>
-            브라우저가 오디오를 지원하지 않습니다.
-          </audio>
+          {message.imageUrls.map((url, index) => (
+            <img
+              key={index}
+              src={url}
+              alt={`image-${index}`}
+              style={{
+                width: "45%",
+                borderRadius: "8px",
+                objectFit: "cover",
+              }}
+            />
+          ))}
         </div>
       )}
 
-      {/* 버튼 */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: 12,
-          marginTop: 30,
-          flexWrap: "wrap",
-        }}
-      >
-        <button onClick={() => navigate(-1)}>뒤로가기</button>
-        <button onClick={() => navigate(`/share/${id}`)}>다음 - 공유하기</button>
-        <button onClick={() => navigate("/")}>처음으로</button>
+      {/* 📝 자막 */}
+      {message.caption && (
+        <div
+          style={{
+            marginTop: "10px",
+            padding: "10px 16px",
+            backgroundColor: "#ffeef2",
+            borderRadius: "10px",
+            fontSize: "18px",
+            fontWeight: "500",
+            textAlign: "center",
+          }}
+        >
+          {message.caption}
+        </div>
+      )}
+
+      {/* 🎵 음악 */}
+      {message.music && (
+        <audio
+          controls
+          src={message.music}
+          style={{ marginTop: "24px", width: "100%" }}
+        />
+      )}
+
+      <div style={{ marginTop: "30px" }}>
+        <button onClick={() => window.history.back()}>뒤로가기</button>
       </div>
     </div>
   );
