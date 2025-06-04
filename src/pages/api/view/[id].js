@@ -1,67 +1,50 @@
-// src/pages/view/[id].js
-import { doc, getDoc, getFirestore } from "firebase/firestore";
-import { initializeApp } from "firebase/app";
+// pages/api/view/[id].js
 
-// 🔐 Firebase 구성 - 필요한 값으로 교체
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/firebase";  // ← ⚠️ 이 경로는 프로젝트에 맞게 조정하세요
 
- 
-  const firebaseConfig = {
-  apiKey: "AIzaSyA5aUBf0PDRHeVZYx3jMFx8uwGTYVVMqk4",
-  authDomain: "ppongtok-project.firebaseapp.com",
-  projectId: "ppongtok-project",
-  storageBucket: "ppongtok-project.firebasestorage.app",
-  messagingSenderId: "183327414536",
-  appId: "1:183327414536:web:f2442c9799b3ba150ef4bd"
-};
+export default async function handler(req, res) {
+  const { id } = req.query;
 
- 
+  try {
+    const ref = doc(db, "messages", id);
+    const snap = await getDoc(ref);
 
-export async function getServerSideProps(context) {
-  const { id } = context.params;
+    if (!snap.exists()) {
+      return res.status(404).send("Message not found");
+    }
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const docRef = doc(db, "messages", id);
-  const docSnap = await getDoc(docRef);
+    const data = snap.data();
+    const title = "뿅!톡 – 감성 메시지 도착!";
+    const description = data.caption || "당신을 위한 감성 메시지를 확인해보세요!";
+    const image =
+      data.imageUrls?.[0] ||
+      data.videoUrl ||
+      "https://your-default-image.png"; // 기본 썸네일 URL (없을 경우 대비)
 
-  if (!docSnap.exists()) {
-    return {
-      notFound: true,
-    };
+    const redirectUrl = `https://ppongtok-app.vercel.app/view/${id}`;
+
+    res.setHeader("Content-Type", "text/html");
+    res.send(`
+      <!DOCTYPE html>
+      <html lang="ko">
+        <head>
+          <meta charset="UTF-8">
+          <meta property="og:title" content="${title}" />
+          <meta property="og:description" content="${description}" />
+          <meta property="og:image" content="${image}" />
+          <meta property="og:url" content="${redirectUrl}" />
+          <meta property="og:type" content="website" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta http-equiv="refresh" content="0; url=${redirectUrl}" />
+        </head>
+        <body>
+          <p>공유된 메시지로 이동 중입니다...</p>
+        </body>
+      </html>
+    `);
+  } catch (error) {
+    console.error("OG 렌더링 실패:", error);
+    res.status(500).send("Internal Server Error");
   }
-
-  return {
-    props: {
-      data: docSnap.data(),
-    },
-  };
-}
-
-export default function ViewMessagePage({ data }) {
-  const { caption, imageUrls = [], videoUrl } = data;
-
-  return (
-    <div style={{ padding: 20 }}>
-      <h1>💌 공유된 메시지</h1>
-
-      {imageUrls.length > 0 &&
-        imageUrls.map((url, index) => (
-          <div key={index}>
-            <img
-              src={url}
-              alt={`공유 이미지 ${index + 1}`}
-              style={{ maxWidth: "100%", marginBottom: 16 }}
-            />
-          </div>
-        ))}
-
-      {videoUrl && (
-        <video controls style={{ width: "100%", marginTop: 16 }}>
-          <source src={videoUrl} type="video/mp4" />
-        </video>
-      )}
-
-      <p style={{ background: "#fee", padding: "1rem", fontSize: "1.2rem" }}>{caption}</p>
-    </div>
-  );
 }
