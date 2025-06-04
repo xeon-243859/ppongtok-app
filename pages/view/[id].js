@@ -75,3 +75,4 @@ export default function ViewMessagePage({ data }) {
   </div>
 );
 }
+console.log("테스트");
