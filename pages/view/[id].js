@@ -40,28 +40,38 @@ export async function getServerSideProps(context) {
 export default function ViewMessagePage({ data }) {
   const { caption, imageUrls = [], videoUrl } = data;
 
-  return (
-    <div style={{ padding: 20 }}>
-      <h1>💌 공유된 메시지</h1>
+ return (
+  <div style={{ padding: 20 }}>
+    <h1>💌 공유된 메시지</h1>
 
-      {imageUrls.length > 0 &&
-        imageUrls.map((url, index) => (
-          <div key={index}>
-            <img
-              src={url}
-              alt={`공유 이미지 ${index + 1}`}
-              style={{ maxWidth: "100%", marginBottom: 16 }}
-            />
-          </div>
-        ))}
+    {/* 🎥 영상 렌더링 */}
+    {data.videoUrl && (
+      <video controls style={{ width: "100%", marginTop: 16 }}>
+        <source src={data.videoUrl} type="video/mp4" />
+      </video>
+    )}
 
-      {videoUrl && (
-        <video controls style={{ width: "100%", marginTop: 16 }}>
-          <source src={videoUrl} type="video/mp4" />
-        </video>
-      )}
+    {/* 🖼 이미지 렌더링 */}
+    {data.imageUrls?.length > 0 &&
+      data.imageUrls.map((url, index) => (
+        <div key={index}>
+          <img
+            src={url}
+            alt={`공유 이미지 ${index + 1}`}
+            style={{ maxWidth: "100%", marginBottom: 16 }}
+          />
+        </div>
+      ))}
 
-      <p style={{ background: "#fee", padding: "1rem", fontSize: "1.2rem" }}>{caption}</p>
-    </div>
-  );
+    {/* 💌 자막 렌더링 */}
+    <p style={{ background: "#fee", padding: "1rem", fontSize: "1.2rem" }}>
+      {data.caption}
+    </p>
+
+    {/* 🎵 음악 자동 재생 */}
+    {data.music && (
+      <audio src={data.music} autoPlay loop />
+    )}
+  </div>
+);
 }
