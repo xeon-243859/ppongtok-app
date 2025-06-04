@@ -24,7 +24,13 @@ const ViewMessagePage = () => {
   if (!message) {
     return <p style={{ padding: "20px" }}>메시지를 불러오는 중입니다...</p>;
   }
-
+if (message) {
+  // ✅ return 바로 직전! 여기다가 디버그 로그 추가하세요
+console.log("🔥 message 전체:", message);
+console.log("🔥 message.type:", message.type);
+console.log("🔥 message.videoUrl:", message.videoUrl);
+console.log("🔥 message.imageUrls:", message.imageUrls);
+}
   return (
     <div style={{ padding: "20px", maxWidth: 700, margin: "0 auto" }}>
       <h2>💌 공유된 메시지</h2>
@@ -98,3 +104,5 @@ const ViewMessagePage = () => {
 };
 
 export default ViewMessagePage;
+
+
