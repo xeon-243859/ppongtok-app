@@ -79,9 +79,8 @@ const saveMessage = async ({ caption, imageUrl, videoUrl, musicUrl }) => {
   }, []);
 
   const shareUrl = messageId
-  ? `https://ppongtok-qakv8c11k-xeons-projects-902d6f6a.vercel.app/api/view/${messageId}`
-  : "https://ppongtok-qakv8c11k-xeons-projects-902d6f6a.vercel.app";
-
+    ? `https://ogmeta-lqxptgkh3q-uc.a.run.app/${messageId}`
+    : "https://ppongtok-app.vercel.app";
 
 
   useEffect(() => {
@@ -137,13 +136,12 @@ const saveMessage = async ({ caption, imageUrl, videoUrl, musicUrl }) => {
         description: caption || "누군가 당신에게 마음을 보냈어요",
         imageUrl: previewImage,
         link: {
-          mobileWebUrl: shareUrl,
-          webUrl: shareUrl,
-        },
-      },
-    });
-  };
-
+               mobileWebUrl: shareUrl,
+               webUrl: shareUrl,
+                },
+            },
+          });
+ 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(shareUrl);
     alert("링크가 복사되었습니다 ✨");
@@ -223,5 +221,5 @@ const saveMessage = async ({ caption, imageUrl, videoUrl, musicUrl }) => {
     </div>
   );
 };
-
+};
 export default SharePage;
