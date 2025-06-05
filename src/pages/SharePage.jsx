@@ -79,8 +79,9 @@ const saveMessage = async ({ caption, imageUrl, videoUrl, musicUrl }) => {
   }, []);
 
   const shareUrl = messageId
-     ? `https://us-central1-ppongtok-project.cloudfunctions.net/ogMeta/${messageId}`
-     : "https://ppongtok-app.vercel.app";
+  ? `https://ppongtok-app.vercel.app/api/view/${messageId}`
+  : "https://ppongtok-app.vercel.app";
+
 
   useEffect(() => {
     const generateQR = async () => {
