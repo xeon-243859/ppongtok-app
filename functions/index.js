@@ -50,3 +50,4 @@ exports.ogMeta = functions.https.onRequest(async (req, res) => {
     res.status(500).send("Server error");
   }
 });
+// 예: 공백 추가
