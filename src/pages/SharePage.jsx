@@ -79,8 +79,9 @@ const saveMessage = async ({ caption, imageUrl, videoUrl, musicUrl }) => {
   }, []);
 
   const shareUrl = messageId
-  ? `https://ppongtok-app.vercel.app/api/view/${messageId}`
-  : "https://ppongtok-app.vercel.app";
+  ? `https://ppongtok-qakv8c11k-xeons-projects-902d6f6a.vercel.app/api/view/${messageId}`
+  : "https://ppongtok-qakv8c11k-xeons-projects-902d6f6a.vercel.app";
+
 
 
   useEffect(() => {
