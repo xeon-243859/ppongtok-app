@@ -4,7 +4,7 @@ import { useAuth } from "../src/contexts/AuthContext";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import { db } from "../src/firebase";
 
 const LoginPage = () => {
   const { login, currentUser } = useAuth();
