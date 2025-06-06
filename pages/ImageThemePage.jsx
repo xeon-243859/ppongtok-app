@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "./ImageThemePage.css";
+import { useNavigate } from "react-router-dom"
+import styles from "./ImageThemePage.module.css"; 
 
 const images = [
   "/backgrounds/leaves.jpg",
@@ -42,18 +42,19 @@ const ImageThemePage = () => {
   };
 
   return (
-    <div className="image-theme-page">
-      <h2 className="image-theme-title">이미지 테마 저장소</h2>
-      <div className="image-grid">
-        {images.map((src) => (
-          <div key={src} className="thumbnail">
-            <img src={src} alt="thumb" onClick={() => handleSelect(src)} />
-            {isSelected(src) && (
-              <button
-                className="remove-button"
-                onClick={() => handleRemove(src)}
-              >
-                ❌
+    <div className={styles["image-theme-page"]}>
+    <h2 className={styles["image-theme-title"]}>이미지 테마 저장소</h2>
+    <div className={styles["image-grid"]}>
+      {images.map((src) => (
+        <div key={src} className={styles["thumbnail"]}>
+          <img src={src} alt="thumb" onClick={() => handleSelect(src)} />
+          {isSelected(src) && (
+            <button
+              className={styles["remove-button"]}
+              onClick={() => handleRemove(src)}
+            >
+              ❌
+
               </button>
             )}
           </div>
