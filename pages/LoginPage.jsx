@@ -1,6 +1,6 @@
 // src/pages/LoginPage.jsx
 
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../src/contexts/AuthContext";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { doc, getDoc, setDoc } from "firebase/firestore";

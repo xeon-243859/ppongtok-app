@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { getFirestore, doc, updateDoc, getDoc } from "firebase/firestore";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../src/contexts/AuthContext";
 
 
 const PaymentPage = () => {
