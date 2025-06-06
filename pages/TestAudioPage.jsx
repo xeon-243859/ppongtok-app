@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '/styles/StyleSelectPage.css'; // ✅ 외부 CSS만 연결
+import '../styles/StyleSelectPage.css'; // ✅ 외부 CSS만 연결
 
 const StyleSelectPage = () => {
   const navigate = useNavigate();
@@ -21,4 +21,4 @@ const StyleSelectPage = () => {
   );
 };
 
-export default StyleSelectPage;
+export default TestAudioPage;

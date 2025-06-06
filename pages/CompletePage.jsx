@@ -3,7 +3,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import html2pdf from "html2pdf.js";
-import "/styles/CompletePage.css";
+import "../styles/CompletePage.css";
 
 const CompletePage = () => {
   const navigate = useNavigate();

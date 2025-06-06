@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import html2pdf from "html2pdf.js";
-import "/styles/ShareCompletePage.css";
+import "../styles/ShareCompletePage.css";
 
 const ShareCompletePage = () => {
   const navigate = useNavigate();
