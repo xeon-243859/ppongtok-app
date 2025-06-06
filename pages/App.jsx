@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import { AuthProvider } from "../src/contexts/AuthContext"; // ✅ 정확한 상대경로
 
-import Header from "../components/Header";                  // ✅ 대소문자 정확히
+import Header from "../src/components/Header";                  // ✅ 대소문자 정확히
 import LoginPage from "./LoginPage";                       // ✅ 한글 아님
 import ProtectedRoute from "../src/components/ProtectedRoute"; // ✅ 경로 상위로 이동
 
