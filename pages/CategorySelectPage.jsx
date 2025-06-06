@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../src/contexts/AuthContext";
 
-import "./CategorySelectPage.css";
+import styles from "./CategorySelectPage.module.css";
 
 const categories = [
   { label: "추억 만들기", value: "memory" },
@@ -24,13 +24,13 @@ const CategorySelectPage = () => {
   };
 
   return (
-    <div className="category-page">
-      <h2 className="category-title">어떤 마음을 전하고 싶나요?</h2>
-      <div className="category-buttons">
+    <div className={styles["category-page"]}>
+      <h2 className={styles["category-title"]}>어떤 마음을 전하고 싶나요?</h2>
+      <div className={styles["category-buttons"]}>
         {categories.map((cat) => (
           <button
             key={cat.value}
-            className="category-button"
+            className={styles["category-button"]}
             onClick={() => handleSelect(cat.value)}
           >
             {cat.label}
