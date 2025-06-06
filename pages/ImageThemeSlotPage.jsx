@@ -1,7 +1,7 @@
 // ✅ ImageThemePage.jsx 전체코드 (handleSelect 로그 + 대소문자 문제 해결 + 음악선택 페이지로 이동)
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./ImageThemePage.css";
+import styles from "./ImageThemePage.module.css";
 
 const images = [
   "/backgrounds/leaves.jpg",
@@ -39,9 +39,9 @@ const ImageThemePage = () => {
   }, [selected, navigate]);
 
   return (
-    <div className="image-theme-page">
-      <h2>이미지 배경 선택 (최대 4개)</h2>
-      <div className="image-grid">
+    <div className={styles["image-theme-page"]}>
+      <h2 className={styles["image-theme-title"]}>이미지 배경 선택 (최대 4개)</h2>
+      <div className={styles["image-grid"]}>
         {images.map((src) => (
           <div
             key={src}

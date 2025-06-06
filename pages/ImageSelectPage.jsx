@@ -1,12 +1,15 @@
 // ✅ 수정: ImageSelectPage.jsx
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./ImageSelectPage.css";
+import styles from "./ImageSelectPage.module.css";
 
 const ImageSelectPage = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
-  const [images, setImages] = useState(["", "", "", ""]);
+  const [images, setImages] = useState(["/images/leaves.jpg", "/images/road.jpg"]);
+
+  
+
   const handleImageSelect = (e) => {
     const files = Array.from(e.target.files);
     const urls = files.map((file) => URL.createObjectURL(file));
@@ -89,77 +92,76 @@ setTimeout(() => {
     reader.readAsDataURL(file);
   };
 
-  return (
-    <div className="image-select-container">
-      <div className="typing-text">
-        <div className="line1">배경으로 사용할 이미지 4개를</div>
-        <div className="line2">선택해 주세요</div>
-      </div>
+  
 
-      <div className="file-button-group">
-        <button onClick={handleImageFile}>배경이미지 파일</button>
-        {/* ✅ 새로 만든 label 버튼 → input과 연결됨 */}
-    <label htmlFor="local-file" style={{ 
-      backgroundColor: "#fcdede",
-      padding: "10px 18px",
-      borderRadius: "20px",
-      border: "none",
-      fontWeight: "bold",
-      cursor: "pointer",
-      marginLeft: "12px"
-    }}>
-      내 파일 선택
-    </label>
-
-    {/* ✅ 숨겨진 input 연결 */}
-    <input
-      id="local-file"
-      type="file"
-      accept="image/*"
-      multiple
-      onChange={handleImageSelect}
-      style={{ display: "none" }}
-    />
-  </div>
-
-     
-
-      <div className="image-slots-grid">
-        {images.map((src, i) => (
-          <div className="image-slot" key={i}>
-            {src ? (
-              <>
-                <img
-                  src={
-                    src.includes("/backgrounds/")
-                      ? src
-                      : `data:image/jpeg;base64,${src}`
-                  }
-                  alt={`img-${i + 1}`}
-                />
-                <button className="delete-button" onClick={() => handleDelete(i)}>
-                  ❌
-                </button>
-              </>
-            ) : (
-              <p>{`img-${i + 1}`}</p>
-            )}
-          </div>
-        ))}
-      </div>
-
-      <div className="button-group">
-         <button
-    onClick={() => {
-      window.location.replace("/style/select");
-    }}
-  >
-    뒤로가기
-  </button>
-        <button onClick={handleNext}>다음으로</button>
-      </div>
+return (
+  <div className={styles["image-select-container"]}>
+    <div className={styles["typing-text"]}>
+      <div className={styles["line1"]}>배경으로 사용할 이미지 4개를</div>
+      <div className={styles["line2"]}>선택해 주세요</div>
     </div>
-  );
+
+    <div className={styles["file-button-group"]}>
+      <button onClick={handleImageFile}>배경이미지 파일</button>
+
+      <label htmlFor="local-file" style={{ 
+        backgroundColor: "#fcdede",
+        padding: "10px 18px",
+        borderRadius: "20px",
+        border: "none",
+        fontWeight: "bold",
+        cursor: "pointer",
+        marginLeft: "12px"
+      }}>
+        내 파일 선택
+      </label>
+
+      <input
+        id="local-file"
+        type="file"
+        accept="image/*"
+        multiple
+        onChange={handleImageSelect}
+        style={{ display: "none" }}
+      />
+    </div>
+
+    <div className={styles["image-slots-grid"]}>
+      {images.map((src, i) => (
+        <div className={styles["image-slot"]} key={i}>
+          {src ? (
+            <>
+              <img
+                src={
+                  src.includes("/backgrounds/")
+                    ? src
+                    : `data:image/jpeg;base64,${src}`
+                }
+                alt={`img-${i + 1}`}
+              />
+              <button
+                className={styles["delete-button"]}
+                onClick={() => handleDelete(i)}
+              >
+                ❌
+              </button>
+            </>
+          ) : (
+            <p>{`img-${i + 1}`}</p>
+          )}
+        </div>
+      ))}
+    </div>
+
+    <div className={styles["button-group"]}>
+      <button onClick={() => window.location.replace("/style/select")}>
+        뒤로가기
+      </button>
+      <button onClick={handleNext}>다음으로</button>
+    </div>
+  </div>
+);
+
 };
 
 export default ImageSelectPage;

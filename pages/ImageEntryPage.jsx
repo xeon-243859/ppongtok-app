@@ -1,7 +1,7 @@
 // ImageEntryPage.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "./ImageEntryPage.css";
+import styles from "./ImageEntryPage.module.css";
 
 const ImageEntryPage = () => {
   const navigate = useNavigate();
@@ -19,19 +19,17 @@ const ImageEntryPage = () => {
   };
 
   return (
-    <div className="image-entry-container">
-      <h2 className="image-entry-title">이미지파일</h2>
-      <label htmlFor="file-upload" className="upload-button">내파일선택</label>
-      <input id="file-upload" type="file" accept="image/*" onChange={handleFileUpload} style={{ display: "none" }} />
+    <div className={styles["image-entry-container"]}>
+    <h2 className={styles["image-entry-title"]}>이미지파일</h2>
+    <label htmlFor="file-upload" className={styles["upload-button"]}>내파일선택</label>
+    <input id="file-upload" type="file" accept="image/*" onChange={handleFileUpload} />
 
-      <div className="image-slot" onClick={() => handleSlotClick("img-01")}>Img-01</div>
-      <div className="image-slot" onClick={() => handleSlotClick("img-02")}>Img-02</div>
-      <div className="image-slot" onClick={() => handleSlotClick("img-03")}>Img-03</div>
-      <div className="image-slot" onClick={() => handleSlotClick("img-04")}>Img-04</div>
+    <div className={styles["image-slot"]} onClick={() => handleSlotClick("img-01")}>Img-01</div>
+    ...
+    <div className={styles["image-entry-buttons"]}>
+      <button onClick={() => navigate(-1)}>뒤로가기</button>
+      <button onClick={() => navigate("/image/select")}>다음으로</button>
 
-      <div className="image-entry-buttons">
-        <button onClick={() => navigate(-1)}>뒤로가기</button>
-        <button onClick={() => navigate("/image/select")}>다음으로</button>
       </div>
     </div>
   );
