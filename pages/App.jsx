@@ -5,7 +5,7 @@ import { AuthProvider } from "../src/contexts/AuthContext"; // ✅ 정확한 상
 
 import Header from "../components/Header";                  // ✅ 대소문자 정확히
 import LoginPage from "./LoginPage";                       // ✅ 한글 아님
-import ProtectedRoute from "../components/ProtectedRoute"; // ✅ 경로 상위로 이동
+import ProtectedRoute from "../src/components/ProtectedRoute"; // ✅ 경로 상위로 이동
 
 import CategorySelectPage from "./CategorySelectPage";
 import RedirectToStyle from "./RedirectToStyle";

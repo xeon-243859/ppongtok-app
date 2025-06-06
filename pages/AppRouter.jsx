@@ -1,13 +1,13 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useAuth } from "./contexts/AuthContext";
+import { useAuth } from "../src/contexts/AuthContext";
 
-import WriteMessagePage from "./pages/WriteMessagePage";
-import LoginPage from "./pages/LoginPage";
-import IntroPage from "./pages/IntroPage";
-import PreviewPage from "./pages/PreviewPage";
-import SharePage from "./pages/SharePage";
-import PaymentPage from "./pages/PaymentPage";
+import WriteMessagePage from "./WriteMessagePage";
+import LoginPage from "./LoginPage";
+import IntroPage from "./IntroPage";
+import PreviewPage from "./PreviewPage";
+import SharePage from "./SharePage";
+import PaymentPage from "./PaymentPage";
 
 function ProtectedRoute({ children }) {
   const { currentUser } = useAuth();
