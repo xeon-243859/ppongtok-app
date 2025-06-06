@@ -69,6 +69,5 @@ function App() {
     </AuthProvider>
   );
 }
-// Redeploy trigger
 
 export default App;
