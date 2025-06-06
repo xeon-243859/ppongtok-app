@@ -7,7 +7,7 @@ export default function GeneratePage({ message, selectedImage, selectedVideo, se
       <h2>완성된 사랑 메시지를 확인해 보세요!</h2>
 
       {selectedMusic && (
-        <audio src={selectedMusic} autoPlay loop controls className="audio-player" />
+        <audio src={selectedMusic} autoPlay loop controls className={styles["audio-player"]} />
       )}
 
       {selectedVideo ? (

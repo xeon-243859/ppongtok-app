@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "./MusicThemePage.css";
+import styles from './MusicThemePage.module.css';
 
 const musicOptions = [
   { label: "봄의노래", value: "/audio/spring.mp3" },
@@ -19,13 +19,13 @@ const MusicThemePage = () => {
   };
 
   return (
-    <div className="music-theme-page">
-      <h2 className="music-theme-title">🎵 음원 테마 저장소</h2>
-      <div className="music-grid-vertical">
-        {musicOptions.map((option) => (
-          <button
-            key={option.value}
-            className="music-button"
+    <div className={styles["music-theme-page"]}>
+    <h2 className={styles["music-theme-title"]}>🎵 음원 테마 저장소</h2>
+    <div className={styles["music-grid-vertical"]}>
+    {musicOptions.map((option) => (
+      <button
+        key={option.value}
+        className={styles["music-button"]}
             onClick={() => handleSelect(option.value, option.label)}
           >
             {option.label}
