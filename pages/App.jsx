@@ -69,5 +69,6 @@ function App() {
     </AuthProvider>
   );
 }
-//공백 한줄 추가 푸시//
+// Redeploy trigger
+
 export default App;
