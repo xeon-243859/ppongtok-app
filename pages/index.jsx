@@ -7,3 +7,4 @@ export default function HomePage() {
     </div>
   );
 }
+//이미지 영상 잘 나왔음//
