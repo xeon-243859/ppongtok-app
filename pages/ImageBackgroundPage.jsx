@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './ImageBackgroundPage.css';
+import styles from "./ImageBackgroundPage.module.css";
 
 const images = [
   '/backgrounds/cosmos.jpg',
@@ -34,20 +34,20 @@ export default function ImageBackgroundPage({ setSelectedImage }) {
 
 
   return (
-    <div className="image-background-container">
+     <div className={styles["image-background-container"]}>
       <h2>이미지 배경을 선택해 주세요</h2>
-      <div className="image-options">
+      <div className={styles["image-options"]}>
         {images.map((img, index) => (
           <img
             key={index}
             src={img}
             alt={`bg-${index}`}
-            className={selected === img ? 'selected' : ''}
+            className={selected === img ? styles.selected : ""}
             onClick={() => handleSelect(img)}
           />
         ))}
       </div>
-      <div className="navigation-buttons">
+      <div className={styles["navigation-buttons"]}>
         <button onClick={() => navigate('/love/style')}>뒤로가기</button>
         <button onClick={() => navigate('/love/music')} disabled={!selected}>다음으로</button>
       </div>

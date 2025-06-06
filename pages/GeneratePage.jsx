@@ -1,5 +1,5 @@
 import React from 'react';
-import './GeneratePage.css';
+import styles from "./GeneratePage.module.css";
 
 export default function GeneratePage({ message, selectedImage, selectedVideo, selectedMusic }) {
   return (
@@ -11,16 +11,18 @@ export default function GeneratePage({ message, selectedImage, selectedVideo, se
       )}
 
       {selectedVideo ? (
-        <video src={selectedVideo} autoPlay loop muted controls className="media-preview" />
+        <video src={selectedVideo} autoPlay loop muted controls className={styles["media-preview"]}
+ />
       ) : selectedImage ? (
-        <img src={selectedImage} alt="선택된 이미지" className="media-preview" />
+        <img src={selectedImage} alt="선택된 이미지" className={styles["media-preview"]}
+ />
       ) : null}
 
-      <div className="message-box">
+      <div className={styles["message-box"]}>
         <p>{message}</p>
       </div>
 
-      <div className="share-buttons">
+      <div className={styles["share-buttons"]}>
         <button>📄 PDF 저장</button>
         <button>🔗 링크 복사</button>
         <button>📷 이미지 저장</button>
