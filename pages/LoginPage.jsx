@@ -1,8 +1,8 @@
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../src/contexts/AuthContext";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { db } from "../../src/firebase";
+import { db } from "../src/firebase";
 
 export default function LoginPage() {
   const { login, currentUser } = useAuth();

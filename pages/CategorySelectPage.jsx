@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
-import { useAuth } from "../contexts/AuthContext"; // 경로 조정
+import { useAuth } from "../src/contexts/AuthContext";
 import styles from "./CategorySelectPage.module.css";
 
 const categories = [
