@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router"; // ✅ useNavigate → useRouter
-import styles from "@/styles/StyleSelectPage.module.css"; // ✅ CSS 모듈 import
+import styles from "../src/styles/StyleSelectPage.module.css";
 
 export default function StyleSelectPage() {
   const router = useRouter();

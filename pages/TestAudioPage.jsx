@@ -1,6 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router"; // ✅ useNavigate → useRouter
-import styles from "@/styles/StyleSelectPage.module.css"; // ✅ module.css 방식으로 통일
+import styles from "../src/styles/StyleSelectPage.module.css";
 
 export default function TestAudioPage() {
   const router = useRouter();

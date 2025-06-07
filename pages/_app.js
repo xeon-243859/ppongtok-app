@@ -1,6 +1,6 @@
 // pages/_app.js
-import "@/styles/globals.css"; // 없으면 이 줄은 삭제해도 됨
-import { AuthProvider } from "@/contexts/AuthContext";
+// import "../src/styles/globals.css"; // 실제 필요하면 경로 확인하고 유지
+import { AuthProvider } from "../src/contexts/AuthContext";
 
 export default function MyApp({ Component, pageProps }) {
   return (

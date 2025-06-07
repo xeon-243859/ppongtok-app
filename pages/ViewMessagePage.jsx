@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router"; // ✅ react-router-dom → next/router
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/src/firebase"; // ✅ alias 사용 또는 상대 경로에 따라 조정
+import { db } from "../src/firebase"; 
 
 export default function ViewMessagePage() {
   const router = useRouter();
