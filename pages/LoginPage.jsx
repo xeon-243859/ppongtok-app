@@ -1,16 +1,13 @@
-// src/pages/LoginPage.jsx
-
-import { useAuth } from "../src/contexts/AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/router";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { db } from "../src/firebase";
+import { db } from "../../src/firebase";
 
-const LoginPage = () => {
+export default function LoginPage() {
   const { login, currentUser } = useAuth();
-  const navigate = useNavigate();
+  const router = useRouter();
 
-  // 로그인 버튼 클릭
   const handleLogin = async () => {
     try {
       await login(); // AuthContext의 popup 로그인 함수
@@ -19,7 +16,6 @@ const LoginPage = () => {
     }
   };
 
-  // 로그인 후 Firestore 사용자 등록 확인
   useEffect(() => {
     const checkAndSaveUser = async () => {
       if (currentUser) {
@@ -40,21 +36,18 @@ const LoginPage = () => {
           console.log("✅ 기존 유저 Firestore 확인됨");
         }
 
-      
-          // ✅ 로그인 후 리디렉션 처리
         const redirectTo = localStorage.getItem("afterLoginRedirect");
         if (redirectTo) {
-          navigate(redirectTo);
+          router.push(redirectTo);
           localStorage.removeItem("afterLoginRedirect");
         } else {
-          navigate("/"); // 기본값
+          router.push("/");
         }
       }
     };
-    
 
     checkAndSaveUser();
-  }, [currentUser, navigate]);
+  }, [currentUser, router]);
 
   return (
     <div>
@@ -62,6 +55,4 @@ const LoginPage = () => {
       <button onClick={handleLogin}>구글로 로그인</button>
     </div>
   );
-};
-
-export default LoginPage;
+}

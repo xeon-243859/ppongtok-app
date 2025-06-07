@@ -1,0 +1,79 @@
+.entryPageContainer {
+  padding: 2rem;
+  text-align: center;
+}
+
+.entryTextBlock {
+  margin-bottom: 1.5rem;
+}
+
+.entryTitle {
+  font-size: 24px;
+}
+
+.entrySubtitle {
+  font-size: 20px;
+  color: #555;
+}
+
+.entryButtonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 2rem;
+}
+
+.entryButton {
+  padding: 12px 24px;
+  border: none;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.selectedVideoBox {
+  position: relative;
+  margin: 20px auto;
+  max-width: 500px;
+}
+
+.movingLabel {
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  background: #000000aa;
+  color: white;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+}
+
+.removeButton {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.navButtonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 2rem;
+}
+
+.navButton {
+  padding: 10px 20px;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}

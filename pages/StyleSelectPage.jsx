@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "./StyleSelectPage.css";
+import { useRouter } from "next/router"; // ✅ useNavigate → useRouter
+import styles from "@/styles/StyleSelectPage.module.css"; // ✅ CSS 모듈 import
 
-const StyleSelectPage = () => {
-  const navigate = useNavigate();
+export default function StyleSelectPage() {
+  const router = useRouter();
   const [showLine1, setShowLine1] = useState(false);
   const [showLine2, setShowLine2] = useState(false);
 
@@ -17,34 +17,33 @@ const StyleSelectPage = () => {
   }, []);
 
   const handleImageClick = () => {
-    navigate("/image/select");
+    router.push("/image/select");
   };
 
   const handleVideoClick = () => {
-    navigate("/prepare-video"); // ✅ 중간 허브 페이지로 이동
+    router.push("/prepare-video");
   };
 
   return (
-    <div className="style-select-container">
-      {showLine1 && <h2 className="style-title-line1">어떤 배경으로</h2>}
-      {showLine2 && <h2 className="style-title-line2">깊은 속마음을 담아볼까요?</h2>}
+    <div className={styles.styleSelectContainer}>
+      {showLine1 && <h2 className={styles.styleTitleLine1}>어떤 배경으로</h2>}
+      {showLine2 && (
+        <h2 className={styles.styleTitleLine2}>깊은 속마음을 담아볼까요?</h2>
+      )}
 
-      <div className="style-button-group">
+      <div className={styles.styleButtonGroup}>
         <button onClick={handleImageClick}>이미지 배경 선택</button>
         <button onClick={handleVideoClick}>영상 배경 선택</button>
       </div>
 
       <button
-      className="back-button"
-  onClick={() => {
-    window.location.replace("/write/message"); // ✅ 강제 이동
-  }}
->
-  뒤로가기
-</button>
-
+        className={styles.backButton}
+        onClick={() => {
+          window.location.replace("/write/message"); // ✅ 그대로 유지
+        }}
+      >
+        뒤로가기
+      </button>
     </div>
   );
-};
-
-export default StyleSelectPage;
+}

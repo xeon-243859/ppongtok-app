@@ -1,39 +1,38 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import "./MusicSelectPage.css";
+import { useRouter } from "next/router"; // ✅ useNavigate → useRouter
+import styles from "./MusicSelectPage.module.css"; // ✅ CSS 모듈로 변경
 
 const MusicSelectPage = () => {
-  const navigate = useNavigate();
+  const router = useRouter(); // ✅ useNavigate → useRouter
   const fileInputRef = useRef(null);
 
   const [selectedMusic, setSelectedMusic] = useState(null);
   const [musicName, setMusicName] = useState("");
-  
-  useEffect(() => {
-  const allowed = localStorage.getItem("allow-music");
-  if (allowed !== "true") {
-    console.warn("🚫 비인가 접근. 스타일 선택으로 되돌림.");
-    navigate("/style/select", { replace: true });
-  }
-}, [navigate]);
 
   useEffect(() => {
-  const storedMusic = localStorage.getItem("selected-music");
-  const storedLabel = localStorage.getItem("selected-music-label");
+    const allowed = localStorage.getItem("allow-music");
+    if (allowed !== "true") {
+      console.warn("🚫 비인가 접근. 스타일 선택으로 되돌림.");
+      router.replace("/style/select"); // ✅ navigate → router.replace
+    }
+  }, [router]);
 
-  if (storedMusic) {
-    console.log("📁 localStorage → selectedMusic:", storedMusic);
-    setSelectedMusic(storedMusic);
-  } else {
-    console.warn("⚠️ storedMusic is null or undefined");
-  }
+  useEffect(() => {
+    const storedMusic = localStorage.getItem("selected-music");
+    const storedLabel = localStorage.getItem("selected-music-label");
 
-  if (storedLabel) {
-    console.log("📁 localStorage → musicName:", storedLabel);
-    setMusicName(storedLabel);
-  }
-}, []);
+    if (storedMusic) {
+      console.log("📁 localStorage → selectedMusic:", storedMusic);
+      setSelectedMusic(storedMusic);
+    } else {
+      console.warn("⚠️ storedMusic is null or undefined");
+    }
 
+    if (storedLabel) {
+      console.log("📁 localStorage → musicName:", storedLabel);
+      setMusicName(storedLabel);
+    }
+  }, []);
 
   const handleDelete = () => {
     setSelectedMusic(null);
@@ -42,7 +41,8 @@ const MusicSelectPage = () => {
     localStorage.removeItem("selected-music-label");
   };
 
-  const handleMusicFile = () => navigate("/music/theme");
+  const handleMusicFile = () => router.push("/music/theme");
+
   const handleLocalFile = () => fileInputRef.current.click();
 
   const handleFileChange = (e) => {
@@ -56,33 +56,31 @@ const MusicSelectPage = () => {
   };
 
   const handleBack = () => {
-  const mediaType = localStorage.getItem("media-type"); // 예: "image" 또는 "video"
-
-  if (mediaType === "video") {
-    navigate("/video");
-  } else {
-    navigate("/image");
-  }
-};
-
+    const mediaType = localStorage.getItem("media-type"); // 예: "image" 또는 "video"
+    if (mediaType === "video") {
+      router.push("/video");
+    } else {
+      router.push("/image");
+    }
+  };
 
   const handleNext = () => {
     const selectedType = localStorage.getItem("selected-type");
     if (selectedType === "video") {
-      navigate("/preview?type=video");
+      router.push("/preview?type=video");
     } else {
-      navigate("/preview?type=image");
+      router.push("/preview?type=image");
     }
   };
 
   return (
-    <div className="music-select-page">
-      <div className="typing-text">
-        <div className="line1">배경으로 사용할 음악을</div>
-        <div className="line2">선택해주세요</div>
+    <div className={styles["music-select-page"]}>
+      <div className={styles["typing-text"]}>
+        <div className={styles["line1"]}>배경으로 사용할 음악을</div>
+        <div className={styles["line2"]}>선택해주세요</div>
       </div>
 
-      <div className="file-button-group">
+      <div className={styles["file-button-group"]}>
         <button onClick={handleMusicFile}>배경음악 파일</button>
         <button onClick={handleLocalFile}>내 파일 선택</button>
         <input
@@ -95,19 +93,21 @@ const MusicSelectPage = () => {
       </div>
 
       {selectedMusic && (
-         <>
-    {console.log("🎧 조건부 렌더링 selectedMusic:", selectedMusic)}
-        <div className="music-box">
-          <span className="music-label">{musicName}</span>
-          <div className="audio-wrapper">
-            <audio controls autoPlay src={selectedMusic} />
+        <>
+          {console.log("🎧 조건부 렌더링 selectedMusic:", selectedMusic)}
+          <div className={styles["music-box"]}>
+            <span className={styles["music-label"]}>{musicName}</span>
+            <div className={styles["audio-wrapper"]}>
+              <audio controls autoPlay src={selectedMusic} />
             </div>
-            <button className="delete-button" onClick={handleDelete}>❌</button>
-             </div>
-           </>
-        )}
+            <button className={styles["delete-button"]} onClick={handleDelete}>
+              ❌
+            </button>
+          </div>
+        </>
+      )}
 
-      <div className="button-group">
+      <div className={styles["button-group"]}>
         <button onClick={handleBack}>뒤로가기</button>
         <button onClick={handleNext}>미리보기로 이동</button>
       </div>

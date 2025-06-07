@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"
-import styles from "./ImageThemePage.module.css"; 
+import { useRouter } from "next/router";
+import styles from "./ImageThemePage.module.css";
 
 const images = [
   "/backgrounds/leaves.jpg",
@@ -9,8 +9,8 @@ const images = [
   "/backgrounds/cosmos.jpg"
 ];
 
-const ImageThemePage = () => {
-  const navigate = useNavigate();
+export default function ImageThemePage() {
+  const router = useRouter();
   const [_, forceRerender] = useState(false); // 강제 리렌더링용
 
   const handleSelect = (src) => {
@@ -20,7 +20,7 @@ const ImageThemePage = () => {
         break;
       }
     }
-    navigate("/image/select");
+    router.push("/image/select");
   };
 
   const handleRemove = (src) => {
@@ -30,10 +30,9 @@ const ImageThemePage = () => {
         break;
       }
     }
-    forceRerender((prev) => !prev); // 상태 변경으로 강제 리렌더링
+    forceRerender((prev) => !prev);
   };
 
-  // 이미지가 이미 선택되어 있는지 확인
   const isSelected = (src) => {
     for (let i = 1; i <= 4; i++) {
       if (localStorage.getItem(`img-${i}`) === src) return true;
@@ -43,18 +42,17 @@ const ImageThemePage = () => {
 
   return (
     <div className={styles["image-theme-page"]}>
-    <h2 className={styles["image-theme-title"]}>이미지 테마 저장소</h2>
-    <div className={styles["image-grid"]}>
-      {images.map((src) => (
-        <div key={src} className={styles["thumbnail"]}>
-          <img src={src} alt="thumb" onClick={() => handleSelect(src)} />
-          {isSelected(src) && (
-            <button
-              className={styles["remove-button"]}
-              onClick={() => handleRemove(src)}
-            >
-              ❌
-
+      <h2 className={styles["image-theme-title"]}>이미지 테마 저장소</h2>
+      <div className={styles["image-grid"]}>
+        {images.map((src) => (
+          <div key={src} className={styles["thumbnail"]}>
+            <img src={src} alt="thumb" onClick={() => handleSelect(src)} />
+            {isSelected(src) && (
+              <button
+                className={styles["remove-button"]}
+                onClick={() => handleRemove(src)}
+              >
+                ❌
               </button>
             )}
           </div>
@@ -62,6 +60,4 @@ const ImageThemePage = () => {
       </div>
     </div>
   );
-};
-
-export default ImageThemePage;
+}

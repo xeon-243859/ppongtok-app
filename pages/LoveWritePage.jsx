@@ -1,22 +1,26 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/router';
 
-function LoveWritePage() {
-  const navigate = useNavigate();
+export default function LoveWritePage() {
+  const router = useRouter();
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
 
   const handleSubmit = () => {
-    if (!name || !message) return alert('이름과 메시지를 모두 입력해주세요!');
+    if (!name || !message) {
+      alert('이름과 메시지를 모두 입력해주세요!');
+      return;
+    }
     localStorage.setItem('love_name', name);
     localStorage.setItem('love_message', message);
     console.log('작성 완료:', { name, message });
-    navigate('/love/preview');
+    router.push('/love/preview');
   };
 
   return (
     <div style={{ padding: '2rem', textAlign: 'center', fontFamily: 'Arial, sans-serif' }}>
       <h2>💌 사랑 고백 메시지 작성 💌</h2>
+
       <div style={{ margin: '1rem 0' }}>
         <input
           type="text"
@@ -26,6 +30,7 @@ function LoveWritePage() {
           style={{ padding: '0.5rem', width: '80%', maxWidth: '300px', fontSize: '1rem' }}
         />
       </div>
+
       <div style={{ margin: '1rem 0' }}>
         <textarea
           placeholder="마음을 담은 메시지를 적어보세요"
@@ -35,6 +40,7 @@ function LoveWritePage() {
           style={{ padding: '0.5rem', width: '80%', maxWidth: '300px', fontSize: '1rem' }}
         />
       </div>
+
       <button
         onClick={handleSubmit}
         style={{
@@ -45,7 +51,7 @@ function LoveWritePage() {
           fontSize: '1rem',
           color: '#fff',
           cursor: 'pointer',
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.15)'
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.15)',
         }}
       >
         미리보기로 이동 📝
@@ -53,5 +59,3 @@ function LoveWritePage() {
     </div>
   );
 }
-
-export default LoveWritePage;

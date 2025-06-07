@@ -1,16 +1,13 @@
-// src/pages/PrepareVideo.jsx
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/router"; // ✅ useNavigate → useRouter
 
-const PrepareVideo = () => {
-  const navigate = useNavigate();
+export default function PrepareVideo() {
+  const router = useRouter();
 
   useEffect(() => {
     localStorage.setItem("last-page", "/style/select");
-    navigate("/video/select", { replace: true });
-  }, [navigate]);
+    router.replace("/video/select"); // ✅ navigate → router.replace
+  }, [router]);
 
   return null;
-};
-
-export default PrepareVideo;
+}

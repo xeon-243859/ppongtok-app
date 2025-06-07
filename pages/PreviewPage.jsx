@@ -1,23 +1,23 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/router"; // ✅ useNavigate → useRouter
 
-const PreviewPage = () => {
+export default function PreviewPage() {
+  const router = useRouter();
+
   const [caption, setCaption] = useState(""); // 자막 전체 문장
   const [displayedCaption, setDisplayedCaption] = useState(""); // 타자기 자막 출력용
   const [mediaLoaded, setMediaLoaded] = useState(false);
-
-  const navigate = useNavigate();
-  const audioRef = useRef(null);
 
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [mediaType, setMediaType] = useState("image");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedMusic, setSelectedMusic] = useState(null);
+
+  const audioRef = useRef(null);
   const videoRef = useRef(null);
 
-
-  // 자막 CSS 애니메이션 정의 (현재 사용 안 함)
+  // 스타일 애니메이션 삽입 (현재 사용 안함)
   useEffect(() => {
     const style = document.createElement("style");
     style.innerHTML = `
@@ -29,31 +29,28 @@ const PreviewPage = () => {
     document.head.appendChild(style);
   }, []);
 
-  // 자막 원문 설정 (최초 1회)
+  // 자막 원문
   useEffect(() => {
     const msg = localStorage.getItem("message") || "";
     setCaption(msg);
   }, []);
 
-  // 자막 타자기 효과
+  // 타자기 효과
   useEffect(() => {
-  let intervalId;
+    let intervalId;
+    if (caption) {
+      let i = 0;
+      setDisplayedCaption("");
+      intervalId = setInterval(() => {
+        setDisplayedCaption(caption.slice(0, i));
+        i++;
+        if (i > caption.length) clearInterval(intervalId);
+      }, 250);
+    }
+    return () => clearInterval(intervalId);
+  }, [caption]);
 
-  if (caption) {
-    let i = 0;
-    setDisplayedCaption(""); // 🔥 초기화로 쌓임 방지!
-
-    intervalId = setInterval(() => {
-      setDisplayedCaption(caption.slice(0, i));
-      i++;
-      if (i > caption.length) clearInterval(intervalId);
-    }, 250); //숫자를 높일수록 속도가 느려짐//
-  }
-
-  return () => clearInterval(intervalId);
-}, [caption]);
-
-  // 이미지/영상/음악 등 선택 데이터 가져오기
+  // 이미지/영상/음악 로딩
   useEffect(() => {
     const images = JSON.parse(localStorage.getItem("selectedImages") || "[]");
     const video = localStorage.getItem("selected-video");
@@ -62,7 +59,6 @@ const PreviewPage = () => {
     const music = localStorage.getItem("selectedMusic");
 
     if (!video || video.includes("river") || type !== "video") {
-      console.warn("⚠️ 주의: river.mp4 제외됨");
       setSelectedVideo(null);
     } else {
       setSelectedVideo(video);
@@ -72,27 +68,75 @@ const PreviewPage = () => {
     setMediaType(type);
     setCaption(msg);
     setSelectedMusic(music);
-    
+
     let slideInterval;
     let stopTimeout;
 
     if (type === "image" && images.length > 0) {
-       slideInterval = setInterval(() => {
+      slideInterval = setInterval(() => {
         setCurrentImageIndex((prev) => (prev + 1) % images.length);
-      }, 5000); //5초간격으로 이미지 바뀜//
+      }, 5000);
 
-       stopTimeout = setTimeout(() => {
-      clearInterval(slideInterval); // ✅ 30초 후 멈춤
-    }, 30000); // 30초
-  }
-      return () => {
-    clearInterval(slideInterval);
-    clearTimeout(stopTimeout);
-  };
-}, []);
+      stopTimeout = setTimeout(() => {
+        clearInterval(slideInterval);
+      }, 30000);
+    }
 
-  const handleNext = () => navigate("/share");
-  const handleGoHome = () => navigate("/");
+    return () => {
+      clearInterval(slideInterval);
+      clearTimeout(stopTimeout);
+    };
+  }, []);
+
+  // 비디오 30초 정지
+  useEffect(() => {
+    if (mediaType === "video" && videoRef.current) {
+      const timeout = setTimeout(() => {
+        videoRef.current.pause();
+        videoRef.current.currentTime = 0;
+      }, 30000);
+      return () => clearTimeout(timeout);
+    }
+  }, [mediaType, selectedVideo]);
+
+  // 오디오 재생 및 정지
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!selectedMusic || !audio) return;
+
+    const handleCanPlay = () => {
+      const stopTimeout = setTimeout(() => {
+        audio.pause();
+        audio.currentTime = 0;
+      }, 30000);
+      audio.removeEventListener("canplaythrough", handleCanPlay);
+    };
+
+    audio.addEventListener("canplaythrough", handleCanPlay);
+
+    return () => {
+      audio.pause();
+      audio.currentTime = 0;
+      audio.removeEventListener("canplaythrough", handleCanPlay);
+    };
+  }, [selectedMusic]);
+
+  useEffect(() => {
+    if (!selectedMusic) return;
+    const audio = audioRef.current;
+    if (!audio) return;
+    const stopTimeout = setTimeout(() => {
+      audio.pause();
+      audio.currentTime = 0;
+    }, 30000);
+    return () => {
+      clearTimeout(stopTimeout);
+      audio.pause();
+    };
+  }, [selectedMusic]);
+
+  const handleNext = () => router.push("/share");
+  const handleGoHome = () => router.push("/");
 
   const buttonStyle = {
     padding: "12px 20px",
@@ -134,7 +178,7 @@ const PreviewPage = () => {
           />
         ) : mediaType === "video" && selectedVideo ? (
           <video
-            ref={videoRef} // ✅ 추가
+            ref={videoRef}
             src={selectedVideo}
             autoPlay
             muted
@@ -150,7 +194,6 @@ const PreviewPage = () => {
           <div style={{ color: "#999" }}>🎞️ 배경이 없습니다</div>
         )}
 
-        {/* 자막 출력: 미디어 로드 완료 후만 출력 */}
         {caption && mediaLoaded && (
           <div
             style={{
@@ -169,74 +212,13 @@ const PreviewPage = () => {
         )}
       </div>
 
-      {/* 하단 버튼 */}
       <div style={{ display: "flex", justifyContent: "center", gap: 12, marginTop: 28 }}>
-        <button onClick={() => navigate("/music")} style={buttonStyle}>뒤로가기</button>
+        <button onClick={() => router.push("/music")} style={buttonStyle}>뒤로가기</button>
         <button onClick={handleNext} style={buttonStyle}>다음 - 공유하기</button>
         <button onClick={handleGoHome} style={buttonStyle}>처음으로</button>
       </div>
 
-      {/* 음악 출력 */}
       {selectedMusic && <audio ref={audioRef} src={selectedMusic} autoPlay />}
     </div>
   );
-
- useEffect(() => {
-  if (mediaType === "video" && videoRef.current) {
-    const timeout = setTimeout(() => {
-      videoRef.current.pause(); // ✅ 정지
-      videoRef.current.currentTime = 0; // ⏮️ 처음으로 되감기 (선택사항)
-    }, 30000); // 30초
-
-    return () => clearTimeout(timeout);
-  }
-}, [mediaType, selectedVideo]);
-
-useEffect(() => {
-  const audio = audioRef.current;
-
-  if (!selectedMusic || !audio) return;
-
-  const handleCanPlay = () => {
-    // 오디오가 완전히 로드되었을 때 30초 후 정지
-    const stopTimeout = setTimeout(() => {
-      audio.pause();
-      audio.currentTime = 0;
-    }, 30000);
-
-    audio.removeEventListener("canplaythrough", handleCanPlay); // 중복 방지
-  };
-
-  audio.addEventListener("canplaythrough", handleCanPlay);
-
-  return () => {
-    audio.pause();
-    audio.currentTime = 0;
-    audio.removeEventListener("canplaythrough", handleCanPlay);
-  };
-}, [selectedMusic]);
-
-
-useEffect(() => {
-  if (!selectedMusic) return;
-
-  const audio = audioRef.current;
-
-  if (!audio) return;
-
-  // ✅ audio 재생 시작 후 30초 후 정지
-  const stopTimeout = setTimeout(() => {
-    audio.pause();               // 정지
-    audio.currentTime = 0;       // 선택: 처음으로 되감기
-  }, 30000); // 30초
-
-  return () => {
-    clearTimeout(stopTimeout);
-    audio.pause(); // 페이지 전환 시에도 정지
-  };
-}, [selectedMusic]);
-
-
-};
-
-export default PreviewPage;
+}

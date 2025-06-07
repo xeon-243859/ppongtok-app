@@ -1,7 +1,6 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../src/contexts/AuthContext";
-
+import React, { useEffect } from "react";
+import { useRouter } from "next/router";
+import { useAuth } from "../contexts/AuthContext"; // 경로 조정
 import styles from "./CategorySelectPage.module.css";
 
 const categories = [
@@ -12,15 +11,17 @@ const categories = [
   { label: "감사하기", value: "thanks" },
 ];
 
-const CategorySelectPage = () => {
-  const navigate = useNavigate();
-  const { currentUser } = useAuth(); // 🔒 로그인 상태 확인
+export default function CategorySelectPage() {
+  const router = useRouter();
+  const { currentUser } = useAuth(); // 로그인 상태 확인
 
   const handleSelect = (value) => {
+    // localStorage는 브라우저에서만 접근 가능하므로 안전하게 실행
+    if (typeof window !== "undefined") {
+      localStorage.setItem("selected-category", value);
+    }
 
-    // 로그인 되어 있으면 선택한 카테고리 저장 후 이동
-    localStorage.setItem("selected-category", value);
-    navigate("/write/message");
+    router.push("/write/message");
   };
 
   return (
@@ -39,6 +40,4 @@ const CategorySelectPage = () => {
       </div>
     </div>
   );
-};
-
-export default CategorySelectPage;
+}

@@ -1,6 +1,6 @@
 import React from 'react';
 
-function LoveConfessionPage() {
+export default function LoveConfessionPage() {
   return (
     <div style={{
       fontFamily: 'Arial, sans-serif',
@@ -37,5 +37,3 @@ function LoveConfessionPage() {
     </div>
   );
 }
-
-export default LoveConfessionPage;

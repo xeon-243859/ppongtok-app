@@ -1,14 +1,12 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/router"; // ✅ react-router-dom → next/router
 
-const RedirectToStyle = () => {
-  const navigate = useNavigate();
+export default function RedirectToStyle() {
+  const router = useRouter();
 
   useEffect(() => {
-    navigate("/style/select", { replace: true });
-  }, [navigate]);
+    router.replace("/style/select"); // ✅ navigate → router.replace
+  }, [router]);
 
   return null;
-};
-
-export default RedirectToStyle;
+}

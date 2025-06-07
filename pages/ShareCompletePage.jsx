@@ -1,10 +1,10 @@
 import React, { useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/router"; // ✅ useNavigate → useRouter
 import html2pdf from "html2pdf.js";
-import "../src/styles/ShareCompletePage.css";
+import "@/styles/ShareCompletePage.css"; // ✅ Next.js 스타일 경로로 수정
 
-const ShareCompletePage = () => {
-  const navigate = useNavigate();
+export default function ShareCompletePage() {
+  const router = useRouter();
   const pdfRef = useRef();
 
   const handleCopyLink = () => {
@@ -37,10 +37,8 @@ const ShareCompletePage = () => {
       </div>
 
       <div className="share-nav">
-        <button onClick={() => navigate("/")}>처음으로 돌아가기</button>
+        <button onClick={() => router.push("/")}>처음으로 돌아가기</button>
       </div>
     </div>
   );
-};
-
-export default ShareCompletePage;
+}

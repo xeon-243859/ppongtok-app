@@ -1,0 +1,35 @@
+.videoBackgroundContainer {
+  text-align: center;
+  padding: 2rem;
+}
+
+.videoPreview {
+  margin-bottom: 1.5rem;
+}
+
+.videoOptions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.videoOptions button {
+  padding: 10px 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #f2f2f2;
+  cursor: pointer;
+}
+
+.selected {
+  background-color: #ffd54f;
+  font-weight: bold;
+}
+
+.navigationButtons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}

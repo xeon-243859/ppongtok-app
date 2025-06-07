@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/router';
 import styles from "./ImageBackgroundPage.module.css";
 
 const images = [
@@ -10,31 +10,32 @@ const images = [
 ];
 
 export default function ImageBackgroundPage({ setSelectedImage }) {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [selected, setSelected] = useState(null);
 
   const handleSelect = (imgPath) => {
-  fetch(imgPath)
-    .then(res => res.blob())
-    .then(blob => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64Image = reader.result;
+    fetch(imgPath)
+      .then(res => res.blob())
+      .then(blob => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const base64Image = reader.result;
 
-        // ✅ base64 저장
-        localStorage.setItem("selectedImage", base64Image);
+          // ✅ base64 저장
+          if (typeof window !== "undefined") {
+            localStorage.setItem("selectedImage", base64Image);
+          }
 
-        // ✅ 상태 업데이트 (UI용)
-        setSelected(imgPath);
-        setSelectedImage(base64Image);
-      };
-      reader.readAsDataURL(blob);
-    });
-};
-
+          // ✅ 상태 업데이트
+          setSelected(imgPath);
+          if (setSelectedImage) setSelectedImage(base64Image);
+        };
+        reader.readAsDataURL(blob);
+      });
+  };
 
   return (
-     <div className={styles["image-background-container"]}>
+    <div className={styles["image-background-container"]}>
       <h2>이미지 배경을 선택해 주세요</h2>
       <div className={styles["image-options"]}>
         {images.map((img, index) => (
@@ -48,8 +49,8 @@ export default function ImageBackgroundPage({ setSelectedImage }) {
         ))}
       </div>
       <div className={styles["navigation-buttons"]}>
-        <button onClick={() => navigate('/love/style')}>뒤로가기</button>
-        <button onClick={() => navigate('/love/music')} disabled={!selected}>다음으로</button>
+        <button onClick={() => router.push('/love/style')}>뒤로가기</button>
+        <button onClick={() => router.push('/love/music')} disabled={!selected}>다음으로</button>
       </div>
     </div>
   );

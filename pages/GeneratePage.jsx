@@ -3,7 +3,7 @@ import styles from "./GeneratePage.module.css";
 
 export default function GeneratePage({ message, selectedImage, selectedVideo, selectedMusic }) {
   return (
-    <div className="generate-container">
+    <div className={styles["generate-container"]}>
       <h2>완성된 사랑 메시지를 확인해 보세요!</h2>
 
       {selectedMusic && (
@@ -11,11 +11,20 @@ export default function GeneratePage({ message, selectedImage, selectedVideo, se
       )}
 
       {selectedVideo ? (
-        <video src={selectedVideo} autoPlay loop muted controls className={styles["media-preview"]}
- />
+        <video
+          src={selectedVideo}
+          autoPlay
+          loop
+          muted
+          controls
+          className={styles["media-preview"]}
+        />
       ) : selectedImage ? (
-        <img src={selectedImage} alt="선택된 이미지" className={styles["media-preview"]}
- />
+        <img
+          src={selectedImage}
+          alt="선택된 이미지"
+          className={styles["media-preview"]}
+        />
       ) : null}
 
       <div className={styles["message-box"]}>

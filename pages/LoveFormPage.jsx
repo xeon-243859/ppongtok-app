@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "./LoveFormPage.css";
+import { useRouter } from "next/router";
+import styles from "./LoveFormPage.module.css";
 
-const LoveFormPage = () => {
-  const navigate = useNavigate();
+export default function LoveFormPage() {
+  const router = useRouter();
   const [message, setMessage] = useState("");
 
   const handleNext = () => {
@@ -12,26 +12,24 @@ const LoveFormPage = () => {
       return;
     }
 
-    localStorage.setItem("message", message); // ✅ 이름 수정 (정상 연결용)
-    navigate("/style/select");
+    localStorage.setItem("message", message);
+    router.push("/style/select");
   };
 
   return (
-    <div className="love-form-container">
-      <h2 className="form-title-line1">나의 깊은 속마음을</h2>
-      <h2 className="form-title-line2">남겨보세요</h2>
+    <div className={styles["love-form-container"]}>
+      <h2 className={styles["form-title-line1"]}>나의 깊은 속마음을</h2>
+      <h2 className={styles["form-title-line2"]}>남겨보세요</h2>
 
       <textarea
-        className="message-input"
+        className={styles["message-input"]}
         placeholder="시작하기 - 메시지입력 - 이미지 or 영상선택 - 음원선택 - 완성"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
       />
-      <button className="next-button" onClick={handleNext}>
+      <button className={styles["next-button"]} onClick={handleNext}>
         다음으로
       </button>
     </div>
   );
-};
-
-export default LoveFormPage;
+}

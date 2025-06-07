@@ -1,8 +1,7 @@
-// ✅ LovePreviewPage.jsx - base64 및 z-index 기반 안정 렌더링 구조
 import React, { useEffect } from "react";
-import "./LovePreviewPage.css";
+import styles from "./LovePreviewPage.module.css";
 
-const LovePreviewPage = () => {
+export default function LovePreviewPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -42,39 +41,34 @@ const LovePreviewPage = () => {
   };
 
   return (
-    <div className="preview-container">
-      {/* 배경: 이미지가 있으면 이미지 우선, 없으면 영상 */}
+    <div className={styles["preview-container"]}>
       {image && image.includes("data:image") ? (
-        <img className="preview-media" src={image} alt="선택된 이미지" />
+        <img className={styles["preview-media"]} src={image} alt="선택된 이미지" />
       ) : video && video.includes(".mp4") ? (
-        <video className="preview-media" src={video} autoPlay loop muted />
+        <video className={styles["preview-media"]} src={video} autoPlay loop muted />
       ) : (
-        <div className="preview-placeholder">배경이 없습니다.</div>
+        <div className={styles["preview-placeholder"]}>배경이 없습니다.</div>
       )}
 
-      {/* 자막 */}
       {message && (
-        <div className="preview-caption">
+        <div className={styles["preview-caption"]}>
           {message}
         </div>
       )}
 
-      {/* 음악 */}
-      {music && <audio src={music} autoPlay loop className="preview-audio" />}
+      {music && <audio src={music} autoPlay loop className={styles["preview-audio"]} />}
 
-      <div className="preview-buttons">
+      <div className={styles["preview-buttons"]}>
         <button onClick={handleCopy}>링크 복사</button>
         <button onClick={handleDownload}>PDF 저장</button>
         <button onClick={handleRestart}>처음으로</button>
       </div>
 
-      <div className="preview-buttons">
+      <div className={styles["preview-buttons"]}>
         <button onClick={() => handleShare("facebook")}>Facebook</button>
         <button onClick={() => handleShare("twitter")}>Twitter</button>
         <button onClick={() => handleShare("kakao")}>KakaoTalk</button>
       </div>
     </div>
   );
-};
-
-export default LovePreviewPage;
+}

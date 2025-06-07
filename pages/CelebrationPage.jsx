@@ -1,6 +1,6 @@
 import React from 'react';
 
-function CelebrationPage() {
+export default function CelebrationPage() {
   return (
     <div style={{
       fontFamily: 'Arial, sans-serif',
@@ -37,5 +37,3 @@ function CelebrationPage() {
     </div>
   );
 }
-
-export default CelebrationPage;

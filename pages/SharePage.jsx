@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import QRCode from "qrcode";
-import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
-import { db } from "../firebase";
-import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { useRouter } from "next/router"; // ✅ 변경됨
 
-const SharePage = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+import QRCode from "qrcode";
+import { getFirestore, doc, getDoc, updateDoc, collection, addDoc, Timestamp } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { db } from "@/firebase"; // ✅ import 경로 통일
+
+export default function SharePage() {
+  const router = useRouter();
   const db = getFirestore();
   const auth = getAuth();
   const currentUser = auth.currentUser;
@@ -19,47 +18,46 @@ const SharePage = () => {
   const [videoUrl, setVideoUrl] = useState("");
   const [caption, setCaption] = useState("");
 
-const saveMessage = async ({ caption, imageUrl, videoUrl, musicUrl }) => {
-  try {
-    const docRef = await addDoc(collection(db, "messages"), {
-      caption,
-      imageUrl: imageUrl || null,
-      videoUrl: videoUrl || null,
-      musicUrl: musicUrl || null,
-      createdAt: Timestamp.now()
-    });
-    return docRef.id;
-  } catch (error) {
-    console.error("메시지 저장 실패:", error);
-    return null;
-  }
-};
-
+  const saveMessage = async ({ caption, imageUrl, videoUrl, musicUrl }) => {
+    try {
+      const docRef = await addDoc(collection(db, "messages"), {
+        caption,
+        imageUrl: imageUrl || null,
+        videoUrl: videoUrl || null,
+        musicUrl: musicUrl || null,
+        createdAt: Timestamp.now(),
+      });
+      return docRef.id;
+    } catch (error) {
+      console.error("메시지 저장 실패:", error);
+      return null;
+    }
+  };
 
   useEffect(() => {
-    const id = new URLSearchParams(location.search).get("id");
+    const id = new URLSearchParams(window.location.search).get("id");
     setMessageId(id);
-  }, [location.search]);
+  }, []);
 
   useEffect(() => {
-  const caption = localStorage.getItem("caption");
-  const imageUrl = localStorage.getItem("selected-image");
-  const videoUrl = localStorage.getItem("selected-video");
-  const musicUrl = localStorage.getItem("selected-music");
+    const caption = localStorage.getItem("caption");
+    const imageUrl = localStorage.getItem("selected-image");
+    const videoUrl = localStorage.getItem("selected-video");
+    const musicUrl = localStorage.getItem("selected-music");
 
-  if (!messageId && caption && (imageUrl || videoUrl)) {
-    saveMessage({ caption, imageUrl, videoUrl, musicUrl }).then((id) => {
-      if (id) {
-        setMessageId(id);
-      }
-    });
-  }
-}, []);
-
+    if (!messageId && caption && (imageUrl || videoUrl)) {
+      saveMessage({ caption, imageUrl, videoUrl, musicUrl }).then((id) => {
+        if (id) {
+          setMessageId(id);
+        }
+      });
+    }
+  }, []);
 
   useEffect(() => {
+    if (!messageId) return;
+
     const fetchMessage = async () => {
-      if (!messageId) return;
       const docRef = doc(db, "messages", messageId);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
@@ -69,6 +67,7 @@ const saveMessage = async ({ caption, imageUrl, videoUrl, musicUrl }) => {
         setCaption(data.caption || "");
       }
     };
+
     fetchMessage();
   }, [messageId]);
 
@@ -81,7 +80,6 @@ const saveMessage = async ({ caption, imageUrl, videoUrl, musicUrl }) => {
   const shareUrl = messageId
     ? `https://ogmeta-lqxptgkh3q-uc.a.run.app/${messageId}`
     : "https://ppongtok-app.vercel.app";
-
 
   useEffect(() => {
     const generateQR = async () => {
@@ -96,19 +94,17 @@ const saveMessage = async ({ caption, imageUrl, videoUrl, musicUrl }) => {
     generateQR();
   }, [shareUrl]);
 
-  // ✅ handleKakaoShare 수정
   const handleKakaoShare = async () => {
     if (!window.Kakao || !window.Kakao.isInitialized()) return;
 
     if (!currentUser) {
       alert("로그인이 필요해요 💌");
-      navigate("/login");
+      router.push("/login");
       return;
     }
 
     const userRef = doc(db, "users", currentUser.uid);
     const userSnap = await getDoc(userRef);
-
     if (!userSnap.exists()) {
       alert("유저 정보를 찾을 수 없습니다.");
       return;
@@ -117,7 +113,7 @@ const saveMessage = async ({ caption, imageUrl, videoUrl, musicUrl }) => {
     const freePass = userSnap.data().freePassCount || 0;
     if (freePass < 1) {
       alert("무료 이용권이 소진되었습니다. 결제가 필요해요.");
-      navigate("/payment");
+      router.push("/payment");
       return;
     }
 
@@ -136,12 +132,13 @@ const saveMessage = async ({ caption, imageUrl, videoUrl, musicUrl }) => {
         description: caption || "누군가 당신에게 마음을 보냈어요",
         imageUrl: previewImage,
         link: {
-               mobileWebUrl: shareUrl,
-               webUrl: shareUrl,
-                },
-            },
-          });
- 
+          mobileWebUrl: shareUrl,
+          webUrl: shareUrl,
+        },
+      },
+    });
+  };
+
   const handleCopy = async () => {
     await navigator.clipboard.writeText(shareUrl);
     alert("링크가 복사되었습니다 ✨");
@@ -167,59 +164,35 @@ const saveMessage = async ({ caption, imageUrl, videoUrl, musicUrl }) => {
     <div style={{ maxWidth: "480px", margin: "0 auto", padding: "32px 16px", textAlign: "center", fontFamily: "sans-serif" }}>
       <h2 style={{ fontSize: "24px", marginBottom: "16px" }}>💌 공유하기</h2>
 
-      {imageUrl && (
-        <img
-          src={imageUrl}
-          alt="공유 이미지"
-          style={{ width: "100%", maxHeight: "500px", objectFit: "cover", borderRadius: "12px", marginBottom: "16px" }}
-        />
-      )}
-
-      {videoUrl && (
-        <video
-          src={videoUrl}
-          controls
-          style={{ width: "100%", maxHeight: "500px", borderRadius: "12px", marginBottom: "16px" }}
-        />
-      )}
-
+      {imageUrl && <img src={imageUrl} alt="공유 이미지" style={{ width: "100%", maxHeight: "500px", objectFit: "cover", borderRadius: "12px", marginBottom: "16px" }} />}
+      {videoUrl && <video src={videoUrl} controls style={{ width: "100%", maxHeight: "500px", borderRadius: "12px", marginBottom: "16px" }} />}
       {caption && <p style={{ fontSize: "16px", color: "#444", marginBottom: "24px" }}>{caption}</p>}
 
       {qrUrl && <img src={qrUrl} alt="QR 코드" style={{ width: "150px", margin: "0 auto 16px" }} />}
       <p style={{ fontSize: "14px", color: "#777" }}>이 QR을 스캔하면 누군가에게 마음이 전해져요</p>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "32px" }}>
-        <button onClick={handleKakaoShare} style={{ padding: "4px", fontSize: "12px", borderRadius: "8px", background: "#FAE100", border: "none", fontWeight: "bold" }}>
-          💬 카카오톡 공유하기
-        </button>
-        <button onClick={handleCopy} style={{ padding: "4px", fontSize: "12px", borderRadius: "8px", background: "#cce5ff", border: "none", fontWeight: "bold" }}>
-          🔗 링크 복사
-        </button>
-        {imageUrl && (
-          <button onClick={handleImageDownload} style={{ padding: "4px", fontSize: "12px", borderRadius: "8px", background: "#d4edda", border: "none", fontWeight: "bold" }}>
-            🖼️ 이미지 저장
-          </button>
-        )}
-        {videoUrl && (
-          <button onClick={handleVideoDownload} style={{ padding: "4px", fontSize: "12px", borderRadius: "8px", background: "#fce4ec", border: "none", fontWeight: "bold" }}>
-            🎥 영상 저장
-          </button>
-        )}
-        <button onClick={() => window.open("https://twitter.com/intent/tweet?url=" + encodeURIComponent(shareUrl), "_blank")} style={{ padding: "4px", fontSize: "12px", borderRadius: "8px", background: "#1DA1F2", color: "white", fontWeight: "bold" }}>
-          🐦 트위터 공유
-        </button>
-        <button onClick={() => window.open("https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(shareUrl), "_blank")} style={{ padding: "4px", fontSize: "12px", borderRadius: "8px", background: "#4267B2", color: "white", fontWeight: "bold" }}>
-          📘 페이스북 공유
-        </button>
-        <button onClick={() => navigate("/")} style={{ padding: "4px", fontSize: "12px", borderRadius: "8px", background: "#eee", border: "none", fontWeight: "bold" }}>
-          🏠 처음으로
-        </button>
-        <button onClick={() => navigate("/intro")} style={{ padding: "4px", fontSize: "12px", borderRadius: "8px", background: "#f8d7da", border: "none", fontWeight: "bold" }}>
-          🚀 시작하기
-        </button>
+        <button onClick={handleKakaoShare} style={buttonStyle("#FAE100")}>💬 카카오톡 공유하기</button>
+        <button onClick={handleCopy} style={buttonStyle("#cce5ff")}>🔗 링크 복사</button>
+        {imageUrl && <button onClick={handleImageDownload} style={buttonStyle("#d4edda")}>🖼️ 이미지 저장</button>}
+        {videoUrl && <button onClick={handleVideoDownload} style={buttonStyle("#fce4ec")}>🎥 영상 저장</button>}
+        <button onClick={() => window.open("https://twitter.com/intent/tweet?url=" + encodeURIComponent(shareUrl), "_blank")} style={buttonStyle("#1DA1F2", "white")}>🐦 트위터 공유</button>
+        <button onClick={() => window.open("https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(shareUrl), "_blank")} style={buttonStyle("#4267B2", "white")}>📘 페이스북 공유</button>
+        <button onClick={() => router.push("/")} style={buttonStyle("#eee")}>🏠 처음으로</button>
+        <button onClick={() => router.push("/intro")} style={buttonStyle("#f8d7da")}>🚀 시작하기</button>
       </div>
     </div>
   );
-};
-};
-export default SharePage;
+}
+
+function buttonStyle(bg, color = "black") {
+  return {
+    padding: "4px",
+    fontSize: "12px",
+    borderRadius: "8px",
+    background: bg,
+    border: "none",
+    fontWeight: "bold",
+    color,
+  };
+}

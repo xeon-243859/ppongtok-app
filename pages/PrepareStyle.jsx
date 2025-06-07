@@ -1,15 +1,12 @@
-// src/pages/PrepareStyle.jsx
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/router"; // ✅ useNavigate → useRouter
 
-const PrepareStyle = () => {
-  const navigate = useNavigate();
+export default function PrepareStyle() {
+  const router = useRouter();
 
   useEffect(() => {
-    navigate("/style/select", { replace: true });
-  }, [navigate]);
+    router.replace("/style/select"); // ✅ navigate → router.replace
+  }, [router]);
 
   return null;
-};
-
-export default PrepareStyle;
+}

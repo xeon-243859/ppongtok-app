@@ -1,0 +1,21 @@
+.uploadContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #fdf5f7;
+  font-family: 'Pretendard', sans-serif;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.description {
+  font-size: 16px;
+  margin-top: 10px;
+  color: #666;
+}

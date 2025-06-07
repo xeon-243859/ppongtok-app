@@ -1,8 +1,8 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/router';
 
-function MessagePage() {
-  const navigate = useNavigate();
+export default function MessagePage() {
+  const router = useRouter();
 
   const messages = [
     { title: '사랑 고백', desc: '마음을 전하는 순간을 특별하게.', path: '/love' },
@@ -37,7 +37,7 @@ function MessagePage() {
         {messages.map((item, idx) => (
           <div
             key={idx}
-            onClick={() => navigate(item.path)}
+            onClick={() => router.push(item.path)}
             style={{
               width: '90%',
               backgroundColor: 'white',
@@ -60,5 +60,3 @@ function MessagePage() {
     </div>
   );
 }
-
-export default MessagePage;
