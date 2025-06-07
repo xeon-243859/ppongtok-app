@@ -1,8 +1,8 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from "next/router";
 
-function HomePage() {
-  const navigate = useNavigate();
+  export default function HomePage() {
+  const router = useRouter();
 
   return (
     <div style={{
@@ -40,4 +40,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+
