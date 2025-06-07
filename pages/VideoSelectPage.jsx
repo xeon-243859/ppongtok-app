@@ -72,6 +72,16 @@ export default function VideoSelectPage() {
     }, 100);
   };
 
+ useEffect(() => {
+  if (typeof window !== "undefined") {
+    const stored = localStorage.getItem("selectedVideo");
+    if (stored) {
+      setSelected(JSON.parse(stored)); // ← 사용 중인 state명에 맞게 수정
+    }
+  }
+}, []);
+
+
   return (
     <div className={styles.videoSelectContainer}>
       {showLine1 && <h2 className={styles.videoTitleLine1}>배경으로 사용할 영상파일 1개를</h2>}
