@@ -1,6 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router"; // ✅ useNavigate → useRouter
-import styles from "../src/styles/StyleSelectPage.module.css";
+import styles from "./StyleSelectPage.module.css";
 
 export default function TestAudioPage() {
   const router = useRouter();
