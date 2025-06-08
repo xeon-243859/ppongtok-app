@@ -5,7 +5,7 @@ export default function IndexPage() {
   const router = useRouter();
 
   useEffect(() => {
-    router.replace("/intro"); // 또는 앱의 메인 경로
+    router.replace("/pages/intro"); // 또는 앱의 메인 경로
   }, []);
 
   return null;
