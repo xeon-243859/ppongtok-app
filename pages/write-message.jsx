@@ -1,46 +1,56 @@
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router"; // ✅ react-router-dom → next/router
-import styles from "@/styles/WriteMessagePage.module.css"; // ✅ 모듈 CSS 적용
-
-const categoryMap = {
-  memory: "추억 만들기",
-  confess: "사랑 고백",
-  celebrate: "축하하기",
-  apology: "사과하기",
-  thanks: "감사하기",
-};
+import { useState } from "react";
+import { useRouter } from "next/router";
+import styles from "../styles/write-message.module.css"; // 추가로 스타일 분리 가능
 
 export default function WriteMessagePage() {
   const router = useRouter();
   const [message, setMessage] = useState("");
-  const [categoryLabel, setCategoryLabel] = useState("");
-
-  useEffect(() => {
-    const categoryId = localStorage.getItem("selectedCategory");
-    setCategoryLabel(categoryMap[categoryId] || "카테고리 없음");
-  }, []);
 
   const handleNext = () => {
-    localStorage.setItem("message", message);
-    router.push("/style-select");
+    // 다음 페이지로 message 전달 등 추가 로직
+    router.push("/select-image");
   };
 
   return (
-    <div className={styles.container}>
-      <h2 className={styles.title}>깊은 속마음을 살며시 남겨보세요</h2>
-      <p className={styles.categoryLabel}>[{categoryLabel}]</p>
+    <div style={{ padding: "2rem", maxWidth: "600px", margin: "0 auto" }}>
+      <h2 style={{ fontSize: "1.7rem", marginBottom: "1rem" }}>
+        깊은 속마음을 살며시 남겨보세요
+      </h2>
 
       <textarea
-        className={styles.messageInput}
-        placeholder="시작하기 - 메시지입력 - 이미지 or 영상선택 - 음원선택 - 완성"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        rows={5}
+        placeholder="이곳에 진심을 담은 메시지를 적어보세요"
+        rows={8}
+        style={{
+          width: "100%",
+          padding: "1rem",
+          fontSize: "1.1rem",
+          borderRadius: "12px",
+          border: "1px solid #ccc",
+          resize: "none",
+          boxShadow: "2px 2px 8px rgba(0,0,0,0.05)",
+        }}
       />
 
-      <button className={styles.nextButton} onClick={handleNext}>
-        다음으로
-      </button>
+      <div style={{ textAlign: "right", marginTop: "1rem" }}>
+        <button
+          onClick={handleNext}
+          style={{
+            backgroundColor: "#ff7b9c",
+            color: "white",
+            border: "none",
+            padding: "0.7rem 1.5rem",
+            borderRadius: "999px",
+            fontWeight: "bold",
+            fontSize: "1rem",
+            cursor: "pointer",
+            boxShadow: "0px 4px 10px rgba(255, 123, 156, 0.3)",
+          }}
+        >
+          다음으로
+        </button>
+      </div>
     </div>
   );
 }
