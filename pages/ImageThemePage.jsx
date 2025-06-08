@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import styles from "@/styles/imagethemepage.module.css";
+import styles from "../../src/styles/imagethemepage.module.css";
 
 const images = [
   "/backgrounds/leaves.jpg",
