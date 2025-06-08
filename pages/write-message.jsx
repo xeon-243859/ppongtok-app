@@ -21,7 +21,7 @@ export default function WriteMessagePage() {
       <textarea
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        placeholder="이곳에 진심을 담은 메시지를 적어보세요"
+        placeholder="시작하기 - 메시지입력 - 이미지 or 영상선택 - 음원선택 - 완성"
         rows={8}
         style={{
           width: "100%",
