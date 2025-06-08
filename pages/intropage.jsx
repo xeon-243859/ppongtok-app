@@ -1,6 +1,6 @@
 // pages/intro.jsx
 import { useRouter } from "next/router";
-import styles from "./introPage.module.css"; // 경로는 실제 CSS 위치에 맞게 조정
+import styles from "./IntroPage.module.css"; // 경로는 실제 CSS 위치에 맞게 조정
 
 export default function IntroPage() {
   const router = useRouter();
