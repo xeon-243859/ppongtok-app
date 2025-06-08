@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import styles from "../styles/write-message.module.css"; // import styles from "../스타일/write-message.module.css";
+import styles from "../styles/write-message.module.css"; 
 
 
 export default function WriteMessagePage() {
