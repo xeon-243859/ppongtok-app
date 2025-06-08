@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/router"; // ✅ react-router-dom → next/router
-import styles from "@/styles/VideoSelectPage.module.css"; // ✅ CSS 모듈 적용
+import { useRouter } from "next/router";
+import styles from "@/styles/VideoSelectPage.module.css";
 
 export default function VideoSelectPage() {
   const router = useRouter();
@@ -9,36 +9,39 @@ export default function VideoSelectPage() {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [showLine1, setShowLine1] = useState(true);
   const [showLine2, setShowLine2] = useState(false);
+  const [lastPage, setLastPage] = useState("/");
 
+  // 텍스트 애니메이션
   useEffect(() => {
     const timer1 = setTimeout(() => setShowLine2(true), 1500);
     return () => clearTimeout(timer1);
   }, []);
 
+  // localStorage 접근 (브라우저에서만)
   useEffect(() => {
-    const storedVideo = localStorage.getItem("selected-video");
-    const storedType = localStorage.getItem("selected-type");
-    const confirmed = localStorage.getItem("video-theme-confirmed");
+    if (typeof window !== "undefined") {
+      const storedVideo = localStorage.getItem("selected-video");
+      const storedType = localStorage.getItem("selected-type");
+      const confirmed = localStorage.getItem("video-theme-confirmed");
 
-    if (
-      storedVideo &&
-      storedType === "video" &&
-      !storedVideo.includes("river")
-    ) {
-      setSelectedVideo(storedVideo);
-      console.log("🎥 사용자 영상 불러옴:", storedVideo);
-    } else {
-      console.warn("⚠️ 강물.mp4 또는 타입 오류 → 무시:", storedVideo);
+      if (storedVideo && storedType === "video" && !storedVideo.includes("river")) {
+        setSelectedVideo(storedVideo);
+        console.log("🎥 사용자 영상 불러옴:", storedVideo);
+      } else {
+        console.warn("⚠️ 강물.mp4 또는 타입 오류 → 무시:", storedVideo);
+      }
+
+      setLastPage(localStorage.getItem("last-page") || "/");
     }
   }, []);
 
-  const lastPage = localStorage.getItem("last-page") || "/";
-
   const handleThemeSelect = (filename = "flower.mp4") => {
     const videoPath = `/videos/${filename}`;
-    localStorage.setItem("selected-video-source", "theme");
-    localStorage.setItem("selected-video", videoPath);
-    localStorage.setItem("selected-type", "video");
+    if (typeof window !== "undefined") {
+      localStorage.setItem("selected-video-source", "theme");
+      localStorage.setItem("selected-video", videoPath);
+      localStorage.setItem("selected-type", "video");
+    }
     setSelectedVideo(videoPath);
     router.push("/video/theme");
   };
@@ -52,35 +55,31 @@ export default function VideoSelectPage() {
     if (file) {
       const videoUrl = URL.createObjectURL(file);
       setSelectedVideo(videoUrl);
-      localStorage.setItem("selected-video", videoUrl);
-      localStorage.setItem("selected-video-source", "local");
-      localStorage.setItem("selected-type", "video");
+      if (typeof window !== "undefined") {
+        localStorage.setItem("selected-video", videoUrl);
+        localStorage.setItem("selected-video-source", "local");
+        localStorage.setItem("selected-type", "video");
+      }
     }
   };
 
   const handleDelete = () => {
     setSelectedVideo(null);
-    localStorage.removeItem("selected-video");
-    localStorage.removeItem("selected-video-source");
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("selected-video");
+      localStorage.removeItem("selected-video-source");
+    }
   };
 
   const handleBack = () => {
-    const target = localStorage.getItem("last-page") || "/";
-    console.log("🧭 뒤로가기:", target);
-    setTimeout(() => {
-      router.replace(target); // ✅ Next.js 방식
-    }, 100);
-  };
-
- useEffect(() => {
-  if (typeof window !== "undefined") {
-    const stored = localStorage.getItem("selectedVideo");
-    if (stored) {
-      setSelected(JSON.parse(stored)); // ← 사용 중인 state명에 맞게 수정
+    if (typeof window !== "undefined") {
+      const target = localStorage.getItem("last-page") || "/";
+      console.log("🧭 뒤로가기:", target);
+      setTimeout(() => {
+        router.replace(target);
+      }, 100);
     }
-  }
-}, []);
-
+  };
 
   return (
     <div className={styles.videoSelectContainer}>
@@ -119,14 +118,12 @@ export default function VideoSelectPage() {
       </div>
 
       <div className={styles.videoButtonNav}>
-        <button
-          onClick={() => window.location.replace("/style/select")}
-        >
-          뒤로가기
-        </button>
+        <button onClick={handleBack}>뒤로가기</button>
         <button
           onClick={() => {
-            localStorage.setItem("allow-music", "true");
+            if (typeof window !== "undefined") {
+              localStorage.setItem("allow-music", "true");
+            }
             router.push("/music/select");
           }}
         >
