@@ -169,3 +169,28 @@
 .hiddenInput {
   display: none;
 }
+
+.selectButtons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.selectButton {
+  padding: 12px 20px;
+  font-size: 16px;
+  background-color: #ffeef2;
+  color: #333;
+  border: 2px solid #ffb6c1;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+  transition: background-color 0.2s, transform 0.2s;
+  font-weight: 500;
+}
+
+.selectButton:hover {
+  background-color: #ffd6dd;
+  transform: translateY(-2px);
+}
