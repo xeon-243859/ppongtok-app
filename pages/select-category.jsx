@@ -21,7 +21,7 @@ export default function CategorySelectPage() {
       localStorage.setItem("selected-category", value);
     }
 
-    router.push("/write-message");
+    router.push("/loveformpage");
   };
 
   return (
