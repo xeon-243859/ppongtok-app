@@ -82,7 +82,7 @@ export default function VideoSelectPage() {
   };
 
   return (
-    <div className={styles.videoSelectContainer}>
+    <div className={styles.videoTitleGroup}>
       {showLine1 && <h2 className={styles.videoTitleLine1}>배경으로 사용할 영상파일 1개를</h2>}
       {showLine2 && <h2 className={styles.videoTitleLine2}>선택해 주세요</h2>}
 
