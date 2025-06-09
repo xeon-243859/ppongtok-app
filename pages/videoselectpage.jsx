@@ -43,7 +43,7 @@ export default function VideoSelectPage() {
       localStorage.setItem("selected-type", "video");
     }
     setSelectedVideo(videoPath);
-    router.push("/video/theme");
+    router.push("/videothemepage");
   };
 
   const handleLocalSelect = () => {

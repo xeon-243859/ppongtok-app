@@ -56,7 +56,7 @@ export default function ImageSelectPage() {
   };
 
   const handleImageFile = () => {
-    router.push("/image/theme");
+    router.push("/imagethemepage");
   };
 
   const handleLocalFile = () => {
