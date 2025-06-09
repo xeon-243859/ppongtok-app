@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import styles from "./LoveFormPage.module.css";
+import styles from "./loveformpage.module.css";
 
 export default function LoveFormPage() {
   const router = useRouter();

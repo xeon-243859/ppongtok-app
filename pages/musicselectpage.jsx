@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/router"; // ✅ useNavigate → useRouter
-import styles from "./MusicSelectPage.module.css"; // ✅ CSS 모듈로 변경
+import styles from "./musicselectpage.module.css"; // ✅ CSS 모듈로 변경
 
 const MusicSelectPage = () => {
   const router = useRouter(); // ✅ useNavigate → useRouter

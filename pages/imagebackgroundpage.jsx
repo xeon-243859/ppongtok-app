@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import styles from "./ImageBackgroundPage.module.css";
+import styles from "./imagebackgroundpage.module.css";
 
 const images = [
   '/backgrounds/cosmos.jpg',

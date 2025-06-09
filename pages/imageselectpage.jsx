@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import styles from "./ImageSelectPage.module.css";
+import styles from "./imageselectpage.module.css";
 
 export default function ImageSelectPage() {
   const router = useRouter();
