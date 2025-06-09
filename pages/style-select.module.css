@@ -16,28 +16,30 @@
 
 .styleButtonGroup {
   display: flex;
-  flex-direction: column;  /* ✅ 세로 정렬 */
-  gap: 16px;                /* 버튼 사이 여백 */
-  align-items: center;      /* 가운데 정렬 */
-  margin-top: 30px;         /* 상단 여백 */
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  margin-top: 40px;
 }
 
-.style-button-group button {
-  padding: 16px 32px;
-  font-size: 1.1rem;
-  background-color: #fde2f3;
+.styleButtonGroup button {
+  padding: 14px 32px;
+  font-size: 1.2rem;
+  background-color: #ffb6c1; /* 연핑크 */
+  color: white;
   border: none;
   border-radius: 30px;
-  color: #333;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
-.style-button-group button:hover {
-  background-color: #fcb1d4;
+.styleButtonGroup button:hover {
+  background-color: #ff7f9c; /* 진한 핑크 */
+  transform: translateY(-2px);
 }
+
 
 /* 뒤로가기 버튼도 같은 스타일로 */
 .backButton {
