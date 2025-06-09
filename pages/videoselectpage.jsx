@@ -124,7 +124,7 @@ export default function VideoSelectPage() {
             if (typeof window !== "undefined") {
               localStorage.setItem("allow-music", "true");
             }
-            router.push("/music/select");
+            router.push("/musicselectpage");
           }}
         >
           다음으로
