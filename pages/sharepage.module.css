@@ -1,40 +1,41 @@
-.styleButtonGroup {
+.share-page {
   display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 2rem;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #fff7f0, #e7f3ff);
 }
 
-.styleButton {
-  background-color: #ffb6c1;
-  border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: 1.5rem;
+.share-title {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.share-button-group.responsive {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.share-button {
+  padding: 12px 16px;
   font-size: 1rem;
-  font-weight: bold;
-  color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: all 0.25s ease;
+  border-radius: 10px;
+  border: 2px solid #5fb3b3;
+  background: white;
   cursor: pointer;
+  transition: 0.3s ease;
+  box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.styleButton:hover {
-  background-color: #ff8aa0;
-  transform: translateY(-2px);
+.share-button:hover {
+  background-color: #e0f7ff;
+  transform: scale(1.05);
 }
-
-.backButton {
-  margin-top: 2rem;
-  background-color: #ccc;
-  color: black;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 1.2rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.backButton:hover {
-  background-color: #999;
+.button-box {
+  margin-top: 8px;  /*뒤로가기 원하는 위치로 조정 */
 }
