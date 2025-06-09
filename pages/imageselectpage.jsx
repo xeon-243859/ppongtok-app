@@ -124,7 +124,7 @@ export default function ImageSelectPage() {
       </div>
 
       <div className={styles["button-group"]}>
-        <button onClick={() => router.push("/style/select")}>뒤로가기</button>
+        <button onClick={() => router.push("/style-select")}>뒤로가기</button>
         <button onClick={handleNext}>다음으로</button>
       </div>
     </div>
