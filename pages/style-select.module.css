@@ -14,28 +14,29 @@
   margin: 0.3rem 0;
 }
 
-.styleButtonGroup {
+.style-button-group {
   display: flex;
-  flex-direction: row;
-  gap: 20px;
-  margin-top: 2rem;
+  flex-direction: column; /* 버튼을 세로로 정렬 */
+  gap: 12px;
+  align-items: center; /* 가운데 정렬 */
+  margin-top: 30px;
 }
 
-.styleButtonGroup button {
-  padding: 14px 24px;
-  font-size: 1rem;
-  background-color: #fde2e4;
-  color: #333;
+.style-button-group button {
+  padding: 16px 32px;
+  font-size: 1.1rem;
+  background-color: #fde2f3;
   border: none;
   border-radius: 30px;
+  color: #333;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
-  transition: all 0.3s;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s;
 }
 
-.styleButtonGroup button:hover {
-  background-color: #f8b5c1;
+.style-button-group button:hover {
+  background-color: #fcb1d4;
 }
 
 /* 뒤로가기 버튼도 같은 스타일로 */
