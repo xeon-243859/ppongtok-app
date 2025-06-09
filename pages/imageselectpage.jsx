@@ -66,65 +66,65 @@ export default function ImageSelectPage() {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
+
     const reader = new FileReader();
     reader.onloadend = () => {
-      saveImage(reader.result);
+      saveImage(reader.result.split(",")[1]); // base64 부분만 저장
     };
     reader.readAsDataURL(file);
   };
 
   return (
-  <div className={styles["image-select-container"]}>
-    <div className={styles["typing-text"]}>
-      <div className={styles["line1"]}>배경으로 사용할 이미지 4개를</div>
-      <div className={styles["line2"]}>선택해 주세요</div>
-    </div>
+    <div className={styles["image-select-container"]}>
+      <div className={styles["typing-text"]}>
+        <div className={styles["line1"]}>배경으로 사용할 이미지 4개를</div>
+        <div className={styles["line2"]}>선택해 주세요</div>
+      </div>
 
-    <div className={styles.selectButtons}>
-      <button onClick={handleImageFile}>배경이미지 파일</button>
-      <label htmlFor="local-file">내 파일 선택</label>
-      <input
-         type="file"
-         id="local-file"
-         accept="image/*"
-         multiple
-         style={{ display: "none" }}
-         onChange={handleFileUpload}
-      />
-    </div>
+      <div className={styles.selectButtons}>
+        <button onClick={handleImageFile}>배경이미지 파일</button>
+        <label htmlFor="local-file">내 파일 선택</label>
+        <input
+          ref={fileInputRef}
+          type="file"
+          id="local-file"
+          accept="image/*"
+          style={{ display: "none" }}
+          onChange={handleFileChange}
+        />
+      </div>
 
-    <div className={styles["image-slots-grid"]}>
-      {images.map((src, i) => (
-        <div className={styles["image-slot"]} key={i}>
-          {src ? (
-            <>
-              <img
-                src={
-                  src.includes("/backgrounds/")
-                    ? src
-                    : `data:image/jpeg;base64,${src}`
-                }
-                alt={`img-${i + 1}`}
-              />
-              <button
-                className={styles["delete-button"]}
-                onClick={() => handleDelete(i)}
-              >
-                ❌
-              </button>
-            </>
-          ) : (
-            <p>{`img-${i + 1}`}</p>
-          )}
-        </div>
-      ))}
-    </div>
+      <div className={styles["image-slots-grid"]}>
+        {images.map((src, i) => (
+          <div className={styles["image-slot"]} key={i}>
+            {src ? (
+              <>
+                <img
+                  src={
+                    src.includes("/backgrounds/")
+                      ? src
+                      : `data:image/jpeg;base64,${src}`
+                  }
+                  alt={`img-${i + 1}`}
+                />
+                <button
+                  className={styles["delete-button"]}
+                  onClick={() => handleDelete(i)}
+                >
+                  ❌
+                </button>
+              </>
+            ) : (
+              <p>{`img-${i + 1}`}</p>
+            )}
+          </div>
+        ))}
+      </div>
 
-    <div className={styles["button-group"]}>
-      <button onClick={() => router.push("/style/select")}>뒤로가기</button>
-      <button onClick={handleNext}>다음으로</button>
+      <div className={styles["button-group"]}>
+        <button onClick={() => router.push("/style/select")}>뒤로가기</button>
+        <button onClick={handleNext}>다음으로</button>
+      </div>
     </div>
-  </div>
-);
-
+  );
 }
