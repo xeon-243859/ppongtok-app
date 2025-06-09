@@ -82,8 +82,8 @@ export default function ImageSelectPage() {
       </div>
 
       <div className={styles.selectButtons}>
-        <button onClick={handleImageFile}>배경이미지 파일</button>
-        <label htmlFor="local-file">내 파일 선택</label>
+        <button onClick={handleImageFile} className={styles.selectButton}>배경이미지 파일</button>
+        <label htmlFor="local-file" className={styles.selectButton}>내 파일 선택</label>
         
         <input
           ref={fileInputRef}
