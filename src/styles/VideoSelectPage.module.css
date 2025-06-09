@@ -160,6 +160,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 20vh;  /* 👉 화면 상단에서 20% 정도 여백을 둬서 내려줌 */
+  padding-top: 10vh;  /* 👉 화면 상단에서 20% 정도 여백을 둬서 내려줌 */
   margin-bottom: 10px;
 }
