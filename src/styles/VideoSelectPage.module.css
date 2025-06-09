@@ -1,14 +1,17 @@
-.video-select-container {
+.videoselectcontainer {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center; /* 추가: 세로 중앙 */
+  min-height: 100vh;       /* 화면 전체 높이 기준 배치 */
   padding: 40px 20px;
   text-align: center;
+  box-sizing: border-box;
 }
 
 .video-title-line1,
 .video-title-line2 {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: bold;
   color: #333;
   margin: 0;
@@ -19,7 +22,7 @@
 
 .video-title-line2 {
   animation-delay: 1.5s;
-  margin-top: 5px;
+  margin-top: 10px;
   margin-bottom: 20px;
 }
 
@@ -32,50 +35,47 @@
   }
 }
 
-.video-button-group {
+.videoButtonGroup {
   display: flex;
-  gap: 15px;
-  margin-bottom: 30px;
-}
-
-.video-button-group button {
-  padding: 14px 30px;
-  font-size: 1rem;
-  background-color: #d0e8ff;
-  border: none;
-  border-radius: 30px;
-  color: #333;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.video-button-group button:hover {
-  background-color: #a6d5ff;
-}
-
-.moving-box {
-  position: relative;
-  width: 60%;
-  max-width: 260px;
-  height: 80px;
-  margin: 20px auto;
-  border: 2px solid #a6d5ff;
-  border-radius: 20px;
-  background-color: #f5faff;
-  display: flex;
-  align-items: center;
   justify-content: center;
+  gap: 20px;
+  margin: 20px 0;
 }
 
-.moving-box video {
+.videoButtonGroup button {
+  padding: 16px 32px;
+  font-size: 1.1rem;
+  border-radius: 30px;
+  background-color: #d8eefe;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.videoButtonGroup button:hover {
+  background-color: #b0dcf8;
+  transform: scale(1.03);
+}
+
+.movingBox {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  margin-bottom: 30px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.movingBox video {
   width: 100%;
   height: 100%;
   border-radius: 20px;
   object-fit: cover;
 }
 
-.moving-placeholder {
+.movingPlaceholder {
   font-size: 1rem;
   color: #aaa;
 }
@@ -84,10 +84,10 @@
   position: absolute;
   bottom: 10px;
   right: 10px;
-  background-color: #fff; /* ✅ 완전 흰색 */
+  background-color: #fff;
   border: 1px solid #aaa;
   border-radius: 50%;
-  color: #d00; /* ✅ 눈에 띄는 진한 빨강 */
+  color: #d00;
   font-size: 18px;
   font-weight: bold;
   width: 28px;
@@ -96,32 +96,29 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3); /* ✅ 영상 위에서 떠보이게 */
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
-
-
-.video-button-nav {
+.videoButtonNav {
   display: flex;
-  gap: 20px;
   justify-content: center;
-  margin-top: 40px;
+  gap: 24px;
+  margin-bottom: 40px;
 }
 
-.video-button-nav button {
-  padding: 14px 30px;
-  font-size: 1rem;
-  background-color: #ffc8c8;
-  border: none;
+.videoButtonNav button {
+  padding: 16px 36px;
+  font-size: 1.1rem;
+  font-weight: 600;
   border-radius: 30px;
-  color: #333;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.3s;
+  border: none;
+  background-color: #ffe2e2;
+  transition: background-color 0.3s ease, transform 0.2s;
 }
 
-.video-button-nav button:hover {
-  background-color: #ff9e9e;
+.videoButtonNav button:hover {
+  background-color: #ffb8b8;
+  transform: scale(1.03);
 }
 
 .theme-video-options {
