@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router"; // ✅ useNavigate → useRouter
-import styles from "./StyleSelectPage.module.css";
+import styles from "./style-select.module.css";
 
 export default function StyleSelectPage() {
   const router = useRouter();

@@ -1,6 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router"; // ✅ useNavigate → useRouter
-import styles from "./MusicThemePage.module.css"; // ✅ .css → .module.css
+import styles from "./musicthemepage.module.css"; // ✅ .css → .module.css
 
 const musicOptions = [
   { label: "봄의노래", value: "/audio/spring.mp3" },

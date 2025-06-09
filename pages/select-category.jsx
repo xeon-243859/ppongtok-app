@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "../src/contexts/AuthContext";
-import styles from "./CategorySelectPage.module.css";
+import styles from "./categoryselectpage.module.css";
 
 const categories = [
   { label: "추억 만들기", value: "memory" },
