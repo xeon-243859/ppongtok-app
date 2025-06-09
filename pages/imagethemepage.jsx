@@ -37,7 +37,7 @@ export default function ImageThemePage() {
     }
 
     forceRerender((prev) => !prev); // 상태 갱신
-    router.push("/image/select");
+    router.push("/imageselectpage");
   };
 
   const handleRemove = (src) => {
