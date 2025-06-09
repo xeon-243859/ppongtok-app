@@ -17,7 +17,7 @@ export default function VideoThemePage() {
     localStorage.setItem("selected-type", "video");
     localStorage.removeItem("selected-images");
     localStorage.setItem("video-theme-confirmed", "true");
-    router.push("/video/select");
+    router.push("/videoselectpage");
   };
 
   return (
