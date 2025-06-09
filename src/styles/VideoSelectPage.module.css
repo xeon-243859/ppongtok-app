@@ -160,6 +160,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 33vh; /* 화면 위에서 1/3 정도의 공간 차지 */
+  padding-top: 20vh;  /* 👉 화면 상단에서 20% 정도 여백을 둬서 내려줌 */
   margin-bottom: 10px;
 }
