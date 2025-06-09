@@ -14,12 +14,12 @@
   margin: 0.3rem 0;
 }
 
-.style-button-group {
+.styleButtonGroup {
   display: flex;
-  flex-direction: column; /* 버튼을 세로로 정렬 */
-  gap: 12px;
-  align-items: center; /* 가운데 정렬 */
-  margin-top: 30px;
+  flex-direction: column;  /* ✅ 세로 정렬 */
+  gap: 16px;                /* 버튼 사이 여백 */
+  align-items: center;      /* 가운데 정렬 */
+  margin-top: 30px;         /* 상단 여백 */
 }
 
 .style-button-group button {
