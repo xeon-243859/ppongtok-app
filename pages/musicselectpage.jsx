@@ -41,7 +41,7 @@ const MusicSelectPage = () => {
     localStorage.removeItem("selected-music-label");
   };
 
-  const handleMusicFile = () => router.push("/music/theme");
+  const handleMusicFile = () => router.push("/musicthemepage");
 
   const handleLocalFile = () => fileInputRef.current.click();
 
