@@ -128,3 +128,13 @@
 .button-group button:hover {
   background-color: #ff9090;
 }
+
+.uploadBtn {
+  background-color: #ffcdde;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  margin: 5px;
+}
