@@ -109,7 +109,7 @@ const MusicSelectPage = () => {
 
       <div className={styles["button-group"]}>
         <button onClick={handleBack}>뒤로가기</button>
-        <button onClick={handleNext}>미리보기로 이동</button>
+        <button onClick={handleNext}>미리보기</button>
       </div>
     </div>
   );
