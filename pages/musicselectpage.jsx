@@ -13,7 +13,7 @@ const MusicSelectPage = () => {
     const allowed = localStorage.getItem("allow-music");
     if (allowed !== "true") {
       console.warn("🚫 비인가 접근. 스타일 선택으로 되돌림.");
-      router.replace("/style/select"); // ✅ navigate → router.replace
+      router.replace("/musicselectpage"); // ✅ navigate → router.replace
     }
   }, [router]);
 
