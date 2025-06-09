@@ -38,7 +38,7 @@ export default function ImageSelectPage() {
     localStorage.setItem("selectedImages", JSON.stringify(cleanedImages));
     localStorage.setItem("allow-music", "true");
     setTimeout(() => {
-      router.push("/music/select");
+      router.push("/musicselectpage");
     }, 100);
   };
 
