@@ -15,7 +15,7 @@ export default function MusicThemePage() {
   const handleSelect = (value, label) => {
     localStorage.setItem("selected-music", value);
     localStorage.setItem("selected-music-label", label); // ✅ 음악 제목 저장
-    router.push("/music/select"); // ✅ navigate → router.push
+    router.push("/musicselectpage"); // ✅ navigate → router.push
   };
 
   return (
