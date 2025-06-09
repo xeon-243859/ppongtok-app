@@ -58,9 +58,9 @@ const MusicSelectPage = () => {
   const handleBack = () => {
     const mediaType = localStorage.getItem("media-type"); // 예: "image" 또는 "video"
     if (mediaType === "video") {
-      router.push("/video");
+      router.push("/videoselectpage");
     } else {
-      router.push("/image");
+      router.push("/imageselectpage");
     }
   };
 
