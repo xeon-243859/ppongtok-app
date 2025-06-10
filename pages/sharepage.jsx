@@ -97,6 +97,8 @@ export default function SharePage() {
 
   const handleKakaoShare = async () => {
   if (!window.Kakao || !window.Kakao.isInitialized()) return;
+  console.log("카카오 SDK 상태:", window.Kakao);
+  console.log("공유할 URL:", shareUrl); // ✅ 여기로 이동
 
   if (!currentUser) {
     alert("로그인이 필요해요 💌");
@@ -125,6 +127,8 @@ export default function SharePage() {
     (videoUrl
       ? "https://ppongtok-app.vercel.app/thumbnail/video-default.jpg"
       : "https://via.placeholder.com/600x400.png?text=PPONGTOK");
+
+     console.log("미리보기 이미지:", previewImage); // ✅ 여기도 이동
 
   window.Kakao.Link.sendDefault({
     objectType: "feed",
@@ -189,7 +193,13 @@ export default function SharePage() {
       <p style={{ fontSize: "14px", color: "#777" }}>이 QR을 스캔하면 누군가에게 마음이 전해져요</p>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "32px" }}>
-        <button onClick={handleKakaoShare} style={buttonStyle("#FAE100")}>💬 카카오톡 공유하기</button>
+        <button
+  onClick={handleKakaoShare}
+  style={buttonStyle("#FAE100")}
+  disabled={!messageId}
+>
+  💬 카카오톡 공유하기
+</button>
         <button onClick={handleCopy} style={buttonStyle("#cce5ff")}>🔗 링크 복사</button>
         {imageUrl && <button onClick={handleImageDownload} style={buttonStyle("#d4edda")}>🖼️ 이미지 저장</button>}
         {videoUrl && <button onClick={handleVideoDownload} style={buttonStyle("#fce4ec")}>🎥 영상 저장</button>}
