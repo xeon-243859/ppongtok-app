@@ -104,30 +104,30 @@
   cursor: pointer;
 }
 
-/* ✅ 가로 정렬 버튼 */
+/* 하단 버튼 그룹과 완벽하게 통일하고 싶으면 아래도 함께 적용 */
 .button-group {
   display: flex;
   justify-content: center;
-  gap: 20px;
-  margin-top: 20px;
-  flex-wrap: wrap; /* 모바일에서 터지지 않게 */
+  gap: 16px;
+  margin-top: 30px;
 }
 
-
 .button-group button {
-  padding: 12px 24px;
-  font-size: 0.95rem;
+  background-color: #ff6f91;
+  color: #fff;
   border: none;
   border-radius: 25px;
-  background-color: #ffb6b6;
-  color: white;
+  padding: 10px 24px;
+  font-size: 16px;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease;
 }
 
 .button-group button:hover {
-  background-color: #ff9090;
+  background-color: #ff4d7e;
 }
+
 
 .uploadBtn {
   background-color: #ffcdde;
@@ -165,50 +165,28 @@
   display: none;
 }
 
+/* 버튼 그룹 wrapper: 상단, 하단 공통 적용 가능 */
 .selectButtons {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
-  margin: 24px 0;
+  margin-bottom: 20px;
 }
 
+/* 버튼 개별 스타일: 상단 선택 버튼 */
 .selectButton {
-  padding: 12px 20px;
+  background-color: #fff;
+  color: #ff6f91;
+  border: 2px solid #ff6f91;
+  border-radius: 25px;
+  padding: 10px 24px;
   font-size: 16px;
-  background-color: #ffeef2;
-  color: #333;
-  border: 2px solid #ffb6c1;
-  border-radius: 14px;
-  cursor: pointer;
-  box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
-  transition: background-color 0.2s, transform 0.2s;
   font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .selectButton:hover {
-  background-color: #ffd6dd;
-  transform: translateY(-2px);
+  background-color: #ffe4ec;
 }
-
-.buttonCommon {
-  padding: 12px 24px;
-  font-size: 16px;
-  background-color: #ffeef2;
-  color: #333;
-  border: 2px solid #ffb6c1;
-  border-radius: 14px;
-  cursor: pointer;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.2s ease, transform 0.2s ease;
-  font-weight: 500;
-  min-width: 120px;
-}
-
-.buttonCommon:hover {
-  background-color: #ffd6dd;
-  transform: translateY(-2px);
-}
-
-/* 필요하면 기존 class 이름에도 상속 */
-
-
