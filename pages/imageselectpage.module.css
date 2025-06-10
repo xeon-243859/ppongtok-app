@@ -165,28 +165,31 @@
   display: none;
 }
 
-/* 버튼 그룹 wrapper: 상단, 하단 공통 적용 가능 */
+/* 상단 버튼 그룹 */
 .selectButtons {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row; /* 항상 가로 정렬 */
   justify-content: center;
-  gap: 12px;
-  margin-bottom: 20px;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: nowrap; /* 모바일에서 줄바꿈 방지 */
+  margin-bottom: 24px;
 }
 
-/* 버튼 개별 스타일: 상단 선택 버튼 */
+/* 상단 개별 버튼 (배경이미지 파일, 내 파일 선택) */
 .selectButton {
-  background-color: #fff;
-  color: #ff6f91;
-  border: 2px solid #ff6f91;
+  background-color: #ff6f91;
+  color: #fff;
+  border: none;
   border-radius: 25px;
   padding: 10px 24px;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
 }
 
 .selectButton:hover {
-  background-color: #ffe4ec;
+  background-color: #ff4d7e;
 }
