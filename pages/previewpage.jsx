@@ -213,7 +213,7 @@ export default function PreviewPage() {
       </div>
 
       <div style={{ display: "flex", justifyContent: "center", gap: 12, marginTop: 28 }}>
-        <button onClick={() => router.push("/music")} style={buttonStyle}>뒤로가기</button>
+        <button onClick={() => router.push("/musicselectpage")} style={buttonStyle}>뒤로가기</button>
         <button onClick={handleNext} style={buttonStyle}>다음 - 공유하기</button>
         <button onClick={handleGoHome} style={buttonStyle}>처음으로</button>
       </div>
