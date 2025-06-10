@@ -96,49 +96,59 @@ export default function SharePage() {
   }, [shareUrl]);
 
   const handleKakaoShare = async () => {
-    if (!window.Kakao || !window.Kakao.isInitialized()) return;
+  if (!window.Kakao || !window.Kakao.isInitialized()) return;
 
-    if (!currentUser) {
-      alert("로그인이 필요해요 💌");
-      router.push("/login");
-      return;
-    }
+  if (!currentUser) {
+    alert("로그인이 필요해요 💌");
+    router.push("/login");
+    return;
+  }
 
-    const userRef = doc(db, "users", currentUser.uid);
-    const userSnap = await getDoc(userRef);
-    if (!userSnap.exists()) {
-      alert("유저 정보를 찾을 수 없습니다.");
-      return;
-    }
+  const userRef = doc(db, "users", currentUser.uid);
+  const userSnap = await getDoc(userRef);
+  if (!userSnap.exists()) {
+    alert("유저 정보를 찾을 수 없습니다.");
+    return;
+  }
 
-    const freePass = userSnap.data().freePassCount || 0;
-    if (freePass < 1) {
-      alert("무료 이용권이 소진되었습니다. 결제가 필요해요.");
-      router.push("/payment");
-      return;
-    }
+  const freePass = userSnap.data().freePassCount || 0;
+  if (freePass < 1) {
+    alert("무료 이용권이 소진되었습니다. 결제가 필요해요.");
+    router.push("/payment");
+    return;
+  }
 
-    await updateDoc(userRef, { freePassCount: freePass - 1 });
+  await updateDoc(userRef, { freePassCount: freePass - 1 });
 
-    const previewImage =
-      imageUrl ||
-      (videoUrl
-        ? "https://ppongtok-app.vercel.app/thumbnail/video-default.jpg"
-        : "https://via.placeholder.com/600x400.png?text=PPONGTOK");
+  const previewImage =
+    imageUrl ||
+    (videoUrl
+      ? "https://ppongtok-app.vercel.app/thumbnail/video-default.jpg"
+      : "https://via.placeholder.com/600x400.png?text=PPONGTOK");
 
-    window.Kakao.Share.sendDefault({
-      objectType: "feed",
-      content: {
-        title: "뿅!톡 메시지 도착 💌",
-        description: caption || "누군가 당신에게 마음을 보냈어요",
-        imageUrl: previewImage,
+  window.Kakao.Link.sendDefault({
+    objectType: "feed",
+    content: {
+      title: "뿅!톡 메시지 도착 💌",
+      description: caption || "누군가 당신에게 마음을 보냈어요",
+      imageUrl: previewImage,
+      link: {
+        mobileWebUrl: shareUrl,
+        webUrl: shareUrl,
+      },
+    },
+    buttons: [
+      {
+        title: "메시지 보러 가기",
         link: {
           mobileWebUrl: shareUrl,
           webUrl: shareUrl,
         },
       },
-    });
-  };
+    ],
+  });
+};
+
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(shareUrl);
