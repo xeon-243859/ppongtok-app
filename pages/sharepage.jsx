@@ -114,7 +114,7 @@ export default function SharePage() {
   const freePass = userSnap.data().freePassCount || 0;
   if (freePass < 1) {
     alert("무료 이용권이 소진되었습니다. 결제가 필요해요.");
-    router.push("/payment");
+    router.push("/paymentpage");
     return;
   }
 
