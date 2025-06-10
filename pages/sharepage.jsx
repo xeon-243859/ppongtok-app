@@ -5,6 +5,7 @@ import QRCode from "qrcode";
 import { getFirestore, doc, getDoc, updateDoc, collection, addDoc, Timestamp } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { db } from "@/firebase"; // ✅ import 경로 통일
+import Script from 'next/script';
 
 export default function SharePage() {
   const router = useRouter();
@@ -161,6 +162,12 @@ export default function SharePage() {
   };
 
   return (
+  <>
+    <Script
+      src="https://developers.kakao.com/sdk/js/kakao.min.js"
+      strategy="beforeInteractive"
+    />
+
     <div style={{ maxWidth: "480px", margin: "0 auto", padding: "32px 16px", textAlign: "center", fontFamily: "sans-serif" }}>
       <h2 style={{ fontSize: "24px", marginBottom: "16px" }}>💌 공유하기</h2>
 
@@ -182,8 +189,10 @@ export default function SharePage() {
         <button onClick={() => router.push("/intro")} style={buttonStyle("#f8d7da")}>🚀 시작하기</button>
       </div>
     </div>
-  );
-}
+  </>
+);
+
+    
 
 function buttonStyle(bg, color = "black") {
   return {
@@ -195,4 +204,5 @@ function buttonStyle(bg, color = "black") {
     fontWeight: "bold",
     color,
   };
+}
 }
