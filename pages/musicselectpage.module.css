@@ -65,9 +65,16 @@
 .music-box {
   display: flex;
   flex-direction: column;
-  align-items: center; /* 중앙 정렬 */
-  gap: 12px;
-  margin: 20px 0;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 500px;   /* PC에서는 최대 넓이 제한 */
+  margin: 20px auto;  /* 가운데 정렬 */
+  padding: 16px;
+  border-radius: 16px;
+  background-color: #fff0f4;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  gap: 16px;
 }
 
 /* 🎵 음악 제목 */
@@ -79,14 +86,20 @@
 
 /* 🎵 오디오 컨트롤 박스 */
 .audio-wrapper {
+  width: 100%;
   display: flex;
   justify-content: center;
-  width: 100%;
 }
 
 .audio-wrapper audio {
   width: 100%;
-  max-width: 300px;
+  max-width: 400px; /* 실제 플레이어 크기 확장 */
+}
+
+.music-label {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
 }
 
 /* ❌ 삭제 버튼 */
