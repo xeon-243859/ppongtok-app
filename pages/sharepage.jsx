@@ -56,7 +56,10 @@ export default function SharePage() {
   }, []);
 
   useEffect(() => {
-    if (!messageId) return;
+     if (!messageId) {
+    console.warn("❌ messageId 없음");
+    return;
+  }
 
     const fetchMessage = async () => {
       const docRef = doc(db, "messages", messageId);
@@ -96,7 +99,11 @@ export default function SharePage() {
   }, [shareUrl]);
 
   const handleKakaoShare = async () => {
-  if (!window.Kakao || !window.Kakao.isInitialized()) return;
+    console.log("🔵 handleKakaoShare() 실행됨");
+   if (!window.Kakao || !window.Kakao.isInitialized()) {
+    console.warn("⚠️ Kakao SDK 미초기화 상태");
+    return;
+  }
   console.log("카카오 SDK 상태:", window.Kakao);
   console.log("공유할 URL:", shareUrl); // ✅ 여기로 이동
 
@@ -127,7 +134,8 @@ export default function SharePage() {
     (videoUrl
       ? "https://ppongtok-app.vercel.app/thumbnail/video-default.jpg"
       : "https://via.placeholder.com/600x400.png?text=PPONGTOK");
-
+     console.log("🟢 공유할 URL:", shareUrl);
+     console.log("🟢 공유 이미지:", previewImage);
      console.log("미리보기 이미지:", previewImage); // ✅ 여기도 이동
 
   window.Kakao.Link.sendDefault({
