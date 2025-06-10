@@ -178,8 +178,12 @@
 
 /* 상단 개별 버튼 (배경이미지 파일, 내 파일 선택) */
 .selectButton {
-  background-color: #ff6f91;
-  color: #fff;
+  
+  display: inline-block; /* label도 버튼처럼 */
+  text-align: center;
+  line-height: 1;
+  background-color: #ff6f91 !important;
+  color: #fff !important;
   border: none;
   border-radius: 25px;
   padding: 10px 24px;
@@ -187,7 +191,7 @@
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+  white-space: nowrap;
 }
 
 .selectButton:hover {
