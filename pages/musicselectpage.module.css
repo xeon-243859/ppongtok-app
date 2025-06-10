@@ -61,19 +61,27 @@
   background-color: #ff4d7e;
 }
 
-/* 🔊 미리듣기 영역 - 음악박스 */
+/* 🎵 음악 박스 전체 */
 .music-box {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 24px;
+  align-items: center; /* 중앙 정렬 */
+  gap: 12px;
+  margin: 20px 0;
 }
 
+/* 🎵 음악 제목 */
+.music-label {
+  font-size: 16px;
+  color: #444;
+  font-weight: 500;
+}
+
+/* 🎵 오디오 컨트롤 박스 */
 .audio-wrapper {
   display: flex;
   justify-content: center;
-  margin: 20px 0;
+  width: 100%;
 }
 
 .audio-wrapper audio {
@@ -93,6 +101,7 @@
 .delete-button:hover {
   color: #ff4d7e;
 }
+
 
 /* 👣 하단 버튼 그룹 */
 .button-group {
