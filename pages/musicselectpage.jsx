@@ -67,9 +67,9 @@ const MusicSelectPage = () => {
   const handleNext = () => {
     const selectedType = localStorage.getItem("selected-type");
     if (selectedType === "video") {
-      router.push("/sharepage?type=video");
+      router.push("/previewpage?type=video");
     } else {
-      router.push("/sharepage?type=image");
+      router.push("/previewpage?type=image");
     }
   };
 
