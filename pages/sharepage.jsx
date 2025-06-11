@@ -76,11 +76,11 @@ export default function SharePage() {
   useEffect(() => {
     if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
       window.Kakao.init("4abf45cca92e802defcd2c15a6615155");
-      console.log("✅ Kakao SDK 초기화 완료");
-      console.log("🔁 Kakao App Key 재적용됨");
-
+       console.log("✅ Kakao SDK 초기화 완료");
     }
   }, []);
+
+  
 
   useEffect(() => {
     const generateQR = async () => {
@@ -128,12 +128,12 @@ export default function SharePage() {
       : "https://via.placeholder.com/600x400.png?text=PPONGTOK");
 
     window.Kakao.Link.sendDefault({
-      objectType: "feed",
-      content: {
-        title: "뿅!톡 메시지 도착 💌",
-        description: caption || "누군가 당신에게 마음을 보냈어요",
-        imageUrl: previewImage,
-        link: {
+    objectType: "feed",
+    content: {
+      title: "뿅!톡 메시지 도착!",
+       description: caption || "나만의 감성 메시지를 확인해보세요!",
+       imageUrl: previewImage,
+      link: {
           mobileWebUrl: shareUrl,
           webUrl: shareUrl,
         },
