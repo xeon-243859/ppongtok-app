@@ -32,6 +32,7 @@ export default function PaymentPage() {
     alert(`이용권이 ${passCount + bonus}장 충전되었습니다!`);
     router.push("/share"); // ✅ navigate → router.push
   };
+// 복구 확인용 주석입니다 - 2025-06-11
 
   return (
     <div className="payment-container" style={{ padding: 20, textAlign: "center" }}>
