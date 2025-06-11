@@ -19,6 +19,9 @@ export default function SharePage() {
   const [imageUrl, setImageUrl] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
   const [caption, setCaption] = useState("");
+  console.log("✅ kakaoReady:", kakaoReady);
+  console.log("✅ messageId:", messageId);
+  console.log("✅ SharePage 렌더링 시작됨");
 
   const shareUrl = useMemo(() => {
     return messageId
@@ -96,11 +99,12 @@ export default function SharePage() {
       return;
     }
 
-    if (!currentUser) {
-      alert("로그인이 필요해요 💌");
-      router.push("/login");
-      return;
-    }
+    if (!currentUser) {                         // if (!currentUser) {
+      alert("로그인이 필요해요 💌");              //   alert("로그인이 필요해요 🧸");
+        console.log("로그인 체크 우회 (테스트용)"); //   console.log("로그인 체크 우회 (테스트용)");
+      router.push("/login");                    //   router.push("/login");
+      return;                                   //   return;
+    }                                           // }
 
     const userRef = doc(db, "users", currentUser.uid);
     const userSnap = await getDoc(userRef);
@@ -121,29 +125,39 @@ export default function SharePage() {
     const previewImage = imageUrl || (videoUrl
       ? "https://ppongtok-app.vercel.app/thumbnail/video-default.jpg"
       : "https://via.placeholder.com/600x400.png?text=PPONGTOK");
+   try {
+  console.log("📤 공유 실행됨", {
+    imageUrl: previewImage,
+    shareUrl,
+    caption,
+    messageId,
+  });
 
-    window.Kakao.Link.sendDefault({
+  window.Kakao.Link.sendDefault({
     objectType: "feed",
     content: {
       title: "뿅!톡 메시지 도착!",
-       description: caption || "나만의 감성 메시지를 확인해보세요!",
-       imageUrl: previewImage,
+      description: caption || "나만의 감성 메시지를 확인해보세요!",
+      imageUrl: previewImage,
       link: {
+        mobileWebUrl: shareUrl,
+        webUrl: shareUrl,
+      },
+    },
+    buttons: [
+      {
+        title: "메시지 보러 가기",
+        link: {
           mobileWebUrl: shareUrl,
           webUrl: shareUrl,
         },
       },
-      buttons: [
-        {
-          title: "메시지 보러 가기",
-          link: {
-            mobileWebUrl: shareUrl,
-            webUrl: shareUrl,
-          },
-        },
-      ],
-    });
-  };
+    ],
+  });
+} catch (error) {
+  console.error("❌ 공유 실패:", error);
+}
+
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(shareUrl);
@@ -219,5 +233,5 @@ function buttonStyle(bg, color = "black") {
     border: "none",
     fontWeight: "bold",
     color,
-  };
-}
+    };
+}}
