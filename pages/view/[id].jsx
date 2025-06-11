@@ -17,7 +17,7 @@ export default function ViewMessagePage() {
       caption: "이건 공유된 메시지입니다.",
       mediaType: "image", // "image" or "video"
       media: "https://via.placeholder.com/800x450?text=배경미디어",
-      music: "/audio/spring1.mp3", // public 디렉토리 기준 경로
+      music: "/audio/spring.mp3", // public 디렉토리 기준 경로
     });
   }, [id]);
 
