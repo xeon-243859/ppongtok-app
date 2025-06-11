@@ -5,7 +5,7 @@ import QRCode from "qrcode";
 import { getFirestore, doc, getDoc, updateDoc, collection, addDoc, Timestamp } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { db } from "@/firebase";
-import Script from "next/script";
+
 
 export default function SharePage() {
   const [kakaoReady, setKakaoReady] = useState(false); // ✅ SDK 초기화 상태 추적용 state
