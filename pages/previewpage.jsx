@@ -135,7 +135,10 @@ export default function PreviewPage() {
     };
   }, [selectedMusic]);
 
-  const handleNext = () => router.push(`/sharepage/${messageId}`);
+  const handleNext = () => {
+  const fakeId = "test123"; // 나중에 실제 ID로 대체
+  router.push(`/sharepage/${fakeId}`);
+};
   const handleGoHome = () => router.push("/");
 
   const buttonStyle = {
