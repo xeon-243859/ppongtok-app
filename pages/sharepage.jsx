@@ -77,6 +77,8 @@ export default function SharePage() {
     if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
       window.Kakao.init("4abf45cca92e802defcd2c15a6615155");
       console.log("✅ Kakao SDK 초기화 완료");
+      console.log("🔁 Kakao App Key 재적용됨");
+
     }
   }, []);
 
