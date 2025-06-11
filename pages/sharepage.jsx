@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router"; // ✅ 변경됨
-
+import React, { useEffect, useState, useMemo } from "react";
+import { useRouter } from "next/router";
+import Script from "next/script";
 import QRCode from "qrcode";
 import { getFirestore, doc, getDoc, updateDoc, collection, addDoc, Timestamp } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import { db } from "@/firebase"; // ✅ import 경로 통일
-import Script from 'next/script';
-import { useMemo } from "react";
+import { db } from "@/firebase";
 
-  export default function SharePage() {
+export default function SharePage() {
   const router = useRouter();
   const db = getFirestore();
   const auth = getAuth();
@@ -19,12 +17,12 @@ import { useMemo } from "react";
   const [imageUrl, setImageUrl] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
   const [caption, setCaption] = useState("");
-  
-     const shareUrl = useMemo(() => {
-       return messageId
-    ? `https://ogmeta-lqxptgkh3q-uc.a.run.app/${messageId}`
-    : "";
-    }, [messageId]);
+
+  const shareUrl = useMemo(() => {
+    return messageId
+      ? `https://ogmeta-lqxptgkh3q-uc.a.run.app/${messageId}`
+      : "";
+  }, [messageId]);
 
   const saveMessage = async ({ caption, imageUrl, videoUrl, musicUrl }) => {
     try {
@@ -55,20 +53,13 @@ import { useMemo } from "react";
 
     if (!messageId && caption && (imageUrl || videoUrl)) {
       saveMessage({ caption, imageUrl, videoUrl, musicUrl }).then((id) => {
-        if (id) {
-          setMessageId(id);
-        }
+        if (id) setMessageId(id);
       });
     }
   }, []);
 
   useEffect(() => {
-     if (!messageId) {
-    console.warn("❌ messageId 없음");
-    return;
-  }
-  
-
+    if (!messageId) return;
     const fetchMessage = async () => {
       const docRef = doc(db, "messages", messageId);
       const docSnap = await getDoc(docRef);
@@ -79,18 +70,16 @@ import { useMemo } from "react";
         setCaption(data.caption || "");
       }
     };
-
     fetchMessage();
   }, [messageId]);
 
   useEffect(() => {
-     if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
-    window.Kakao.init("4abf45cca92e802defcd2c15a6615155"); // 당신의 JS 키
-    console.log("✅ Kakao SDK 초기화 완료");
+    if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
+      window.Kakao.init("4abf45cca92e802defcd2c15a6615155");
+      console.log("✅ Kakao SDK 초기화 완료");
     }
   }, []);
 
- 
   useEffect(() => {
     const generateQR = async () => {
       if (!shareUrl) return;
@@ -105,77 +94,59 @@ import { useMemo } from "react";
   }, [shareUrl]);
 
   const handleKakaoShare = async () => {
-    console.log("🔵 handleKakaoShare() 실행됨");
-   if (!window.Kakao || !window.Kakao.isInitialized()) {
-    console.warn("⚠️ Kakao SDK 미초기화 상태");
-    return;
-  }
-  console.log("카카오 SDK 상태:", window.Kakao);
-  
+    if (!window.Kakao || !window.Kakao.isInitialized()) {
+      alert("Kakao SDK가 초기화되지 않았습니다.");
+      return;
+    }
 
-  const shareUrl = useMemo(() => {
-  return messageId
-    ? `https://ogmeta-lqxptgkh3q-uc.a.run.app/${messageId}`
-    : "";
-}, [messageId]);
+    if (!currentUser) {
+      alert("로그인이 필요해요 💌");
+      router.push("/login");
+      return;
+    }
 
-console.log("공유할 URL:", shareUrl); // ✅ 이제 안전하게 사용 가능
+    const userRef = doc(db, "users", currentUser.uid);
+    const userSnap = await getDoc(userRef);
+    if (!userSnap.exists()) {
+      alert("유저 정보를 찾을 수 없습니다.");
+      return;
+    }
 
-if (!currentUser) {
-  alert("로그인이 필요해요 💌");
-  router.push("/login");
-  return;
-}
+    const freePass = userSnap.data().freePassCount || 0;
+    if (freePass < 1) {
+      alert("무료 이용권이 소진되었습니다. 결제가 필요해요.");
+      router.push("/paymentpage");
+      return;
+    }
 
+    await updateDoc(userRef, { freePassCount: freePass - 1 });
 
-  const userRef = doc(db, "users", currentUser.uid);
-  const userSnap = await getDoc(userRef);
-  if (!userSnap.exists()) {
-    alert("유저 정보를 찾을 수 없습니다.");
-    return;
-  }
-
-  const freePass = userSnap.data().freePassCount || 0;
-  if (freePass < 1) {
-    alert("무료 이용권이 소진되었습니다. 결제가 필요해요.");
-    router.push("/paymentpage");
-    return;
-  }
-
-  await updateDoc(userRef, { freePassCount: freePass - 1 });
-
-  const previewImage =
-    imageUrl ||
-    (videoUrl
+    const previewImage = imageUrl || (videoUrl
       ? "https://ppongtok-app.vercel.app/thumbnail/video-default.jpg"
       : "https://via.placeholder.com/600x400.png?text=PPONGTOK");
-     console.log("🟢 공유할 URL:", shareUrl);
-     console.log("🟢 공유 이미지:", previewImage);
-     console.log("미리보기 이미지:", previewImage); // ✅ 여기도 이동
 
-  window.Kakao.Link.sendDefault({
-    objectType: "feed",
-    content: {
-      title: "뿅!톡 메시지 도착 💌",
-      description: caption || "누군가 당신에게 마음을 보냈어요",
-      imageUrl: previewImage,
-      link: {
-        mobileWebUrl: shareUrl,
-        webUrl: shareUrl,
-      },
-    },
-    buttons: [
-      {
-        title: "메시지 보러 가기",
+    window.Kakao.Link.sendDefault({
+      objectType: "feed",
+      content: {
+        title: "뿅!톡 메시지 도착 💌",
+        description: caption || "누군가 당신에게 마음을 보냈어요",
+        imageUrl: previewImage,
         link: {
           mobileWebUrl: shareUrl,
           webUrl: shareUrl,
         },
       },
-    ],
-  });
-};
-
+      buttons: [
+        {
+          title: "메시지 보러 가기",
+          link: {
+            mobileWebUrl: shareUrl,
+            webUrl: shareUrl,
+          },
+        },
+      ],
+    });
+  };
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(shareUrl);
@@ -199,49 +170,39 @@ if (!currentUser) {
   };
 
   return (
-  <>
-    <Script
-      src="https://developers.kakao.com/sdk/js/kakao.min.js"
-      strategy="beforeInteractive"
-    />
-    <div style={{ maxWidth: "480px", margin: "0 auto", padding: "32px 16px", textAlign: "center" }}>
-      <h2 style={{ fontSize: "24px", marginBottom: "16px" }}>📬 공유하기</h2>
+    <>
+      <Script src="https://developers.kakao.com/sdk/js/kakao.min.js" strategy="beforeInteractive" />
+      <div style={{ maxWidth: "480px", margin: "0 auto", padding: "32px 16px", textAlign: "center" }}>
+        <h2 style={{ fontSize: "24px", marginBottom: "16px" }}>📬 공유하기</h2>
 
-      {imageUrl && <img src={imageUrl} alt="공유 이미지" style={{ width: "100%", maxHeight: "500px" }} />}
-      {videoUrl && <video src={videoUrl} controls style={{ width: "100%", maxHeight: "500px" }} />}
-      {caption && <p style={{ fontSize: "16px", color: "#444", marginBottom: "24px" }}>{caption}</p>}
+        {/* ❌ 미리보기 이미지/영상 제거됨 */}
 
-      {qrUrl && (
-        <img src={qrUrl} alt="QR 코드" style={{ width: "150px", margin: "0 auto 16px" }} />
-      )}
-      <p style={{ fontSize: "14px", color: "#777" }}>이 QR을 스캔하면 누구에게나 마음이 전해져요</p>
+        {qrUrl && (
+          <img src={qrUrl} alt="QR 코드" style={{ width: "150px", margin: "0 auto 16px" }} />
+        )}
+        <p style={{ fontSize: "14px", color: "#777" }}>이 QR을 스캔하면 누구에게나 마음이 전해져요</p>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "32px" }}>
-        <button
-          onClick={handleKakaoShare}
-          style={buttonStyle("#FAE100")}
-          disabled={!messageId}
-        >
-          💬 카카오톡 공유하기
-        </button>
+        <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "32px" }}>
+          <button onClick={handleKakaoShare} style={buttonStyle("#FAE100")} disabled={!messageId}>
+            💬 카카오톡 공유하기
+          </button>
+          <button onClick={handleCopy} style={buttonStyle("#cce5ff")}>📎 링크 복사</button>
+          {imageUrl && <button onClick={handleImageDownload} style={buttonStyle("#d4edda")}>🖼 이미지 저장</button>}
+          {videoUrl && <button onClick={handleVideoDownload} style={buttonStyle("#fce4ec")}>🎥 영상 저장</button>}
 
-        <button onClick={handleCopy} style={buttonStyle("#cce5ff")}>📎 링크 복사</button>
-        {imageUrl && <button onClick={handleImageDownload} style={buttonStyle("#d4edda")}>🖼 이미지 저장</button>}
-        {videoUrl && <button onClick={handleVideoDownload} style={buttonStyle("#fce4ec")}>🎥 영상 저장</button>}
-
-        <button onClick={() => window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}`, "_blank")}>
-          🐦 트위터 공유
-        </button>
-        <button onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, "_blank")}>
-          📘 페이스북 공유
-        </button>
-        <button onClick={() => router.push("/")} style={buttonStyle("#eee")}>🏠 처음으로</button>
-        <button onClick={() => router.push("/intro")} style={buttonStyle("#f8d7da")}>🚀 시작하기</button>
+          <button onClick={() => window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}`, "_blank")}>
+            🐦 트위터 공유
+          </button>
+          <button onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, "_blank")}>
+            📘 페이스북 공유
+          </button>
+          <button onClick={() => router.push("/")} style={buttonStyle("#eee")}>🏠 처음으로</button>
+          <button onClick={() => router.push("/intro")} style={buttonStyle("#f8d7da")}>🚀 시작하기</button>
+        </div>
       </div>
-    </div>
-  </>
-);
-
+    </>
+  );
+}
 
 function buttonStyle(bg, color = "black") {
   return {
@@ -253,5 +214,4 @@ function buttonStyle(bg, color = "black") {
     fontWeight: "bold",
     color,
   };
-}
 }
