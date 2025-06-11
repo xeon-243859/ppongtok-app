@@ -8,7 +8,7 @@ import { db } from "@/firebase"; // ✅ import 경로 통일
 import Script from 'next/script';
 import { useMemo } from "react";
 
-
+  export default function SharePage() {
   const router = useRouter();
   const db = getFirestore();
   const auth = getAuth();
@@ -254,4 +254,4 @@ function buttonStyle(bg, color = "black") {
     color,
   };
 }
-
+}
