@@ -60,6 +60,7 @@ export default function SharePage() {
     console.warn("❌ messageId 없음");
     return;
   }
+  
 
     const fetchMessage = async () => {
       const docRef = doc(db, "messages", messageId);
@@ -76,15 +77,13 @@ export default function SharePage() {
   }, [messageId]);
 
   useEffect(() => {
-    if (window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.init("4abf45cca92e802defcd2c15a6615155");
+     if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
+    window.Kakao.init("4abf45cca92e802defcd2c15a6615155"); // 당신의 JS 키
+    console.log("✅ Kakao SDK 초기화 완료");
     }
   }, []);
 
-  const shareUrl = messageId
-    ? `https://ogmeta-lqxptgkh3q-uc.a.run.app/${messageId}`
-    : "https://ppongtok-app.vercel.app";
-
+ 
   useEffect(() => {
     const generateQR = async () => {
       if (!shareUrl) return;
@@ -105,7 +104,10 @@ export default function SharePage() {
     return;
   }
   console.log("카카오 SDK 상태:", window.Kakao);
-  console.log("공유할 URL:", shareUrl); // ✅ 여기로 이동
+  
+
+  const shareUrl = `https://ogmeta-lqxptgkh3q-uc.a.run.app/${messageId}`;
+   console.log("공유할 URL:", shareUrl); // ✅ 이제 안전하게 사용 가능
 
   if (!currentUser) {
     alert("로그인이 필요해요 💌");
