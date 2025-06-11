@@ -5,6 +5,7 @@ import QRCode from "qrcode";
 import { getFirestore, doc, getDoc, updateDoc, collection, addDoc, Timestamp } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { db } from "@/firebase";
+import Script from "next/script";
 
 export default function SharePage() {
   const [kakaoReady, setKakaoReady] = useState(false); // ✅ SDK 초기화 상태 추적용 state
@@ -73,17 +74,6 @@ export default function SharePage() {
     };
     fetchMessage();
   }, [messageId]);
-
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.init("4abf45cca92e802defcd2c15a6615155");
-      setKakaoReady(true); // ✅ 이 줄 추가
-      } else if (window.Kakao?.isInitialized()) {
-      setKakaoReady(true); // ✅ 이미 초기화된 경우도 커버
-
-       console.log("✅ Kakao SDK 초기화 완료");
-    }
-  }, []);
 
   
 
@@ -178,7 +168,16 @@ export default function SharePage() {
 
   return (
     <>
-      <Script src="https://developers.kakao.com/sdk/js/kakao.min.js" strategy="beforeInteractive" />
+      <Script
+  src="https://developers.kakao.com/sdk/js/kakao.min.js"
+  strategy="beforeInteractive"
+  onLoad={() => {
+    if (window.Kakao && !window.Kakao.isInitialized()) {
+      window.Kakao.init("4abf45cca92e802defcd2c15a6615155");
+      console.log("✅ Kakao SDK 초기화 완료");
+    }
+  }}
+/>
       <div style={{ maxWidth: "480px", margin: "0 auto", padding: "32px 16px", textAlign: "center" }}>
         <h2 style={{ fontSize: "24px", marginBottom: "16px" }}>📬 공유하기</h2>
 
