@@ -7,6 +7,7 @@ import { getAuth } from "firebase/auth";
 import { db } from "@/firebase";
 
 export default function SharePage() {
+  const [kakaoReady, setKakaoReady] = useState(false); // ✅ SDK 초기화 상태 추적용 state
   const router = useRouter();
   const db = getFirestore();
   const auth = getAuth();
@@ -76,6 +77,10 @@ export default function SharePage() {
   useEffect(() => {
     if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
       window.Kakao.init("4abf45cca92e802defcd2c15a6615155");
+      setKakaoReady(true); // ✅ 이 줄 추가
+      } else if (window.Kakao?.isInitialized()) {
+      setKakaoReady(true); // ✅ 이미 초기화된 경우도 커버
+
        console.log("✅ Kakao SDK 초기화 완료");
     }
   }, []);
@@ -185,7 +190,7 @@ export default function SharePage() {
         <p style={{ fontSize: "14px", color: "#777" }}>이 QR을 스캔하면 누구에게나 마음이 전해져요</p>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "32px" }}>
-          <button onClick={handleKakaoShare} style={buttonStyle("#FAE100")} disabled={!messageId}>
+          <button onClick={handleKakaoShare}  disabled={!kakaoReady || !messageId} style={buttonStyle("#FAE100")}  >
             💬 카카오톡 공유하기
           </button>
           <button onClick={handleCopy} style={buttonStyle("#cce5ff")}>📎 링크 복사</button>
