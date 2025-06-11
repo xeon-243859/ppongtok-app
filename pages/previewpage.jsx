@@ -135,7 +135,7 @@ export default function PreviewPage() {
     };
   }, [selectedMusic]);
 
-  const handleNext = () => router.push("/sharepage");
+  const handleNext = () => router.push("/sharepage/${messageId}");
   const handleGoHome = () => router.push("/");
 
   const buttonStyle = {
