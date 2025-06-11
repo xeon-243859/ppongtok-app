@@ -12,7 +12,7 @@ export default function SharePage() {
     // ✅ 임시 더미 데이터 삽입 (Firebase 아직 안 쓰는 상태니까)
     setMessageData({
       caption: "이건 테스트 메시지입니다.",
-      imageUrl: "/images/test-image.jpg", // 이미지가 없으면 placeholder로 대체됨
+      imageUrl: "https://via.placeholder.com/600x400?text=테스트+이미지", // ✅ 외부 URL
     });
   }, [id]);
 
@@ -25,7 +25,7 @@ export default function SharePage() {
       content: {
         title: '누군가 당신에게 메시지를 보냈어요!',
         description: messageData.caption,
-        imageUrl: messageData.imageUrl || 'https://via.placeholder.com/600x400?text=No+Image',
+        imageUrl: messageData.imageUrl || "https://via.placeholder.com/600x400?text=테스트+이미지",
         link: {
           mobileWebUrl: `${window.location.origin}/view/${id}`,
           webUrl: `${window.location.origin}/view/${id}`,
@@ -35,8 +35,8 @@ export default function SharePage() {
         {
           title: '메시지 보러가기',
           link: {
-            mobileWebUrl: `${window.location.origin}/view/${id}`,
-            webUrl: `${window.location.origin}/view/${id}`,
+             mobileWebUrl: `${window.location.origin}/view/${id}`,
+             webUrl: `${window.location.origin}/view/${id}`,
           },
         },
       ],
