@@ -204,7 +204,6 @@ if (!currentUser) {
       src="https://developers.kakao.com/sdk/js/kakao.min.js"
       strategy="beforeInteractive"
     />
-    
     <div style={{ maxWidth: "480px", margin: "0 auto", padding: "32px 16px", textAlign: "center" }}>
       <h2 style={{ fontSize: "24px", marginBottom: "16px" }}>📬 공유하기</h2>
 
@@ -243,7 +242,6 @@ if (!currentUser) {
   </>
 );
 
-    
 
 function buttonStyle(bg, color = "black") {
   return {
