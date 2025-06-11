@@ -204,30 +204,38 @@ if (!currentUser) {
       src="https://developers.kakao.com/sdk/js/kakao.min.js"
       strategy="beforeInteractive"
     />
+    
+    <div style={{ maxWidth: "480px", margin: "0 auto", padding: "32px 16px", textAlign: "center" }}>
+      <h2 style={{ fontSize: "24px", marginBottom: "16px" }}>📬 공유하기</h2>
 
-    <div style={{ maxWidth: "480px", margin: "0 auto", padding: "32px 16px", textAlign: "center", fontFamily: "sans-serif" }}>
-      <h2 style={{ fontSize: "24px", marginBottom: "16px" }}>💌 공유하기</h2>
-
-      {imageUrl && <img src={imageUrl} alt="공유 이미지" style={{ width: "100%", maxHeight: "500px", objectFit: "cover", borderRadius: "12px", marginBottom: "16px" }} />}
-      {videoUrl && <video src={videoUrl} controls style={{ width: "100%", maxHeight: "500px", borderRadius: "12px", marginBottom: "16px" }} />}
+      {imageUrl && <img src={imageUrl} alt="공유 이미지" style={{ width: "100%", maxHeight: "500px" }} />}
+      {videoUrl && <video src={videoUrl} controls style={{ width: "100%", maxHeight: "500px" }} />}
       {caption && <p style={{ fontSize: "16px", color: "#444", marginBottom: "24px" }}>{caption}</p>}
 
-      {qrUrl && <img src={qrUrl} alt="QR 코드" style={{ width: "150px", margin: "0 auto 16px" }} />}
-      <p style={{ fontSize: "14px", color: "#777" }}>이 QR을 스캔하면 누군가에게 마음이 전해져요</p>
+      {qrUrl && (
+        <img src={qrUrl} alt="QR 코드" style={{ width: "150px", margin: "0 auto 16px" }} />
+      )}
+      <p style={{ fontSize: "14px", color: "#777" }}>이 QR을 스캔하면 누구에게나 마음이 전해져요</p>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "32px" }}>
         <button
-  onClick={handleKakaoShare}
-  style={buttonStyle("#FAE100")}
-  disabled={!messageId}
->
-  💬 카카오톡 공유하기
-</button>
-        <button onClick={handleCopy} style={buttonStyle("#cce5ff")}>🔗 링크 복사</button>
-        {imageUrl && <button onClick={handleImageDownload} style={buttonStyle("#d4edda")}>🖼️ 이미지 저장</button>}
+          onClick={handleKakaoShare}
+          style={buttonStyle("#FAE100")}
+          disabled={!messageId}
+        >
+          💬 카카오톡 공유하기
+        </button>
+
+        <button onClick={handleCopy} style={buttonStyle("#cce5ff")}>📎 링크 복사</button>
+        {imageUrl && <button onClick={handleImageDownload} style={buttonStyle("#d4edda")}>🖼 이미지 저장</button>}
         {videoUrl && <button onClick={handleVideoDownload} style={buttonStyle("#fce4ec")}>🎥 영상 저장</button>}
-        <button onClick={() => window.open("https://twitter.com/intent/tweet?url=" + encodeURIComponent(shareUrl), "_blank")} style={buttonStyle("#1DA1F2", "white")}>🐦 트위터 공유</button>
-        <button onClick={() => window.open("https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(shareUrl), "_blank")} style={buttonStyle("#4267B2", "white")}>📘 페이스북 공유</button>
+
+        <button onClick={() => window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}`, "_blank")}>
+          🐦 트위터 공유
+        </button>
+        <button onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, "_blank")}>
+          📘 페이스북 공유
+        </button>
         <button onClick={() => router.push("/")} style={buttonStyle("#eee")}>🏠 처음으로</button>
         <button onClick={() => router.push("/intro")} style={buttonStyle("#f8d7da")}>🚀 시작하기</button>
       </div>
