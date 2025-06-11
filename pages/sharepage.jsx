@@ -8,7 +8,7 @@ import { db } from "@/firebase"; // ✅ import 경로 통일
 import Script from 'next/script';
 import { useMemo } from "react";
 
-export default function SharePage() {
+
   const router = useRouter();
   const db = getFirestore();
   const auth = getAuth();
@@ -19,6 +19,12 @@ export default function SharePage() {
   const [imageUrl, setImageUrl] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
   const [caption, setCaption] = useState("");
+  
+     const shareUrl = useMemo(() => {
+       return messageId
+    ? `https://ogmeta-lqxptgkh3q-uc.a.run.app/${messageId}`
+    : "";
+    }, [messageId]);
 
   const saveMessage = async ({ caption, imageUrl, videoUrl, musicUrl }) => {
     try {
@@ -242,4 +248,4 @@ function buttonStyle(bg, color = "black") {
     color,
   };
 }
-}
+
