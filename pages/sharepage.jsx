@@ -6,6 +6,7 @@ import { getFirestore, doc, getDoc, updateDoc, collection, addDoc, Timestamp } f
 import { getAuth } from "firebase/auth";
 import { db } from "@/firebase"; // ✅ import 경로 통일
 import Script from 'next/script';
+import { useMemo } from "react";
 
 export default function SharePage() {
   const router = useRouter();
@@ -106,14 +107,20 @@ export default function SharePage() {
   console.log("카카오 SDK 상태:", window.Kakao);
   
 
-  const shareUrl = `https://ogmeta-lqxptgkh3q-uc.a.run.app/${messageId}`;
-   console.log("공유할 URL:", shareUrl); // ✅ 이제 안전하게 사용 가능
+  const shareUrl = useMemo(() => {
+  return messageId
+    ? `https://ogmeta-lqxptgkh3q-uc.a.run.app/${messageId}`
+    : "";
+}, [messageId]);
 
-  if (!currentUser) {
-    alert("로그인이 필요해요 💌");
-    router.push("/login");
-    return;
-  }
+console.log("공유할 URL:", shareUrl); // ✅ 이제 안전하게 사용 가능
+
+if (!currentUser) {
+  alert("로그인이 필요해요 💌");
+  router.push("/login");
+  return;
+}
+
 
   const userRef = doc(db, "users", currentUser.uid);
   const userSnap = await getDoc(userRef);
