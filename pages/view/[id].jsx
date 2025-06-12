@@ -89,9 +89,7 @@ export default function ViewMessagePage() {
 
   return (
     <>
-      <Head>
-        <script src="https://developers.kakao.com/sdk/js/kakao.js" strategy="beforeInteractive" />
-      </Head>
+      
 
       <div style={{ position: "relative", width: "100%", maxWidth: 800, margin: "auto", padding: 16 }}>
         <h2 style={{ textAlign: "center" }}>💌 메시지 보기</h2>
