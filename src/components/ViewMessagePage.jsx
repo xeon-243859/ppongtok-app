@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "../src/firebase";
+import { db } from "../firebase";
 
 export default function ViewMessagePage({ message }) {
   const router = useRouter();
@@ -143,3 +143,8 @@ export default function ViewMessagePage({ message }) {
     </div>
   );
 }
+
+
+
+
+

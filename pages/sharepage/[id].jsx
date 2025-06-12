@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../src/firebase";
+import { db } from "../../firebase";
 import dynamic from "next/dynamic";
 
 
