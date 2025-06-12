@@ -4,8 +4,6 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import dynamic from "next/dynamic";
 
-
-// ✅ View 컴포넌트 동적 import
 const ViewMessagePage = dynamic(() => import("../../src/components/ViewMessagePage"), {
   ssr: false,
 });
@@ -15,7 +13,6 @@ export default function SharePage() {
   const { id } = router.query;
   const [message, setMessage] = useState(null);
 
-  // ✅ Firestore에서 메시지 가져오기
   useEffect(() => {
     if (!id) return;
 
@@ -37,7 +34,6 @@ export default function SharePage() {
     fetchMessage();
   }, [id]);
 
-  // ✅ Kakao SDK 로드 및 초기화
   useEffect(() => {
     const loadKakaoSdk = () => {
       return new Promise((resolve, reject) => {
@@ -59,7 +55,6 @@ export default function SharePage() {
     });
   }, []);
 
-  // ✅ 공유 버튼 클릭 핸들러
   const handleKakaoShare = () => {
     if (!window.Kakao || !window.Kakao.Share || !message) return;
 
@@ -70,6 +65,8 @@ export default function SharePage() {
         ? message.imageUrls[0]
         : "";
 
+    const shareUrl = `https://us-central1-ppongtok-project.cloudfunctions.net/ogMeta/${id}`;
+
     window.Kakao.Share.sendDefault({
       objectType: "feed",
       content: {
@@ -77,23 +74,22 @@ export default function SharePage() {
         description: message.caption,
         imageUrl: imageUrl || "https://via.placeholder.com/600x400?text=메시지",
         link: {
-          mobileWebUrl: `${window.location.origin}/view/${id}`,
-          webUrl: `${window.location.origin}/view/${id}`,
+          mobileWebUrl: shareUrl,
+          webUrl: shareUrl,
         },
       },
       buttons: [
         {
           title: "메시지 보러가기",
           link: {
-            mobileWebUrl: `${window.location.origin}/view/${id}`,
-            webUrl: `${window.location.origin}/view/${id}`,
+            mobileWebUrl: shareUrl,
+            webUrl: shareUrl,
           },
         },
       ],
     });
   };
 
-  // ✅ 로딩 중 화면
   if (!message) {
     return (
       <div style={{ padding: "2rem", textAlign: "center" }}>
@@ -102,7 +98,6 @@ export default function SharePage() {
     );
   }
 
-  // ✅ 메시지 UI 렌더링
   return (
     <div style={{ padding: "2rem", textAlign: "center" }}>
       <h2>🎉 공유 전용 페이지</h2>

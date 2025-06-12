@@ -1,5 +1,3 @@
-// ✅ ViewMessagePage.jsx with Kakao Share 기능 통합 완료
-
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { doc, getDoc } from "firebase/firestore";
@@ -10,7 +8,7 @@ export default function ViewMessagePage({ message }) {
   const { id } = router.query;
   const [localMessage, setLocalMessage] = useState(message || null);
 
-  // ✅ Firebase 메시지 불러오기 (필요 시)
+  // ✅ Firebase 메시지 불러오기
   useEffect(() => {
     if (!id || localMessage) return;
     const fetchMessage = async () => {
@@ -30,7 +28,7 @@ export default function ViewMessagePage({ message }) {
     fetchMessage();
   }, [id, localMessage]);
 
-  // ✅ Kakao SDK 로드 및 초기화
+  // ✅ Kakao SDK 초기화
   useEffect(() => {
     const loadKakaoSdk = () => {
       return new Promise((resolve, reject) => {
@@ -53,7 +51,7 @@ export default function ViewMessagePage({ message }) {
   }, []);
 
   const handleKakaoShare = () => {
-    if (!window.Kakao || !window.Kakao.Share) {
+    if (!window.Kakao || !window.Kakao.Share || !id || !localMessage) {
       alert("카카오톡 공유를 준비 중입니다. 잠시 후 다시 시도해주세요.");
       return;
     }
@@ -65,6 +63,8 @@ export default function ViewMessagePage({ message }) {
         ? localMessage.imageUrls[0]
         : "";
 
+    const shareUrl = `https://us-central1-ppongtok-project.cloudfunctions.net/ogMeta/${id}`;
+
     window.Kakao.Share.sendDefault({
       objectType: "feed",
       content: {
@@ -72,10 +72,19 @@ export default function ViewMessagePage({ message }) {
         description: localMessage.caption || "보낸 사람의 메시지를 확인해보세요!",
         imageUrl: imageUrl,
         link: {
-          mobileWebUrl: window.location.href,
-          webUrl: window.location.href,
+          mobileWebUrl: shareUrl,
+          webUrl: shareUrl,
         },
       },
+      buttons: [
+        {
+          title: "메시지 보러가기",
+          link: {
+            mobileWebUrl: shareUrl,
+            webUrl: shareUrl,
+          },
+        },
+      ],
     });
   };
 
@@ -134,7 +143,9 @@ export default function ViewMessagePage({ message }) {
         </div>
       )}
 
-      {music && <audio controls src={music} style={{ marginTop: "24px", width: "100%" }} />}
+      {music && (
+        <audio controls src={music} style={{ marginTop: "24px", width: "100%" }} />
+      )}
 
       <div style={{ marginTop: "30px", display: "flex", justifyContent: "space-between" }}>
         <button onClick={() => router.back()}>뒤로가기</button>
@@ -143,8 +154,3 @@ export default function ViewMessagePage({ message }) {
     </div>
   );
 }
-
-
-
-
-
