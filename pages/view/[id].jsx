@@ -64,7 +64,7 @@ export default function ViewMessagePage() {
   // ✅ 테스트용 더미 데이터 세팅
   useEffect(() => {
     console.log("🟡 useEffect: setMessageData 실행");
-  
+
     setMessageData({
       caption: "이건 공유된 메시지입니다.",
       mediaType: "image",
@@ -72,10 +72,10 @@ export default function ViewMessagePage() {
       music: "/audio/spring.mp3",
     });
   }, []);
-
+   
   useEffect(() => {
   if (messageData) {
-    console.log("🟢 messageData 상태:", messageData);
+   console.log("🟢 messageData 상태:", messageData); 
   }
 }, [messageData]);
 
