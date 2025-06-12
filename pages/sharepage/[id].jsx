@@ -35,28 +35,12 @@ export default function SharePage() {
   }, [id]);
     
 
-  // ✅ 메시지 불러오기 (Firebase)
-  useEffect(() => {
-    if (!id) return;
-    const fetchMessage = async () => {
-      try {
-        const docRef = doc(db, "messages", id);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setMessage(docSnap.data());
-         console.log("✅ 불러온 메시지:", docSnap.data());  
-        } else {
-          console.warn("⚠️ No such message document");
-        }
-      } catch (err) {
-        console.error("❌ 메시지 불러오기 실패:", err);
-      }
-    };
-    fetchMessage();
-  }, [id]);
+ 
 
     if (!message) {
-    return <p style={{ padding: "20px" }}>메시지를 불러오는 중...</p>;
+      return ( 
+     <p style={{ padding: "20px", textAlign: "center" }}>메시지를 불러오는 중...</p>
+        );
   }
 
   return <ViewMessagePage message={message} />;
