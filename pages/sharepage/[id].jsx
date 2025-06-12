@@ -39,7 +39,7 @@ export default function SharePage() {
 
     if (!message) {
       return ( 
-     <p style={{ padding: "20px", textAlign: "center" }}>메시지를 불러오는 중...</p>
+      <p style={{ padding: 20 }}>메시지를 불러오는 중...</p>
         );
   }
 
