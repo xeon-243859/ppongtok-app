@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../src/firebase";
 import dynamic from "next/dynamic";
+import ViewMessagePage from "../../src/components/viewmessagepage";
 
 // ✅ View 컴포넌트 동적 import
 const ViewMessagePage = dynamic(() => import("../../components/ViewMessagePage"), {
