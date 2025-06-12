@@ -5,20 +5,20 @@ import { useRouter } from "next/router";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../src/firebase";
 
-export default function ViewMessagePage() {
+export default function ViewMessagePage({ message }) {
   const router = useRouter();
   const { id } = router.query;
-  const [message, setMessage] = useState(null);
+  const [localMessage, setLocalMessage] = useState(message || null);
 
-  // ✅ Firebase 메시지 불러오기
+  // ✅ Firebase 메시지 불러오기 (필요 시)
   useEffect(() => {
-    if (!id) return;
+    if (!id || localMessage) return;
     const fetchMessage = async () => {
       try {
         const docRef = doc(db, "messages", id);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          setMessage(docSnap.data());
+          setLocalMessage(docSnap.data());
           console.log("🔥 전체 message 객체:", docSnap.data());
         } else {
           console.warn("⚠️ No such document!");
@@ -28,7 +28,7 @@ export default function ViewMessagePage() {
       }
     };
     fetchMessage();
-  }, [id]);
+  }, [id, localMessage]);
 
   // ✅ Kakao SDK 로드 및 초기화
   useEffect(() => {
@@ -38,8 +38,8 @@ export default function ViewMessagePage() {
         const script = document.createElement("script");
         script.id = "kakao-sdk";
         script.src = "https://developers.kakao.com/sdk/js/kakao.js";
-        script.onload = () => resolve();
-        script.onerror = () => reject();
+        script.onload = resolve;
+        script.onerror = reject;
         document.head.appendChild(script);
       });
     };
@@ -58,13 +58,18 @@ export default function ViewMessagePage() {
       return;
     }
 
-    const imageUrl = message?.type === "video" ? message?.videoUrl : (Array.isArray(message?.imageUrls) ? message.imageUrls[0] : "");
+    const imageUrl =
+      localMessage?.type === "video"
+        ? localMessage?.videoUrl
+        : Array.isArray(localMessage?.imageUrls)
+        ? localMessage.imageUrls[0]
+        : "";
 
     window.Kakao.Share.sendDefault({
       objectType: "feed",
       content: {
         title: "뿅!톡 메시지",
-        description: message.caption || "보낸 사람의 메시지를 확인해보세요!",
+        description: localMessage.caption || "보낸 사람의 메시지를 확인해보세요!",
         imageUrl: imageUrl,
         link: {
           mobileWebUrl: window.location.href,
@@ -74,11 +79,11 @@ export default function ViewMessagePage() {
     });
   };
 
-  if (!message) {
+  if (!localMessage) {
     return <p style={{ padding: "20px" }}>메시지를 불러오는 중입니다...</p>;
   }
 
-  const { type, videoUrl, imageUrls, caption, music } = message;
+  const { type, videoUrl, imageUrls, caption, music } = localMessage;
 
   return (
     <div style={{ padding: "20px", maxWidth: 700, margin: "0 auto" }}>
@@ -93,7 +98,15 @@ export default function ViewMessagePage() {
       )}
 
       {type === "image" && Array.isArray(imageUrls) && (
-        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "10px", marginBottom: "20px" }}>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            gap: "10px",
+            marginBottom: "20px",
+          }}
+        >
           {imageUrls.map((url, idx) => (
             <img
               key={idx}
@@ -106,14 +119,22 @@ export default function ViewMessagePage() {
       )}
 
       {caption && (
-        <div style={{ marginTop: "10px", padding: "10px 16px", backgroundColor: "#ffeef2", borderRadius: "10px", fontSize: "18px", fontWeight: "500", textAlign: "center" }}>
+        <div
+          style={{
+            marginTop: "10px",
+            padding: "10px 16px",
+            backgroundColor: "#ffeef2",
+            borderRadius: "10px",
+            fontSize: "18px",
+            fontWeight: "500",
+            textAlign: "center",
+          }}
+        >
           {caption}
         </div>
       )}
 
-      {music && (
-        <audio controls src={music} style={{ marginTop: "24px", width: "100%" }} />
-      )}
+      {music && <audio controls src={music} style={{ marginTop: "24px", width: "100%" }} />}
 
       <div style={{ marginTop: "30px", display: "flex", justifyContent: "space-between" }}>
         <button onClick={() => router.back()}>뒤로가기</button>

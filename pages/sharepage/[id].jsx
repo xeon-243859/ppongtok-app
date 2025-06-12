@@ -2,11 +2,38 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../src/firebase";
+import dynamic from "next/dynamic";
 
+const ViewMessagePage = dynamic(() => import("../../components/ViewMessagePage"), {
+  ssr: false,
+});
 export default function SharePage() {
+  
   const router = useRouter();
   const { id } = router.query;
   const [message, setMessage] = useState(null);
+
+   // ✅ Firebase에서 메시지 불러오기
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchMessage = async () => {
+      try {
+        const docRef = doc(db, "messages", id);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setMessage(docSnap.data());
+          console.log("✅ 불러온 message:", docSnap.data());
+        } else {
+          console.warn("⚠️ 문서가 없습니다.");
+        }
+      } catch (err) {
+        console.error("❌ 메시지 불러오기 실패:", err);
+      }
+    };
+     fetchMessage();
+  }, [id]);
+    
 
   // ✅ 메시지 불러오기 (Firebase)
   useEffect(() => {
@@ -17,6 +44,7 @@ export default function SharePage() {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           setMessage(docSnap.data());
+         console.log("✅ 불러온 메시지:", docSnap.data());  
         } else {
           console.warn("⚠️ No such message document");
         }
@@ -26,6 +54,13 @@ export default function SharePage() {
     };
     fetchMessage();
   }, [id]);
+
+    if (!message) {
+    return <p style={{ padding: "20px" }}>메시지를 불러오는 중...</p>;
+  }
+
+  return <ViewMessagePage message={message} />;
+}
 
   // ✅ Kakao SDK 로드 및 초기화
   useEffect(() => {
@@ -114,4 +149,4 @@ export default function SharePage() {
       </button>
     </div>
   );
-}
+
