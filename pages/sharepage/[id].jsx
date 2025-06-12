@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 
 
 // ✅ View 컴포넌트 동적 import
-const viewmessagepage = dynamic(() => import("../../components/viewmessagepage"), {
+const ViewMessagePage = dynamic(() => import("../../src/components/ViewMessagePage"), {
   ssr: false,
 });
 
