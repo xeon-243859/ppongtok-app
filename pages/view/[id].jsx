@@ -14,7 +14,7 @@ export default function ViewMessagePage() {
   useEffect(() => {
     const checkKakaoReady = setInterval(() => {
       if (window.Kakao && window.Kakao.Share && !window.Kakao.isInitialized()) {
-        window.Kakao.init("여기에_실제_자바스크립트_키"); // 실제 JS 키 넣기
+        window.Kakao.init("4abf45cca92e802defcd2c15a6615155"); // 실제 JS 키 넣기
         console.log("✅ Kakao SDK 초기화 완료");
         clearInterval(checkKakaoReady);
       }
