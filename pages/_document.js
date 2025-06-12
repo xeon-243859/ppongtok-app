@@ -6,8 +6,8 @@ export default function Document() {
       <Head>
         <script
           src="https://developers.kakao.com/sdk/js/kakao.js"
-          defer
-        ></script>
+          strategy="beforeInteractive"
+         />  
       </Head>
       <body>
         <Main />
@@ -16,3 +16,5 @@ export default function Document() {
     </Html>
   );
 }
+
+
