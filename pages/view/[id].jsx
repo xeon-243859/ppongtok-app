@@ -6,11 +6,11 @@ export default function ViewMessagePage() {
   const audioRef = useRef(null);
   const videoRef = useRef(null);
 
-  // ✅ SDK 동적 로드 및 초기화
+  // ✅ Kakao SDK 동적 로드 및 초기화
   useEffect(() => {
     const loadKakaoScript = () => {
       return new Promise((resolve, reject) => {
-        if (document.getElementById("kakao-sdk")) return resolve(); // 중복 방지
+        if (document.getElementById("kakao-sdk")) return resolve();
 
         const script = document.createElement("script");
         script.id = "kakao-sdk";
@@ -23,12 +23,13 @@ export default function ViewMessagePage() {
 
     loadKakaoScript().then(() => {
       if (window.Kakao && !window.Kakao.isInitialized()) {
-        window.Kakao.init("4abf45cca92e802defcd2c15a6615155");
+        window.Kakao.init("4abf45cca92e802defcd2c15a6615155"); // 🔑 실제 JS 키
         console.log("✅ Kakao SDK 초기화 완료");
       }
     });
   }, []);
 
+  // ✅ 공유 버튼 클릭 핸들러
   const handleKakaoShare = () => {
     console.log("✅ 공유 버튼 눌림");
 
@@ -60,17 +61,21 @@ export default function ViewMessagePage() {
     });
   };
 
-  // 테스트용 데이터
+  // ✅ 테스트용 더미 데이터 세팅
   useEffect(() => {
+    console.log("🟡 useEffect: setMessageData 실행");
+
     setMessageData({
       caption: "이건 공유된 메시지입니다.",
       mediaType: "image",
-      media: "https://via.placeholder.com/800x450?text=배경미디어",
+      media: "https://via.placeholder.com/800x450?text=테스트",
       music: "/audio/spring.mp3",
     });
   }, []);
 
-  if (!messageData) return <p>로딩 중...</p>;
+  if (!messageData) {
+    return <p>로딩 중...</p>;
+  }
 
   return (
     <>
