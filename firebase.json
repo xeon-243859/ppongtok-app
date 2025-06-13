@@ -1,8 +1,7 @@
 {
  "functions": {
   "source": "functions",
-  "runtime": "nodejs18",
-  "platform": "gcfv2"
+  "runtime": "nodejs18"
   },
   "storage": {
     "rules": "storage.rules"
