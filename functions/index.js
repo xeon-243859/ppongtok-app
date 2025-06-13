@@ -1,12 +1,15 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
+const { Storage } = require("@google-cloud/storage");
 
-admin.initializeApp();
+admin.initializeApp(); // ✅ 이 줄 추가!
+
 const db = admin.firestore();
+const storage = new Storage();
 
+// ✅ OG 태그 렌더링용 Functions (공유 시 미리보기 대응)
 exports.ogMeta = functions.https.onRequest(async (req, res) => {
-  const id = req.path.replace("/", ""); // 또는 req.query.id 가능
-
+  const id = req.path.replace("/", "");
   if (!id) {
     return res.status(400).send("No ID provided");
   }
@@ -21,6 +24,7 @@ exports.ogMeta = functions.https.onRequest(async (req, res) => {
 
     const data = docSnap.data();
     const image =
+      data.thumbnailUrl ||
       (data.imageUrls && data.imageUrls[0]) ||
       data.videoUrl ||
       "https://via.placeholder.com/600x400.png?text=PPONGTOK";
@@ -50,4 +54,7 @@ exports.ogMeta = functions.https.onRequest(async (req, res) => {
     res.status(500).send("Server error");
   }
 });
-// 예: 공백 추가
+
+
+
+  Object.assign(exports, require("./screenshot"));
