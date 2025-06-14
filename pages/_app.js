@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { AuthProvider } from "../src/contexts/AuthProvider";
-import "../index.css";
+import "../src/index.css";
 
 export default function MyApp({ Component, pageProps }) {
   return (
