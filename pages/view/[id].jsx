@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import styles from "../../styles/viewpreview.module.css"; // ✅ CSS 모듈 import 추가
 
 export default function ViewMessagePreviewPage() {
   const [messageData, setMessageData] = useState(null);
@@ -24,23 +25,23 @@ export default function ViewMessagePreviewPage() {
       <Head>
         <title>미리보기</title>
       </Head>
-      <div className="preview-container">
-        <div className="moving-box">
+      <div className={styles["preview-container"]}>
+        <div className={styles["moving-box"]}>
           {messageData.mediaType === "video" ? (
-            <video src={messageData.media} controls className="media-element" />
+            <video src={messageData.media} controls className={styles["media-element"]} />
           ) : (
-            <img src={messageData.media} alt="미리보기" className="media-element" />
+            <img src={messageData.media} alt="미리보기" className={styles["media-element"]} />
           )}
         </div>
 
-        <div className="button-group">
-          <button className="action-button" onClick={() => router.back()}>
+        <div className={styles["button-group"]}>
+          <button className={styles["action-button"]} onClick={() => router.back()}>
             ⬅ 뒤로가기
           </button>
-          <button className="action-button" onClick={() => router.push("/")}>
+          <button className={styles["action-button"]} onClick={() => router.push("/")}>
             🏠 처음으로
           </button>
-          <button className="action-button" onClick={() => router.push(`/share/${id}`)}>
+          <button className={styles["action-button"]} onClick={() => router.push(`/share/${id}`)}>
             📤 공유하기
           </button>
         </div>
