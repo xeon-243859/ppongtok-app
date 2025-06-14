@@ -2,6 +2,7 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const { Storage } = require("@google-cloud/storage");
 
+
 admin.initializeApp(); // ✅ 이 줄 추가!
 
 const db = admin.firestore();
@@ -57,4 +58,5 @@ exports.ogMeta = functions.https.onRequest(async (req, res) => {
 
 
 
-  Object.assign(exports, require("./screenshot"));
+  Object.assign(exports, require("./captureScreenshot"));
+

@@ -1,9 +1,12 @@
 {
- "functions": {
-  "source": "functions",
-  "runtime": "nodejs18"
-  },
-  "storage": {
-    "rules": "storage.rules"
+  "functions": {
+    "source": "functions",  
+    "codebase": "default",
+    "runtime": "nodejs18",
+    "regions": ["us-central1"],
+    "concurrency": 1,
+    "maxInstances": 1,
+    "serviceAccount": "ppongtok-project@appspot.gserviceaccount.com",
+    "v2": true  
   }
 }
