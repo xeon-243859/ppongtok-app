@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { AuthProvider } from "../src/contexts/AuthProvider";
+import { AuthProvider } from "../src/contexts/AuthContext"; // ✅ 정확하게 수정
 import "../src/index.css";
 
 export default function MyApp({ Component, pageProps }) {
