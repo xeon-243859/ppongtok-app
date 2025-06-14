@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
- import styles from "../../src/styles/viewpreview.module.css";
+import styles from "../../styles/viewpreview.module.css"; // ✅ CSS 모듈 import 추가
 
 export default function ViewMessagePreviewPage() {
   const [messageData, setMessageData] = useState(null);
@@ -26,6 +26,8 @@ export default function ViewMessagePreviewPage() {
         <title>미리보기</title>
       </Head>
       <div className={styles["preview-container"]}>
+        <h2 className={styles["preview-title"]}>미리보기</h2>
+
         <div className={styles["moving-box"]}>
           {messageData.mediaType === "video" ? (
             <video src={messageData.media} controls className={styles["media-element"]} />
