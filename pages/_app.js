@@ -1,6 +1,6 @@
-// pages/_app.js
 import Head from "next/head";
-import { AuthProvider } from "../src/contexts/AuthContext";
+import { AuthProvider } from "../src/contexts/AuthProvider";
+import "../index.css";
 
 export default function MyApp({ Component, pageProps }) {
   return (
