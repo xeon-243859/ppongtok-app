@@ -2,7 +2,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../firebase";
+import { db } from "../../src/firebase";
 
 export default function SharePage() {
   const router = useRouter();
