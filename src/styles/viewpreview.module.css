@@ -2,11 +2,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
+  justify-content: flex-start;      /* ✅ 위쪽 정렬로 변경 */
+  padding-top: 40px;                /* ✅ 위에서 조금만 띄움 */
+  padding-bottom: 20px;
   background-color: #fffdf9;
   min-height: 100vh;
 }
+
 
 .moving-box {
   width: 95%;
@@ -51,7 +53,7 @@
 }
 
 .action-button {
-  padding: 8px 14px; /* ✅ 크기 줄임 */
+  padding: 6px 12px; /* ✅ 크기 줄임 */
   font-size: 0.88rem;  /* ✅ 글자 크기도 소폭 축소 */
   background-color: #ff91a4;
   color: white;
