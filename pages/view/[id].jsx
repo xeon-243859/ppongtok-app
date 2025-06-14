@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import styles from "../../styles/viewpreview.module.css"; // ✅ CSS 모듈 import 추가
+import styles from "../../src/styles/viewpreview.module.css"; // ✅ CSS 모듈 import 수정
 
 export default function ViewMessagePreviewPage() {
   const [messageData, setMessageData] = useState(null);
