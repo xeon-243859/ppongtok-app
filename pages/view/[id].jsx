@@ -2,7 +2,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import styles from "../../src/styles/viewpreview.module.css"; // ✅ CSS 모듈 import 수정
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../src/firebase";
+import styles from "../../src/styles/viewpreview.module.css";
 
 export default function ViewMessagePreviewPage() {
   const [messageData, setMessageData] = useState(null);
@@ -11,12 +13,25 @@ export default function ViewMessagePreviewPage() {
   const { id } = router.query;
 
   useEffect(() => {
-    setMessageData({
-      mediaType: "image", // 또는 'video'
-      media: "https://via.placeholder.com/800x450?text=Preview",
-      music: "/audio/spring.mp3",
-    });
-  }, []);
+    if (!id) return;
+
+    const fetchData = async () => {
+      try {
+        const docRef = doc(db, "messages", id);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          setMessageData(docSnap.data());
+        } else {
+          console.log("❌ No such document!");
+        }
+      } catch (error) {
+        console.error("🔥 Error fetching message:", error);
+      }
+    };
+
+    fetchData();
+  }, [id]);
 
   if (!messageData) return <p>로딩 중...</p>;
 
