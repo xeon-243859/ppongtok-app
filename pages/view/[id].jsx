@@ -11,10 +11,12 @@ export default function ViewMessagePreviewPage() {
   const [messageData, setMessageData] = useState(null);
   const audioRef = useRef(null);
   const router = useRouter();
-  const { id } = router.query;
 
   useEffect(() => {
-    if (!id) return;
+    if (!router.isReady) return;
+
+    const { id } = router.query;
+    console.log("🧭 현재 id:", id);
 
     const fetchData = async () => {
       try {
@@ -22,7 +24,9 @@ export default function ViewMessagePreviewPage() {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-          setMessageData(docSnap.data());
+          const data = docSnap.data();
+          console.log("✅ 불러온 메시지:", data);
+          setMessageData(data);
         } else {
           console.log("❌ No such document!");
         }
@@ -32,7 +36,7 @@ export default function ViewMessagePreviewPage() {
     };
 
     fetchData();
-  }, [id]);
+  }, [router.isReady]);
 
   if (!messageData) return <p>로딩 중...</p>;
 
@@ -46,21 +50,35 @@ export default function ViewMessagePreviewPage() {
 
         <div className={styles["moving-box"]}>
           {messageData.type === "video" && messageData.videoUrl ? (
-            <video
-              src={messageData.videoUrl}
-              controls
-              className={styles["media-element"]}
-            />
-          ) : messageData.type === "image" && Array.isArray(messageData.imageurls) ? (
-            messageData.imageurls.map((url, index) => (
-              <img
-                key={index}
-                src={url}
-                alt={`이미지 ${index + 1}`}
-                crossOrigin="anonymous"
+            <>
+              <video
+                src={messageData.videoUrl}
+                controls
+                autoPlay
                 className={styles["media-element"]}
+                style={{ backgroundColor: "#000" }}
               />
-            ))
+              {messageData.caption && (
+                <div className={styles["caption"]}>{messageData.caption}</div>
+              )}
+            </>
+          ) : messageData.type === "image" && Array.isArray(messageData.imageurls) ? (
+            <>
+              {messageData.imageurls.map((url, index) => (
+                <img
+                  key={index}
+                  src={url}
+                  alt={`이미지 ${index + 1}`}
+                  crossOrigin="anonymous"
+                  className={styles["media-element"]}
+                />
+              ))}
+              {messageData.caption && (
+                <div className={styles["caption"]}>{messageData.caption}</div>
+              )}
+            </>
+          ) : messageData.caption ? (
+            <div className={styles["caption"]}>{messageData.caption}</div>
           ) : (
             <p>미디어가 존재하지 않습니다.</p>
           )}
@@ -81,7 +99,7 @@ export default function ViewMessagePreviewPage() {
           </button>
           <button
             className={styles["action-button"]}
-            onClick={() => router.push(`/share/${id}`)}
+            onClick={() => router.push(`/share/${router.query.id}`)}
           >
             📤 공유하기
           </button>

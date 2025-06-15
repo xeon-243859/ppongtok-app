@@ -1,119 +1,133 @@
 // pages/share/[id].jsx
+
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../src/firebase";
+import QRCode from "qrcode.react";
 
 export default function SharePage() {
+  const [messageData, setMessageData] = useState(null);
+  const audioRef = useRef(null);
   const router = useRouter();
-  const { id } = router.query;
-  const [message, setMessage] = useState(null);
+  const [downloadUrl, setDownloadUrl] = useState(null);
 
   useEffect(() => {
-    if (!router.isReady || !id) return; // ✅ 추가된 부분
-    const fetchMessage = async () => {
-      try {
-        const docRef = doc(db, "messages", id);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setMessage(docSnap.data());
+    if (!router.isReady) return;
+
+    const fetchData = async () => {
+      const docRef = doc(db, "messages", router.query.id);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setMessageData(data);
+        if (data.type === "video" && data.videoUrl) {
+          setDownloadUrl(data.videoUrl);
+        } else if (data.type === "image" && Array.isArray(data.imageurls)) {
+          setDownloadUrl(data.imageurls[0]);
         }
-      } catch (err) {
-        console.error("❌ 메시지 불러오기 실패:", err);
       }
     };
-    fetchMessage();
-  }, [router.isReady, id]); // ✅ 의존성 배열도 수정
 
-  useEffect(() => {
-    const loadKakaoSdk = () => {
-      return new Promise((resolve, reject) => {
-        if (document.getElementById("kakao-sdk")) return resolve();
-        const script = document.createElement("script");
-        script.id = "kakao-sdk";
-        script.src = "https://developers.kakao.com/sdk/js/kakao.js";
-        script.onload = () => resolve();
-        script.onerror = () => reject();
-        document.head.appendChild(script);
-      });
-    };
+    fetchData();
+  }, [router.isReady]);
 
-    loadKakaoSdk().then(() => {
-      if (window.Kakao && !window.Kakao.isInitialized()) {
-        window.Kakao.init("4abf45cca92e802defcd2c15a6615155");
-      }
-    });
-  }, []);
-
-  const handleKakaoShare = () => {
-      console.log("📣 공유 버튼 클릭됨"); // ✅추가
-    if (!window.Kakao || !window.Kakao.Share || !message) {
-    console.warn("⚠️ 공유 불가 - 조건 미충족", {
-      Kakao: !!window.Kakao,
-      Share: !!window.Kakao?.Share,
-      messageLoaded: !!message,
-    });
-    return;
-  }
-
-    const shareUrl = `https://ppongtok-app.vercel.app/api/ogmeta/${id}`;
-    const imageUrl = message.thumbnailUrl || "https://via.placeholder.com/600x400?text=미리보기";
-
-    window.Kakao.Share.sendDefault({
-      objectType: "feed",
-      content: {
-        title: "누군가 당신에게 메시지를 보냈어요!",
-        description: message.caption,
-        imageUrl: imageUrl,
-        link: {
-          mobileWebUrl: shareUrl,
-          webUrl: shareUrl,
-        },
-      },
-      buttons: [
-        {
-          title: "메시지 보러가기",
-          link: {
-            mobileWebUrl: shareUrl,
-            webUrl: shareUrl,
-          },
-        },
-      ],
-    });
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    alert("링크가 복사되었습니다!");
   };
 
-  if (!message) {
-    return <div style={{ padding: "2rem", textAlign: "center" }}>메시지를 불러오는 중...</div>;
-  }
+  const handleKakaoShare = () => {
+    if (window.Kakao && window.Kakao.Share) {
+      if (!window.Kakao.isInitialized()) {
+        window.Kakao.init("YOUR_KAKAO_JAVASCRIPT_KEY");
+      }
+
+      window.Kakao.Share.sendDefault({
+        objectType: "feed",
+        content: {
+          title: "메시지를 확인해보세요",
+          description: messageData?.caption || "",
+          imageUrl:
+            messageData?.type === "image"
+              ? messageData.imageurls[0]
+              : "https://ppongtok-app.vercel.app/logo.png",
+          link: {
+            mobileWebUrl: window.location.href,
+            webUrl: window.location.href,
+          },
+        },
+      });
+    }
+  };
+
+  if (!messageData) return <p>로딩 중...</p>;
 
   return (
-    <div style={{ padding: "2rem", textAlign: "center" }}>
-      <h2>🎉 공유 전용 페이지</h2>
-      <p>{message.caption}</p>
+    <div style={{ padding: "1.5rem", textAlign: "center" }}>
+      <h2>공유된 메시지</h2>
 
-      {message.type === "video" ? (
-        <video src={message.videoUrl} controls style={{ maxWidth: "100%" }} />
-      ) : (
-        <img
-          src={Array.isArray(message.imageUrls) ? message.imageUrls[0] : ""}
-          alt="미리보기"
-          style={{ maxWidth: "100%", borderRadius: "12px" }}
-        />
+      <div style={{ marginBottom: "1rem" }}>
+        {messageData.type === "video" && messageData.videoUrl ? (
+          <>
+            <video
+              src={messageData.videoUrl}
+              controls
+              autoPlay
+              style={{ width: "100%", maxHeight: "300px" }}
+            />
+            <div>{messageData.caption}</div>
+          </>
+        ) : messageData.type === "image" && Array.isArray(messageData.imageurls) ? (
+          <>
+            {messageData.imageurls.map((url, i) => (
+              <img
+                key={i}
+                src={url}
+                alt={`이미지 ${i + 1}`}
+                style={{ width: "100%", marginBottom: "0.5rem" }}
+              />
+            ))}
+            <div>{messageData.caption}</div>
+          </>
+        ) : (
+          <p>미디어 없음</p>
+        )}
+      </div>
+
+      {messageData.music && (
+        <audio ref={audioRef} src={messageData.music} autoPlay />
       )}
 
-      <button type="button" onClick={handleKakaoShare}>
-        style={{
-          marginTop: "1.5rem",
-          fontSize: "1.2rem",
-          backgroundColor: "#FEE500",
-          padding: "0.7rem 1.5rem",
-          border: "none",
-          borderRadius: "8px",
-          cursor: "pointer",
-        }}
-      
-        카카오톡으로 공유하기
-      </button>
+      <div style={{ marginTop: "2rem", display: "flex", gap: "0.5rem", flexWrap: "wrap", justifyContent: "center" }}>
+        <button onClick={handleKakaoShare}>카카오톡 공유</button>
+        <button onClick={handleCopyLink}>링크 복사</button>
+        <button
+          onClick={() =>
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`, "_blank")
+          }
+        >
+          Facebook 공유
+        </button>
+        <button
+          onClick={() =>
+            window.open(`https://twitter.com/intent/tweet?url=${window.location.href}`, "_blank")
+          }
+        >
+          Twitter 공유
+        </button>
+        {downloadUrl && (
+          <a href={downloadUrl} download style={{ textDecoration: "none" }}>
+            <button>미디어 저장</button>
+          </a>
+        )}
+        <button onClick={() => router.push("/")}>🏠 처음으로</button>
+      </div>
+
+      <div style={{ marginTop: "2rem" }}>
+        <h4>📱 QR 코드로 공유</h4>
+        <QRCode value={window.location.href} size={128} />
+      </div>
     </div>
   );
 }
