@@ -68,10 +68,7 @@ const MusicSelectPage = () => {
     const selectedType = localStorage.getItem("selected-type");
     const messageId = localStorage.getItem("message-id"); // ✅ 추가!
         
-  if (!messageId || !selectedType) {
-     alert("⚠️ 메시지 ID나 미디어 타입이 없습니다. 이전 단계에서 누락된 정보가 있을 수 있어요.");
-     return;
-  }
+  if (!messageId || !selectedType) 
     router.push(`/view/test01`);
 
   };
