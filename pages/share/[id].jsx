@@ -1,5 +1,4 @@
 // pages/share/[id].jsx
-
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
 import { doc, getDoc } from "firebase/firestore";
@@ -8,9 +7,9 @@ import QRCode from "qrcode.react";
 
 export default function SharePage() {
   const [messageData, setMessageData] = useState(null);
-  const audioRef = useRef(null);
-  const router = useRouter();
   const [downloadUrl, setDownloadUrl] = useState(null);
+  const router = useRouter();
+  const audioRef = useRef(null);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -40,7 +39,7 @@ export default function SharePage() {
   const handleKakaoShare = () => {
     if (window.Kakao && window.Kakao.Share) {
       if (!window.Kakao.isInitialized()) {
-        window.Kakao.init("YOUR_KAKAO_JAVASCRIPT_KEY");
+        window.Kakao.init("4abf45cca92e802defcd2c15a6615155"); // 실제 키로 교체
       }
 
       window.Kakao.Share.sendDefault({
@@ -64,8 +63,8 @@ export default function SharePage() {
   if (!messageData) return <p>로딩 중...</p>;
 
   return (
-    <div style={{ padding: "1.5rem", textAlign: "center" }}>
-      <h2>공유된 메시지</h2>
+    <div style={{ padding: "2rem", textAlign: "center" }}>
+      <h2>📨 공유된 메시지</h2>
 
       <div style={{ marginBottom: "1rem" }}>
         {messageData.type === "video" && messageData.videoUrl ? (
@@ -76,7 +75,7 @@ export default function SharePage() {
               autoPlay
               style={{ width: "100%", maxHeight: "300px" }}
             />
-            <div>{messageData.caption}</div>
+            <div style={{ marginTop: "0.5rem" }}>{messageData.caption}</div>
           </>
         ) : messageData.type === "image" && Array.isArray(messageData.imageurls) ? (
           <>
@@ -99,21 +98,13 @@ export default function SharePage() {
         <audio ref={audioRef} src={messageData.music} autoPlay />
       )}
 
-      <div style={{ marginTop: "2rem", display: "flex", gap: "0.5rem", flexWrap: "wrap", justifyContent: "center" }}>
+      <div style={{ marginTop: "1.5rem", display: "flex", gap: "0.5rem", flexWrap: "wrap", justifyContent: "center" }}>
         <button onClick={handleKakaoShare}>카카오톡 공유</button>
         <button onClick={handleCopyLink}>링크 복사</button>
-        <button
-          onClick={() =>
-            window.open(`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`, "_blank")
-          }
-        >
+        <button onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`, "_blank")}>
           Facebook 공유
         </button>
-        <button
-          onClick={() =>
-            window.open(`https://twitter.com/intent/tweet?url=${window.location.href}`, "_blank")
-          }
-        >
+        <button onClick={() => window.open(`https://twitter.com/intent/tweet?url=${window.location.href}`, "_blank")}>
           Twitter 공유
         </button>
         {downloadUrl && (
