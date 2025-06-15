@@ -57,6 +57,7 @@ export default function ViewMessagePreviewPage() {
                 key={index}
                 src={url}
                 alt={`이미지 ${index + 1}`}
+                crossOrigin="anonymous"
                 className={styles["media-element"]}
               />
             ))
