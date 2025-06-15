@@ -72,7 +72,7 @@ const MusicSelectPage = () => {
      alert("⚠️ 메시지 ID나 미디어 타입이 없습니다. 이전 단계에서 누락된 정보가 있을 수 있어요.");
      return;
   }
-    router.push(`/view/${messageId}`);
+    router.push(`/view/test01`);
 
   };
 
