@@ -51,8 +51,8 @@ export default function ViewMessagePreviewPage() {
               controls
               className={styles["media-element"]}
             />
-          ) : messageData.type === "image" && Array.isArray(messageData.imageUrls) ? (
-            messageData.imageUrls.map((url, index) => (
+          ) : messageData.type === "image" && Array.isArray(messageData.imageurls) ? (
+            messageData.imageurls.map((url, index) => (
               <img
                 key={index}
                 src={url}
