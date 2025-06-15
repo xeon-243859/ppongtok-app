@@ -45,14 +45,14 @@ export default function ViewMessagePreviewPage() {
         <h2 className={styles["preview-title"]}>미리보기</h2>
 
         <div className={styles["moving-box"]}>
-          {messageData.type === "video" ? (
+          {messageData.type === "video" && messageData.videoUrl ? (
             <video
               src={messageData.videoUrl}
               controls
               className={styles["media-element"]}
             />
-          ) : (
-            messageData.imageList?.map((url, index) => (
+          ) : messageData.type === "image" && Array.isArray(messageData.imageList) ? (
+            messageData.imageList.map((url, index) => (
               <img
                 key={index}
                 src={url}
@@ -60,6 +60,8 @@ export default function ViewMessagePreviewPage() {
                 className={styles["media-element"]}
               />
             ))
+          ) : (
+            <p>미디어가 존재하지 않습니다.</p>
           )}
         </div>
 
@@ -84,7 +86,9 @@ export default function ViewMessagePreviewPage() {
           </button>
         </div>
 
-        <audio ref={audioRef} src={messageData.music} autoPlay />
+        {messageData.music && (
+          <audio ref={audioRef} src={messageData.music} autoPlay />
+        )}
       </div>
     </>
   );
