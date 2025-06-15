@@ -1,124 +1,126 @@
 // pages/share/[id].jsx
-import { useEffect, useState, useRef } from "react";
+
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import Head from "next/head";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../src/firebase";
 import QRCode from "qrcode.react";
+import html2canvas from "html2canvas";
+import styles from "../../src/styles/sharepage.module.css";
 
-export default function SharePage() {
+export default function ShareMessagePage() {
   const [messageData, setMessageData] = useState(null);
-  const [downloadUrl, setDownloadUrl] = useState(null);
   const router = useRouter();
-  const audioRef = useRef(null);
+  const { id } = router.query;
+  const previewRef = useRef(null);
 
   useEffect(() => {
     if (!router.isReady) return;
 
     const fetchData = async () => {
-      const docRef = doc(db, "messages", router.query.id);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        setMessageData(data);
-        if (data.type === "video" && data.videoUrl) {
-          setDownloadUrl(data.videoUrl);
-        } else if (data.type === "image" && Array.isArray(data.imageurls)) {
-          setDownloadUrl(data.imageurls[0]);
+      try {
+        const docRef = doc(db, "messages", id);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setMessageData(data);
+          console.log("✅ 불러온 메시지:", data);
+        } else {
+          console.error("❌ 메시지를 찾을 수 없습니다.");
         }
+      } catch (error) {
+        console.error("🔥 메시지 불러오기 오류:", error);
       }
     };
 
     fetchData();
   }, [router.isReady]);
 
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(window.location.href);
-    alert("링크가 복사되었습니다!");
+  const handleDownloadImage = async () => {
+    if (!previewRef.current) return;
+    const canvas = await html2canvas(previewRef.current);
+    const link = document.createElement("a");
+    link.download = `message-${id}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
   };
 
-  const handleKakaoShare = () => {
-    if (window.Kakao && window.Kakao.Share) {
-      if (!window.Kakao.isInitialized()) {
-        window.Kakao.init("4abf45cca92e802defcd2c15a6615155"); // 실제 키로 교체
-      }
+  const currentUrl = `https://ppongtok-app.vercel.app/share/${id}`;
 
-      window.Kakao.Share.sendDefault({
-        objectType: "feed",
-        content: {
-          title: "메시지를 확인해보세요",
-          description: messageData?.caption || "",
-          imageUrl:
-            messageData?.type === "image"
-              ? messageData.imageurls[0]
-              : "https://ppongtok-app.vercel.app/logo.png",
-          link: {
-            mobileWebUrl: window.location.href,
-            webUrl: window.location.href,
-          },
-        },
-      });
-    }
-  };
-
-  if (!messageData) return <p>로딩 중...</p>;
+  if (!messageData) return <p>불러오는 중...</p>;
 
   return (
-    <div style={{ padding: "2rem", textAlign: "center" }}>
-      <h2>📨 공유된 메시지</h2>
+    <>
+      <Head>
+        <title>공유하기</title>
+      </Head>
+      <div className={styles.container}>
+        <h2 className={styles.title}>💌 공유 메시지</h2>
 
-      <div style={{ marginBottom: "1rem" }}>
-        {messageData.type === "video" && messageData.videoUrl ? (
-          <>
+        <div ref={previewRef} className={styles.previewBox}>
+          {messageData.type === "video" && messageData.videoUrl ? (
             <video
               src={messageData.videoUrl}
               controls
-              autoPlay
-              style={{ width: "100%", maxHeight: "300px" }}
+              className={styles.media}
             />
-            <div style={{ marginTop: "0.5rem" }}>{messageData.caption}</div>
-          </>
-        ) : messageData.type === "image" && Array.isArray(messageData.imageurls) ? (
-          <>
-            {messageData.imageurls.map((url, i) => (
+          ) : (
+            messageData.imageurls?.map((url, index) => (
               <img
-                key={i}
+                key={index}
                 src={url}
-                alt={`이미지 ${i + 1}`}
-                style={{ width: "100%", marginBottom: "0.5rem" }}
+                alt={`이미지 ${index + 1}`}
+                className={styles.media}
               />
-            ))}
-            <div>{messageData.caption}</div>
-          </>
-        ) : (
-          <p>미디어 없음</p>
+            ))
+          )}
+          <div className={styles.caption}>{messageData.caption}</div>
+        </div>
+
+        {messageData.music && (
+          <audio src={messageData.music} autoPlay controls className={styles.audio} />
         )}
-      </div>
 
-      {messageData.music && (
-        <audio ref={audioRef} src={messageData.music} autoPlay />
-      )}
-
-      <div style={{ marginTop: "1.5rem", display: "flex", gap: "0.5rem", flexWrap: "wrap", justifyContent: "center" }}>
-        <button onClick={handleKakaoShare}>카카오톡 공유</button>
-        <button onClick={handleCopyLink}>링크 복사</button>
-        <button onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`, "_blank")}>
-          Facebook 공유
-        </button>
-        <button onClick={() => window.open(`https://twitter.com/intent/tweet?url=${window.location.href}`, "_blank")}>
-          Twitter 공유
-        </button>
-        {downloadUrl && (
-          <a href={downloadUrl} download style={{ textDecoration: "none" }}>
-            <button>미디어 저장</button>
+        <div className={styles.buttonGroup}>
+          <button
+            className={styles.button}
+            onClick={() => navigator.clipboard.writeText(currentUrl)}
+          >
+            🔗 링크 복사
+          </button>
+          <button className={styles.button} onClick={handleDownloadImage}>
+            💾 이미지 저장
+          </button>
+          <a
+            className={styles.button}
+            href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            📘 페이스북
           </a>
-        )}
-        <button onClick={() => router.push("/")}>🏠 처음으로</button>
-      </div>
+          <a
+            className={styles.button}
+            href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            🐦 트위터
+          </a>
+          <button
+            className={styles.button}
+            onClick={() => router.push("/")}
+          >
+            🏠 처음으로
+          </button>
+        </div>
 
-      <div style={{ marginTop: "2rem" }}>
-        <h4>📱 QR 코드로 공유</h4>
-        <QRCode value={window.location.href} size={128} />
+        <div className={styles.qrBox}>
+          <p>📱 QR코드로 공유하기</p>
+          <QRCode value={currentUrl} size={160} />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
