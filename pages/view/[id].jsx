@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { doc, getDoc } from "firebase/firestore";	
+import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../src/firebase";
 import styles from "../../src/styles/viewpreview.module.css";
 
@@ -40,11 +40,11 @@ export default function ViewMessagePreviewPage() {
       <div className={styles["preview-container"]}>
         <h2 className={styles["preview-title"]}>미리보기</h2>
 
-        {messageData.message && (
-          <div className={styles["message-text"]}>{messageData.message}</div>
-        )}
-
         <div className={styles["moving-box"]}>
+          {messageData.message && (
+            <div className={styles["message-text"]}>{messageData.message}</div>
+          )}
+
           {messageData.type === "video" && messageData.videoUrl ? (
             <>
               <video
@@ -55,7 +55,7 @@ export default function ViewMessagePreviewPage() {
                 style={{ backgroundColor: "#000" }}
               />
               {messageData.caption && (
-                <div className={styles["caption"]}>{messageData.caption}</div>
+                <div className={styles["caption-scroll"]}>{messageData.caption}</div>
               )}
             </>
           ) : messageData.type === "image" &&
@@ -71,7 +71,7 @@ export default function ViewMessagePreviewPage() {
                 />
               ))}
               {messageData.caption && (
-                <div className={styles["caption"]}>{messageData.caption}</div>
+                <div className={styles["caption-scroll"]}>{messageData.caption}</div>
               )}
             </>
           ) : (

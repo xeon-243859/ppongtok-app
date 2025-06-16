@@ -8,7 +8,7 @@ export default function ImageSelectPage() {
   const [images, setImages] = useState(["", "", "", ""]);
 
   const handleImageSelect = (e) => {
-    const files = Array.from(e.target.files).slice(0, 4); // 최대 4장
+    const files = Array.from(e.target.files).slice(0, 4);
     const updated = [...images];
     files.forEach((file, index) => {
       const url = URL.createObjectURL(file);
@@ -37,26 +37,35 @@ export default function ImageSelectPage() {
 
   const handleNext = () => {
     const cleanedImages = images.filter(Boolean);
-    if (cleanedImages.length === 0) {
+    if (cleanedImages.length < 1) {
       alert("최소 1장의 이미지를 선택해주세요.");
       return;
+    }
+    for (let i = 0; i < 4; i++) {
+      localStorage.setItem(`img-${i + 1}`, images[i] || "");
     }
     localStorage.setItem("selected-type", "image");
     localStorage.removeItem("selected-video");
     localStorage.setItem("allow-music", "true");
-    localStorage.setItem("img-1", images[0] || "");
-    localStorage.setItem("img-2", images[1] || "");
-    localStorage.setItem("img-3", images[2] || "");
-    localStorage.setItem("img-4", images[3] || "");
     setTimeout(() => {
       router.push("/musicselectpage");
     }, 100);
   };
 
+  const handleThemeLibrary = () => {
+    localStorage.setItem("last-image-page", "imageselectpage");
+    router.push("/imagethemepage");
+  };
+
   return (
     <div className={styles["image-select-page"]}>
       <h2 className={styles["title"]}>이미지를 선택해주세요</h2>
-      <input
+
+      <button onClick={handleThemeLibrary} className={styles["upload-button"]}>
+        📁 이미지 테마 저장소 이동
+      </button>
+
+      <input	
         type="file"
         accept="image/*"
         multiple
@@ -67,13 +76,14 @@ export default function ImageSelectPage() {
       <button onClick={() => fileInputRef.current.click()} className={styles["upload-button"]}>
         이미지 업로드
       </button>
+
       <div className={styles["preview"]}>
         {images.map((url, index) => (
           <div key={index} className={styles["thumbnail-wrapper"]}>
             {url && (
               <>
                 <img
-                  src={url.includes("/backgrounds/") ? url : url}
+                  src={url}
                   className={styles["thumbnail"]}
                   alt={`img-${index + 1}`}
                 />
