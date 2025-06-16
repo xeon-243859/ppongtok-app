@@ -44,7 +44,7 @@ export default function ViewMessagePreviewPage() {
           {messageData.type === "video" && messageData.videoUrl ? (
             <>
               <video
-                src={Array.isArray(messageData.videoUrl) ? messageData.videoUrl[0] : messageData.videoUrl}
+                src={messageData.videoUrl}
                 controls
                 autoPlay
                 className={styles["media-element"]}
