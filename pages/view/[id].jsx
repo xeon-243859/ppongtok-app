@@ -41,8 +41,8 @@ export default function ViewMessagePreviewPage() {
         <h2 className={styles["preview-title"]}>미리보기</h2>
 
         <div className={styles["moving-box"]}>
-          {messageData.message && (
-            <div className={styles["message-text"]}>{messageData.message}</div>
+           {messageData.message && (
+       <div className={styles["caption-scroll"]}>{messageData.message}</div>
           )}
 
           {messageData.type === "video" && messageData.videoUrl ? (
