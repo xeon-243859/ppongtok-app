@@ -39,9 +39,8 @@
 
 .media-element {
   width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 20px;
+  max-height: 400px;
+  object-fit: contain;
 }
 
 

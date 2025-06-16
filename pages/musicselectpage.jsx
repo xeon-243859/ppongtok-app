@@ -1,9 +1,13 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useRouter } from "next/router"; // ✅ useNavigate → useRouter
-import styles from "./musicselectpage.module.css"; // ✅ CSS 모듈로 변경
+import { useRouter } from "next/router";
+import styles from "./musicselectpage.module.css";
+
+// ✅ Firestore 관련 추가
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../src/firebase";
 
 const MusicSelectPage = () => {
-  const router = useRouter(); // ✅ useNavigate → useRouter
+  const router = useRouter();
   const fileInputRef = useRef(null);
 
   const [selectedMusic, setSelectedMusic] = useState(null);
@@ -13,7 +17,7 @@ const MusicSelectPage = () => {
     const allowed = localStorage.getItem("allow-music");
     if (allowed !== "true") {
       console.warn("🚫 비인가 접근. 스타일 선택으로 되돌림.");
-      router.replace("/musicselectpage"); // ✅ navigate → router.replace
+      router.replace("/musicselectpage");
     }
   }, [router]);
 
@@ -42,7 +46,6 @@ const MusicSelectPage = () => {
   };
 
   const handleMusicFile = () => router.push("/musicthemepage");
-
   const handleLocalFile = () => fileInputRef.current.click();
 
   const handleFileChange = (e) => {
@@ -56,7 +59,7 @@ const MusicSelectPage = () => {
   };
 
   const handleBack = () => {
-    const mediaType = localStorage.getItem("media-type"); // 예: "image" 또는 "video"
+    const mediaType = localStorage.getItem("media-type");
     if (mediaType === "video") {
       router.push("/videoselectpage");
     } else {
@@ -64,13 +67,36 @@ const MusicSelectPage = () => {
     }
   };
 
-  const handleNext = () => {
-    const selectedType = localStorage.getItem("selected-type");
-    const messageId = localStorage.getItem("message-id"); // ✅ 추가!
-        
-  if (!messageId || !selectedType) 
-    router.push(`/view/test01`);
+  // ✅ 미리보기로 넘어가기 + Firestore 저장
+  const handleNext = async () => {
+    try {
+      const caption = localStorage.getItem("caption");
+      const type = localStorage.getItem("type"); // "video" or "image"
+      const music = localStorage.getItem("selected-music");
 
+      const imageurls = JSON.parse(localStorage.getItem("imageurls") || "[]");
+      const videoUrl = localStorage.getItem("videoUrl");
+
+      if (!type || (!videoUrl && imageurls.length === 0)) {
+        alert("영상 또는 이미지가 선택되지 않았습니다.");
+        return;
+      }
+
+      const docRef = await addDoc(collection(db, "messages"), {
+        type,
+        caption,
+        music,
+        imageurls,
+        videoUrl: type === "video" ? videoUrl : null,
+        createdAt: new Date().toISOString(),
+      });
+
+      console.log("✅ 메시지 저장 완료:", docRef.id);
+      router.push(`/view/${docRef.id}`);
+    } catch (error) {
+      console.error("❌ Firestore 저장 실패:", error);
+      alert("메시지를 저장하지 못했습니다.");
+    }
   };
 
   return (

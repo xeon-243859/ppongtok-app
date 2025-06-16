@@ -1,5 +1,3 @@
-// pages/view/[id].jsx
-
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -16,25 +14,19 @@ export default function ViewMessagePreviewPage() {
     if (!router.isReady) return;
 
     const { id } = router.query;
-    console.log("🧭 현재 id:", id);
-
     const fetchData = async () => {
       try {
         const docRef = doc(db, "messages", id);
         const docSnap = await getDoc(docRef);
-
         if (docSnap.exists()) {
-          const data = docSnap.data();
-          console.log("✅ 불러온 메시지:", data);
-          setMessageData(data);
+          setMessageData(docSnap.data());
         } else {
-          console.log("❌ No such document!");
+          console.log("❌ 메시지를 찾을 수 없습니다.");
         }
       } catch (error) {
-        console.error("🔥 Error fetching message:", error);
+        console.error("🔥 메시지 불러오기 오류:", error);
       }
     };
-
     fetchData();
   }, [router.isReady]);
 
@@ -49,11 +41,10 @@ export default function ViewMessagePreviewPage() {
         <h2 className={styles["preview-title"]}>미리보기</h2>
 
         <div className={styles["moving-box"]}>
-          {/* 영상이 존재하는 경우 (videoUrl은 배열) */}
-          {Array.isArray(messageData.videoUrl) && messageData.videoUrl.length > 0 ? (
+          {messageData.type === "video" && messageData.videoUrl ? (
             <>
               <video
-                src={messageData.videoUrl[0]}
+                src={messageData.videoUrl}
                 controls
                 autoPlay
                 className={styles["media-element"]}
@@ -63,7 +54,9 @@ export default function ViewMessagePreviewPage() {
                 <div className={styles["caption"]}>{messageData.caption}</div>
               )}
             </>
-          ) : Array.isArray(messageData.imageurls) && messageData.imageurls.length > 0 ? (
+          ) : messageData.type === "image" &&
+            Array.isArray(messageData.imageurls) &&
+            messageData.imageurls.length > 0 ? (
             <>
               {messageData.imageurls.map((url, index) => (
                 <img
