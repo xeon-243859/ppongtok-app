@@ -35,7 +35,7 @@ export default function ImageSelectPage() {
     const cleanedImages = images.filter(Boolean);
     localStorage.removeItem("selected-video");
     localStorage.setItem("selected-type", "image");
-    localStorage.setItem("selectedImages", JSON.stringify(cleanedImages));
+     localStorage.setItem("selected-images", JSON.stringify(cleanedImages)); 
     localStorage.setItem("allow-music", "true");
     setTimeout(() => {
       router.push("/musicselectpage");

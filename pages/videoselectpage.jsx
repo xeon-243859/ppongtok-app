@@ -81,6 +81,24 @@ export default function VideoSelectPage() {
     }
   };
 
+  const handleNext = () => {
+  if (!selectedVideo) {
+    alert("🎥 영상을 선택해주세요!");
+    return;
+  }
+
+  if (typeof window !== "undefined") {
+    localStorage.setItem("selected-video", selectedVideo);
+    localStorage.setItem("selected-type", "video");
+    localStorage.setItem("allow-music", "true");
+
+    setTimeout(() => {
+      router.push("/musicselectpage");
+    }, 100);
+  }
+};
+
+
   return (
     <div className={styles.videoTitleGroup}>
       {showLine1 && <h2 className={styles.videoTitleLine1}>배경으로 사용할 영상파일 1개를</h2>}
@@ -118,18 +136,9 @@ export default function VideoSelectPage() {
       </div>
 
       <div className={styles.videoButtonNav}>
-        <button onClick={handleBack}>뒤로가기</button>
-        <button
-          onClick={() => {
-            if (typeof window !== "undefined") {
-              localStorage.setItem("allow-music", "true");
-            }
-            router.push("/musicselectpage");
-          }}
-        >
-          다음으로
-        </button>
-      </div>
-    </div>
-  );
-}
+  <button onClick={handleBack}>뒤로가기</button>
+  <button onClick={handleNext}>다음으로</button>
+   </div>
+   </div>
+   );
+   }
