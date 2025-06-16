@@ -13,6 +13,8 @@ export default function ImageSelectPage() {
     localStorage.setItem("selectedImages", JSON.stringify(urls));
     localStorage.setItem("selected-type", "image");
     localStorage.removeItem("selectedVideo");
+    localStorage.setItem("message-id", localStorage.getItem("message-id") || "test01");
+    localStorage.setItem("allow-music", "true");
     setImages(urls);
   };
 

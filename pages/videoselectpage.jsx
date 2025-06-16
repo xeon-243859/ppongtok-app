@@ -92,6 +92,9 @@ export default function VideoSelectPage() {
     localStorage.setItem("selected-type", "video");
     localStorage.setItem("allow-music", "true");
 
+     const messageId = localStorage.getItem("message-id") || "test01";
+    localStorage.setItem("message-id", messageId);
+
     setTimeout(() => {
       router.push("/musicselectpage");
     }, 100);
