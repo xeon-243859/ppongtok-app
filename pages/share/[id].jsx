@@ -1,5 +1,3 @@
-// pages/share/[id].jsx
-
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -16,7 +14,7 @@ export default function ShareMessagePage() {
   const previewRef = useRef(null);
 
   useEffect(() => {
-    if (!router.isReady) return;
+    if (!router.isReady || !id) return;
 
     const fetchData = async () => {
       try {
@@ -24,8 +22,8 @@ export default function ShareMessagePage() {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const data = docSnap.data();
-          setMessageData(data);
           console.log("✅ 불러온 메시지:", data);
+          setMessageData(data);
         } else {
           console.error("❌ 메시지를 찾을 수 없습니다.");
         }
@@ -35,11 +33,11 @@ export default function ShareMessagePage() {
     };
 
     fetchData();
-  }, [router.isReady]);
+  }, [router.isReady, id]);
 
   const handleDownloadImage = async () => {
     if (!previewRef.current) return;
-    const canvas = await html2canvas(previewRef.current, { useCORS: true });
+    const canvas = await html2canvas(previewRef.current);
     const link = document.createElement("a");
     link.download = `message-${id}.png`;
     link.href = canvas.toDataURL("image/png");
@@ -60,35 +58,25 @@ export default function ShareMessagePage() {
 
         <div ref={previewRef} className={styles.previewBox}>
           {messageData.type === "video" && messageData.videoUrl ? (
-            <video
-              src={messageData.videoUrl}
-              controls
-              className={styles.media}
-              style={{ backgroundColor: "#000" }}
-            />
-          ) : messageData.type === "image" &&
-            Array.isArray(messageData.imageurls) &&
-            messageData.imageurls.length > 0 ? (
-            messageData.imageurls.map((url, index) => (
+            <video src={messageData.videoUrl} controls className={styles.media} />
+          ) : (
+            messageData.imageurls?.map((url, index) => (
               <img
                 key={index}
-                src={url.startsWith("data:image") ? url : `data:image/jpeg;base64,${url}`}
+                src={url?.startsWith("data:image") ? url : `data:image/jpeg;base64,${url}`}
                 alt={`이미지 ${index + 1}`}
                 className={styles.media}
-                crossOrigin="anonymous"
               />
             ))
-          ) : (
-            <p>미디어가 없습니다.</p>
           )}
 
-          {messageData.message && (
+          {typeof messageData.message === "string" && (
             <div className={styles.caption}>{messageData.message}</div>
           )}
         </div>
 
         {messageData.music && (
-          <audio src={messageData.music} autoPlay controls className={styles.audio} />
+          <audio src={messageData.music} controls autoPlay className={styles.audio} />
         )}
 
         <div className={styles.buttonGroup}>
@@ -117,9 +105,7 @@ export default function ShareMessagePage() {
           >
             🐦 트위터
           </a>
-          <button className={styles.button} onClick={() => router.push("/")}>
-            🏠 처음으로
-          </button>
+          <button className={styles.button} onClick={() => router.push("/")}>🏠 처음으로</button>
         </div>
 
         <div className={styles.qrBox}>
