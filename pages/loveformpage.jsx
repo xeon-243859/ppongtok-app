@@ -13,6 +13,9 @@ export default function LoveFormPage() {
     }
 
     localStorage.setItem("message", message);
+     const messageId = localStorage.getItem("message-id") || "test01";
+     localStorage.setItem("message-id", messageId);
+
     router.push("/style-select");
   };
 
