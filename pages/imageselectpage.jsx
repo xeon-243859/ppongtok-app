@@ -8,14 +8,16 @@ export default function ImageSelectPage() {
   const [images, setImages] = useState(["", "", "", ""]);
 
   const handleImageSelect = (e) => {
-    const files = Array.from(e.target.files);
-    const urls = files.map((file) => URL.createObjectURL(file));
-    localStorage.setItem("selectedImages", JSON.stringify(urls));
+    const files = Array.from(e.target.files).slice(0, 4); // 최대 4장
+    const updated = [...images];
+    files.forEach((file, index) => {
+      const url = URL.createObjectURL(file);
+      updated[index] = url;
+      localStorage.setItem(`img-${index + 1}`, url);
+    });
+    setImages(updated);
     localStorage.setItem("selected-type", "image");
-    localStorage.removeItem("selectedVideo");
-    localStorage.setItem("message-id", localStorage.getItem("message-id") || "test01");
-    localStorage.setItem("allow-music", "true");
-    setImages(urls);
+    localStorage.removeItem("selected-video");
   };
 
   useEffect(() => {
@@ -35,100 +37,60 @@ export default function ImageSelectPage() {
 
   const handleNext = () => {
     const cleanedImages = images.filter(Boolean);
-    localStorage.removeItem("selected-video");
+    if (cleanedImages.length === 0) {
+      alert("최소 1장의 이미지를 선택해주세요.");
+      return;
+    }
     localStorage.setItem("selected-type", "image");
-     localStorage.setItem("selected-images", JSON.stringify(cleanedImages)); 
+    localStorage.removeItem("selected-video");
     localStorage.setItem("allow-music", "true");
+    localStorage.setItem("img-1", images[0] || "");
+    localStorage.setItem("img-2", images[1] || "");
+    localStorage.setItem("img-3", images[2] || "");
+    localStorage.setItem("img-4", images[3] || "");
     setTimeout(() => {
       router.push("/musicselectpage");
     }, 100);
   };
 
-  const saveImage = (dataUrl) => {
-    const updated = [...images];
-    for (let i = 0; i < 4; i++) {
-      if (!updated[i]) {
-        updated[i] = dataUrl;
-        setImages(updated);
-        localStorage.setItem(`img-${i + 1}`, dataUrl);
-        return;
-      }
-    }
-    alert("모든 슬롯이 가득 찼어요!");
-  };
-
-  const handleImageFile = () => {
-    router.push("/imagethemepage");
-  };
-
-  const handleLocalFile = () => {
-    fileInputRef.current.click();
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      saveImage(reader.result.split(",")[1]); // base64 부분만 저장
-    };
-    reader.readAsDataURL(file);
-  };
-
   return (
-    <div className={styles["image-select-container"]}>
-      <div className={styles["typing-text"]}>
-        <div className={styles["line1"]}>배경으로 사용할 이미지 4개를</div>
-        <div className={styles["line2"]}>선택해 주세요</div>
-      </div>
-
-      <div className={styles.selectButtons}>
-        <button onClick={handleImageFile} className={styles.selectButton}>배경이미지 파일</button>
-        <label htmlFor="local-file" className={styles.selectButton}>내 파일 선택</label>
-        
-        <input
-          ref={fileInputRef}
-          type="file"
-          id="local-file"
-          accept="image/*"
-          style={{ display: "none" }}
-           className={styles.hiddenInput}
-          onChange={handleFileChange}
-        />
-      </div>
-
-      <div className={styles["image-slots-grid"]}>
-        {images.map((src, i) => (
-          <div className={styles["image-slot"]} key={i}>
-            {src ? (
+    <div className={styles["image-select-page"]}>
+      <h2 className={styles["title"]}>이미지를 선택해주세요</h2>
+      <input
+        type="file"
+        accept="image/*"
+        multiple
+        onChange={handleImageSelect}
+        ref={fileInputRef}
+        style={{ display: "none" }}
+      />
+      <button onClick={() => fileInputRef.current.click()} className={styles["upload-button"]}>
+        이미지 업로드
+      </button>
+      <div className={styles["preview"]}>
+        {images.map((url, index) => (
+          <div key={index} className={styles["thumbnail-wrapper"]}>
+            {url && (
               <>
                 <img
-                  src={
-                    src.includes("/backgrounds/")
-                      ? src
-                      : `data:image/jpeg;base64,${src}`
-                  }
-                  alt={`img-${i + 1}`}
+                  src={url.includes("/backgrounds/") ? url : url}
+                  className={styles["thumbnail"]}
+                  alt={`img-${index + 1}`}
                 />
                 <button
                   className={styles["delete-button"]}
-                  onClick={() => handleDelete(i)}
+                  onClick={() => handleDelete(index)}
                 >
                   ❌
                 </button>
               </>
-            ) : (
-              <p>{`img-${i + 1}`}</p>
             )}
           </div>
         ))}
       </div>
-
-      <div className={styles["button-group"]}>
-        <button onClick={() => router.push("/style-select")}>뒤로가기</button>
-        <button onClick={handleNext}>다음으로</button>
-      </div>
+      <button onClick={handleNext} className={styles["next-button"]}>
+        다음으로
+      </button>
     </div>
   );
 }

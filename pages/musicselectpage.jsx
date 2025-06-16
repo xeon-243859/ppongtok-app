@@ -93,9 +93,15 @@ const MusicSelectPage = () => {
     const videoUrl = localStorage.getItem("selected-video");
     payload.videoUrl = videoUrl; // ✅ 문자열로 저장
   } else if (type === "image") {
-    const imageUrls = JSON.parse(localStorage.getItem("selectedImages") || "[]");
-    payload.imageurls = imageUrls; // ✅ 이미지 배열
+    const imageurls = [
+      localStorage.getItem("img-1"),
+      localStorage.getItem("img-2"),
+      localStorage.getItem("img-3"),
+      localStorage.getItem("img-4"),
+    ].filter(Boolean); // 비어있는 건 제거
+    payload.imageurls = imageurls;
   }
+
 
   try {
     await setDoc(doc(db, "messages", messageId), payload);

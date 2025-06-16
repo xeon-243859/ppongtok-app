@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";	
 import { db } from "../../src/firebase";
 import styles from "../../src/styles/viewpreview.module.css";
 
@@ -21,10 +21,10 @@ export default function ViewMessagePreviewPage() {
         if (docSnap.exists()) {
           setMessageData(docSnap.data());
         } else {
-          console.log("❌ 메시지를 찾을 수 없습니다.");
+          console.log("\u274C 메시지를 찾을 수 없습니다.");
         }
       } catch (error) {
-        console.error("🔥 메시지 불러오기 오류:", error);
+        console.error("\ud83d\udd25 메시지 불러오기 오류:", error);
       }
     };
     fetchData();
@@ -39,6 +39,10 @@ export default function ViewMessagePreviewPage() {
       </Head>
       <div className={styles["preview-container"]}>
         <h2 className={styles["preview-title"]}>미리보기</h2>
+
+        {messageData.message && (
+          <div className={styles["message-text"]}>{messageData.message}</div>
+        )}
 
         <div className={styles["moving-box"]}>
           {messageData.type === "video" && messageData.videoUrl ? (
@@ -58,12 +62,11 @@ export default function ViewMessagePreviewPage() {
             Array.isArray(messageData.imageurls) &&
             messageData.imageurls.length > 0 ? (
             <>
-              {messageData.imageurls.map((url, index) => (
+              {messageData.imageurls.map((img, index) => (
                 <img
                   key={index}
-                  src={url}
-                  alt={`이미지 ${index + 1}`}
-                  crossOrigin="anonymous"
+                  src={img.startsWith("data:image") ? img : `data:image/jpeg;base64,${img}`}
+                  alt={`img-${index + 1}`}
                   className={styles["media-element"]}
                 />
               ))}
