@@ -39,9 +39,7 @@ export default function ShareMessagePage() {
 
   const handleDownloadImage = async () => {
     if (!previewRef.current) return;
-    const canvas = await html2canvas(previewRef.current, {
-      useCORS: true,
-    });
+    const canvas = await html2canvas(previewRef.current, { useCORS: true });
     const link = document.createElement("a");
     link.download = `message-${id}.png`;
     link.href = canvas.toDataURL("image/png");
@@ -61,17 +59,20 @@ export default function ShareMessagePage() {
         <h2 className={styles.title}>💌 공유 메시지</h2>
 
         <div ref={previewRef} className={styles.previewBox}>
-          {messageData.videoUrl ? (
+          {messageData.type === "video" && messageData.videoUrl ? (
             <video
               src={messageData.videoUrl}
               controls
               className={styles.media}
+              style={{ backgroundColor: "#000" }}
             />
-          ) : Array.isArray(messageData.imageurls) && messageData.imageurls.length > 0 ? (
+          ) : messageData.type === "image" &&
+            Array.isArray(messageData.imageurls) &&
+            messageData.imageurls.length > 0 ? (
             messageData.imageurls.map((url, index) => (
               <img
                 key={index}
-                src={url}
+                src={url.startsWith("data:image") ? url : `data:image/jpeg;base64,${url}`}
                 alt={`이미지 ${index + 1}`}
                 className={styles.media}
                 crossOrigin="anonymous"
@@ -80,8 +81,9 @@ export default function ShareMessagePage() {
           ) : (
             <p>미디어가 없습니다.</p>
           )}
-          {messageData.caption && (
-            <div className={styles.caption}>{messageData.caption}</div>
+
+          {messageData.message && (
+            <div className={styles.caption}>{messageData.message}</div>
           )}
         </div>
 
@@ -115,10 +117,7 @@ export default function ShareMessagePage() {
           >
             🐦 트위터
           </a>
-          <button
-            className={styles.button}
-            onClick={() => router.push("/")}
-          >
+          <button className={styles.button} onClick={() => router.push("/")}>
             🏠 처음으로
           </button>
         </div>
