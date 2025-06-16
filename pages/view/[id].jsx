@@ -49,10 +49,11 @@ export default function ViewMessagePreviewPage() {
         <h2 className={styles["preview-title"]}>미리보기</h2>
 
         <div className={styles["moving-box"]}>
-          {messageData.videoUrl ? (
+          {/* 영상이 존재하는 경우 (videoUrl은 배열) */}
+          {Array.isArray(messageData.videoUrl) && messageData.videoUrl.length > 0 ? (
             <>
               <video
-                src={messageData.videoUrl}
+                src={messageData.videoUrl[0]}
                 controls
                 autoPlay
                 className={styles["media-element"]}
@@ -77,8 +78,6 @@ export default function ViewMessagePreviewPage() {
                 <div className={styles["caption"]}>{messageData.caption}</div>
               )}
             </>
-          ) : messageData.caption ? (
-            <div className={styles["caption"]}>{messageData.caption}</div>
           ) : (
             <p>미디어가 존재하지 않습니다.</p>
           )}
