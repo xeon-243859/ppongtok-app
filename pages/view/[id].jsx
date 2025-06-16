@@ -49,7 +49,7 @@ export default function ViewMessagePreviewPage() {
         <h2 className={styles["preview-title"]}>미리보기</h2>
 
         <div className={styles["moving-box"]}>
-          {messageData.type === "video" && messageData.videoUrl ? (
+          {messageData.videoUrl ? (
             <>
               <video
                 src={messageData.videoUrl}
@@ -62,7 +62,7 @@ export default function ViewMessagePreviewPage() {
                 <div className={styles["caption"]}>{messageData.caption}</div>
               )}
             </>
-          ) : messageData.type === "image" && Array.isArray(messageData.imageurls) ? (
+          ) : Array.isArray(messageData.imageurls) && messageData.imageurls.length > 0 ? (
             <>
               {messageData.imageurls.map((url, index) => (
                 <img
@@ -99,7 +99,13 @@ export default function ViewMessagePreviewPage() {
           </button>
           <button
             className={styles["action-button"]}
-            onClick={() => router.push(`/share/${router.query.id}`)}
+            onClick={() => {
+              if (router.query.id) {
+                router.push(`/share/${router.query.id}`);
+              } else {
+                alert("잠시 후 다시 시도해 주세요.");
+              }
+            }}
           >
             📤 공유하기
           </button>

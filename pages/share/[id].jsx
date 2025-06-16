@@ -39,7 +39,9 @@ export default function ShareMessagePage() {
 
   const handleDownloadImage = async () => {
     if (!previewRef.current) return;
-    const canvas = await html2canvas(previewRef.current);
+    const canvas = await html2canvas(previewRef.current, {
+      useCORS: true,
+    });
     const link = document.createElement("a");
     link.download = `message-${id}.png`;
     link.href = canvas.toDataURL("image/png");
@@ -59,23 +61,28 @@ export default function ShareMessagePage() {
         <h2 className={styles.title}>💌 공유 메시지</h2>
 
         <div ref={previewRef} className={styles.previewBox}>
-          {messageData.type === "video" && messageData.videoUrl ? (
+          {messageData.videoUrl ? (
             <video
               src={messageData.videoUrl}
               controls
               className={styles.media}
             />
-          ) : (
-            messageData.imageurls?.map((url, index) => (
+          ) : Array.isArray(messageData.imageurls) && messageData.imageurls.length > 0 ? (
+            messageData.imageurls.map((url, index) => (
               <img
                 key={index}
                 src={url}
                 alt={`이미지 ${index + 1}`}
                 className={styles.media}
+                crossOrigin="anonymous"
               />
             ))
+          ) : (
+            <p>미디어가 없습니다.</p>
           )}
-          <div className={styles.caption}>{messageData.caption}</div>
+          {messageData.caption && (
+            <div className={styles.caption}>{messageData.caption}</div>
+          )}
         </div>
 
         {messageData.music && (
