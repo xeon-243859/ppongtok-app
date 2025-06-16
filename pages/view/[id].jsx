@@ -21,10 +21,10 @@ export default function ViewMessagePreviewPage() {
         if (docSnap.exists()) {
           setMessageData(docSnap.data());
         } else {
-          console.log("\u274C 메시지를 찾을 수 없습니다.");
+          console.log("❌ 메시지를 찾을 수 없습니다.");
         }
       } catch (error) {
-        console.error("\ud83d\udd25 메시지 불러오기 오류:", error);
+        console.error("🔥 메시지 불러오기 오류:", error);
       }
     };
     fetchData();
@@ -66,14 +66,14 @@ export default function ViewMessagePreviewPage() {
               </>
             )}
 
-          {messageData.message && messageData.message !== "\ud83c\udf3f" && (
+          {messageData.message && messageData.message !== "🌿" && (
             <div className={styles["caption-scroll"]}>{messageData.message}</div>
           )}
         </div>
 
         <div className={styles["button-group"]}>
           <button className={styles["action-button"]} onClick={() => router.back()}>
-            \u2b05 뒤로가기
+            ⬅ 뒤로가기
           </button>
           <button className={styles["action-button"]} onClick={() => router.push("/")}>🏠 처음으로</button>
           <button
