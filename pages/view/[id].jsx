@@ -41,57 +41,41 @@ export default function ViewMessagePreviewPage() {
         <h2 className={styles["preview-title"]}>미리보기</h2>
 
         <div className={styles["moving-box"]}>
-           {messageData.message && (
-       <div className={styles["caption-scroll"]}>{messageData.message}</div>
+          {messageData.type === "video" && messageData.videoUrl && (
+            <video
+              src={messageData.videoUrl}
+              controls
+              autoPlay
+              className={styles["media-element"]}
+              style={{ backgroundColor: "#000" }}
+            />
           )}
 
-          {messageData.type === "video" && messageData.videoUrl ? (
-            <>
-              <video
-                src={messageData.videoUrl}
-                controls
-                autoPlay
-                className={styles["media-element"]}
-                style={{ backgroundColor: "#000" }}
-              />
-              {messageData.caption && (
-                <div className={styles["caption-scroll"]}>{messageData.caption}</div>
-              )}
-            </>
-          ) : messageData.type === "image" &&
+          {messageData.type === "image" &&
             Array.isArray(messageData.imageurls) &&
-            messageData.imageurls.length > 0 ? (
-            <>
-              {messageData.imageurls.map((img, index) => (
-                <img
-                  key={index}
-                  src={img.startsWith("data:image") ? img : `data:image/jpeg;base64,${img}`}
-                  alt={`img-${index + 1}`}
-                  className={styles["media-element"]}
-                />
-              ))}
-              {messageData.caption && (
-                <div className={styles["caption-scroll"]}>{messageData.caption}</div>
-              )}
-            </>
-          ) : (
-            <p>미디어가 존재하지 않습니다.</p>
+            messageData.imageurls.length > 0 && (
+              <>
+                {messageData.imageurls.map((img, index) => (
+                  <img
+                    key={index}
+                    src={img.startsWith("data:image") ? img : `data:image/jpeg;base64,${img}`}
+                    alt={`img-${index + 1}`}
+                    className={styles["media-element"]}
+                  />
+                ))}
+              </>
+            )}
+
+          {messageData.message && messageData.message !== "\ud83c\udf3f" && (
+            <div className={styles["caption-scroll"]}>{messageData.message}</div>
           )}
         </div>
 
         <div className={styles["button-group"]}>
-          <button
-            className={styles["action-button"]}
-            onClick={() => router.back()}
-          >
-            ⬅ 뒤로가기
+          <button className={styles["action-button"]} onClick={() => router.back()}>
+            \u2b05 뒤로가기
           </button>
-          <button
-            className={styles["action-button"]}
-            onClick={() => router.push("/")}
-          >
-            🏠 처음으로
-          </button>
+          <button className={styles["action-button"]} onClick={() => router.push("/")}>🏠 처음으로</button>
           <button
             className={styles["action-button"]}
             onClick={() => {
