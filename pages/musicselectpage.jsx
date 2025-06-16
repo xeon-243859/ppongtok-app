@@ -70,7 +70,7 @@ const MusicSelectPage = () => {
 
     if (!messageId || !selectedType) {
       alert("🚫 메시지 정보가 없습니다. 이전 단계로 돌아갑니다.");
-      router.push("/writepage");
+      router.push("/loveformpage");
       return;
     }
 
