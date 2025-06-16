@@ -85,7 +85,7 @@ export default function ImageSelectPage() {
 
       <div className={styles.selectButtons}>
         <button onClick={handleImageFile} className={styles.selectButton}>배경이미지 파일</button>
-        <button onClick={() => router.push("/imagethemepage")} className={styles.selectButton}>🎨 테마 저장소로 이동</button>
+        
         <label htmlFor="local-file" className={styles.selectButton}>내 파일 선택</label>
         <input
           ref={fileInputRef}
