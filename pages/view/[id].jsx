@@ -9,11 +9,11 @@ export default function ViewMessagePreviewPage() {
   const [messageData, setMessageData] = useState(null);
   const audioRef = useRef(null);
   const router = useRouter();
+  const id = router.query.id;
 
   useEffect(() => {
     if (!router.isReady) return;
 
-    const { id } = router.query;
     const fetchData = async () => {
       try {
         const docRef = doc(db, "messages", id);
@@ -27,8 +27,9 @@ export default function ViewMessagePreviewPage() {
         console.error("🔥 메시지 불러오기 오류:", error);
       }
     };
+
     fetchData();
-  }, [router.isReady]);
+  }, [router.isReady, id]);
 
   if (!messageData) return <p>로딩 중...</p>;
 
@@ -37,10 +38,12 @@ export default function ViewMessagePreviewPage() {
       <Head>
         <title>미리보기</title>
       </Head>
+
       <div className={styles["preview-container"]}>
         <h2 className={styles["preview-title"]}>미리보기</h2>
 
         <div className={styles["moving-box"]}>
+          {/* 🎥 영상 */}
           {messageData.type === "video" && messageData.videoUrl && (
             <video
               src={messageData.videoUrl}
@@ -51,6 +54,7 @@ export default function ViewMessagePreviewPage() {
             />
           )}
 
+          {/* 🖼️ 이미지 */}
           {messageData.type === "image" &&
             Array.isArray(messageData.imageurls) &&
             messageData.imageurls.length > 0 && (
@@ -66,30 +70,32 @@ export default function ViewMessagePreviewPage() {
               </>
             )}
 
+          {/* 💬 자막 */}
           {messageData.message && messageData.message !== "🌿" && (
-  <       div className={styles["caption-scroll-container"]}>
-          <div className={styles["caption-scroll"]}>
-          {messageData.message}
-          </div>
-         </div>
-         )}
-
+            <div className={styles["caption-scroll-container"]}>
+              <div className={styles["caption-scroll"]}>
+                {messageData.message}
+              </div>
+            </div>
+          )}
         </div>
 
+        {/* 🔘 버튼 그룹 */}
         <div className={styles["button-group"]}>
           <button className={styles["action-button"]} onClick={() => router.back()}>
             ⬅ 뒤로가기
           </button>
-          <button className={styles["action-button"]} onClick={() => router.push("/")}>🏠 처음으로</button>
+          <button className={styles["action-button"]} onClick={() => router.push("/")}>
+            🏠 처음으로
+          </button>
           <button
-             disabled={!router.isReady || !id}
+            disabled={!router.isReady || !id}
             className={styles["action-button"]}
             onClick={() => {
-               if (router.query.id) {
-                router.push(`/share/${router.query.id}`);
-
+              if (router.isReady && id) {
+                router.push(`/share/${id}`);
               } else {
-                alert("잠시 후 다시 시도해 주세요.");
+                alert("❗ 공유 링크를 아직 불러오지 못했어요. 잠시 후 다시 시도해 주세요.");
               }
             }}
           >
@@ -97,6 +103,7 @@ export default function ViewMessagePreviewPage() {
           </button>
         </div>
 
+        {/* 🎵 음악 */}
         {messageData.music && (
           <audio ref={audioRef} src={messageData.music} controls autoPlay />
         )}
