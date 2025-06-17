@@ -17,6 +17,7 @@ export default function ShareMessagePage() {
 
   useEffect(() => {
     if (!router.isReady || !id) return;
+
     const fetchData = async () => {
       try {
         const docRef = doc(db, "messages", id);
@@ -36,15 +37,14 @@ export default function ShareMessagePage() {
   }, [router.isReady, id]);
 
   useEffect(() => {
-    // 영상/음악 30초 자동 정지
     const timeout = setTimeout(() => {
-      if (videoRef.current) {
+      if (videoRef.current && !videoRef.current.paused) {
         videoRef.current.pause();
       }
-      if (audioRef.current) {
+      if (audioRef.current && !audioRef.current.paused) {
         audioRef.current.pause();
       }
-    }, 30000); // 30초
+    }, 30000); // 30초 제한
 
     return () => clearTimeout(timeout);
   }, [messageData]);
@@ -79,7 +79,8 @@ export default function ShareMessagePage() {
               className={styles.media}
             />
           ) : (
-            messageData.imageurls?.map((url, index) => (
+            Array.isArray(messageData.imageurls) &&
+            messageData.imageurls.map((url, index) => (
               <img
                 key={index}
                 src={url?.startsWith("data:image") ? url : `data:image/jpeg;base64,${url}`}
@@ -93,16 +94,16 @@ export default function ShareMessagePage() {
             <div className={styles.caption}>{messageData.message}</div>
           )}
 
-          {/* 🎵 음악 (재생 X, 원할 경우 style={{ display: "none" }} 추가 가능) */}
-          {/* 
+          {/* 🎵 음악 제거 or 숨김 처리하고 싶으면 아래 주석 해제 */}
+          {/*
           {messageData.music && (
             <audio
               ref={audioRef}
               src={messageData.music}
-              controls
-              className={styles.audio}
+              autoPlay
+              style={{ display: "none" }}
             />
-          )} 
+          )}
           */}
         </div>
 
@@ -137,10 +138,12 @@ export default function ShareMessagePage() {
           </button>
         </div>
 
-        <div className={styles.qrBox}>
-          <p>📱 QR코드로 공유하기</p>
-          <QRCode value={currentUrl} size={160} />
-        </div>
+        {typeof currentUrl === "string" && currentUrl.length > 0 && (
+          <div className={styles.qrBox}>
+            <p>📱 QR코드로 공유하기</p>
+            <QRCode value={currentUrl} size={160} />
+          </div>
+        )}
       </div>
     </>
   );
