@@ -44,7 +44,7 @@ export default function ShareMessagePage() {
       if (audioRef.current && !audioRef.current.paused) {
         audioRef.current.pause();
       }
-    }, 30000); // 30초 제한
+    }, 30000);
 
     return () => clearTimeout(timeout);
   }, [messageData]);
@@ -80,22 +80,19 @@ export default function ShareMessagePage() {
             />
           ) : (
             <>
-              {messageData.type === "image" &&
-                Array.isArray(messageData.imageurls) &&
-                messageData.imageurls.map((url, index) => {
-                  if (!url || typeof url !== "string") return null;
-                  const safeUrl = url.startsWith("data:image")
-                    ? url
-                    : `data:image/jpeg;base64,${url}`;
-                  return (
-                    <img
-                      key={index}
-                      src={safeUrl}
-                      alt={`이미지 ${index + 1}`}
-                      className={styles.media}
-                    />
-                  );
-                })}
+              {messageData.type === "image" && messageData.imageurls && (
+                <img
+                  src={
+                    messageData.imageurls.startsWith("data:image") ||
+                    messageData.imageurls.startsWith("/") ||
+                    messageData.imageurls.startsWith("http")
+                      ? messageData.imageurls
+                      : `data:image/jpeg;base64,${messageData.imageurls}`
+                  }
+                  alt="공유 이미지"
+                  className={styles.media}
+                />
+              )}
 
               {typeof messageData.message === "string" && (
                 <div className={styles.caption}>{messageData.message}</div>
@@ -104,7 +101,7 @@ export default function ShareMessagePage() {
           )}
 
           {/* 🎵 음악 제거 or 숨김 처리하고 싶으면 아래 주석 해제 */}
-          {/* 
+          {/*
           {messageData.music && (
             <audio
               ref={audioRef}
@@ -112,7 +109,7 @@ export default function ShareMessagePage() {
               autoPlay
               style={{ display: "none" }}
             />
-          )} 
+          )}
           */}
         </div>
 
@@ -147,13 +144,15 @@ export default function ShareMessagePage() {
           </button>
         </div>
 
-        {typeof currentUrl === "string" && currentUrl.length > 0 && (
-          <div className={styles.qrBox}>
-            <p>📱 QR코드로 공유하기</p>
-            <QRCode value={currentUrl} size={160} />
-          </div>
-        )}
+        {typeof window !== "undefined" &&
+          typeof currentUrl === "string" &&
+          currentUrl.length > 0 && (
+            <div className={styles.qrBox}>
+              <p>📱 QR코드로 공유하기</p>
+              <QRCode value={currentUrl} size={160} />
+            </div>
+          )}
       </div>
     </>
   );
-}
+} 
