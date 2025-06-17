@@ -39,7 +39,7 @@ export default function ShareMessagePage() {
     const timeout = setTimeout(() => {
       if (videoRef.current) videoRef.current.pause();
       if (audioRef.current) audioRef.current.pause();
-    }, 30000); // 30초 제한
+    }, 30000);
 
     return () => clearTimeout(timeout);
   }, [messageData]);
@@ -67,8 +67,8 @@ export default function ShareMessagePage() {
         <h2 className={styles["preview-title"]}>💌 공유된 메시지</h2>
 
         <div className={styles["moving-box"]} ref={previewRef}>
-          {/* 🎥 영상 */}
-          {messageData.type === "video" && messageData.videoUrl && (
+          {/* 🎥 영상 or 🖼 이미지 or fallback */}
+          {messageData.type === "video" && messageData.videoUrl ? (
             <video
               ref={videoRef}
               src={messageData.videoUrl}
@@ -77,12 +77,9 @@ export default function ShareMessagePage() {
               className={styles["media-element"]}
               style={{ backgroundColor: "#000" }}
             />
-          )}
-
-          {/* 🖼 이미지 */}
-          {messageData.type === "image" &&
+          ) : messageData.type === "image" &&
             Array.isArray(messageData.imageurls) &&
-            messageData.imageurls.length > 0 &&
+            messageData.imageurls.length > 0 ? (
             messageData.imageurls.map((img, index) => (
               <img
                 key={index}
@@ -90,7 +87,12 @@ export default function ShareMessagePage() {
                 alt={`img-${index + 1}`}
                 className={styles["media-element"]}
               />
-            ))}
+            ))
+          ) : (
+            <p style={{ textAlign: "center", color: "#999", fontStyle: "italic" }}>
+              지원되지 않는 미디어 유형입니다.
+            </p>
+          )}
 
           {/* 💬 자막 */}
           {messageData.message && (
