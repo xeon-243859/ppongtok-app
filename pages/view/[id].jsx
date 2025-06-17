@@ -79,8 +79,8 @@ export default function ViewMessagePreviewPage() {
           <button
             className={styles["action-button"]}
             onClick={() => {
-              if (router.query.id) {
-                router.push(`/share/${router.query.id}`);
+               if (id) {
+                router.push(`/share/${id}`);
               } else {
                 alert("잠시 후 다시 시도해 주세요.");
               }
