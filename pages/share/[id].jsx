@@ -3,9 +3,9 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../src/firebase";
-import QRCode from "qrcode.react";
 import html2canvas from "html2canvas";
-import styles from "../../src/styles/sharepage.module.css";
+import QRCode from "qrcode.react";
+import styles from "../../src/styles/viewpreview.module.css";
 
 export default function ShareMessagePage() {
   const [messageData, setMessageData] = useState(null);
@@ -23,8 +23,7 @@ export default function ShareMessagePage() {
         const docRef = doc(db, "messages", id);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          const data = docSnap.data();
-          setMessageData(data);
+          setMessageData(docSnap.data());
         } else {
           console.error("❌ 메시지를 찾을 수 없습니다.");
         }
@@ -38,13 +37,9 @@ export default function ShareMessagePage() {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      if (videoRef.current && !videoRef.current.paused) {
-        videoRef.current.pause();
-      }
-      if (audioRef.current && !audioRef.current.paused) {
-        audioRef.current.pause();
-      }
-    }, 30000);
+      if (videoRef.current) videoRef.current.pause();
+      if (audioRef.current) audioRef.current.pause();
+    }, 30000); // 30초 제한
 
     return () => clearTimeout(timeout);
   }, [messageData]);
@@ -53,7 +48,7 @@ export default function ShareMessagePage() {
     if (!previewRef.current) return;
     const canvas = await html2canvas(previewRef.current);
     const link = document.createElement("a");
-    link.download = `message-${id}.png`;
+    link.download = `shared-message-${id}.png`;
     link.href = canvas.toDataURL("image/png");
     link.click();
   };
@@ -65,66 +60,66 @@ export default function ShareMessagePage() {
   return (
     <>
       <Head>
-        <title>공유하기</title>
+        <title>공유 메시지</title>
       </Head>
-      <div className={styles.container}>
-        <h2 className={styles.title}>💌 공유 메시지</h2>
 
-        <div ref={previewRef} className={styles.previewBox}>
-          {messageData.type === "video" && messageData.videoUrl ? (
+      <div className={styles["preview-container"]}>
+        <h2 className={styles["preview-title"]}>💌 공유된 메시지</h2>
+
+        <div className={styles["moving-box"]} ref={previewRef}>
+          {/* 🎥 영상 */}
+          {messageData.type === "video" && messageData.videoUrl && (
             <video
               ref={videoRef}
               src={messageData.videoUrl}
               controls
-              className={styles.media}
-            />
-          ) : (
-            <>
-              {messageData.type === "image" && messageData.imageurls && (
-                <img
-                  src={
-                    messageData.imageurls.startsWith("data:image") ||
-                    messageData.imageurls.startsWith("/") ||
-                    messageData.imageurls.startsWith("http")
-                      ? messageData.imageurls
-                      : `data:image/jpeg;base64,${messageData.imageurls}`
-                  }
-                  alt="공유 이미지"
-                  className={styles.media}
-                />
-              )}
-
-              {typeof messageData.message === "string" && (
-                <div className={styles.caption}>{messageData.message}</div>
-              )}
-            </>
-          )}
-
-          {/* 🎵 음악 제거 or 숨김 처리하고 싶으면 아래 주석 해제 */}
-          {/*
-          {messageData.music && (
-            <audio
-              ref={audioRef}
-              src={messageData.music}
               autoPlay
-              style={{ display: "none" }}
+              className={styles["media-element"]}
+              style={{ backgroundColor: "#000" }}
             />
           )}
-          */}
+
+          {/* 🖼 이미지 */}
+          {messageData.type === "image" &&
+            Array.isArray(messageData.imageurls) &&
+            messageData.imageurls.length > 0 &&
+            messageData.imageurls.map((img, index) => (
+              <img
+                key={index}
+                src={img.startsWith("data:image") ? img : `data:image/jpeg;base64,${img}`}
+                alt={`img-${index + 1}`}
+                className={styles["media-element"]}
+              />
+            ))}
+
+          {/* 💬 자막 */}
+          {messageData.message && (
+            <div className={styles["caption-scroll-container"]}>
+              <div className={styles["caption-scroll"]}>
+                {messageData.message}
+              </div>
+            </div>
+          )}
+
+          {/* 🎵 음악 */}
+          {messageData.music && (
+            <audio ref={audioRef} src={messageData.music} autoPlay controls />
+          )}
         </div>
 
-        <div className={styles.buttonGroup}>
+        {/* 📤 공유 버튼 */}
+        <div className={styles["button-group"]}>
+          <button className={styles["action-button"]} onClick={handleDownloadImage}>
+            💾 이미지 저장
+          </button>
           <button
-            className={styles.button}
+            className={styles["action-button"]}
             onClick={() => navigator.clipboard.writeText(currentUrl)}
           >
             🔗 링크 복사
           </button>
-          <button className={styles.button} onClick={handleDownloadImage}>
-            💾 이미지 저장
-          </button>
           <a
-            className={styles.button}
+            className={styles["action-button"]}
             href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`}
             target="_blank"
             rel="noopener noreferrer"
@@ -132,26 +127,25 @@ export default function ShareMessagePage() {
             📘 페이스북
           </a>
           <a
-            className={styles.button}
+            className={styles["action-button"]}
             href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}`}
             target="_blank"
             rel="noopener noreferrer"
           >
             🐦 트위터
           </a>
-          <button className={styles.button} onClick={() => router.push("/")}>
+          <button className={styles["action-button"]} onClick={() => router.push("/")}>
             🏠 처음으로
           </button>
         </div>
 
-        {typeof window !== "undefined" &&
-          typeof currentUrl === "string" &&
-          currentUrl.length > 0 && (
-            <div className={styles.qrBox}>
-              <p>📱 QR코드로 공유하기</p>
-              <QRCode value={currentUrl} size={160} />
-            </div>
-          )}
+        {/* 📱 QR 코드 */}
+        {typeof window !== "undefined" && currentUrl && (
+          <div className={styles["qrBox"]}>
+            <p>📱 QR코드로 공유하기</p>
+            <QRCode value={currentUrl} size={160} />
+          </div>
+        )}
       </div>
     </>
   );
