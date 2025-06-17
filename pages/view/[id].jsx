@@ -67,8 +67,13 @@ export default function ViewMessagePreviewPage() {
             )}
 
           {messageData.message && messageData.message !== "🌿" && (
-            <div className={styles["caption-scroll"]}>{messageData.message}</div>
-          )}
+  <       div className={styles["caption-scroll-container"]}>
+          <div className={styles["caption-scroll"]}>
+          {messageData.message}
+          </div>
+         </div>
+         )}
+
         </div>
 
         <div className={styles["button-group"]}>
@@ -77,10 +82,11 @@ export default function ViewMessagePreviewPage() {
           </button>
           <button className={styles["action-button"]} onClick={() => router.push("/")}>🏠 처음으로</button>
           <button
+             disabled={!router.isReady || !id}
             className={styles["action-button"]}
             onClick={() => {
-               if (id) {
-                router.push(`/share/${id}`);
+               if (router.isReady && id) {
+               router.push(`/share/${id}`);
               } else {
                 alert("잠시 후 다시 시도해 주세요.");
               }
