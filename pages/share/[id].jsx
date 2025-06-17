@@ -79,23 +79,32 @@ export default function ShareMessagePage() {
               className={styles.media}
             />
           ) : (
-            Array.isArray(messageData.imageurls) &&
-            messageData.imageurls.map((url, index) => (
-              <img
-                key={index}
-                src={url?.startsWith("data:image") ? url : `data:image/jpeg;base64,${url}`}
-                alt={`이미지 ${index + 1}`}
-                className={styles.media}
-              />
-            ))
-          )}
+            <>
+              {messageData.type === "image" &&
+                Array.isArray(messageData.imageurls) &&
+                messageData.imageurls.map((url, index) => {
+                  if (!url || typeof url !== "string") return null;
+                  const safeUrl = url.startsWith("data:image")
+                    ? url
+                    : `data:image/jpeg;base64,${url}`;
+                  return (
+                    <img
+                      key={index}
+                      src={safeUrl}
+                      alt={`이미지 ${index + 1}`}
+                      className={styles.media}
+                    />
+                  );
+                })}
 
-          {typeof messageData.message === "string" && (
-            <div className={styles.caption}>{messageData.message}</div>
+              {typeof messageData.message === "string" && (
+                <div className={styles.caption}>{messageData.message}</div>
+              )}
+            </>
           )}
 
           {/* 🎵 음악 제거 or 숨김 처리하고 싶으면 아래 주석 해제 */}
-          {/*
+          {/* 
           {messageData.music && (
             <audio
               ref={audioRef}
@@ -103,7 +112,7 @@ export default function ShareMessagePage() {
               autoPlay
               style={{ display: "none" }}
             />
-          )}
+          )} 
           */}
         </div>
 
