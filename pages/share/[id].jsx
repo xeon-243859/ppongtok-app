@@ -9,12 +9,21 @@ import styles from "../../src/styles/viewpreview.module.css";
 
 export default function ShareMessagePage() {
   const [messageData, setMessageData] = useState(null);
+  const [currentUrl, setCurrentUrl] = useState(""); // 🛡 공유링크 useState로 선언
   const router = useRouter();
   const { id } = router.query;
   const previewRef = useRef(null);
   const videoRef = useRef(null);
   const audioRef = useRef(null);
 
+  // 🔐 URL 세팅 (브라우저 환경에서만)
+  useEffect(() => {
+    if (typeof window !== "undefined" && id) {
+      setCurrentUrl(`https://ppongtok-app.vercel.app/share/${id}`);
+    }
+  }, [id]);
+
+  // 🔥 Firebase에서 메시지 불러오기
   useEffect(() => {
     if (!router.isReady || !id) return;
 
@@ -35,15 +44,16 @@ export default function ShareMessagePage() {
     fetchData();
   }, [router.isReady, id]);
 
+  // ⏱ 미디어 30초 제한
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (videoRef.current) videoRef.current.pause();
       if (audioRef.current) audioRef.current.pause();
     }, 30000);
-
     return () => clearTimeout(timeout);
   }, [messageData]);
 
+  // 💾 이미지 저장
   const handleDownloadImage = async () => {
     if (!previewRef.current) return;
     const canvas = await html2canvas(previewRef.current);
@@ -52,12 +62,6 @@ export default function ShareMessagePage() {
     link.href = canvas.toDataURL("image/png");
     link.click();
   };
-
-  const currentUrl = 
-  console.log("공유 링크:", currentUrl);
-   typeof window !== "undefined" && id
-    ? `https://ppongtok-app.vercel.app/share/${id}`
-    : "";
 
   if (!messageData) return <p>불러오는 중...</p>;
 
@@ -71,7 +75,7 @@ export default function ShareMessagePage() {
         <h2 className={styles["preview-title"]}>💌 공유된 메시지</h2>
 
         <div className={styles["moving-box"]} ref={previewRef}>
-          {/* 🎥 영상 or 🖼 이미지 or fallback */}
+          {/* 🎥 영상 */}
           {messageData.type === "video" && messageData.videoUrl ? (
             <video
               ref={videoRef}
@@ -114,39 +118,41 @@ export default function ShareMessagePage() {
         </div>
 
         {/* 📤 공유 버튼 */}
-        <div className={styles["button-group"]}>
-          <button className={styles["action-button"]} onClick={handleDownloadImage}>
-            💾 이미지 저장
-          </button>
-          <button
-            className={styles["action-button"]}
-            onClick={() => navigator.clipboard.writeText(currentUrl)}
-          >
-            🔗 링크 복사
-          </button>
-          <a
-            className={styles["action-button"]}
-            href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            📘 페이스북
-          </a>
-          <a
-            className={styles["action-button"]}
-            href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            🐦 트위터
-          </a>
-          <button className={styles["action-button"]} onClick={() => router.push("/")}>
-            🏠 처음으로
-          </button>
-        </div>
+        {currentUrl && (
+          <div className={styles["button-group"]}>
+            <button className={styles["action-button"]} onClick={handleDownloadImage}>
+              💾 이미지 저장
+            </button>
+            <button
+              className={styles["action-button"]}
+              onClick={() => navigator.clipboard.writeText(currentUrl)}
+            >
+              🔗 링크 복사
+            </button>
+            <a
+              className={styles["action-button"]}
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              📘 페이스북
+            </a>
+            <a
+              className={styles["action-button"]}
+              href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              🐦 트위터
+            </a>
+            <button className={styles["action-button"]} onClick={() => router.push("/")}>
+              🏠 처음으로
+            </button>
+          </div>
+        )}
 
         {/* 📱 QR 코드 */}
-        {typeof window !== "undefined" && currentUrl && (
+        {currentUrl && (
           <div className={styles["qrBox"]}>
             <p>📱 QR코드로 공유하기</p>
             <QRCode value={currentUrl} size={160} />
