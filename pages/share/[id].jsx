@@ -53,7 +53,11 @@ export default function ShareMessagePage() {
     link.click();
   };
 
-  const currentUrl = `https://ppongtok-app.vercel.app/share/${id}`;
+  const currentUrl = 
+  console.log("공유 링크:", currentUrl);
+   typeof window !== "undefined" && id
+    ? `https://ppongtok-app.vercel.app/share/${id}`
+    : "";
 
   if (!messageData) return <p>불러오는 중...</p>;
 
