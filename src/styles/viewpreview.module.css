@@ -91,11 +91,10 @@
   white-space: nowrap;
   font-weight: bold;
   color: black;
-  padding-left: 100%;
-  animation: scroll-left 12s linear infinite;
+  animation: scroll-left var(--scroll-speed, 30s) linear infinite;
   line-height: 2.5rem;
+  left: 100%;
 }
-
 @keyframes scroll-left {
   0% {
     transform: translateX(0%);
