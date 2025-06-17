@@ -85,8 +85,9 @@ export default function ViewMessagePreviewPage() {
              disabled={!router.isReady || !id}
             className={styles["action-button"]}
             onClick={() => {
-               if (router.isReady && id) {
-               router.push(`/share/${id}`);
+               if (router.query.id) {
+                router.push(`/share/${router.query.id}`);
+
               } else {
                 alert("잠시 후 다시 시도해 주세요.");
               }
