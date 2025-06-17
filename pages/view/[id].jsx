@@ -71,7 +71,7 @@ export default function ViewMessagePreviewPage() {
             )}
 
           {/* 💬 자막 */}
-          {messageData.message && messageData.message !== "🌿" && (
+          {messageData.message && (
             <div className={styles["caption-scroll-container"]}>
               <div className={styles["caption-scroll"]}>
                 {messageData.message}

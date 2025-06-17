@@ -15,7 +15,7 @@ export default function ShareMessagePage() {
 
   useEffect(() => {
     if (!router.isReady || !id) return;
-
+    console.log("🔥 messageData:", messageData);
     const fetchData = async () => {
       try {
         const docRef = doc(db, "messages", id);
@@ -75,9 +75,7 @@ export default function ShareMessagePage() {
           )}
         </div>
 
-        {messageData.music && (
-          <audio src={messageData.music} controls autoPlay className={styles.audio} />
-        )}
+        
 
         <div className={styles.buttonGroup}>
           <button

@@ -13,7 +13,8 @@
 .moving-box {
   width: 95%;
   max-width: 800px;
-  aspect-ratio: 16 / 9;   
+  aspect-ratio: 16 / 9; 
+  position: relative; 
   margin-bottom: 30px;
   background: white;
   border-radius: 20px;
@@ -76,14 +77,13 @@
   color: #444;
 }
 .caption-scroll-container {
-  position: relative;
-  overflow: hidden;
+   position: absolute;
+  bottom: 0;
+  left: 0;
   width: 100%;
-  max-width: 600px;
+  overflow: hidden;
   height: 2.5rem;
-  background-color: white;
-  border-radius: 0.5rem;
-  margin-top: 1rem;
+  background: rgba(255, 255, 255, 0.8);
 }
 
 .caption-scroll {
@@ -91,7 +91,7 @@
   white-space: nowrap;
   font-weight: bold;
   color: black;
-  animation: scroll-left var(--scroll-speed, 30s) linear infinite;
+  animation: scroll-left var(--scroll-speed, 35s) linear infinite;
   line-height: 2.5rem;
   left: 100%;
 }
