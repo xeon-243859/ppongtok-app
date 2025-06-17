@@ -12,17 +12,17 @@ export default function ShareMessagePage() {
   const router = useRouter();
   const { id } = router.query;
   const previewRef = useRef(null);
+  const videoRef = useRef(null);
+  const audioRef = useRef(null);
 
   useEffect(() => {
     if (!router.isReady || !id) return;
-    console.log("🔥 messageData:", messageData);
     const fetchData = async () => {
       try {
         const docRef = doc(db, "messages", id);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const data = docSnap.data();
-          console.log("✅ 불러온 메시지:", data);
           setMessageData(data);
         } else {
           console.error("❌ 메시지를 찾을 수 없습니다.");
@@ -34,6 +34,20 @@ export default function ShareMessagePage() {
 
     fetchData();
   }, [router.isReady, id]);
+
+  useEffect(() => {
+    // 영상/음악 30초 자동 정지
+    const timeout = setTimeout(() => {
+      if (videoRef.current) {
+        videoRef.current.pause();
+      }
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    }, 30000); // 30초
+
+    return () => clearTimeout(timeout);
+  }, [messageData]);
 
   const handleDownloadImage = async () => {
     if (!previewRef.current) return;
@@ -58,7 +72,12 @@ export default function ShareMessagePage() {
 
         <div ref={previewRef} className={styles.previewBox}>
           {messageData.type === "video" && messageData.videoUrl ? (
-            <video src={messageData.videoUrl} controls className={styles.media} />
+            <video
+              ref={videoRef}
+              src={messageData.videoUrl}
+              controls
+              className={styles.media}
+            />
           ) : (
             messageData.imageurls?.map((url, index) => (
               <img
@@ -73,9 +92,19 @@ export default function ShareMessagePage() {
           {typeof messageData.message === "string" && (
             <div className={styles.caption}>{messageData.message}</div>
           )}
-        </div>
 
-        
+          {/* 🎵 음악 (재생 X, 원할 경우 style={{ display: "none" }} 추가 가능) */}
+          {/* 
+          {messageData.music && (
+            <audio
+              ref={audioRef}
+              src={messageData.music}
+              controls
+              className={styles.audio}
+            />
+          )} 
+          */}
+        </div>
 
         <div className={styles.buttonGroup}>
           <button
@@ -103,7 +132,9 @@ export default function ShareMessagePage() {
           >
             🐦 트위터
           </a>
-          <button className={styles.button} onClick={() => router.push("/")}>🏠 처음으로</button>
+          <button className={styles.button} onClick={() => router.push("/")}>
+            🏠 처음으로
+          </button>
         </div>
 
         <div className={styles.qrBox}>
