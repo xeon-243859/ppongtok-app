@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { useEffect, useState } from 'react'; // 추가
 import { doc, getDoc } from 'firebase/firestore'; // 추가
 import { db } from '../../src/firebase'; // 추가
+import dynamic from 'next/dynamic';
 
 export default function ShareMessagePage() {
   const router = useRouter();
@@ -16,6 +17,7 @@ export default function ShareMessagePage() {
     const fetchData = async () => {
       const docRef = doc(db, "messages", id);
       const docSnap = await getDoc(docRef);
+      const QRCode = dynamic(() => import('qrcode.react'), { ssr: false });
       if (docSnap.exists()) {
         console.log("✅ 데이터 로딩 성공:", docSnap.data());
         setMessageData(docSnap.data());
@@ -41,3 +43,9 @@ export default function ShareMessagePage() {
     </>
   );
 }
+  // ...
+    <div className={styles["qrBox"]}>
+      <QRCode value={"https://test.com"} />
+    </div>
+    // ...
+  
