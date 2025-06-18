@@ -53,21 +53,21 @@
 }
 
 .action-button {
-  padding: 6px 12px; /* ✅ 크기 줄임 */
-  font-size: 0.88rem;  /* ✅ 글자 크기도 소폭 축소 */
-  background-color: #ff91a4;
+  width: 100%;
+  max-width: 480px;
+  padding: 16px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #ff6b6b, #ff8e53);
   color: white;
   border: none;
-  border-radius: 30px;
+  font-size: 1.1rem;
+  font-weight: bold;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(255, 105, 135, 0.3);
-  transition: all 0.3s ease;
+  transition: transform 0.2s ease;
 }
 
-
 .action-button:hover {
-  background-color: #ff6b81;
-   transform: translateY(-2px);
+  transform: scale(1.02);
 }
 
 .preview-title {
@@ -102,4 +102,48 @@
   100% {
     transform: translateX(-100%);
   }
+}
+.share-button-grid {
+  display: grid;
+  /* 화면 크기에 맞춰 버튼이 2개 또는 3개씩 보이도록 자동으로 조절됩니다. */
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px; /* 버튼 사이 간격을 조금 더 줍니다. */
+  width: 100%;
+  max-width: 480px; /* 버튼 영역의 최대 너비를 지정합니다. */
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+.share-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 14px 10px; /* 버튼 크기를 키웁니다 (세로/가로) */
+  border-radius: 12px; /* 더 둥글게 만듭니다. */
+  border: 1px solid #444;
+  background-color: #2c2c2c;
+  color: #fff;
+  font-size: 1rem; /* 16px */
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none; /* a 태그의 밑줄 제거 */
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.share-button:hover {
+  background-color: #3d3d3d;
+  transform: translateY(-2px); /* 마우스를 올리면 살짝 위로 올라가는 효과 */
+}
+
+/* QR 코드 영역 스타일 개선 */
+.qrBox {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.qrBox p {
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: #555;
 }
