@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'; // 추가
 import { doc, getDoc } from 'firebase/firestore'; // 추가
 import { db } from '../../src/firebase'; // 추가
 import dynamic from 'next/dynamic';
+import { QRCode } from "react-qr-code"; 
 
 export default function ShareMessagePage() {
   const router = useRouter();
@@ -44,8 +45,8 @@ export default function ShareMessagePage() {
   );
 }
   // ...
-    <div className={styles["qrBox"]}>
-      <QRCode value={"https://test.com"} />
+    <div style={{ background: 'white', padding: '16px' }}>
+    <QRCode value={currentUrl} size={160} />
     </div>
     // ...
   
