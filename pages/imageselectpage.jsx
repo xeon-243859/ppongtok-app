@@ -95,9 +95,11 @@ export default function ImageSelectPage() {
           style={{ display: "none" }}
           className={styles.hiddenInput}
           onChange={handleFileChange}
+          // 파일 선택 시 실행되는 함수
+
         />
          <p className={styles.fileLimitNotice}>
-          ※ 10MB 이하의 파일만 업로드 가능합니다.
+          ※10MB 
          </p>
       </div>
 

@@ -11,8 +11,7 @@ export default function ShareMessagePage() {
   const router = useRouter();
   const { id } = router.query;
 
-  // 💡 [핵심 수정] Kakao SDK 초기화 함수
-  // 이 함수는 아래 <Script> 태그의 onLoad 속성에 의해 호출됩니다.
+  // Kakao SDK 초기화 함수
   const initializeKakao = () => {
     // ⚠️ 최종 배포 시에는 보안을 위해 .env.local 파일을 사용하세요.
     const kakaoKey = '4abf45cca92e802defcd2c15a6615155';
@@ -31,31 +30,37 @@ export default function ShareMessagePage() {
   }, [router.isReady, id]);
 
   // --- 핸들러 함수들 ---
+
+  // ✅ [핵심 수정] 카카오톡 공유 핸들러에 커스텀 버튼을 추가했습니다.
   const handleKakaoShare = () => {
-  if (!isKakaoReady || !window.Kakao || !window.Kakao.isInitialized()) {
-    alert("공유 기능이 아직 준비되지 않았습니다. 1초 후에 다시 시도해주세요.");
+    if (!isKakaoReady) {
+      alert("아직 공유 기능을 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
+      return;
+    }
     
-    // 만약 초기화가 안 되었다면, 1초 후에 다시 시도
-    setTimeout(() => {
-        const kakaoKey = '4abf45cca92e802defcd2c15a6615155'; // 테스트용 키
-        if (kakaoKey && window.Kakao && !window.Kakao.isInitialized()) {
-            window.Kakao.init(kakaoKey);
-            setIsKakaoReady(true);
-            console.log("카카오톡 버튼 클릭 시 재초기화 성공");
-        }
-    }, 1000);
-    return;
-  }
-  
     window.Kakao.Share.sendDefault({
       objectType: "feed",
       content: {
         title: "특별한 메시지가 도착했어요",
         description: "친구에게 온 영상/이미지 메시지를 확인해보세요!",
-        imageUrl: "/logo.png",
+        imageUrl: "/logo.png", // public/logo.png
         link: { mobileWebUrl: currentUrl, webUrl: currentUrl },
       },
-      buttons: [{ title: "메시지 확인하기", link: { mobileWebUrl: currentUrl, webUrl: currentUrl } }],
+      // ✅ [핵심 수정] buttons 배열에 새로운 버튼 객체를 추가했습니다.
+      buttons: [
+        {
+          title: "메시지 확인하기", // 1. 기존 버튼
+          link: { mobileWebUrl: currentUrl, webUrl: currentUrl },
+        },
+        {
+          title: "[뿅!톡] 이용하기 (무료이용권 3매 제공)", // 2. ✨ 새로운 커스텀 버튼
+          link: {
+            // 이 링크는 앱의 메인 페이지(홈)로 이동시킵니다.
+            mobileWebUrl: "https://ppongtok-app.vercel.app/", 
+            webUrl: "https://ppongtok-app.vercel.app/",
+          },
+        },
+      ],
     });
   };
 
@@ -71,7 +76,6 @@ export default function ShareMessagePage() {
 
   return (
     <>
-      {/* 💡 [핵심 수정] onLoad 속성을 추가하여 스크립트 로드 후 초기화 함수를 실행합니다. */}
       <Script
         src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.1/kakao.min.js"
         strategy="afterInteractive"
