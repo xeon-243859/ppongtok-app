@@ -14,10 +14,8 @@ export default function ShareMessagePage() {
   // 💡 [핵심 수정] Kakao SDK 초기화 함수
   // 이 함수는 아래 <Script> 태그의 onLoad 속성에 의해 호출됩니다.
   const initializeKakao = () => {
-    // ⚠️ 이 방식은 보안에 취약하므로, 테스트 용도로만 사용하시는 것을 권장합니다.
-    // 키 값을 따옴표(')로 감싸서 올바른 '문자열'로 만들어 주었습니다.
+    // ⚠️ 최종 배포 시에는 보안을 위해 .env.local 파일을 사용하세요.
     const kakaoKey = '4abf45cca92e802defcd2c15a6615155';
-
     if (kakaoKey && window.Kakao && !window.Kakao.isInitialized()) {
       window.Kakao.init(kakaoKey);
       console.log("✅ Kakao SDK 로드 및 초기화 완료");
@@ -62,7 +60,7 @@ export default function ShareMessagePage() {
 
   return (
     <>
-      {/* onLoad 속성으로 스크립트 로드 후 초기화 함수를 안전하게 실행합니다. */}
+      {/* 💡 [핵심 수정] onLoad 속성을 추가하여 스크립트 로드 후 초기화 함수를 실행합니다. */}
       <Script
         src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.1/kakao.min.js"
         strategy="afterInteractive"
