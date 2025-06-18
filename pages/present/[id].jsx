@@ -82,7 +82,7 @@ export default function PresentPage() {
 
           {messageData.message && <div className={styles["caption-scroll-container"]}><div className={styles["caption-scroll"]}>{messageData.message}</div></div>}
         </div>
-        {messageData.music && <audio src={messageData.music} autoPlay controls style={{ width: '90%', maxWidth: '500px', marginTop: '15px' }} />}
+        {messageData.music && <audio src={messageData.music} autoPlay loop />}
       </div>
     </>
   );

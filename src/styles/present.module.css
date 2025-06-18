@@ -55,8 +55,8 @@
   pointer-events: auto; 
 }
 @keyframes scroll-left {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
+  0% { transform: translateX(50%); }
+  100% { transform: translateX(-150%); }
 }
 
 /* [핵심] 슬라이드쇼를 위한 스타일 */
