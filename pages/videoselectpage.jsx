@@ -118,7 +118,7 @@ export default function VideoSelectPage() {
           style={{ display: "none" }}
         />
          <p className={styles.fileLimitNotice}>
-        ※10MB 
+        ※10
          </p>
       </div>
 

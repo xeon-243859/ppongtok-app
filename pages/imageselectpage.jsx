@@ -99,7 +99,7 @@ export default function ImageSelectPage() {
 
         />
          <p className={styles.fileLimitNotice}>
-          ※10MB 
+          ※10 
          </p>
       </div>
 
