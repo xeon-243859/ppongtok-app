@@ -7,22 +7,21 @@
   justify-content: center;
   min-height: 100vh;
   padding: 20px;
-  background: #fdf6f8; /* 부드러운 핑크빛 배경 */
+  background: #fdf6f8;
   text-align: center;
 }
 
+/* 💡 [핵심 수정] 제목: 크기와 회전 효과, 그림자 수정 */
 .title {
-  font-size: 2rem; /* 32px */
-  font-weight: 800;
-  color: #333;
-  margin-bottom: 40px;
-  /* 튀어나 보이는 효과 */
+  font-size: 1.5rem; /* 24px, 크기 축소 */
+  font-weight: 700;
   background: linear-gradient(135deg, #ff8a80, #ff5252);
   color: white;
-  padding: 15px 30px;
-  border-radius: 50px;
-  box-shadow: 0 10px 20px rgba(255, 82, 82, 0.3), 0 0 0 5px #fff, 0 0 0 10px #ffcdd2;
-  transform: rotate(-2deg);
+  padding: 12px 25px; /* 패딩 축소 */
+  border-radius: 30px; /* 좀 더 부드러운 곡선 */
+  margin-bottom: 30px;
+  box-shadow: 0 4px 10px rgba(255, 82, 82, 0.2); /* 그림자 단순화 */
+  /* transform: rotate(-2deg); <-- 기울기 효과 제거 */
 }
 
 
@@ -79,60 +78,63 @@
   background-color: #f78a92;
 }
 
+/* 💡 [핵심 수정] QR 코드: 크기와 여백 축소 */
 .qrBox {
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 }
 .qrBox p {
+  font-size: 0.9rem; /* 글자 크기 축소 */
   font-weight: 500;
   color: #666;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 }
 .qrCodeBackground {
   background: white;
-  padding: 20px;
-  border-radius: 16px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 15px; /* QR 코드 주변 여백 축소 */
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
   display: inline-block;
 }
-
+/* 💡 [핵심 수정] 공유 버튼: 그리드와 버튼 크기 축소 */
 .shareGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
+  gap: 12px;
   width: 100%;
-  max-width: 350px;
-  margin-bottom: 40px;
+  max-width: 300px; /* 최대 너비 축소 */
+  margin-bottom: 30px;
 }
 
 .shareButton {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 16px;
-  border-radius: 12px;
+  padding: 12px; /* 버튼 패딩 축소 */
+  border-radius: 10px;
   border: none;
-  background-color: #ffcdd2; /* 파스텔 핑크 */
-  color: #c62828; /* 진한 레드 계열 글씨 */
-  font-size: 1rem;
+  background-color: #ffcdd2;
+  color: #c62828;
+  font-size: 0.9rem; /* 글자 크기 축소 */
   font-weight: bold;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 .shareButton:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   background-color: #ef9a9a;
   color: white;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* 💡 [핵심 수정] '처음으로' 버튼: 크기 축소 */
 .homeButton {
-  padding: 14px 40px;
-  border-radius: 30px;
+  padding: 10px 25px; /* 버튼 패딩 축소 */
+  border-radius: 25px;
   border: 2px solid #ff8a80;
   background: transparent;
   color: #ff8a80;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -140,5 +142,5 @@
 .homeButton:hover {
   background: #ff8a80;
   color: white;
-  transform: scale(1.05);
+  transform: scale(1.03);
 }
