@@ -18,7 +18,7 @@ export default function ShareMessagePage() {
   useEffect(() => {
     // window 객체가 정의되어 있고, Kakao 객체가 로드되었다면 초기화 실행
     if (window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY4abf45cca92e802defcd2c15a6615155);
+      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
       console.log("✅ Kakao SDK 초기화 완료");
     }
   }, []);
