@@ -46,29 +46,6 @@
 
 
 
-.button-group {
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-}
-
-.action-button {
-  width: 100%;
-  max-width: 480px;
-  padding: 16px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #ff6b6b, #ff8e53);
-  color: white;
-  border: none;
-  font-size: 1.1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.action-button:hover {
-  transform: scale(1.02);
-}
 
 .preview-title {
   font-size: 2rem;
@@ -146,4 +123,52 @@
   font-weight: 500;
   margin-bottom: 10px;
   color: #555;
+}
+
+
+.slideImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+.slideImage.active {
+  opacity: 1;
+}
+
+/* --- 버튼 디자인 개선 (작게, 파스텔톤으로) --- */
+.preview-button-group {
+  display: flex; /* 버튼들을 가로로 나열 */
+  justify-content: center;
+  gap: 15px; /* 버튼 사이 간격 */
+  width: 100%;
+  margin-top: 25px;
+}
+
+.preview-button {
+  padding: 10px 20px; /* 버튼 크기를 줄입니다 (세로/가로) */
+  border-radius: 20px; /* 둥근 버튼 모양 */
+  border: none;
+  background-color: #fce4ec; /* 기본 버튼: 파스텔 핑크 */
+  color: #880e4f; /* 진한 핑크색 글씨 */
+  font-size: 0.9rem; /* 14.4px */
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.preview-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* 공유하기 버튼만 다른 색으로 강조 */
+.preview-button.highlight {
+  background-color: #e91e63; /* 좀 더 진한 핑크 */
+  color: white;
 }
