@@ -9,21 +9,21 @@ import styles from "../../src/styles/viewpreview.module.css";
 
 export default function ShareMessagePage() {
   const [messageData, setMessageData] = useState(null);
-  const [currentUrl, setCurrentUrl] = useState(""); // 🛡 공유링크 useState로 선언
+  const [currentUrl, setCurrentUrl] = useState("");
   const router = useRouter();
   const { id } = router.query;
   const previewRef = useRef(null);
   const videoRef = useRef(null);
   const audioRef = useRef(null);
 
-  // 🔐 URL 세팅 (브라우저 환경에서만)
+  // 🔐 공유 링크 생성
   useEffect(() => {
     if (typeof window !== "undefined" && id) {
       setCurrentUrl(`https://ppongtok-app.vercel.app/share/${id}`);
     }
   }, [id]);
 
-  // 🔥 Firebase에서 메시지 불러오기
+  // 🔥 메시지 불러오기
   useEffect(() => {
     if (!router.isReady || !id) return;
 
@@ -53,7 +53,6 @@ export default function ShareMessagePage() {
     return () => clearTimeout(timeout);
   }, [messageData]);
 
-  // 💾 이미지 저장
   const handleDownloadImage = async () => {
     if (!previewRef.current) return;
     const canvas = await html2canvas(previewRef.current);
@@ -65,6 +64,43 @@ export default function ShareMessagePage() {
 
   if (!messageData) return <p>불러오는 중...</p>;
 
+  // ✅ 미디어 렌더링 변수로 분기 처리
+  let mediaContent = (
+    <p style={{ color: "#888", textAlign: "center" }}>
+      지원되지 않는 미디어 유형입니다.
+    </p>
+  );
+
+  if (messageData.type === "video" && messageData.videoUrl) {
+    mediaContent = (
+      <video
+        ref={videoRef}
+        src={messageData.videoUrl}
+        controls
+        autoPlay
+        className={styles["media-element"]}
+        style={{ backgroundColor: "#000" }}
+      />
+    );
+  } else if (
+    messageData.type === "image" &&
+    Array.isArray(messageData.imageurls) &&
+    messageData.imageurls.length > 0
+  ) {
+    mediaContent = messageData.imageurls.map((img, index) => (
+      <img
+        key={index}
+        src={
+          img.startsWith("data:image") || img.startsWith("http") || img.startsWith("/")
+            ? img
+            : `data:image/jpeg;base64,${img}`
+        }
+        alt={`img-${index + 1}`}
+        className={styles["media-element"]}
+      />
+    ));
+  }
+
   return (
     <>
       <Head>
@@ -75,32 +111,8 @@ export default function ShareMessagePage() {
         <h2 className={styles["preview-title"]}>💌 공유된 메시지</h2>
 
         <div className={styles["moving-box"]} ref={previewRef}>
-          {/* 🎥 영상 */}
-          {messageData.type === "video" && messageData.videoUrl ? (
-            <video
-              ref={videoRef}
-              src={messageData.videoUrl}
-              controls
-              autoPlay
-              className={styles["media-element"]}
-              style={{ backgroundColor: "#000" }}
-            />
-          ) : messageData.type === "image" &&
-            Array.isArray(messageData.imageurls) &&
-            messageData.imageurls.length > 0 ? (
-            messageData.imageurls.map((img, index) => (
-              <img
-                key={index}
-                src={img.startsWith("data:image") ? img : `data:image/jpeg;base64,${img}`}
-                alt={`img-${index + 1}`}
-                className={styles["media-element"]}
-              />
-            ))
-          ) : (
-            <p style={{ textAlign: "center", color: "#999", fontStyle: "italic" }}>
-              지원되지 않는 미디어 유형입니다.
-            </p>
-          )}
+          {/* ✅ 미디어 */}
+          {mediaContent}
 
           {/* 💬 자막 */}
           {messageData.message && (
@@ -161,4 +173,4 @@ export default function ShareMessagePage() {
       </div>
     </>
   );
-} 
+}
