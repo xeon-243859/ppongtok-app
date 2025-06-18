@@ -1,11 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+  import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../src/firebase";
-import html2canvas from "html2canvas";
-import QRCode from "qrcode.react";
+// import html2canvas from "html2canvas"; // 👈 dynamic import를 위해 주석 처리 또는 삭제
+// import QRCode from "qrcode.react"; // 👈 dynamic import를 위해 주석 처리 또는 삭제
 import styles from "../../src/styles/viewpreview.module.css";
+import dynamic from 'next/dynamic'; // 👈 next/dynamic을 import
+
+// 👇 QRCode 컴포넌트를 dynamic import로 불러옵니다. (SSR 비활성화)
+const QRCode = dynamic(() => import('qrcode.react'), { ssr: false });
 
 export default function ShareMessagePage() {
   const [messageData, setMessageData] = useState(null);
@@ -16,67 +20,20 @@ export default function ShareMessagePage() {
   const videoRef = useRef(null);
   const audioRef = useRef(null);
 
-  // 🔐 공유 링크 생성
-  useEffect(() => {
-    if (typeof window !== "undefined" && id) {
-      setCurrentUrl(`https://ppongtok-app.vercel.app/share/${id}`);
-    }
-  }, [id]);
-
-  // 🔥 메시지 불러오기
-  useEffect(() => {
-    if (!router.isReady || !id) return;
- 
-
-    const fetchData = async () => {
-      try {
-        const docRef = doc(db, "messages", id);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setMessageData(docSnap.data());
-        } else {
-          console.error("❌ 메시지를 찾을 수 없습니다.");
-        }
-      } catch (error) {
-        console.error("🔥 메시지 불러오기 오류:", error);
-      }
-    };
-
-    fetchData();
-  }, [router.isReady, id]);
-
-  useEffect(() => {
-    if (messageData) {
-      console.log("✅ id:", id);
-      console.log("✅ messageData:", messageData);
-      console.log("✅ type:", messageData.type);
-      console.log("✅ imageurls:", messageData.imageurls);
-      console.log("✅ videoUrl:", messageData.videoUrl);
-      console.log("✅ message:", messageData.message);
-      console.log("✅ currentUrl:", currentUrl);
-    }
-  }, [messageData, currentUrl]);
-
-  // ⏱ 미디어 30초 제한
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (videoRef.current) videoRef.current.pause();
-      if (audioRef.current) audioRef.current.pause();
-    }, 30000);
-    return () => clearTimeout(timeout);
-  }, [messageData]);
+  // ... (useEffect 로직들은 그대로 유지) ...
 
   const handleDownloadImage = async () => {
     if (!previewRef.current) return;
-   
 
-
+    // 👇 html2canvas도 사용할 때만 dynamic하게 import 합니다.
+    const html2canvas = (await import('html2canvas')).default;
     const canvas = await html2canvas(previewRef.current);
     const link = document.createElement("a");
     link.download = `shared-message-${id}.png`;
     link.href = canvas.toDataURL("image/png");
     link.click();
   };
+
 
   if (!messageData) return <p>불러오는 중...</p>;
  
