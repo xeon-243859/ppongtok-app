@@ -56,3 +56,33 @@
   0% { transform: translateX(100%); }
   100% { transform: translateX(-100%); }
 }
+
+/* [핵심] 슬라이드쇼를 위한 스타일 */
+.slideImage {
+  position: absolute; /* 모든 이미지를 같은 위치에 겹치도록 설정 */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  
+  /* 기본적으로 모든 이미지를 투명하게 만듭니다 */
+  opacity: 0; 
+  
+  /* opacity가 변할 때 1초 동안 부드럽게 전환되는 효과를 줍니다 */
+  transition: opacity 1s ease-in-out; 
+}
+
+/* [핵심] 'active' 클래스가 붙은 이미지만 불투명하게 보여줍니다 */
+.slideImage.active {
+  opacity: 1;
+}
+
+/* 기존 .media-element는 비디오에만 사용되므로 그대로 두거나, 
+   .slideImage와 스타일이 같다면 합쳐도 됩니다. */
+.media-element {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
