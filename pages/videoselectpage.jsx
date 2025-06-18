@@ -117,6 +117,9 @@ export default function VideoSelectPage() {
           onChange={handleFileChange}
           style={{ display: "none" }}
         />
+         <p className={styles.fileLimitNotice}>
+        ※ 10MB 이하의 파일만 업로드 가능합니다.
+         </p>
       </div>
 
       <div className={styles.movingBox}>

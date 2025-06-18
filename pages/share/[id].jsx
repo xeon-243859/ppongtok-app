@@ -32,10 +32,21 @@ export default function ShareMessagePage() {
 
   // --- 핸들러 함수들 ---
   const handleKakaoShare = () => {
-    if (!isKakaoReady) {
-      alert("아직 공유 기능을 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
-      return;
-    }
+  if (!isKakaoReady || !window.Kakao || !window.Kakao.isInitialized()) {
+    alert("공유 기능이 아직 준비되지 않았습니다. 1초 후에 다시 시도해주세요.");
+    
+    // 만약 초기화가 안 되었다면, 1초 후에 다시 시도
+    setTimeout(() => {
+        const kakaoKey = '4abf45cca92e802defcd2c15a6615155'; // 테스트용 키
+        if (kakaoKey && window.Kakao && !window.Kakao.isInitialized()) {
+            window.Kakao.init(kakaoKey);
+            setIsKakaoReady(true);
+            console.log("카카오톡 버튼 클릭 시 재초기화 성공");
+        }
+    }, 1000);
+    return;
+  }
+  
     window.Kakao.Share.sendDefault({
       objectType: "feed",
       content: {

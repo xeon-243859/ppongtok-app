@@ -96,6 +96,9 @@ export default function ImageSelectPage() {
           className={styles.hiddenInput}
           onChange={handleFileChange}
         />
+         <p className={styles.fileLimitNotice}>
+          ※ 10MB 이하의 파일만 업로드 가능합니다.
+         </p>
       </div>
 
       <div className={styles["image-slots-grid"]}>
