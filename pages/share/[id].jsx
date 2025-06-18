@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import Script from "next/script"; // 💡 Kakao SDK 로드를 위한 next/script
+import Script from "next/script";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../src/firebase";
 import { QRCode } from "react-qr-code";
@@ -10,18 +10,31 @@ import styles from "../../src/styles/viewpreview.module.css";
 export default function ShareMessagePage() {
   const [messageData, setMessageData] = useState(null);
   const [currentUrl, setCurrentUrl] = useState("");
+  const [isKakaoReady, setIsKakaoReady] = useState(false); // 💡 이 상태가 필요합니다.
   const router = useRouter();
   const { id } = router.query;
   const previewRef = useRef(null);
 
-  // 💡 Kakao SDK 초기화를 위한 useEffect
+  // ✅ Kakao SDK 및 디버깅 로직을 포함한 useEffect (수정 완료)
   useEffect(() => {
-    // window 객체가 정의되어 있고, Kakao 객체가 로드되었다면 초기화 실행
-    if (window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY4abf45cca92e802defcd2c15a6615155);
-      console.log("✅ Kakao SDK 초기화 완료");
+    // 1. 환경 변수에서 키를 읽어옵니다.
+    const kakaoKey = process.env.NEXT_PUBLIC_KAKAO_JS_KEY4abf45cca92e802defcd2c15a6615155
+    
+    // 2. alert으로 키가 제대로 로드되었는지 확인합니다.
+    alert(`현재 불러온 키: ${kakaoKey}`);
+
+    // 3. 키가 존재하는 경우에만 초기화를 시도합니다.
+    if (kakaoKey) {
+      if (window.Kakao && !window.Kakao.isInitialized()) {
+        window.Kakao.init(kakaoKey);
+        alert("Kakao SDK 초기화를 시도했습니다.");
+        setIsKakaoReady(true);
+      }
+    } else {
+      alert("오류: 카카오 키를 불러오지 못했습니다. .env.local 또는 Vercel 설정을 확인하세요.");
     }
-  }, []);
+    
+  }, []); // ✅ 빈 배열을 넣어 페이지 로드 시 '한 번만' 실행되도록 합니다.
 
   // 공유 링크 생성
   useEffect(() => {
