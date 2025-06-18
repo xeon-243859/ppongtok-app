@@ -54,11 +54,7 @@ export default function ShareMessagePage() {
         },
         {
           title: "[뿅!톡] 이용하기 (무료이용권 3매 제공)", // 2. ✨ 새로운 커스텀 버튼
-          link: {
-            // 이 링크는 앱의 메인 페이지(홈)로 이동시킵니다.
-            mobileWebUrl: "https://ppongtok-app.vercel.app/", 
-            webUrl: "https://ppongtok-app.vercel.app/",
-          },
+         
         },
       ],
     });
