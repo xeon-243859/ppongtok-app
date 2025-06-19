@@ -1,7 +1,7 @@
 // ppongtok-app/pages/index.jsx
 
 import Head from 'next/head';
-import sharebutton from '../src/components/sharebutton';
+import ShareButton from '../src/components/sharebutton';
                                                   //     pages 폴더 바로 아래면 '../components/ShareButton' 가 맞습니다.**
 import { useState } from 'react';
 
