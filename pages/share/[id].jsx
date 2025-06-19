@@ -6,7 +6,7 @@ import Head from "next/head";
 // import Script from "next/script"; // _app.jsx에서 관리하므로 여기서는 제거
 import { QRCode } from "react-qr-code";
 import styles from "../../src/styles/sharepage.module.css"; 
-import ShareButton from '../../src/components/sharebutton';
+import sharebutton from '../../src/components/sharebutton';
 
 // (임시) 메시지 데이터 가져오는 함수. 실제로는 백엔드 API 호출로 대체되어야 합니다.
 async function fetchMessageData(id) {
