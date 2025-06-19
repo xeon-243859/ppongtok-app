@@ -1,22 +1,21 @@
 // src/pages/_app.jsx
 
 import Script from 'next/script';
-import { useEffect, useState } from 'react'; // useState 추가
-import '../styles/globals.css'; // globals.css 경로 확인
+import { useEffect, useState } from 'react';
+import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }) {
-  const KAKAO_JAVASCRIPT_KEY = '4abf45cca92e802defcd2c15a6615155'; // 카카오 JavaScript 키
-                
-  const KAKAO_SDK_URL = "https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"; // 최신 SDK URL
-  const KAKAO_SDK_INTEGRITY = "sha384-sEMfrhtV5fVp6z1P8W9e1R2Tf9Wf1T4N1T3F1Q2U3V4X5Y6Z7W8A9B0C1D2E3F4G"; // 2.7.2 버전 SRI 해시 (카카오 개발자 문서에서 최신값 확인 권장)
-
-  // 카카오 SDK 로드 상태를 추적하는 state
+  const KAKAO_JAVASCRIPT_KEY = '4abf45cca92e802defcd2c15a6615155'; // **키는 문자열이므로 따옴표 안에 있어야 합니다.**
+                                
+  const KAKAO_SDK_URL = "https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js";
+  const KAKAO_SDK_INTEGRITY = "sha384-sEMfrhtV5fVp6z1P8W9e1R2Tf9Wf1T4N1T3F1Q2U3V4X5Y6Z7W8A9B0C1D2E3F4G"; // SRI 해시는 정확한 버전과 일치하는지 카카오 개발자 문서를 다시 확인하는 것이 좋습니다.
+                               
   const [kakaoSdkLoaded, setKakaoSdkLoaded] = useState(false);
 
   useEffect(() => {
-    // 클라이언트 측에서만 실행되도록 보장
     if (typeof window !== 'undefined' && window.Kakao && !window.Kakao.isInitialized()) {
       try {
+        // !!! 수정: 문자열 리터럴 대신 KAKAO_JAVASCRIPT_KEY 변수 사용
         window.Kakao.init(KAKAO_JAVASCRIPT_KEY);
         console.log(`[Kakao SDK] useEffect: SDK 초기화 성공. 키: ${KAKAO_JAVASCRIPT_KEY}`);
         setKakaoSdkLoaded(true);
@@ -29,12 +28,13 @@ function MyApp({ Component, pageProps }) {
     } else {
       console.log(`[Kakao SDK] useEffect: window.Kakao 객체 또는 SDK 로딩 대기 중...`);
     }
-  }, []); // 컴포넌트 마운트 시 한 번만 실행
+  }, []);
 
   const handleKakaoSdkLoad = () => {
     console.log(`[Kakao SDK] Script onLoad: SDK 로드 완료!`);
     if (window.Kakao && !window.Kakao.isInitialized()) {
       try {
+        // !!! 수정: 문자열 리터럴 대신 KAKAO_JAVASCRIPT_KEY 변수 사용
         window.Kakao.init(KAKAO_JAVASCRIPT_KEY);
         console.log(`[Kakao SDK] onLoad Callback: SDK 초기화 성공. 키: ${KAKAO_JAVASCRIPT_KEY}`);
         setKakaoSdkLoaded(true);
@@ -60,11 +60,10 @@ function MyApp({ Component, pageProps }) {
         src={KAKAO_SDK_URL}
         integrity={KAKAO_SDK_INTEGRITY}
         crossOrigin="anonymous"
-        strategy="lazyOnload" // 페이지 콘텐츠 로드 후 로드
+        strategy="lazyOnload"
         onLoad={handleKakaoSdkLoad}
-        onError={handleKakaoSdkError} // SDK 로드 실패 시 에러 핸들링
+        onError={handleKakaoSdkError}
       />
-      {/* Kakao SDK 로드 상태를 props로 전달하여 자식 컴포넌트에서 활용 가능 */}
       <Component {...pageProps} kakaoSdkLoaded={kakaoSdkLoaded} />
     </>
   );
