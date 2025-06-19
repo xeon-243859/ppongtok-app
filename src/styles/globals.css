@@ -1,0 +1,70 @@
+/* src/styles/globals.css */
+
+/* CSS Reset - 브라우저 기본 스타일을 일관되게 초기화 */
+html,
+body {
+  padding: 0;
+  margin: 0;
+  /* 기본 폰트 설정 (시스템 폰트 우선 사용) */
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  line-height: 1.6; /* 가독성을 위한 줄 간격 */
+  color: #333; /* 기본 텍스트 색상 */
+  background-color: #f8f8f8; /* 앱 배경색 */
+}
+
+a {
+  color: inherit; /* 링크 색상을 부모 요소에서 상속 */
+  text-decoration: none; /* 링크 밑줄 제거 */
+}
+
+* {
+  box-sizing: border-box; /* 모든 요소에 Border-box 모델 적용 */
+}
+
+/* 유틸리티 클래스 (선택적) */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* 버튼 기본 스타일 (ShareButton에도 적용될 수 있는 공통 스타일) */
+button {
+  padding: 10px 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #f0f0f0;
+}
+
+/* 이미지 반응형 설정 */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block; /* 이미지 아래 공백 제거 */
+}
+
+/* 스크롤바 커스터마이징 (선택적) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
+}
