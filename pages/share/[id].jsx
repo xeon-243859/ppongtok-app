@@ -239,9 +239,9 @@ export default function ShareMessagePage() {
         <div className={styles.shareGrid}>
           {/* Web Share API를 시도하고, 실패 시 카카오톡 SDK를 폴백으로 사용하도록 handleShare 함수 통합 */}
           <button onClick={() => handleShare('kakao')} className={styles.shareButton}>
-            <img src="/images/kakaotalk_icon.png" alt="카카오톡" className={styles.shareIcon} /> {/* 아이콘 경로 수정 제안 */}
-            카카오톡
-          </button>
+          <img src="/icons/2.png" alt="카카오톡" className={styles.shareIcon} />
+           카카오톡
+         </button>
           <button onClick={() => handleShare('copyLink')} className={styles.shareButton}>링크 복사</button>
           {/* 페이스북/트위터는 이미 href로 직접 공유하므로 handleShare에 포함하지 않음 */}
           <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentShareUrl)}`} target="_blank" rel="noopener noreferrer" className={styles.shareButton}>페이스북</a>
