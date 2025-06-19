@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import Script from "next/script";
 import { QRCode } from "react-qr-code";
-import styles from "../styles/sharepage.module.css";
+import styles from "../../styles/sharepage.module.css"; 
 
 // (임시) 메시지 데이터 가져오는 함수. 실제로는 백엔드 API 호출로 대체되어야 합니다.
 // fetchMessageData 함수는 서버 사이드(getServerSideProps/getStaticProps)에서 호출하는 것이
