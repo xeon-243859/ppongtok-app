@@ -12,24 +12,26 @@ import sharebutton from '../../src/components/sharebutton';
 async function fetchMessageData(id) {
   return new Promise(resolve => {
     setTimeout(() => {
+      
       const messages = {
-        'example-message-123': {
-          id: 'example-message-123',
-          title: '[퐁톡] 당신만을 위한 특별한 메시지',
-          description: '영상과 이미지를 담아 마음을 전하는 퐁톡 메시지입니다.',
-          imageUrl: `/images/message_thumb_1.jpg`, // public/images 폴더에 있다고 가정. 실제 썸네일 이미지 URL.
-          videoUrl: null, // 영상이 있을 경우
-          messageText: `안녕하세요! 퐁톡에서 보내드리는 첫 번째 특별한 메시지입니다. 확인해 주셔서 감사합니다!`,
-        },
-        'another-message-456': {
-          id: 'another-message-456',
-          title: '[퐁톡] 친구에게 도착한 새로운 영상 메시지',
-          description: '사랑과 감사, 응원의 마음을 담아 영상으로 전달해보세요.',
-          imageUrl: `/images/message_thumb_2.jpg`, // public/images 폴더에 있다고 가정
-          videoUrl: `/videos/sample_video.mp4`, // public/videos 폴더에 있다고 가정
-          messageText: `친구야, 힘든 요즘 힘내라고 영상 메시지를 보내! 늘 응원할게!`,
-        },
-      };
+  'example-message-123': {
+    id: 'example-message-123',
+    title: '[퐁톡] 당신만을 위한 특별한 메시지',
+    description: '영상과 이미지를 담아 마음을 전하는 퐁톡 메시지입니다.',
+    imageUrl: `/images/test-image.jpg`, // ✅ 실제 존재하는 이미지
+    videoUrl: null,
+    messageText: `안녕하세요! 퐁톡에서 보내드리는 첫 번째 특별한 메시지입니다. 확인해 주셔서 감사합니다!`,
+  },
+  'another-message-456': {
+    id: 'another-message-456',
+    title: '[퐁톡] 친구에게 도착한 새로운 영상 메시지',
+    description: '사랑과 감사, 응원의 마음을 담아 영상으로 전달해보세요.',
+    imageUrl: `/images/road.jpg`, // ✅ 실제 존재하는 이미지
+    videoUrl: `/videos/sample_video.mp4`, // 이건 따로 확인 필요
+    messageText: `친구야, 힘든 요즘 힘내라고 영상 메시지를 보내! 늘 응원할게!`,
+  },
+};
+
       resolve(messages[id] || null); // ID에 해당하는 메시지가 없으면 null 반환
     }, 500); // 데이터 로딩 지연 시뮬레이션
   });
