@@ -1,142 +1,164 @@
-// ppongtok-app/pages/share/[id].jsx
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../src/firebase';
+import QRCode from 'qrcode.react'; // ✅ QR코드 라이브러리
+import appStyles from '../../src/styles/AppTheme.module.css';
+import shareStyles from '../../src/styles/SharePage.module.css';
 
-import { useCallback } from "react";
-import { useRouter } from "next/router";
-import Head from "next/head";
-import Link from 'next/link'; // Next.js의 Link 컴포넌트 사용
-import { QRCode } from "react-qr-code";
-import styles from "../../src/styles/sharepage.module.css"; // CSS 모듈 경로는 본인 프로젝트에 맞게 확인하세요.
+// ✅ 아이콘 경로를 확인해주세요. public 폴더 기준입니다.
+const ICON_PATHS = {
+  kakao: '/icons/kakaotalk.png',
+  link: '/icons/link.png',
+  facebook: '/icons/facebook.png',
+  twitter: '/icons/twitter.png',
+  more: '/icons/more.png', // Web Share API용
+};
 
-// --- 서버 사이드(SSR)에서 실행될 데이터 로딩 함수 ---
-// 이 함수는 페이지가 사용자에게 보여지기 전에 서버에서 먼저 실행됩니다.
-async function fetchMessageData(id) {
-  // 실제 앱에서는 이 부분을 DB나 외부 API에서 데이터를 가져오는 로직으로 대체해야 합니다.
-  // 지금은 사용자님의 public 폴더에 있는 이미지들을 기준으로 임시 데이터를 만듭니다.
-  const messages = {
-    'message-leaf': {
-      id: 'message-leaf',
-      title: '[퐁톡] 자연의 편안함을 담은 메시지',
-      description: '푸른 잎사귀처럼 싱그러운 마음을 전합니다. 항상 응원해요!',
-      imageUrl: '/images/leaves.jpg', // public/images/leaves.jpg
-    },
-    'message-road': {
-      id: 'message-road',
-      title: '[퐁톡] 당신의 앞날을 응원하는 메시지',
-      description: '곧게 뻗은 길처럼 당신의 미래도 밝게 빛나기를 바랍니다.',
-      imageUrl: '/images/road.jpg', // public/images/road.jpg
-    },
-    'message-test': {
-      id: 'message-test',
-      title: '[퐁톡] 테스트용 특별 메시지',
-      description: '이 메시지는 테스트를 위해 생성되었습니다. 이미지가 잘 보이나요?',
-      imageUrl: '/images/test-image.jpg', // public/images/test-image.jpg
-    },
-    // 다른 메시지들도 필요하다면 여기에 추가...
-  };
-
-  // 요청된 id에 해당하는 메시지를 반환합니다. 없으면 null.
-  return messages[id] || null;
-}
-
-// ✅ Next.js의 서버 사이드 렌더링(SSR)을 위한 핵심 함수
-export async function getServerSideProps(context) {
-  const { id } = context.params; // URL에서 [id] 값 (e.g., 'message-leaf')을 가져옵니다.
-  const messageData = await fetchMessageData(id);
-
-  // 만약 id에 해당하는 메시지 데이터가 없다면, 404 Not Found 페이지를 보여줍니다.
-  if (!messageData) {
-    return { notFound: true };
-  }
-
-  // messageData를 페이지 컴포넌트의 props로 전달합니다.
-  return {
-    props: {
-      messageData,
-    },
-  };
-}
-
-
-// --- 페이지 컴포넌트 ---
-// getServerSideProps에서 전달한 messageData를 props로 직접 받습니다.
-export default function ShareMessagePage({ messageData }) {
+export default function SharePage() {
   const router = useRouter();
-  
-  const BASE_URL = 'https://ppongtok-app.vercel.app'; // 배포된 앱의 실제 주소
-  const currentShareUrl = `${BASE_URL}${router.asPath}`; // 현재 페이지의 전체 URL (e.g., https://.../share/message-leaf)
+  const { id } = router.query;
+  const [message, setMessage] = useState(null);
+  const [shareUrl, setShareUrl] = useState('');
+  const [ogImageUrl, setOgImageUrl] = useState('');
 
-  const handleShareToKakao = useCallback(() => {
-    // 카카오 SDK가 로드되었는지 확인
-    if (window.Kakao && window.Kakao.isInitialized()) {
-      const { title, description, imageUrl } = messageData;
+  // 1. 메시지 데이터 불러오기 및 공유 URL 설정
+  useEffect(() => {
+    if (!id) return;
+    const currentUrl = `${window.location.origin}/present/${id}`;
+    setShareUrl(currentUrl);
 
-      window.Kakao.Share.sendDefault({
-        objectType: "feed",
-        content: {
-          title: title,
-          description: description,
-          // 이미지 URL을 전체 절대 경로로 만들어줍니다.
-          // 대체 이미지도 public 폴더에 '실제로 있는' 파일로 지정합니다.
-          imageUrl: `${BASE_URL}${imageUrl || '/images/leaves.jpg'}`, 
-          link: { mobileWebUrl: currentShareUrl, webUrl: currentShareUrl },
-        },
-        buttons: [
-          {
-            title: "메시지 확인하기",
-            link: { mobileWebUrl: currentShareUrl, webUrl: currentShareUrl },
-          },
-        ],
-      });
-    } else {
-      alert("카카오 공유 기능을 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
+    const fetchMessage = async () => {
+      const docRef = doc(db, 'messages', id);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setMessage(data);
+        // OG 이미지를 위한 대표 이미지 설정
+        const imageUrl = data.type === 'video' ? data.videoUrl : (data.imageurls?.[0] || '');
+        setOgImageUrl(imageUrl);
+      } else {
+        console.warn('⚠️ No such document!');
+        alert('존재하지 않는 메시지입니다.');
+        router.push('/');
+      }
+    };
+    fetchMessage();
+  }, [id, router]);
+
+  // 2. 카카오 SDK 초기화 (공유 페이지에서만 독립적으로 실행)
+  useEffect(() => {
+    if (document.getElementById('kakao-sdk')) return;
+    const script = document.createElement('script');
+    script.id = 'kakao-sdk';
+    script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
+    script.onload = () => {
+      if (window.Kakao && !window.Kakao.isInitialized()) {
+        // 본인의 Javascript 키를 입력하세요
+        window.Kakao.init('4abf45cca92e802defcd2c15a6615155');
+      }
+    };
+    document.head.appendChild(script);
+  }, []);
+
+  // 3. 공유 기능 핸들러들
+  const shareKakao = () => {
+    if (!window.Kakao?.Share) {
+      alert('카카오톡 SDK를 불러오고 있습니다. 잠시 후 다시 시도해주세요.');
+      return;
     }
-  }, [messageData, currentShareUrl]);
+    
+    window.Kakao.Share.sendDefault({
+      objectType: 'feed',
+      content: {
+        title: message?.caption || '뿅!톡으로 특별한 메시지가 도착했어요',
+        description: '친구의 마음이 담긴 메시지를 지금 확인해보세요!',
+        imageUrl: ogImageUrl,
+        link: {
+          mobileWebUrl: shareUrl,
+          webUrl: shareUrl,
+        },
+      },
+      buttons: [{ title: '메시지 보러가기', link: { mobileWebUrl: shareUrl, webUrl: shareUrl } }],
+    });
+  };
 
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      alert('링크가 복사되었습니다! 원하는 곳에 붙여넣어 공유하세요.');
+    } catch (err) {
+      alert('링크 복사에 실패했습니다.');
+    }
+  };
+
+  const shareFacebook = () => {
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank');
+  };
+
+  const shareTwitter = () => {
+    const text = `뿅!톡으로 특별한 메시지가 도착했어요! 💌`;
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`, '_blank');
+  };
+
+  const nativeShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: '뿅!톡 메시지',
+          text: '친구의 마음이 담긴 메시지를 지금 확인해보세요!',
+          url: shareUrl,
+        });
+      } catch (error) {
+        console.log('Web Share API 에러:', error);
+      }
+    } else {
+      alert('お使いのブラウザは共有機能をサポートしていません。リンクをコピーしてください。');
+    }
+  };
+  
+  if (!message) return <div className={appStyles.pageContainer}>로딩 중...</div>;
 
   return (
-    <>
-      {/* Head 태그에 동적으로 메타 정보를 설정합니다. 카카오톡 미리보기에 매우 중요합니다. */}
-      <Head>
-        <title>{messageData.title}</title>
-        <meta property="og:title" content={messageData.title} />
-        <meta property="og:description" content={messageData.description} />
-        {/* OG 이미지 태그에도 전체 절대 경로를 사용합니다. */}
-        <meta property="og:image" content={`${BASE_URL}${messageData.imageUrl}`} />
-        <meta property="og:url" content={currentShareUrl} />
-        <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="퐁톡" />
-      </Head>
-
-      <div className={styles.container}>
-        <h1 className={styles.title}>
-          {messageData.title}
-        </h1>
-        
-        {/* 공유된 이미지나 비디오를 보여주는 영역 */}
-        <div className={styles.contentBox}>
-           <img src={messageData.imageUrl} alt={messageData.title} className={styles.mainImage} />
-           <p className={styles.messageText}>{messageData.description}</p>
-        </div>
-
-
-        <div className={styles.shareSection}>
-            <p>이 메시지를 친구에게 공유해보세요!</p>
-            <div className={styles.qrCodeBackground}>
-                <QRCode value={currentShareUrl} size={128} />
-            </div>
-            {/* 카카오톡 공유 버튼. 아이콘 경로는 public/icons/2.png를 가리킵니다. */}
-            <button onClick={handleShareToKakao} className={styles.kakaoButton}>
-                <img src="/icons/2.png" alt="카카오톡 아이콘" />
-                카카오톡으로 공유하기
-            </button>
-        </div>
-        
-        {/* ✅✅✅ <Link> 컴포넌트 수정 완료 ✅✅✅ */}
-        {/* <a> 태그를 제거하고, className을 <Link>에 직접 적용했습니다. */}
-        <Link href="/" className={styles.homeButton}>
-          🏠 나도 메시지 만들러 가기
-        </Link>
+    <div className={`${appStyles.pageContainer} ${shareStyles.shareContainer}`}>
+      <h2 className={appStyles.pageTitle}>마음을 공유해보세요</h2>
+      
+      <div className={shareStyles.qrCodeBox}>
+        <QRCode value={shareUrl} size={180} fgColor="#333" />
+        <p>QR코드를 스캔하여 바로 확인할 수 있어요</p>
       </div>
-    </>
+
+      <div className={shareStyles.buttonGrid}>
+        <button onClick={shareKakao} className={shareStyles.shareButton}>
+          <img src={ICON_PATHS.kakao} alt="카카오톡" />
+          <span>카카오톡</span>
+        </button>
+        {/* navigator.share가 지원될 때만 '내 연락처(더보기)' 버튼 표시 */}
+        {typeof navigator !== 'undefined' && navigator.share && (
+          <button onClick={nativeShare} className={shareStyles.shareButton}>
+            <img src={ICON_PATHS.more} alt="더보기" />
+            <span>더보기</span>
+          </button>
+        )}
+        <button onClick={copyLink} className={shareStyles.shareButton}>
+          <img src={ICON_PATHS.link} alt="링크 복사" />
+          <span>링크 복사</span>
+        </button>
+        <button onClick={shareFacebook} className={shareStyles.shareButton}>
+          <img src={ICON_PATHS.facebook} alt="페이스북" />
+          <span>페이스북</span>
+        </button>
+        <button onClick={shareTwitter} className={shareStyles.shareButton}>
+          <img src={ICON_PATHS.twitter} alt="트위터" />
+          <span>트위터</span>
+        </button>
+      </div>
+
+      <div className={appStyles.navButtonContainer} style={{ marginTop: '40px' }}>
+        <button onClick={() => router.push('/')} className={appStyles.buttonPrimary}>
+          🏠 처음으로
+        </button>
+      </div>
+    </div>
   );
 }

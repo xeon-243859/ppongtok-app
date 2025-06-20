@@ -1,23 +1,16 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import imageCompression from "browser-image-compression"; // ✅ 라이브러리 import
 import styles from "./imageselectpage.module.css";
+import appStyles from "../src/styles/AppTheme.module.css"; // ✅ 공통 스타일 import
 
 export default function ImageSelectPage() {
   const router = useRouter();
   const fileInputRef = useRef(null);
   const [images, setImages] = useState(["", "", "", ""]);
+  const [isLoading, setIsLoading] = useState(false); // ✅ 로딩 상태 추가
 
-  const handleImageSelect = (e) => {
-    const files = Array.from(e.target.files);
-    const urls = files.map((file) => URL.createObjectURL(file));
-    localStorage.setItem("selectedImages", JSON.stringify(urls));
-    localStorage.setItem("selected-type", "image");
-    localStorage.removeItem("selectedVideo");
-    localStorage.setItem("message-id", localStorage.getItem("message-id") || "test01");
-    localStorage.setItem("allow-music", "true");
-    setImages(urls);
-  };
-
+  // 기존 이미지 로드
   useEffect(() => {
     const loadedImages = [];
     for (let i = 1; i <= 4; i++) {
@@ -26,8 +19,56 @@ export default function ImageSelectPage() {
     setImages(loadedImages);
   }, []);
 
+  // ✅ 이미지 선택 및 압축 핸들러
+  const handleImageSelect = async (e) => {
+    const files = Array.from(e.target.files).slice(0, 4 - images.filter(Boolean).length);
+    if (files.length === 0) return;
+
+    setIsLoading(true); // 로딩 시작
+    alert(`이미지 압축을 시작합니다. 잠시만 기다려주세요...`);
+
+    const updated = [...images];
+    const compressionPromises = files.map(async (file) => {
+      console.log(`압축 전: ${file.name}, ${(file.size / 1024 / 1024).toFixed(2)}MB`);
+      try {
+        const options = {
+          maxSizeMB: 1, // 최대 1MB
+          maxWidthOrHeight: 1920, // 최대 해상도 1920px
+          useWebWorker: true,
+        };
+        const compressedFile = await imageCompression(file, options);
+        console.log(`압축 후: ${compressedFile.name}, ${(compressedFile.size / 1024 / 1024).toFixed(2)}MB`);
+        return URL.createObjectURL(compressedFile);
+      } catch (error) {
+        console.error("이미지 압축 실패:", error);
+        alert(`${file.name} 파일 압축에 실패했습니다. 다른 파일을 선택해주세요.`);
+        return null;
+      }
+    });
+
+    const compressedUrls = await Promise.all(compressionPromises);
+    
+    let currentImageIndex = 0;
+    for (let i = 0; i < updated.length; i++) {
+        if (!updated[i] && compressedUrls[currentImageIndex]) {
+            updated[i] = compressedUrls[currentImageIndex];
+            currentImageIndex++;
+        }
+    }
+
+    setImages(updated);
+    // localStorage에도 저장
+    for (let i = 0; i < updated.length; i++) {
+        if (updated[i]) localStorage.setItem(`img-${i + 1}`, updated[i]);
+    }
+    
+    setIsLoading(false); // 로딩 종료
+    e.target.value = null; // 같은 파일 다시 선택 가능하도록 초기화
+  };
+
   const handleDelete = (index) => {
     const updated = [...images];
+    URL.revokeObjectURL(updated[index]); // 메모리 해제
     updated[index] = "";
     setImages(updated);
     localStorage.removeItem(`img-${index + 1}`);
@@ -35,104 +76,64 @@ export default function ImageSelectPage() {
 
   const handleNext = () => {
     const cleanedImages = images.filter(Boolean);
-    localStorage.removeItem("selected-video");
+    if (cleanedImages.length === 0) {
+      alert("최소 1장의 이미지를 선택해주세요.");
+      return;
+    }
     localStorage.setItem("selected-type", "image");
-    localStorage.setItem("selected-images", JSON.stringify(cleanedImages));
+    localStorage.removeItem("selected-video");
     localStorage.setItem("allow-music", "true");
+    // 모든 이미지를 배열로 저장
+    localStorage.setItem("selected-images", JSON.stringify(cleanedImages));
+    
     setTimeout(() => {
       router.push("/musicselectpage");
     }, 100);
   };
-
-  const saveImage = (dataUrl) => {
-    const updated = [...images];
-    for (let i = 0; i < 4; i++) {
-      if (!updated[i]) {
-        updated[i] = dataUrl;
-        setImages(updated);
-        localStorage.setItem(`img-${i + 1}`, dataUrl);
-        return;
-      }
-    }
-    alert("모든 슬롯이 가득 찼어요!");
-  };
-
-  const handleImageFile = () => {
-    router.push("/imagethemepage");
-  };
-
-  const handleLocalFile = () => {
-    fileInputRef.current.click();
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      saveImage(reader.result.split(",")[1]); // base64 부분만 저장
-    };
-    reader.readAsDataURL(file);
-  };
+  
+  const handleBack = () => router.push('/style-select');
 
   return (
-    <div className={styles["image-select-container"]}>
-      <div className={styles["typing-text"]}>
-        <div className={styles["line1"]}>배경으로 사용할 이미지 4개를</div>
-        <div className={styles["line2"]}>선택해 주세요</div>
-      </div>
+    <div className={`${appStyles.pageContainer} ${styles.pageLayout}`}>
+      <h2 className={appStyles.pageTitle}>배경 이미지를 선택해주세요</h2>
+      <p className={appStyles.pageDescription}>최대 4장까지 선택할 수 있습니다.</p>
 
-      <div className={styles.selectButtons}>
-        <button onClick={handleImageFile} className={styles.selectButton}>배경이미지 파일</button>
-        
-        <label htmlFor="local-file" className={styles.selectButton}>내 파일 선택</label>
-        <input
-          ref={fileInputRef}
-          type="file"
-          id="local-file"
-          accept="image/*"
-          style={{ display: "none" }}
-          className={styles.hiddenInput}
-          onChange={handleFileChange}
-          // 파일 선택 시 실행되는 함수
-
-        />
-         <p className={styles.fileLimitNotice}>
-          ※10 
-         </p>
-      </div>
-
-      <div className={styles["image-slots-grid"]}>
-        {images.map((src, i) => (
-          <div className={styles["image-slot"]} key={i}>
-            {src ? (
+      <div className={styles.preview}>
+        {images.map((url, index) => (
+          <div key={index} className={styles["thumbnail-wrapper"]}>
+            {url ? (
               <>
-                <img
-                  src={
-                    src.includes("/backgrounds/")
-                      ? src
-                      : `data:image/jpeg;base64,${src}`
-                  }
-                  alt={`img-${i + 1}`}
-                />
-                <button
-                  className={styles["delete-button"]}
-                  onClick={() => handleDelete(i)}
-                >
-                  ❌
-                </button>
+                <img src={url} className={styles.thumbnail} alt={`선택된 이미지 ${index + 1}`} />
+                <button className={styles["delete-button"]} onClick={() => handleDelete(index)}>❌</button>
               </>
             ) : (
-              <p>{`img-${i + 1}`}</p>
+              <div className={styles.placeholder} onClick={() => fileInputRef.current.click()}>+</div>
             )}
           </div>
         ))}
       </div>
+      
+      <input
+        type="file"
+        accept="image/*"
+        multiple
+        onChange={handleImageSelect}
+        ref={fileInputRef}
+        style={{ display: "none" }}
+        disabled={isLoading}
+      />
+      
+      <button 
+        onClick={() => fileInputRef.current.click()} 
+        className={appStyles.buttonPrimary} 
+        disabled={isLoading || images.filter(Boolean).length >= 4}
+      >
+        {isLoading ? "압축 중..." : "내 파일 선택"}
+      </button>
 
-      <div className={styles["button-group"]}>
-        <button onClick={() => router.push("/style-select")}>뒤로가기</button>
-        <button onClick={handleNext}>다음으로</button>
+      <div className={appStyles.navButtonContainer}>
+        <button onClick={handleBack} className={appStyles.buttonSecondary}>뒤로가기</button>
+        <button onClick={handleNext} className={appStyles.buttonPrimary}>다음으로</button>
       </div>
     </div>
   );

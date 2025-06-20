@@ -1,0 +1,91 @@
+/* src/styles/AppTheme.module.css */
+:root {
+  --primary-color: #ff577f;
+  --secondary-color: #ff8a80;
+  --background-color: #fff0f5;
+  --text-color: #333;
+  --text-color-light: #555;
+  --border-radius: 12px;
+  --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  background-color: var(--background-color);
+  font-family: 'Pretendard', sans-serif; /* 폰트가 없다면 기본 폰트로 대체됩니다 */
+  text-align: center;
+}
+
+.pageTitle {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+.pageDescription {
+  font-size: 1rem;
+  color: var(--text-color-light);
+  margin-bottom: 30px;
+}
+
+.buttonPrimary {
+  padding: 14px 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: var(--box-shadow);
+}
+.buttonPrimary:hover {
+  transform: translateY(-2px);
+  background-color: #e64a6d;
+}
+.buttonPrimary:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.buttonSecondary {
+  padding: 12px 25px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--primary-color);
+  background-color: white;
+  border: 2px solid var(--primary-color);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.buttonSecondary:hover {
+  background-color: rgba(255, 87, 127, 0.1);
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.navButtonContainer {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 15px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  border-radius: 50px;
+  box-shadow: var(--box-shadow);
+}

@@ -1,111 +1,93 @@
-.loading-container,
-/* [핵심] 컨테이너가 화면 전체를 꽉 채우도록 수정 */
-.present-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  
-  /* 뷰포트의 높이와 너비 전체를 사용합니다. */
+/* src/styles/present.module.css */
+.present-container, .loading-container, .finish-container {
   width: 100vw;
-  height: 100vh; 
-  
-  padding: 0; /* 불필요한 여백 제거 */
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: #000;
-  color: white;
-  box-sizing: border-box;
-  overflow: hidden; /* 스크롤바가 생기지 않도록 함 */
-}
-
-/* [핵심] 무빙박스가 화면 너비에 맞춰 꽉 차게 수정 */
-.moving-box {
-  width: 100%; /* 너비를 100%로 설정 */
-  /* max-width는 그대로 두거나 조금 늘려도 좋습니다. */
-  max-width: 100%; /* 화면 너비만큼 커질 수 있도록 함 */
-  
-  /* 화면의 80% 정도를 차지하도록 높이를 설정 (비율 유지) */
-  height: 80vh; 
-
-  border-radius: 0; /* 화면을 꽉 채울 것이므로 둥근 모서리 제거 */
   overflow: hidden;
   position: relative;
-  background-color: #1a1a1a;
-  box-shadow: none; /* 그림자 효과 제거 */
 }
 
-.media-element,
-.slideImage {
-  position: absolute;
-  top: 0;
-  left: 0;
+.moving-box {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* 이미지가 잘리지 않고 꽉 차도록 cover 유지 */
-}
-
-
-/* 자막 스타일은 viewpreview.module.css에서 그대로 가져오세요 */
-.caption-scroll-container {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 25%;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.7) 30%, transparent 100%);
+  position: relative;
   overflow: hidden;
-  color: white;
-  pointer-events: none; 
-}
-.caption-scroll {
-  position: absolute;
-  bottom: 5%; /* 위치는 그대로 */
-  width: 100%;
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-  white-space: nowrap;
-  
-  /* ✅ [핵심 수정] 애니메이션 지속시간을 줄이고, 시작 지점을 조정합니다. */
-  /* 자막 길이에 따라 10초~15초 정도로 조절하세요. */
-  animation: scroll-left 15s linear infinite; 
-  animation-delay: 0s; /* 애니메이션 지연 시간 없음 */
-  
-  text-shadow: 
-    -1px -1px 0 #000, 1px -1px 0 #000,
-    -1px  1px 0 #000, 1px  1px 0 #000,
-    0px 0px 10px rgba(255,255,255,0.7);
-}
-@keyframes scroll-left {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
 }
 
-/* [핵심] 슬라이드쇼를 위한 스타일 */
-.slideImage {
-  position: absolute; /* 모든 이미지를 같은 위치에 겹치도록 설정 */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  
-  /* 기본적으로 모든 이미지를 투명하게 만듭니다 */
-  opacity: 0; 
-  
-  /* opacity가 변할 때 1초 동안 부드럽게 전환되는 효과를 줍니다 */
-  transition: opacity 1s ease-in-out; 
-}
-
-/* [핵심] 'active' 클래스가 붙은 이미지만 불투명하게 보여줍니다 */
-.slideImage.active {
-  opacity: 1;
-}
-
-/* 기존 .media-element는 비디오에만 사용되므로 그대로 두거나, 
-   .slideImage와 스타일이 같다면 합쳐도 됩니다. */
 .media-element {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
+}
+
+/* ✅ 6, 7. 슬라이드쇼 및 페이드인/아웃 효과 */
+.slideImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out; /* 부드러운 전환 효과 */
+}
+.slideImage.active {
+  opacity: 1;
+}
+
+/* ✅ 10. 흐르는 자막 효과 */
+.caption-scroll-container {
+  position: absolute;
+  bottom: 10%;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+  padding: 20px 0;
+}
+.caption-scroll {
+  display: inline-block;
+  padding-left: 100%; /* 화면 오른쪽 밖에서 시작 */
+  animation: marquee 25s linear infinite;
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+}
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+/* 종료 화면 스타일 */
+.finish-container {
+  flex-direction: column;
+  color: white;
+  text-align: center;
+}
+.finish-container h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+.finish-container .buttonGroup {
+    margin-top: 30px;
+    display: flex;
+    gap: 20px;
+}
+.finish-container .actionButton {
+    background-color: #ff577f;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s;
+}
+.finish-container .actionButton:hover {
+    background-color: #e64a6d;
 }

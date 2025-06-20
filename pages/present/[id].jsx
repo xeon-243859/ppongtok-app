@@ -1,56 +1,86 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../src/firebase";
 import styles from "../../src/styles/present.module.css";
 
+const PLAY_DURATION = 30000; // 30초 재생
+
 export default function PresentPage() {
   const [messageData, setMessageData] = useState(null);
-  // 💡 [핵심 수정 1] 현재 보여줄 이미지의 순번(index)을 저장할 상태 추가
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isFinished, setIsFinished] = useState(false);
+  
   const router = useRouter();
   const { id } = router.query;
+  const audioRef = useRef(null);
+  const videoRef = useRef(null);
 
   // 메시지 데이터 불러오기
   useEffect(() => {
-    if (!router.isReady || !id) return;
+    if (!id) return;
     const fetchData = async () => {
-      try {
-        const docRef = doc(db, "messages", id);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setMessageData(docSnap.data());
-        } else {
-          router.push('/404');
-        }
-      } catch (error) {
-        console.error("🔥 메시지 불러오기 오류:", error);
+      const docRef = doc(db, "messages", id);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setMessageData(docSnap.data());
+      } else {
+        router.push('/404');
       }
     };
     fetchData();
-  }, [router.isReady, id]);
+  }, [id, router]);
 
-  // 💡 [핵심 수정 2] 이미지를 자동으로 전환시키는 슬라이드쇼 로직
+  // 미디어 컨트롤 및 슬라이드쇼 로직
   useEffect(() => {
-    // 이미지 데이터가 있고, 이미지 개수가 1개보다 많을 때만 슬라이드쇼를 실행합니다.
-    if (messageData?.type === 'image' && messageData.imageurls?.length > 1) {
-      // 3초마다 이미지를 변경합니다. (3000ms)
-      const intervalId = setInterval(() => {
-        setCurrentImageIndex(prevIndex => 
-          (prevIndex + 1) % messageData.imageurls.length
-        );
-      }, 5000);
+    if (!messageData) return;
 
-      // 컴포넌트가 사라질 때 setInterval을 정리하여 메모리 누수를 방지합니다.
-      return () => clearInterval(intervalId);
+    // 1. 30초 재생 제한 타이머
+    const finishTimer = setTimeout(() => {
+      setIsFinished(true);
+      if (audioRef.current) audioRef.current.pause();
+      if (videoRef.current) videoRef.current.pause();
+    }, PLAY_DURATION);
+
+    // 2. 이미지 슬라이드쇼 로직
+    let slideInterval;
+    if (messageData.type === 'image' && messageData.imageurls?.length > 1) {
+      const slideDuration = PLAY_DURATION / messageData.imageurls.length;
+      slideInterval = setInterval(() => {
+        setCurrentImageIndex(prevIndex => (prevIndex + 1));
+      }, slideDuration);
     }
-  }, [messageData]); // messageData가 로드되면 이 useEffect가 실행됩니다.
+    
+    // 컴포넌트 언마운트 시 타이머와 인터벌 정리
+    return () => {
+      clearTimeout(finishTimer);
+      if (slideInterval) clearInterval(slideInterval);
+    };
+  }, [messageData]);
+  
+  // 이미지가 마지막 슬라이드를 넘어가면 종료 처리
+  useEffect(() => {
+      if (messageData?.imageurls && currentImageIndex >= messageData.imageurls.length) {
+          setIsFinished(true);
+          if (audioRef.current) audioRef.current.pause();
+      }
+  }, [currentImageIndex, messageData]);
 
   if (!messageData) {
+    return <div className={styles["loading-container"]}>메시지를 불러오는 중...</div>;
+  }
+
+  // 종료 화면
+  if (isFinished) {
     return (
-      <div className={styles["loading-container"]}>
-        <p>메시지를 불러오는 중...</p>
+      <div className={styles["finish-container"]}>
+        <h2>메시지가 종료되었습니다.</h2>
+        <p>소중한 마음이 잘 전달되었기를 바랍니다.</p>
+        <div className={styles.buttonGroup}>
+            <button onClick={() => router.push('/')} className={styles.actionButton}>처음으로</button>
+            <button onClick={() => router.push(`/share/${id}`)} className={styles.actionButton}>공유하기</button>
+        </div>
       </div>
     );
   }
@@ -59,30 +89,33 @@ export default function PresentPage() {
     <>
       <Head>
         <title>친구가 보낸 특별한 메시지</title>
-        <meta property="og:title" content="친구가 보낸 특별한 메시지" />
-        <meta property="og:description" content={messageData.message || "영상/이미지 메시지를 확인해보세요!"} />
-        <meta property="og:image" content={messageData.imageurls?.[0] || "/logo.png"} />
+        {/* OG 태그는 여기서도 유지하면 좋습니다 */}
       </Head>
 
       <div className={styles["present-container"]}>
         <div className={styles["moving-box"]}>
-          {/* 비디오일 경우 기존 로직 유지 */}
-          {messageData.type === "video" && <video src={messageData.videoUrl} controls autoPlay muted loop className={styles["media-element"]} />}
+          {messageData.type === "video" && (
+            <video ref={videoRef} src={messageData.videoUrl} autoPlay muted loop className={styles["media-element"]} />
+          )}
           
-          {/* 💡 [핵심 수정 3] 이미지일 경우 슬라이드쇼 렌더링 로직으로 변경 */}
           {messageData.type === "image" && messageData.imageurls?.map((imgUrl, index) => (
             <img
               key={index}
               src={imgUrl}
               alt={`slide-${index}`}
-              // 현재 보여줄 이미지에만 'active' 클래스를 부여합니다.
               className={`${styles.slideImage} ${index === currentImageIndex ? styles.active : ''}`}
             />
           ))}
-
-          {messageData.message && <div className={styles["caption-scroll-container"]}><div className={styles["caption-scroll"]}>{messageData.message}</div></div>}
+          
+          {/* ✅ 10. 흐르는 자막 (Marquee 효과) */}
+          {messageData.message && (
+            <div className={styles["caption-scroll-container"]}>
+              <div className={styles["caption-scroll"]}>{messageData.message}</div>
+            </div>
+          )}
         </div>
-        {messageData.music && <audio src={messageData.music} autoPlay loop />}
+        
+        {messageData.music && <audio ref={audioRef} src={messageData.music} autoPlay loop />}
       </div>
     </>
   );

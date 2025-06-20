@@ -1,0 +1,50 @@
+/* src/styles/SharePage.module.css */
+.shareContainer {
+  justify-content: flex-start;
+  padding-top: 50px;
+}
+
+.qrCodeBox {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  margin-bottom: 40px;
+}
+.qrCodeBox p {
+  margin-top: 15px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.buttonGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  width: 100%;
+  max-width: 350px;
+}
+
+.shareButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #333;
+}
+.shareButton img {
+  width: 60px;
+  height: 60px;
+  border-radius: 15px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+.shareButton:hover img {
+  transform: scale(1.1);
+}
