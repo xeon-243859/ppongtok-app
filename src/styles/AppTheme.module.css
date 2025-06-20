@@ -1,13 +1,5 @@
 /* src/styles/AppTheme.module.css */
-:root {
-  --primary-color: #ff577f;
-  --secondary-color: #ff8a80;
-  --background-color: #fff0f5;
-  --text-color: #333;
-  --text-color-light: #555;
-  --border-radius: 12px;
-  --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-}
+
 
 .pageContainer {
   display: flex;

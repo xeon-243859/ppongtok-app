@@ -1,6 +1,15 @@
 /* src/styles/globals.css */
 
 /* CSS Reset - 브라우저 기본 스타일을 일관되게 초기화 */
+:root { /*  <-- 이 부분이 문제 */
+  --primary-color: #ff577f;
+  --secondary-color: #ff8a80;
+  --background-color: #fff0f5;
+  --text-color: #333;
+  --text-color-light: #555;
+  --border-radius: 12px;
+  --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
 html,
 body {
   padding: 0;
