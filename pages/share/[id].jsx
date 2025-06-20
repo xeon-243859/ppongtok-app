@@ -17,19 +17,19 @@ async function fetchMessageData(id) {
       id: 'message-leaf',
       title: '[퐁톡] 자연의 편안함을 담은 메시지',
       description: '푸른 잎사귀처럼 싱그러운 마음을 전합니다. 항상 응원해요!',
-      imageUrl: '/images/leaves.jpg', // ✅ public/images/leaves.jpg
+      imageUrl: '/images/leaves.jpg', // public/images/leaves.jpg
     },
     'message-road': {
       id: 'message-road',
       title: '[퐁톡] 당신의 앞날을 응원하는 메시지',
       description: '곧게 뻗은 길처럼 당신의 미래도 밝게 빛나기를 바랍니다.',
-      imageUrl: '/images/road.jpg', // ✅ public/images/road.jpg
+      imageUrl: '/images/road.jpg', // public/images/road.jpg
     },
     'message-test': {
       id: 'message-test',
       title: '[퐁톡] 테스트용 특별 메시지',
       description: '이 메시지는 테스트를 위해 생성되었습니다. 이미지가 잘 보이나요?',
-      imageUrl: '/images/test-image.jpg', // ✅ public/images/test-image.jpg
+      imageUrl: '/images/test-image.jpg', // public/images/test-image.jpg
     },
     // 다른 메시지들도 필요하다면 여기에 추가...
   };
@@ -62,9 +62,6 @@ export async function getServerSideProps(context) {
 export default function ShareMessagePage({ messageData }) {
   const router = useRouter();
   
-  // ✅ props로 데이터를 직접 받으므로, 클라이언트 사이드의 useState/useEffect 로딩 처리가 더 이상 필요 없습니다.
-  // 페이지는 항상 데이터가 채워진 상태로 렌더링됩니다.
-
   const BASE_URL = 'https://ppongtok-app.vercel.app'; // 배포된 앱의 실제 주소
   const currentShareUrl = `${BASE_URL}${router.asPath}`; // 현재 페이지의 전체 URL (e.g., https://.../share/message-leaf)
 
@@ -78,8 +75,8 @@ export default function ShareMessagePage({ messageData }) {
         content: {
           title: title,
           description: description,
-          // ✅ 이미지 URL을 전체 절대 경로로 만들어줍니다.
-          // ✅ 대체 이미지도 public 폴더에 '실제로 있는' 파일로 지정합니다.
+          // 이미지 URL을 전체 절대 경로로 만들어줍니다.
+          // 대체 이미지도 public 폴더에 '실제로 있는' 파일로 지정합니다.
           imageUrl: `${BASE_URL}${imageUrl || '/images/leaves.jpg'}`, 
           link: { mobileWebUrl: currentShareUrl, webUrl: currentShareUrl },
         },
@@ -103,7 +100,7 @@ export default function ShareMessagePage({ messageData }) {
         <title>{messageData.title}</title>
         <meta property="og:title" content={messageData.title} />
         <meta property="og:description" content={messageData.description} />
-        {/* ✅ OG 이미지 태그에도 전체 절대 경로를 사용합니다. */}
+        {/* OG 이미지 태그에도 전체 절대 경로를 사용합니다. */}
         <meta property="og:image" content={`${BASE_URL}${messageData.imageUrl}`} />
         <meta property="og:url" content={currentShareUrl} />
         <meta property="og:type" content="website" />
@@ -127,16 +124,17 @@ export default function ShareMessagePage({ messageData }) {
             <div className={styles.qrCodeBackground}>
                 <QRCode value={currentShareUrl} size={128} />
             </div>
-            {/* ✅ 카카오톡 공유 버튼. 아이콘 경로는 public/icons/2.png를 가리킵니다. */}
+            {/* 카카오톡 공유 버튼. 아이콘 경로는 public/icons/2.png를 가리킵니다. */}
             <button onClick={handleShareToKakao} className={styles.kakaoButton}>
                 <img src="/icons/2.png" alt="카카오톡 아이콘" />
                 카카오톡으로 공유하기
             </button>
         </div>
         
-        {/* ✅ Link 컴포넌트를 사용해서 '처음으로' 돌아가는 버튼 생성 */}
-        <Link href="/" passHref>
-          <a className={styles.homeButton}>🏠 나도 메시지 만들러 가기</a>
+        {/* ✅✅✅ <Link> 컴포넌트 수정 완료 ✅✅✅ */}
+        {/* <a> 태그를 제거하고, className을 <Link>에 직접 적용했습니다. */}
+        <Link href="/" className={styles.homeButton}>
+          🏠 나도 메시지 만들러 가기
         </Link>
       </div>
     </>
