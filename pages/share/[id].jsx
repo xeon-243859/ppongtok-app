@@ -8,7 +8,7 @@ import shareStyles from '../../src/styles/SharePage.module.css';
 
 // ✅ 아이콘 경로를 확인해주세요. public 폴더 기준입니다.
 const ICON_PATHS = {
-  kakao: '/icons/kakaotalk.png',
+  kakao: '/icons/2.png',
   link: '/icons/link.png',
   facebook: '/icons/facebook.png',
   twitter: '/icons/twitter.png',
