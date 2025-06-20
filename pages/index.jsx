@@ -4,7 +4,8 @@ import Head from 'next/head';
 import { useState } from 'react';
 // ShareButton 컴포넌트의 실제 경로를 확인해주세요.
 
-import ShareButton from '.. /src/components/sharebutton';
+
+import ShareButton from '../src/components/ShareButton';
 import appStyles from '../src/styles/AppTheme.module.css';
 
 export default function Home() {
