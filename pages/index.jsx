@@ -9,7 +9,7 @@ export default function Home() {
   const [myMessageId, setMyMessageId] = useState('example-message-123');
   const [messageTitle, setMessageTitle] = useState('나만의 특별한 메시지 - 퐁톡');
   const [messageDesc, setMessageDesc] = useState('영상과 이미지를 담아 마음을 전해보세요! 지금 바로 확인!');
-  const [messageImageUrl, setMessageImageUrl] = useState('https://ppongtok-app.vercel.app/images/default_share_image.jpg');
+  const [messageImageUrl, setMessageImageUrl] = useState('/images/default_share_image.jpg');
 
   const BASE_URL = 'https://ppongtok-app.vercel.app';
   const shareLinkUrl = `${BASE_URL}/share/${myMessageId}`;
