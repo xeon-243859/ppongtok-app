@@ -30,32 +30,36 @@
 }
 
 .button {
-  font-size: 0.9rem;
-  padding: 0.5rem 1.2rem;
+  font-size: 0.95rem;
+  padding: 0.6rem 1.4rem;
   border-radius: 12px;
   border: none;
   cursor: pointer;
+  font-weight: 600; /* 글씨 진하게! */
   transition: background-color 0.3s;
-  font-weight: 500;
+  letter-spacing: -0.3px;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .buttonPrimary {
-  background-color: #ffc0cb; /* 핑크 파스텔톤 */
-  color: white;
+  background-color: #ff82a9; /* 진한 핑크 파스텔 */
+  color: #fff;
 }
 
 .buttonPrimary:hover {
-  background-color: #ffb6c1;
+  background-color: #ff6d9e;
 }
 
 .buttonSecondary {
-  background-color: #ffe4e1;
-  color: #ff69b4;
+  background-color: #ffc1d8; /* 연핑크에서 좀 더 진한 파스텔톤 */
+  color: #b4005a;
 }
 
 .buttonSecondary:hover {
-  background-color: #ffddee;
+  background-color: #fcaecf;
 }
+
 
 .previewGrid {
   display: grid;
