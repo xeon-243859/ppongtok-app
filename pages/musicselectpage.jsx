@@ -4,7 +4,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import imageCompression from "browser-image-compression";
 import { TypeAnimation } from "react-type-animation";
-import pageStyles from "../src/styles/ImageSelectPage.module.css"; 
+import pageStyles from "../src/styles/imageselectpage.module.css"; 
 
 export default function ImageSelectPage() {
   const router = useRouter();
