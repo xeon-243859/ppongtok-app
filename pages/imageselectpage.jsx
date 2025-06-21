@@ -6,7 +6,7 @@ import imageCompression from "browser-image-compression";
 import { TypeAnimation } from "react-type-animation";
 
 // ✅ CSS 파일 경로는 실제 위치에 맞게 확인해주세요. (src/styles/ 로 이동 권장)
-import pageStyles from "../src/styles/ImageSelectPage.module.css"; 
+import pageStyles from "../src/styles/imageselectpage.module.css"; 
 
 export default function ImageSelectPage() {
   const router = useRouter();
