@@ -149,3 +149,8 @@
 .buttonLocalFile:hover:not(:disabled) {
   background-color: #ffb3c1; /* 기본 색상보다 약간 진하게 */
 }
+/* ✅ '내 파일 선택' 버튼에만 적용할 핑크 파스텔 톤 코드 */
+.buttonPink {
+  background-color: #FFB6C1; /* 라이트 핑크 (파스텔 톤) */
+  color: #333;               /* 글자색은 어둡게 해야 잘 보입니다 */
+}

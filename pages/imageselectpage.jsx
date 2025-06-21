@@ -113,7 +113,7 @@ export default function ImageSelectPage() {
             테마 이미지
           </button>
           <button 
-            className={pageStyles.button}
+             className={`${pageStyles.button} ${pageStyles.buttonPink}`}
             onClick={() => fileInputRef.current.click()}
             disabled={isLoading || selectedImageCount >= 4}
           >
