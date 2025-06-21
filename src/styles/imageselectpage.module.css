@@ -1,159 +1,166 @@
 /* 
   File: /src/styles/imageselectpage.module.css
-  Theme: Soft Pastel Pink
+  Theme: Cute & Unified Pastel Pink 
 */
 
-/* ✅ 전체 페이지 컨테이너 */
+/* 🎨 색상 변수: 색상 관리를 용이하게 합니다 */
+:root {
+  --primary-pink: #FFB6C1;   /* 메인 파스텔 핑크 (LightPink) */
+  --secondary-pink: #FFDDE1; /* 더 연한 핑크 */
+  --text-color: #735D78;     /* 부드러운 짙은 보라색 텍스트 */
+  --background-color: #FFF9FA; /* 아주 연한 핑크빛 배경 */
+  --border-color: #FFD1DC;   /* 연한 핑크 테두리 */
+}
+
+/* ✅ 전체 페이지: 부드러운 배경색 적용 */
 .pageContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between; /* 상단 콘텐츠와 하단 버튼을 분리 */
+  justify-content: space-between;
   min-height: 100vh;
   padding: 2rem 1rem;
-  background-color: #FFF0F5; /* 아주 연한 핑크 배경 (LavenderBlush) */
+  background-color: var(--background-color);
   box-sizing: border-box;
 }
 
-/* ✅ 메인 콘텐츠 래퍼 */
+/* ✅ 메인 콘텐츠 래퍼: 간격을 줄여 더 모여보이게 */
 .contentWrapper {
   width: 100%;
-  max-width: 500px;
+  max-width: 420px; /* 최대 너비 살짝 줄임 */
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 1.5rem; /* 요소 간 간격 */
+  gap: 1.25rem; /* 요소 간 간격 축소 */
 }
 
-/* ✅ 타이핑 애니메이션 제목 */
+/* ✅ 제목: 글씨 크기 축소 */
 .title {
-  font-size: 1.8rem;
+  font-size: 1.5rem; /* 크기 줄임 */
   font-weight: 600;
-  color: #333;
-  line-height: 1.5;
+  color: var(--text-color);
+  line-height: 1.4;
 }
 
-/* --- 버튼 스타일 (Pastel Pink Theme) --- */
 
-/* ✅ 버튼 그룹 (테마 이미지, 내 파일 선택) */
-.buttonGroup {
+/* --- 📏 버튼 스타일 (크기 줄이고 통일성 부여) --- */
+
+.buttonGroup,
+.navButtonContainer {
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem; /* 버튼 간격 줄임 */
   width: 100%;
 }
 
-/* ✅ 기본 버튼 스타일 */
+/* ✅ 기본 버튼 스타일 (공통) */
 .button {
-  flex-grow: 1; /* 버튼이 공간을 채우도록 */
-  padding: 12px 20px;
-  font-size: 1rem;
+  flex-grow: 1;
+  padding: 10px 16px; /* 패딩 줄여서 작게 만듦 */
+  font-size: 0.9rem; /* 폰트 크기 줄임 */
   font-weight: 600;
-  border-radius: 12px;
-  border: 2px solid #FFB6C1; /* 파스텔 핑크 테두리 (LightPink) */
-  background-color: #FFB6C1; /* 파스텔 핑크 배경 */
-  color: #4B0082; /* 진한 보라색 텍스트로 포인트 (Indigo) */
+  border-radius: 10px; /* 더 둥글게 */
+  border: 1px solid var(--border-color); /* 얇은 테두리 */
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px rgba(115, 93, 120, 0.05); /* 그림자도 부드럽게 */
 }
 
 .button:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
-  background-color: #FFAAB5; /* 호버 시 조금 더 진한 핑크 */
+  box-shadow: 0 4px 8px rgba(115, 93, 120, 0.1);
 }
 
 .button:active:not(:disabled) {
   transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .button:disabled {
-  background-color: #E0E0E0;
-  border-color: #D0D0D0;
+  background-color: #EAEAEA;
+  border-color: #DCDCDC;
   color: #A0A0A0;
   cursor: not-allowed;
-  opacity: 0.7;
+  opacity: 0.8;
 }
 
-/* ✅ 강조 버튼 ('내 파일 선택'에 사용) */
-.buttonAccent {
-  background-color: #FF69B4; /* 더 진하고 활기찬 핑크 (HotPink) */
-  border-color: #FF69B4;
+/* ✅ 주요 버튼 (내 파일 선택, 다음으로) */
+.buttonPrimary {
+  background-color: var(--primary-pink);
   color: white;
+  border-color: var(--primary-pink);
+}
+.buttonPrimary:hover:not(:disabled) {
+  background-color: #FAACB7; /* 살짝 진하게 */
+  border-color: #FAACB7;
 }
 
-.buttonAccent:hover:not(:disabled) {
-  background-color: #FF5AB0;
-}
-
-/* ✅ 보조 버튼 ('뒤로가기'에 사용) */
+/* ✅ 보조 버튼 (테마 이미지, 뒤로가기) */
 .buttonSecondary {
   background-color: white;
-  color: #FF69B4; /* 핫핑크 텍스트 */
-  border-color: #FFB6C1; /* 연한 핑크 테두리 */
+  color: var(--primary-pink);
 }
-
 .buttonSecondary:hover:not(:disabled) {
-  background-color: #FFF8FA;
+  background-color: var(--background-color);
+  border-color: var(--primary-pink);
 }
 
 
-/* --- 이미지 미리보기 그리드 --- */
+/* --- ✨ 이미지 슬롯 (아기자기하게) --- */
 
 .previewGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+  gap: 0.75rem; /* 간격 줄임 */
   width: 100%;
-  max-width: 400px; /* 그리드 최대 너비 제한 */
-  margin-top: 1rem;
+  max-width: 320px; /* 전체 그리드 크기 대폭 축소 */
+  margin-top: 0.5rem;
 }
 
 .slot {
   position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 1; /* 1:1 정사각형 비율 유지 */
+  aspect-ratio: 1 / 1;
   background-color: #FFFFFF;
-  border-radius: 12px;
-  border: 2px dashed #FFDAE0; /* 핑크 점선 */
-  overflow: hidden; /* 이미지가 둥근 모서리를 넘어가지 않도록 */
+  border-radius: 10px; /* 버튼과 통일 */
+  border: 1px dashed var(--border-color); /* 얇고 연한 점선 */
+  overflow: hidden;
 }
 
 .thumbnail {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* 이미지가 잘리지 않고 꽉 차게 */
+  object-fit: cover;
 }
 
+/* ✅ 빈 슬롯 '+' 크기 줄임 */
 .placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100%;
-  font-size: 3rem;
-  color: #FFC0CB; /* 핑크색 '+' */
+  font-size: 2.5rem; /* '+' 크기 줄임 */
+  font-weight: 300; /* '+' 얇게 */
+  color: var(--secondary-pink);
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .placeholder:hover {
-  background-color: #FFF8FA; /* 아주 연한 핑크 배경 */
+  background-color: var(--background-color);
 }
 
+/* ✅ 삭제 버튼 크기 줄임 */
 .deleteButton {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 28px;
-  height: 28px;
+  top: 5px;
+  right: 5px;
+  width: 24px;   /* 크기 줄임 */
+  height: 24px;  /* 크기 줄임 */
   border-radius: 50%;
   border: none;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.5);
   color: white;
-  font-size: 1.2rem;
+  font-size: 1rem; /* 아이콘 크기 줄임 */
   line-height: 1;
   display: flex;
   align-items: center;
@@ -163,16 +170,5 @@
 }
 
 .deleteButton:hover {
-  background-color: rgba(255, 0, 0, 0.8);
-}
-
-
-/* --- 하단 네비게이션 버튼 --- */
-
-.navButtonContainer {
-  display: flex;
-  gap: 1rem;
-  width: 100%;
-  max-width: 500px;
-  margin-top: 2rem;
+  background-color: rgba(255, 82, 82, 0.8);
 }

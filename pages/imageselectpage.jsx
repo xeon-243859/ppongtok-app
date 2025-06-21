@@ -89,8 +89,7 @@ export default function ImageSelectPage() {
   
   const selectedImageCount = images.filter(Boolean).length;
 
-  return (
-    // ... JSX는 동일합니다 ...
+   return (
     <div className={pageStyles.pageContainer}>
       <div className={pageStyles.contentWrapper}>
         <h2 className={pageStyles.title}>
@@ -100,12 +99,13 @@ export default function ImageSelectPage() {
           />
         </h2>
 
+        {/* ✅ 버튼 클래스명 변경 */}
         <div className={pageStyles.buttonGroup}>
-          <button className={pageStyles.button} onClick={() => router.push('/imagethemepage')}>
+          <button className={`${pageStyles.button} ${pageStyles.buttonSecondary}`} onClick={() => router.push('/imagethemepage')}>
             테마 이미지
           </button>
           <button 
-             className={`${pageStyles.button} ${pageStyles.buttonAccent}`} // ✅ 강조 버튼 클래스명 변경
+            className={`${pageStyles.button} ${pageStyles.buttonPrimary}`}
             onClick={() => fileInputRef.current.click()}
             disabled={isLoading || selectedImageCount >= 4}
           >
@@ -113,7 +113,14 @@ export default function ImageSelectPage() {
           </button>
         </div>
 
-        <input type="file" accept="image/*" multiple onChange={handleImageSelect} ref={fileInputRef} style={{ display: "none" }} />
+        <input
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={handleImageSelect}
+          ref={fileInputRef}
+          style={{ display: "none" }}
+        />
         
         <div className={pageStyles.previewGrid}>
           {images.map((url, index) => (
@@ -133,9 +140,10 @@ export default function ImageSelectPage() {
         </div>
       </div>
 
+      {/* ✅ 하단 버튼 클래스명도 통일 */}
       <div className={pageStyles.navButtonContainer}>
          <button onClick={handleBack} className={`${pageStyles.button} ${pageStyles.buttonSecondary}`}>뒤로가기</button>
-         <button onClick={handleNext} className={pageStyles.button}>다음으로</button>
+         <button onClick={handleNext} className={`${pageStyles.button} ${pageStyles.buttonPrimary}`}>다음으로</button>
       </div>
     </div>
   );
