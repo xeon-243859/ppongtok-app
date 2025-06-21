@@ -1,165 +1,120 @@
-/* 
-  File: /src/styles/imageselectpage.module.css
-  Theme: Cute & Unified Pastel Pink 
-*/
-
-/* ✅ 전체 페이지: 전역 변수(globals.css)를 사용하여 부드러운 배경색 적용 */
 .pageContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
+  background-color: #fff0f5; /* 연한 핑크 배경 */
   min-height: 100vh;
-  padding: 2rem 1rem;
-  background-color: var(--background-color);
-  box-sizing: border-box;
-}
-
-/* ✅ 메인 콘텐츠 래퍼: 간격을 줄여 더 모여보이게 */
-.contentWrapper {
-  width: 100%;
-  max-width: 420px;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  gap: 1.25rem;
+  font-family: 'Pretendard', sans-serif;
 }
 
-/* ✅ 제목: 글씨 크기 축소 */
-.title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--text-color);
-  line-height: 1.4;
-}
-
-
-/* --- 📏 버튼 스타일 (크기 줄이고 통일성 부여) --- */
-
-.buttonGroup,
-.navButtonContainer {
-  display: flex;
-  gap: 0.75rem;
+.contentWrapper {
+  max-width: 500px;
   width: 100%;
+  text-align: center;
 }
 
-/* ✅ 기본 버튼 스타일 (공통) */
+.title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #d63384;
+  margin-bottom: 1.5rem;
+  white-space: pre-line;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
 .button {
-  flex-grow: 1;
-  padding: 10px 16px;
   font-size: 0.9rem;
-  font-weight: 600;
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
+  padding: 0.5rem 1.2rem;
+  border-radius: 12px;
+  border: none;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  box-shadow: 0 2px 4px rgba(115, 93, 120, 0.05);
+  transition: background-color 0.3s;
+  font-weight: 500;
 }
 
-.button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(115, 93, 120, 0.1);
-}
-
-.button:active:not(:disabled) {
-  transform: translateY(0);
-}
-
-.button:disabled {
-  background-color: #EAEAEA;
-  border-color: #DCDCDC;
-  color: #A0A0A0;
-  cursor: not-allowed;
-  opacity: 0.8;
-}
-
-/* ✅ 주요 버튼 (내 파일 선택, 다음으로) */
 .buttonPrimary {
-  background-color: var(--primary-pink);
+  background-color: #ffc0cb; /* 핑크 파스텔톤 */
   color: white;
-  border-color: var(--primary-pink);
-}
-.buttonPrimary:hover:not(:disabled) {
-  background-color: #FAACB7; /* 살짝 진하게 */
-  border-color: #FAACB7;
 }
 
-/* ✅ 보조 버튼 (테마 이미지, 뒤로가기) */
+.buttonPrimary:hover {
+  background-color: #ffb6c1;
+}
+
 .buttonSecondary {
-  background-color: white;
-  color: var(--primary-pink);
-}
-.buttonSecondary:hover:not(:disabled) {
-  background-color: var(--background-color);
-  border-color: var(--primary-pink);
+  background-color: #ffe4e1;
+  color: #ff69b4;
 }
 
-
-/* --- ✨ 이미지 슬롯 (아기자기하게) --- */
+.buttonSecondary:hover {
+  background-color: #ffddee;
+}
 
 .previewGrid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.75rem;
-  width: 100%;
-  max-width: 320px;
-  margin-top: 0.5rem;
+  grid-template-columns: repeat(2, 120px);
+  gap: 10px;
+  margin-top: 1rem;
+  justify-content: center;
 }
 
 .slot {
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  border: 2px dashed #ffb6c1;
+  background-color: #fff5f8;
   position: relative;
-  aspect-ratio: 1 / 1;
-  background-color: #FFFFFF;
-  border-radius: 10px;
-  border: 1px dashed var(--border-color);
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .thumbnail {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 12px;
 }
 
-/* ✅ 빈 슬롯 '+' 크기 줄임 */
 .placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 100%;
   height: 100%;
-  font-size: 2.5rem;
-  font-weight: 300;
-  color: var(--secondary-pink);
+  font-size: 2.2rem;
+  color: #ffb6c1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
-  transition: background-color 0.2s;
+  user-select: none;
 }
 
-.placeholder:hover {
-  background-color: var(--background-color);
-}
-
-/* ✅ 삭제 버튼 크기 줄임 */
 .deleteButton {
   position: absolute;
-  top: 5px;
-  right: 5px;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: none;
-  background-color: rgba(0, 0, 0, 0.5);
+  top: 4px;
+  right: 4px;
+  background-color: rgba(255, 182, 193, 0.95);
   color: white;
-  font-size: 1rem;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  font-weight: bold;
+  line-height: 20px;
 }
 
-.deleteButton:hover {
-  background-color: rgba(255, 82, 82, 0.8);
+.navButtonContainer {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
 }
