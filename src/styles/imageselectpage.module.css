@@ -22,49 +22,37 @@
   white-space: pre-line;
 }
 
-.buttonGroup {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
+/* ✅ 공통 버튼 스타일 */
 .button {
   font-size: 0.95rem;
   padding: 0.6rem 1.4rem;
   border-radius: 12px;
   border: none;
   cursor: pointer;
-  font-weight: 600; /* 글씨 진하게! */
+  font-weight: 600;
   transition: background-color 0.3s;
   letter-spacing: -0.3px;
-  color: #fff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
+/* ✅ 내 파일 선택 = 진한 파스텔핑크 */
 .buttonPrimary {
-  background-color: #ff82a9; /* 진한 핑크 파스텔 */
+  background-color: #ff6ea9;  /* 선명한 핑크 */
   color: #fff;
 }
 
 .buttonPrimary:hover {
-  background-color: #ff6d9e;
+  background-color: #ff5e9c;
 }
 
+/* ✅ 뒤로가기 버튼 = 같은 계열로 통일 */
 .buttonSecondary {
-  background-color: #ffb6c1; /* 더 진한 핑크 파스텔 */
-  color: #7a004b;            /* 딥핑크 텍스트 */
-  font-weight: 600;
-  border: none;
-  border-radius: 12px;
-  padding: 0.5rem 1.2rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  box-shadow: 0 2px 6px rgba(255, 182, 193, 0.4);
+  background-color: #ffb3c6;  /* 진한 연핑크 */
+  color: #6c003b;
 }
 
 .buttonSecondary:hover {
-  background-color: #fc9ab3; /* 호버 시 더 진하게 */
+  background-color: #ff9bb5;
 }
 
 
