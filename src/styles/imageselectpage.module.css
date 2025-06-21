@@ -1,28 +1,85 @@
 /* src/styles/ImageSelectPage.module.css */
 
+/* 전체 페이지 컨테이너 */
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between; /* 상단 콘텐츠와 하단 버튼을 분리 */
+  min-height: 100vh;
+  padding: 20px;
+  background: linear-gradient(180deg, #fff0f5, #e9d8e4); /* 부드러운 파스텔 톤 배경 */
+  font-family: 'Pretendard', sans-serif;
+  box-sizing: border-box;
+}
+
+/* 상단 콘텐츠 영역 (제목, 버튼, 슬롯) */
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* 제목 텍스트 (아기자기한 크기로 수정) */
+.title {
+  font-size: 1.8rem; /* 글씨 크기 줄임 */
+  font-weight: 600;
+  color: #c75e82; /* 톤 다운된 핑크 */
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+  min-height: 60px; /* 타이핑 애니메이션 영역 확보 */
+}
+
+/* 버튼 그룹 (아기자기하게 수정) */
 .buttonGroup {
   display: flex;
   gap: 1rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 2rem;
 }
 
+.button {
+  padding: 10px 20px; /* 버튼 크기 줄임 */
+  font-size: 0.9rem; /* 폰트 크기 줄임 */
+  font-weight: 600;
+  color: white;
+  background-color: #ff8fab; /* 핑크 파스텔 톤 */
+  border: none;
+  border-radius: 20px; /* 둥근 버튼 */
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+.button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background-color: #fb7299;
+}
+.button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* 이미지 슬롯 그리드 (모바일에서 꽉 차지 않도록 수정) */
 .previewGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   width: 100%;
-  max-width: 400px;
-  margin-top: 1.5rem;
-  margin-bottom: 100px; /* 하단 내비게이션 버튼과의 간격 확보 */
+  max-width: 320px; /* 최대 너비 제한 */
+  margin: 0 auto; /* 중앙 정렬 */
 }
 
 .slot {
   position: relative;
   width: 100%;
-  padding-top: 100%; /* 1:1 비율의 정사각형 */
-  background-color: #e9e2e7;
-  border-radius: var(--border-radius);
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+  padding-top: 100%; /* 1:1 비율 정사각형 */
+  background-color: rgba(255, 255, 255, 0.5); /* 반투명한 흰색 */
+  border: 2px dashed #ffc2d1; /* 점선 테두리 */
+  border-radius: 16px; /* 둥근 모서리 */
+  transition: transform 0.2s;
 }
 
 .placeholder {
@@ -34,13 +91,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 3rem;
-  color: #c4b9c0;
+  font-size: 2.5rem;
+  color: #ffc2d1;
   cursor: pointer;
-  transition: background-color 0.2s;
 }
 .placeholder:hover {
-  background-color: #dcd4d9;
+  transform: scale(1.05);
 }
 
 .thumbnail {
@@ -50,17 +106,17 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: var(--border-radius);
+  border-radius: 16px;
 }
 
 .deleteButton {
   position: absolute;
-  top: -10px;
-  right: -10px;
-  width: 30px;
-  height: 30px;
+  top: -8px;
+  right: -8px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  background-color: #333;
+  background-color: #555;
   color: white;
   border: 2px solid white;
   font-size: 1rem;
@@ -71,4 +127,40 @@
   justify-content: center;
   line-height: 1;
   box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* 하단 내비게이션 버튼 (세로쓰기 및 깨짐 문제 해결) */
+.navButtonContainer {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  justify-content: space-between; /* 양쪽 끝으로 버튼을 보냄 */
+  padding: 1rem 0;
+}
+
+.navButton {
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  min-width: 120px; /* 최소 너비 지정 */
+  text-align: center;
+}
+
+/* 뒤로가기, 다음으로 버튼 스타일 분리 */
+.navButton:first-child { /* 뒤로가기 버튼 */
+  background-color: #fce4ec;
+  color: #c75e82;
+}
+
+.navButton:last-child { /* 다음으로 버튼 */
+  background-color: #ff8fab;
+  color: white;
+}
+
+.navButton:hover {
+  transform: translateY(-2px);
 }
