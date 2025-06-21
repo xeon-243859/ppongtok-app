@@ -6,7 +6,7 @@ import imageCompression from "browser-image-compression";
 import { TypeAnimation } from "react-type-animation";
 import pageStyles from "../src/styles/imageselectpage.module.css"; 
 
-export default function ImageSelectPage() {
+export default function MusicSelectPage() {
   const router = useRouter();
   const fileInputRef = useRef(null);
   const [images, setImages] = useState(Array(4).fill(null));
