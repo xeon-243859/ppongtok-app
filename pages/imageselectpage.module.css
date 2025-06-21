@@ -1,199 +1,74 @@
-.image-select-container {
+/* src/styles/ImageSelectPage.module.css */
+
+.buttonGroup {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 50px;
-  text-align: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
 }
 
-/* ✅ 타자체 두 줄 */
-.typing-text {
-  text-align: center;
-  margin-top: 60px;
-  margin-bottom: 20px;
-  font-size: 22px;
-  font-weight: bold;
-}
-
-.typing-text .line1,
-.typing-text .line2 {
-  animation: typing 1.2s steps(20) forwards;
-  white-space: nowrap;
-  overflow: hidden;
-  border-right: none;
-}
-
-.typing-text .line2 {
-  animation-delay: 1.2s;
-}
-
-@keyframes typing {
-  from { width: 0; }
-  to { width: 100%; }
-}
-
-/* ✅ 감성 버튼 + 한 줄 유지 */
-.file-button-group {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 20px;
-  justify-content: center;
-}
-
-.file-button-group button {
-  white-space: nowrap;
-  padding: 12px 26px;
-  font-size: 1rem;
-  background-color: #ffc8c8;
-  color: #333;
-  border: none;
-  border-radius: 25px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.file-button-group button:hover {
-  background-color: #ff9e9e;
-}
-
-/* ✅ 2행 2열 슬롯 정렬 */
-.image-slots-grid {
+.previewGrid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2개씩 정렬 */
-  gap: 16px;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.theme-image-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);  /* 2열로 고정 */
-  gap: 16px;
-  justify-content: center;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  width: 100%;
   max-width: 400px;
-  margin: 0 auto;
+  margin-top: 1.5rem;
+  margin-bottom: 100px; /* 하단 내비게이션 버튼과의 간격 확보 */
 }
 
-
-.image-slot {
+.slot {
   position: relative;
-  width: 100px;
-  height: 100px;
-  border: 1px dashed #ccc;
-  background-color: #fdfdfd;
-  overflow: hidden;
+  width: 100%;
+  padding-top: 100%; /* 1:1 비율의 정사각형 */
+  background-color: #e9e2e7;
+  border-radius: var(--border-radius);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
-.image-slot img {
+.placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  color: #c4b9c0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.placeholder:hover {
+  background-color: #dcd4d9;
+}
+
+.thumbnail {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
+  border-radius: var(--border-radius);
 }
 
-.image-slot button {
+.deleteButton {
   position: absolute;
-  bottom: 4px;
-  right: 6px;
-  background: none;
-  border: none;
-  color: #333;
-  font-size: 14px;
+  top: -10px;
+  right: -10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #333;
+  color: white;
+  border: 2px solid white;
+  font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-}
-
-/* 하단 버튼 그룹과 완벽하게 통일하고 싶으면 아래도 함께 적용 */
-.button-group {
   display: flex;
-  justify-content: center;
-  gap: 16px;
-  margin-top: 30px;
-}
-
-.button-group button {
-  background-color: #ff6f91;
-  color: #fff;
-  border: none;
-  border-radius: 25px;
-  padding: 10px 24px;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.button-group button:hover {
-  background-color: #ff4d7e;
-}
-
-
-.uploadBtn {
-  background-color: #ffcdde;
-  padding: 10px 20px;
-  border-radius: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  border: none;
-  margin: 5px;
-}
-
-
-
-/* 공통 버튼 스타일 */
-.styledButton {
-  padding: 10px 20px;
-  background: linear-gradient(135deg, #ffb6b9, #fcd5ce);
-  border: none;
-  border-radius: 25px;
-  font-size: 14px;
-  font-weight: bold;
-  color: #333;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-}
-
-.styledButton:hover {
-  background: linear-gradient(135deg, #fcd5ce, #ffb6b9);
-  transform: translateY(-2px);
-}
-
-/* 숨겨진 input */
-.hiddenInput {
-  display: none;
-}
-
-/* 상단 버튼 그룹 */
-.selectButtons {
-  display: flex;
-  flex-direction: row; /* 항상 가로 정렬 */
-  justify-content: center;
   align-items: center;
-  gap: 16px;
-  flex-wrap: nowrap; /* 모바일에서 줄바꿈 방지 */
-  margin-bottom: 24px;
-}
-
-/* 상단 개별 버튼 (배경이미지 파일, 내 파일 선택) */
-.selectButton {
-  
-  display: inline-block; /* label도 버튼처럼 */
-  text-align: center;
+  justify-content: center;
   line-height: 1;
-  background-color: #ff6f91 !important;
-  color: #fff !important;
-  border: none;
-  border-radius: 25px;
-  padding: 10px 24px;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  white-space: nowrap;
-}
-
-.selectButton:hover {
-  background-color: #ff4d7e;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }

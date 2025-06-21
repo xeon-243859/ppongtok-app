@@ -1,118 +1,134 @@
+// ppongtok-app/pages/imageselectpage.jsx
+
 import React, { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import imageCompression from "browser-image-compression"; // ✅ 라이브러리 import
-import styles from "./imageselectpage.module.css";
-import appStyles from "../src/styles/AppTheme.module.css"; // ✅ 공통 스타일 import
+import imageCompression from "browser-image-compression";
+import { TypeAnimation } from "react-type-animation"; // ✅ 타이핑 애니메이션 라이브러리 import
+
+// ✅ 공통 스타일과 페이지 전용 스타일을 모두 import 합니다.
+import appStyles from "../src/styles/AppTheme.module.css";
+import pageStyles from "../src/styles/ImageSelectPage.module.css"; // 이 페이지 전용 스타일 파일
 
 export default function ImageSelectPage() {
   const router = useRouter();
   const fileInputRef = useRef(null);
-  const [images, setImages] = useState(["", "", "", ""]);
-  const [isLoading, setIsLoading] = useState(false); // ✅ 로딩 상태 추가
+  
+  // ✅ 이미지 URL들을 담을 배열 상태 (최대 4개)
+  const [images, setImages] = useState(Array(4).fill(null));
+  const [isLoading, setIsLoading] = useState(false);
 
-  // 기존 이미지 로드
+  // 페이지 로드 시 localStorage에서 기존 이미지 불러오기
   useEffect(() => {
-    const loadedImages = [];
-    for (let i = 1; i <= 4; i++) {
-      loadedImages.push(localStorage.getItem(`img-${i}`) || "");
+    const loadedImages = Array(4).fill(null);
+    for (let i = 0; i < 4; i++) {
+      const storedImage = localStorage.getItem(`img-${i + 1}`);
+      if (storedImage) {
+        loadedImages[i] = storedImage;
+      }
     }
     setImages(loadedImages);
   }, []);
 
-  // ✅ 이미지 선택 및 압축 핸들러
+  // 이미지 선택 및 압축 핸들러
   const handleImageSelect = async (e) => {
-    const files = Array.from(e.target.files).slice(0, 4 - images.filter(Boolean).length);
-    if (files.length === 0) return;
+    // 현재 비어있는 슬롯의 개수만큼만 파일을 받습니다.
+    const emptySlots = images.filter(img => !img).length;
+    const filesToProcess = Array.from(e.target.files).slice(0, emptySlots);
+    if (filesToProcess.length === 0) return;
 
-    setIsLoading(true); // 로딩 시작
+    setIsLoading(true);
     alert(`이미지 압축을 시작합니다. 잠시만 기다려주세요...`);
 
-    const updated = [...images];
-    const compressionPromises = files.map(async (file) => {
-      console.log(`압축 전: ${file.name}, ${(file.size / 1024 / 1024).toFixed(2)}MB`);
+    const compressionPromises = filesToProcess.map(async (file) => {
       try {
-        const options = {
-          maxSizeMB: 1, // 최대 1MB
-          maxWidthOrHeight: 1920, // 최대 해상도 1920px
-          useWebWorker: true,
-        };
+        const options = { maxSizeMB: 1, maxWidthOrHeight: 1920, useWebWorker: true };
         const compressedFile = await imageCompression(file, options);
-        console.log(`압축 후: ${compressedFile.name}, ${(compressedFile.size / 1024 / 1024).toFixed(2)}MB`);
-        return URL.createObjectURL(compressedFile);
+        return { file: compressedFile, url: URL.createObjectURL(compressedFile) };
       } catch (error) {
         console.error("이미지 압축 실패:", error);
-        alert(`${file.name} 파일 압축에 실패했습니다. 다른 파일을 선택해주세요.`);
         return null;
       }
     });
 
-    const compressedUrls = await Promise.all(compressionPromises);
+    const compressedResults = await Promise.all(compressionPromises);
     
-    let currentImageIndex = 0;
-    for (let i = 0; i < updated.length; i++) {
-        if (!updated[i] && compressedUrls[currentImageIndex]) {
-            updated[i] = compressedUrls[currentImageIndex];
-            currentImageIndex++;
+    // 비어있는 슬롯에 순서대로 이미지를 채워넣습니다.
+    const newImages = [...images];
+    let compressedIndex = 0;
+    for (let i = 0; i < newImages.length; i++) {
+        if (!newImages[i] && compressedResults[compressedIndex]) {
+            newImages[i] = compressedResults[compressedIndex].url;
+            localStorage.setItem(`img-${i + 1}`, newImages[i]);
+            compressedIndex++;
         }
     }
-
-    setImages(updated);
-    // localStorage에도 저장
-    for (let i = 0; i < updated.length; i++) {
-        if (updated[i]) localStorage.setItem(`img-${i + 1}`, updated[i]);
-    }
-    
-    setIsLoading(false); // 로딩 종료
+    setImages(newImages);
+    setIsLoading(false);
     e.target.value = null; // 같은 파일 다시 선택 가능하도록 초기화
   };
 
+  // 특정 이미지 삭제 핸들러
   const handleDelete = (index) => {
-    const updated = [...images];
-    URL.revokeObjectURL(updated[index]); // 메모리 해제
-    updated[index] = "";
-    setImages(updated);
+    const updatedImages = [...images];
+    URL.revokeObjectURL(updatedImages[index]);
+    updatedImages[index] = null;
+    setImages(updatedImages);
     localStorage.removeItem(`img-${index + 1}`);
   };
 
+  // '다음으로' 버튼 클릭 핸들러
   const handleNext = () => {
-    const cleanedImages = images.filter(Boolean);
-    if (cleanedImages.length === 0) {
+    const selectedImages = images.filter(Boolean);
+    if (selectedImages.length === 0) {
       alert("최소 1장의 이미지를 선택해주세요.");
       return;
     }
     localStorage.setItem("selected-type", "image");
     localStorage.removeItem("selected-video");
     localStorage.setItem("allow-music", "true");
-    // 모든 이미지를 배열로 저장
-    localStorage.setItem("selected-images", JSON.stringify(cleanedImages));
     
-    setTimeout(() => {
-      router.push("/musicselectpage");
-    }, 100);
+    // 최신 이미지 목록을 JSON 문자열로 저장 (추후 슬라이드쇼에서 사용)
+    localStorage.setItem("selected-images", JSON.stringify(selectedImages));
+    
+    router.push("/musicselectpage");
   };
-  
+
   const handleBack = () => router.push('/style-select');
+  
+  const selectedImageCount = images.filter(Boolean).length;
 
   return (
-    <div className={`${appStyles.pageContainer} ${styles.pageLayout}`}>
-      <h2 className={appStyles.pageTitle}>배경 이미지를 선택해주세요</h2>
-      <p className={appStyles.pageDescription}>최대 4장까지 선택할 수 있습니다.</p>
+    <div className={appStyles.pageContainer}>
+      {/* ✅ 타이핑 애니메이션 제목 */}
+      <h2 className={appStyles.pageTitle} style={{ height: '80px' }}>
+        <TypeAnimation
+          sequence={[
+            "배경으로 사용할 이미지를",
+            1000,
+            "배경으로 사용할 이미지를\n선택해 주세요",
+          ]}
+          wrapper="span"
+          speed={50}
+          cursor={true}
+          style={{ whiteSpace: 'pre-line' }} // 줄바꿈(\n)을 인식하게 함
+        />
+      </h2>
 
-      <div className={styles.preview}>
-        {images.map((url, index) => (
-          <div key={index} className={styles["thumbnail-wrapper"]}>
-            {url ? (
-              <>
-                <img src={url} className={styles.thumbnail} alt={`선택된 이미지 ${index + 1}`} />
-                <button className={styles["delete-button"]} onClick={() => handleDelete(index)}>❌</button>
-              </>
-            ) : (
-              <div className={styles.placeholder} onClick={() => fileInputRef.current.click()}>+</div>
-            )}
-          </div>
-        ))}
+      {/* ✅ 버튼 그룹 */}
+      <div className={pageStyles.buttonGroup}>
+        <button className={appStyles.buttonPrimary} onClick={() => router.push('/imagethemepage')}>
+          테마 이미지
+        </button>
+        <button 
+          className={appStyles.buttonPrimary} 
+          onClick={() => fileInputRef.current.click()}
+          disabled={isLoading || selectedImageCount >= 4}
+        >
+          {isLoading ? "처리 중..." : "내 파일 선택"}
+        </button>
       </div>
-      
+      <p className={appStyles.pageDescription}>{`선택된 이미지: ${selectedImageCount} / 4`}</p>
+
       <input
         type="file"
         accept="image/*"
@@ -120,17 +136,27 @@ export default function ImageSelectPage() {
         onChange={handleImageSelect}
         ref={fileInputRef}
         style={{ display: "none" }}
-        disabled={isLoading}
       />
       
-      <button 
-        onClick={() => fileInputRef.current.click()} 
-        className={appStyles.buttonPrimary} 
-        disabled={isLoading || images.filter(Boolean).length >= 4}
-      >
-        {isLoading ? "압축 중..." : "내 파일 선택"}
-      </button>
+      {/* ✅ 빈 슬롯 4개 */}
+      <div className={pageStyles.previewGrid}>
+        {images.map((url, index) => (
+          <div key={index} className={pageStyles.slot}>
+            {url ? (
+              <>
+                <img src={url} alt={`선택된 이미지 ${index + 1}`} className={pageStyles.thumbnail} />
+                <button className={pageStyles.deleteButton} onClick={() => handleDelete(index)}>×</button>
+              </>
+            ) : (
+              <div className={pageStyles.placeholder} onClick={() => !isLoading && fileInputRef.current.click()}>
+                +
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
 
+      {/* ✅ 뒤로가기 / 다음으로 버튼 */}
       <div className={appStyles.navButtonContainer}>
         <button onClick={handleBack} className={appStyles.buttonSecondary}>뒤로가기</button>
         <button onClick={handleNext} className={appStyles.buttonPrimary}>다음으로</button>
