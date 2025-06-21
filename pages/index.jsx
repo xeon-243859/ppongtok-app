@@ -25,13 +25,14 @@ export default function Home() {
   // ✅ 3. 공유될 최종 URL
   const shareLinkUrl = myMessageId ? `${BASE_URL}/present/${myMessageId}` : '';
 
-  // ✅ 4. ShareButton에 전달될 content 객체
+   // ✅ ShareButton에 전달될 content 객체를 수정합니다.
   const shareContent = shareLinkUrl ? {
     objectType: 'feed',
     content: {
       title: messageTitle,
       description: messageDesc,
       imageUrl: messageImageUrl,
+      // ✅ 누락되었던 link 속성을 content 객체 안에 추가합니다.
       link: {
         mobileWebUrl: shareLinkUrl,
         webUrl: shareLinkUrl,
