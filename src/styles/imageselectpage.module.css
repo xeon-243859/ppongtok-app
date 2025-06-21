@@ -30,14 +30,14 @@
   min-height: 60px;
 }
 
-/* ✅ 상단 버튼 그룹 */
+/* 상단 버튼 그룹 */
 .buttonGroup {
   display: flex;
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
 
-/* ✅ 모든 버튼에 적용될 단일 스타일 (크기, 색상, 폰트, 그림자 등 완벽히 통일) */
+/* ✅ 모든 버튼(내파일선택, 뒤로가기, 다음으로 등)에 적용될 유일한 스타일 */
 .button {
   padding: 12px 24px;
   font-size: 1rem;
@@ -45,13 +45,13 @@
   color: white;
   background-color: #ff8fab; /* 핑크 파스텔 톤 */
   border: none;
-  border-radius: 25px; /* 모든 버튼의 모서리 둥글기 통일 */
+  border-radius: 25px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-  min-width: 130px; /* 모든 버튼의 최소 너비를 동일하게 설정 */
+  min-width: 130px;
   text-align: center;
-  white-space: nowrap; /* 버튼 텍스트가 줄바꿈되지 않도록 함 */
+  white-space: nowrap;
 }
 .button:hover:not(:disabled) {
   transform: translateY(-2px);
@@ -64,7 +64,6 @@
   transform: none;
   box-shadow: none;
 }
-
 
 /* 이미지 슬롯 그리드 */
 .previewGrid {
@@ -83,7 +82,6 @@
   background-color: rgba(255, 255, 255, 0.5);
   border: 2px dashed #ffc2d1;
   border-radius: 12px;
-  transition: transform 0.2s;
 }
 
 .placeholder {
@@ -133,10 +131,10 @@
   box-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }
 
-/* ✅ 하단 내비게이션 버튼 컨테이너 */
+/* 하단 내비게이션 버튼 컨테이너 */
 .navButtonContainer {
   width: 100%;
-  max-width: 280px; /* 슬롯 너비와 동일하게 맞춰 정렬 */
+  max-width: 280px;
   display: flex;
   justify-content: space-between;
   margin-top: 1.5rem;
