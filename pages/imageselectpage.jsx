@@ -151,8 +151,8 @@ export default function ImageSelectPage() {
 
       {/* ✅ 뒤로가기 / 다음으로 버튼 */}
       <div className={pageStyles.navButtonContainer}>
-        <button onClick={handleBack} className={pageStyles.navButton}>뒤로가기</button>
-        <button onClick={handleNext} className={pageStyles.navButton}>다음으로</button>
+         <button onClick={handleBack} className={pageStyles.button}>뒤로가기</button>
+         <button onClick={handleNext} className={pageStyles.button}>다음으로</button>
       </div>
     </div>
   );
