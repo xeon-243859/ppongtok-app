@@ -1,12 +1,13 @@
-// ppongtok-app/pages/imageselectpage.jsx
+// ppongtok-app/pages/imageselectpage.jsx (개선 제안)
 
 import React, { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import imageCompression from "browser-image-compression";
 import { TypeAnimation } from "react-type-animation";
+import pageStyles from "../src/styles/imageselectpage.module.css";
 
-// ✅ CSS 파일 경로는 실제 위치에 맞게 확인해주세요. (src/styles/ 로 이동 권장)
-import pageStyles from "../src/styles/imageselectpage.module.css"; 
+// ✅ 로컬 스토리지 키를 관리하는 헬퍼 함수
+const getStorageKey = (index) => `img-${index + 1}`;
 
 export default function ImageSelectPage() {
   const router = useRouter();
@@ -15,19 +16,13 @@ export default function ImageSelectPage() {
   const [images, setImages] = useState(Array(4).fill(null));
   const [isLoading, setIsLoading] = useState(false);
 
-  // 페이지 로드 시 localStorage에서 기존 이미지 불러오기
   useEffect(() => {
-    const loadedImages = Array(4).fill(null);
-    for (let i = 0; i < 4; i++) {
-      const storedImage = localStorage.getItem(`img-${i + 1}`);
-      if (storedImage) {
-        loadedImages[i] = storedImage;
-      }
-    }
+    const loadedImages = Array(4).fill(null).map((_, i) => {
+      return localStorage.getItem(getStorageKey(i));
+    });
     setImages(loadedImages);
   }, []);
 
-  // 이미지 선택 및 압축 핸들러
   const handleImageSelect = async (e) => {
     const emptySlots = images.filter(img => !img).length;
     const filesToProcess = Array.from(e.target.files).slice(0, emptySlots);
@@ -40,22 +35,23 @@ export default function ImageSelectPage() {
       try {
         const options = { maxSizeMB: 1, maxWidthOrHeight: 1920, useWebWorker: true };
         const compressedFile = await imageCompression(file, options);
-        return { file: compressedFile, url: URL.createObjectURL(compressedFile) };
+        return URL.createObjectURL(compressedFile);
       } catch (error) {
         console.error("이미지 압축 실패:", error);
         return null;
       }
     });
 
-    const compressedResults = await Promise.all(compressionPromises);
+    const compressedUrls = (await Promise.all(compressionPromises)).filter(Boolean);
     
     const newImages = [...images];
-    let compressedIndex = 0;
-    for (let i = 0; i < newImages.length; i++) {
-        if (!newImages[i] && compressedResults[compressedIndex]) {
-            newImages[i] = compressedResults[compressedIndex].url;
-            localStorage.setItem(`img-${i + 1}`, newImages[i]);
-            compressedIndex++;
+    let urlIndex = 0;
+    for (let i = 0; i < newImages.length && urlIndex < compressedUrls.length; i++) {
+        if (!newImages[i]) {
+            const url = compressedUrls[urlIndex];
+            newImages[i] = url;
+            localStorage.setItem(getStorageKey(i), url);
+            urlIndex++;
         }
     }
     setImages(newImages);
@@ -68,7 +64,15 @@ export default function ImageSelectPage() {
     URL.revokeObjectURL(updatedImages[index]);
     updatedImages[index] = null;
     setImages(updatedImages);
-    localStorage.removeItem(`img-${index + 1}`);
+    localStorage.removeItem(getStorageKey(index));
+  };
+  
+  // ✅ 로컬 스토리지 설정을 별도 함수로 분리
+  const setupLocalStorageForNextPage = (selectedImages) => {
+    localStorage.setItem("selected-type", "image");
+    localStorage.removeItem("selected-video");
+    localStorage.setItem("allow-music", "true");
+    localStorage.setItem("selected-images", JSON.stringify(selectedImages));
   };
 
   const handleNext = () => {
@@ -77,11 +81,7 @@ export default function ImageSelectPage() {
       alert("최소 1장의 이미지를 선택해주세요.");
       return;
     }
-    localStorage.setItem("selected-type", "image");
-    localStorage.removeItem("selected-video");
-    localStorage.setItem("allow-music", "true");
-    localStorage.setItem("selected-images", JSON.stringify(selectedImages));
-    
+    setupLocalStorageForNextPage(selectedImages);
     router.push("/musicselectpage");
   };
 
@@ -90,30 +90,22 @@ export default function ImageSelectPage() {
   const selectedImageCount = images.filter(Boolean).length;
 
   return (
+    // ... JSX는 동일합니다 ...
     <div className={pageStyles.pageContainer}>
       <div className={pageStyles.contentWrapper}>
-        {/* ✅ 타이핑 애니메이션 제목 */}
         <h2 className={pageStyles.title}>
           <TypeAnimation
-            sequence={[
-              "배경으로 사용할 이미지를",
-              1000,
-              "배경으로 사용할 이미지를\n선택해 주세요",
-            ]}
-            wrapper="span"
-            speed={50}
-            cursor={true}
-            style={{ whiteSpace: 'pre-line' }}
+            sequence={[ "배경으로 사용할 이미지를", 1000, "배경으로 사용할 이미지를\n선택해 주세요" ]}
+            wrapper="span" speed={50} cursor={true} style={{ whiteSpace: 'pre-line' }}
           />
         </h2>
 
-        {/* ✅ 버튼 그룹 */}
         <div className={pageStyles.buttonGroup}>
           <button className={pageStyles.button} onClick={() => router.push('/imagethemepage')}>
             테마 이미지
           </button>
           <button 
-             className={`${pageStyles.button} ${pageStyles.buttonPink}`}
+             className={`${pageStyles.button} ${pageStyles.buttonAccent}`} // ✅ 강조 버튼 클래스명 변경
             onClick={() => fileInputRef.current.click()}
             disabled={isLoading || selectedImageCount >= 4}
           >
@@ -121,16 +113,8 @@ export default function ImageSelectPage() {
           </button>
         </div>
 
-        <input
-          type="file"
-          accept="image/*"
-          multiple
-          onChange={handleImageSelect}
-          ref={fileInputRef}
-          style={{ display: "none" }}
-        />
+        <input type="file" accept="image/*" multiple onChange={handleImageSelect} ref={fileInputRef} style={{ display: "none" }} />
         
-        {/* ✅ 빈 슬롯 4개 */}
         <div className={pageStyles.previewGrid}>
           {images.map((url, index) => (
             <div key={index} className={pageStyles.slot}>
@@ -149,9 +133,8 @@ export default function ImageSelectPage() {
         </div>
       </div>
 
-      {/* ✅ 뒤로가기 / 다음으로 버튼 */}
       <div className={pageStyles.navButtonContainer}>
-         <button onClick={handleBack} className={pageStyles.button}>뒤로가기</button>
+         <button onClick={handleBack} className={`${pageStyles.button} ${pageStyles.buttonSecondary}`}>뒤로가기</button>
          <button onClick={handleNext} className={pageStyles.button}>다음으로</button>
       </div>
     </div>

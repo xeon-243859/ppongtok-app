@@ -1,42 +1,178 @@
-/* src/styles/ImageSelectPage.module.css */
-.pageContainer {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  min-height: 100vh; padding: 20px; background: #fff0f5; font-family: 'Pretendard', sans-serif;
-}
-.contentWrapper { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 320px; }
-.title { font-size: 1.6rem; font-weight: 600; color: #333; text-align: center; margin-bottom: 1.5rem; white-space: pre-line; }
-.buttonGroup, .navButtonContainer { display: flex; gap: 1rem; width: 100%; justify-content: center; }
-.navButtonContainer { margin-top: 1.5rem; }
+/* 
+  File: /src/styles/imageselectpage.module.css
+  Theme: Soft Pastel Pink
+*/
 
-/* ✅ 모든 버튼을 통일하는 단 하나의 스타일 */
-.unifiedButton {
-  flex: 1;
-  padding: 12px;
-  font-size: 0.9rem;
+/* ✅ 전체 페이지 컨테이너 */
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between; /* 상단 콘텐츠와 하단 버튼을 분리 */
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  background-color: #FFF0F5; /* 아주 연한 핑크 배경 (LavenderBlush) */
+  box-sizing: border-box;
+}
+
+/* ✅ 메인 콘텐츠 래퍼 */
+.contentWrapper {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem; /* 요소 간 간격 */
+}
+
+/* ✅ 타이핑 애니메이션 제목 */
+.title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.5;
+}
+
+/* --- 버튼 스타일 (Pastel Pink Theme) --- */
+
+/* ✅ 버튼 그룹 (테마 이미지, 내 파일 선택) */
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+/* ✅ 기본 버튼 스타일 */
+.button {
+  flex-grow: 1; /* 버튼이 공간을 채우도록 */
+  padding: 12px 20px;
+  font-size: 1rem;
   font-weight: 600;
   border-radius: 12px;
+  border: 2px solid #FFB6C1; /* 파스텔 핑크 테두리 (LightPink) */
+  background-color: #FFB6C1; /* 파스텔 핑크 배경 */
+  color: #4B0082; /* 진한 보라색 텍스트로 포인트 (Indigo) */
   cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-  background-color: #ffb6c1; /* 라이트 핑크 (파스텔 톤) */
-  color: #333;
-  border: 1px solid #ffb6c1;
-}
-.unifiedButton:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  background-color: #ffaab5;
-}
-.unifiedButton:disabled {
-  background-color: #ccc;
-  border-color: #ccc;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
-.previewGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; width: 100%; margin-top: 1.5rem; }
-.slot { position: relative; width: 100%; padding-top: 100%; background-color: #fff; border: 2px dashed #ddd; border-radius: 12px; }
-.placeholder { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #ddd; cursor: pointer; }
-.thumbnail { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
-.deleteButton { position: absolute; top: -8px; right: -8px; width: 26px; height: 26px; border-radius: 50%; background-color: #333; color: white; border: none; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+  background-color: #FFAAB5; /* 호버 시 조금 더 진한 핑크 */
+}
+
+.button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.button:disabled {
+  background-color: #E0E0E0;
+  border-color: #D0D0D0;
+  color: #A0A0A0;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* ✅ 강조 버튼 ('내 파일 선택'에 사용) */
+.buttonAccent {
+  background-color: #FF69B4; /* 더 진하고 활기찬 핑크 (HotPink) */
+  border-color: #FF69B4;
+  color: white;
+}
+
+.buttonAccent:hover:not(:disabled) {
+  background-color: #FF5AB0;
+}
+
+/* ✅ 보조 버튼 ('뒤로가기'에 사용) */
+.buttonSecondary {
+  background-color: white;
+  color: #FF69B4; /* 핫핑크 텍스트 */
+  border-color: #FFB6C1; /* 연한 핑크 테두리 */
+}
+
+.buttonSecondary:hover:not(:disabled) {
+  background-color: #FFF8FA;
+}
+
+
+/* --- 이미지 미리보기 그리드 --- */
+
+.previewGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  width: 100%;
+  max-width: 400px; /* 그리드 최대 너비 제한 */
+  margin-top: 1rem;
+}
+
+.slot {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1; /* 1:1 정사각형 비율 유지 */
+  background-color: #FFFFFF;
+  border-radius: 12px;
+  border: 2px dashed #FFDAE0; /* 핑크 점선 */
+  overflow: hidden; /* 이미지가 둥근 모서리를 넘어가지 않도록 */
+}
+
+.thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 이미지가 잘리지 않고 꽉 차게 */
+}
+
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 3rem;
+  color: #FFC0CB; /* 핑크색 '+' */
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.placeholder:hover {
+  background-color: #FFF8FA; /* 아주 연한 핑크 배경 */
+}
+
+.deleteButton {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 1.2rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.deleteButton:hover {
+  background-color: rgba(255, 0, 0, 0.8);
+}
+
+
+/* --- 하단 네비게이션 버튼 --- */
+
+.navButtonContainer {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  max-width: 500px;
+  margin-top: 2rem;
+}
