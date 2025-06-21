@@ -1,156 +1,42 @@
 /* src/styles/ImageSelectPage.module.css */
-
 .pageContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 20px;
-  background: linear-gradient(180deg, #fff0f5, #e9d8e4);
-  font-family: 'Pretendard', sans-serif;
-  box-sizing: border-box;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 100vh; padding: 20px; background: #fff0f5; font-family: 'Pretendard', sans-serif;
 }
+.contentWrapper { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 320px; }
+.title { font-size: 1.6rem; font-weight: 600; color: #333; text-align: center; margin-bottom: 1.5rem; white-space: pre-line; }
+.buttonGroup, .navButtonContainer { display: flex; gap: 1rem; width: 100%; justify-content: center; }
+.navButtonContainer { margin-top: 1.5rem; }
 
-.contentWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 380px;
-}
-
-.title {
-  font-size: 1.7rem;
+/* ✅ 모든 버튼을 통일하는 단 하나의 스타일 */
+.unifiedButton {
+  flex: 1;
+  padding: 12px;
+  font-size: 0.9rem;
   font-weight: 600;
-  color: #c75e82;
-  text-align: center;
-  margin-top: 1rem;
-  margin-bottom: 1.5rem;
-  min-height: 60px;
-}
-
-/* 상단 버튼 그룹 */
-.buttonGroup {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-/* ✅ 모든 버튼(내파일선택, 뒤로가기, 다음으로 등)에 적용될 유일한 스타일 */
-.button {
-  padding: 12px 24px;
-  font-size: 1rem;
-  font-weight: 600;
-  color: white;
-  background-color: #ff8fab; /* 핑크 파스텔 톤 */
-  border: none;
-  border-radius: 25px;
+  border-radius: 12px;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-  min-width: 130px;
-  text-align: center;
-  white-space: nowrap;
+  transition: all 0.2s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  background-color: #ffb6c1; /* 라이트 핑크 (파스텔 톤) */
+  color: #333;
+  border: 1px solid #ffb6c1;
 }
-.button:hover:not(:disabled) {
+.unifiedButton:hover:not(:disabled) {
   transform: translateY(-2px);
-  background-color: #fb7299;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  background-color: #ffaab5;
 }
-.button:disabled {
-  background-color: #cccccc;
+.unifiedButton:disabled {
+  background-color: #ccc;
+  border-color: #ccc;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
 }
 
-/* 이미지 슬롯 그리드 */
-.previewGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.8rem;
-  width: 100%;
-  max-width: 280px;
-  margin: 0 auto;
-}
-
-.slot {
-  position: relative;
-  width: 100%;
-  padding-top: 100%;
-  background-color: rgba(255, 255, 255, 0.5);
-  border: 2px dashed #ffc2d1;
-  border-radius: 12px;
-}
-
-.placeholder {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  color: #ffc2d1;
-  cursor: pointer;
-}
-.placeholder:hover {
-  transform: scale(1.05);
-}
-
-.thumbnail {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 12px;
-}
-
-.deleteButton {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background-color: #555;
-  color: white;
-  border: 2px solid white;
-  font-size: 0.9rem;
-  font-weight: bold;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-}
-
-/* 하단 내비게이션 버튼 컨테이너 */
-.navButtonContainer {
-  width: 100%;
-  max-width: 280px;
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1.5rem;
-}
-/* ✅ '내 파일 선택' 버튼에만 적용될 핑크 파스텔 톤 색상 */
-.buttonLocalFile {
-  background-color: #ffc0cb; /* 예쁜 핑크 파스텔 톤 */
-  color: #333; /* 글자색은 어둡게 해야 잘 보입니다 */
-}
-
-/* 마우스를 올렸을 때의 색상 */
-.buttonLocalFile:hover:not(:disabled) {
-  background-color: #ffb3c1; /* 기본 색상보다 약간 진하게 */
-}
-/* ✅ '내 파일 선택' 버튼에만 적용할 핑크 파스텔 톤 코드 */
-.buttonPink {
-  background-color: #FFB6C1; /* 라이트 핑크 (파스텔 톤) */
-  color: #333;               /* 글자색은 어둡게 해야 잘 보입니다 */
-}
+.previewGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; width: 100%; margin-top: 1.5rem; }
+.slot { position: relative; width: 100%; padding-top: 100%; background-color: #fff; border: 2px dashed #ddd; border-radius: 12px; }
+.placeholder { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #ddd; cursor: pointer; }
+.thumbnail { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
+.deleteButton { position: absolute; top: -8px; right: -8px; width: 26px; height: 26px; border-radius: 50%; background-color: #333; color: white; border: none; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
