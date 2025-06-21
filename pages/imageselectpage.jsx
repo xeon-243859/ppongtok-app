@@ -7,7 +7,7 @@ import { TypeAnimation } from "react-type-animation"; // ✅ 타이핑 애니메
 
 // ✅ 공통 스타일과 페이지 전용 스타일을 모두 import 합니다.
 import appStyles from "../src/styles/AppTheme.module.css";
-import pageStyles from "../src/styles/ImageSelectPage.module.css";
+import pageStyles from "../src/styles/imageselectpage.module.css";
 
 export default function ImageSelectPage() {
   const router = useRouter();
