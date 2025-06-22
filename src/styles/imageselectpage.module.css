@@ -38,6 +38,13 @@
   background-color: #ff5d9e; /* 살짝 더 진하게 */
 }
 
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 1rem; /* 버튼 사이 간격 */
+  margin-bottom: 1rem;
+}
+
 .activeButton {
   background-color: white;
   color: #ff77aa;

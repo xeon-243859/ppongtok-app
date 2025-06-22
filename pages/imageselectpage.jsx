@@ -1,30 +1,28 @@
-// ppongtok-app/pages/imageselectpage.jsx (개선 제안)
-
 import React, { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import imageCompression from "browser-image-compression";
 import { TypeAnimation } from "react-type-animation";
 import pageStyles from "../src/styles/imageselectpage.module.css";
 
-// ✅ 로컬 스토리지 키를 관리하는 헬퍼 함수
+// ✅ 로컬 스토리지 키 헬퍼
 const getStorageKey = (index) => `img-${index + 1}`;
 
 export default function ImageSelectPage() {
   const router = useRouter();
   const fileInputRef = useRef(null);
-  
   const [images, setImages] = useState(Array(4).fill(null));
   const [isLoading, setIsLoading] = useState(false);
+  const selectedImageCount = images.filter(Boolean).length;
 
   useEffect(() => {
-    const loadedImages = Array(4).fill(null).map((_, i) => {
-      return localStorage.getItem(getStorageKey(i));
-    });
+    const loadedImages = Array(4)
+      .fill(null)
+      .map((_, i) => localStorage.getItem(getStorageKey(i)));
     setImages(loadedImages);
   }, []);
 
   const handleImageSelect = async (e) => {
-    const emptySlots = images.filter(img => !img).length;
+    const emptySlots = images.filter((img) => !img).length;
     const filesToProcess = Array.from(e.target.files).slice(0, emptySlots);
     if (filesToProcess.length === 0) return;
 
@@ -33,7 +31,11 @@ export default function ImageSelectPage() {
 
     const compressionPromises = filesToProcess.map(async (file) => {
       try {
-        const options = { maxSizeMB: 1, maxWidthOrHeight: 1920, useWebWorker: true };
+        const options = {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 1920,
+          useWebWorker: true,
+        };
         const compressedFile = await imageCompression(file, options);
         return URL.createObjectURL(compressedFile);
       } catch (error) {
@@ -43,17 +45,17 @@ export default function ImageSelectPage() {
     });
 
     const compressedUrls = (await Promise.all(compressionPromises)).filter(Boolean);
-    
     const newImages = [...images];
     let urlIndex = 0;
     for (let i = 0; i < newImages.length && urlIndex < compressedUrls.length; i++) {
-        if (!newImages[i]) {
-            const url = compressedUrls[urlIndex];
-            newImages[i] = url;
-            localStorage.setItem(getStorageKey(i), url);
-            urlIndex++;
-        }
+      if (!newImages[i]) {
+        const url = compressedUrls[urlIndex];
+        newImages[i] = url;
+        localStorage.setItem(getStorageKey(i), url);
+        urlIndex++;
+      }
     }
+
     setImages(newImages);
     setIsLoading(false);
     e.target.value = null;
@@ -66,8 +68,7 @@ export default function ImageSelectPage() {
     setImages(updatedImages);
     localStorage.removeItem(getStorageKey(index));
   };
-  
-  // ✅ 로컬 스토리지 설정을 별도 함수로 분리
+
   const setupLocalStorageForNextPage = (selectedImages) => {
     localStorage.setItem("selected-type", "image");
     localStorage.removeItem("selected-video");
@@ -85,53 +86,88 @@ export default function ImageSelectPage() {
     router.push("/musicselectpage");
   };
 
-  const handleBack = () => router.push('/style-select');
-  
-  const selectedImageCount = images.filter(Boolean).length;
+  const handleBack = () => router.push("/style-select");
 
-   return (
+  return (
     <div className={pageStyles.pageContainer}>
       <div className={pageStyles.contentWrapper}>
         <h2 className={pageStyles.title}>
           <TypeAnimation
-            sequence={[ "배경으로 사용할 이미지를", 1000, "배경으로 사용할 이미지를\n선택해 주세요" ]}
-            wrapper="span" speed={50} cursor={true} style={{ whiteSpace: 'pre-line' }}
+            sequence={[
+              "배경으로 사용할 이미지를",
+              1000,
+              "배경으로 사용할 이미지를\n선택해 주세요",
+            ]}
+            wrapper="span"
+            speed={50}
+            cursor={true}
+            style={{ whiteSpace: "pre-line" }}
           />
         </h2>
 
-        {/* ✅ 버튼 클래스명 변경 */}
+        {/* 버튼 그룹 */}
         <div className={pageStyles.buttonGroup}>
-          <button className={`${pageStyles.button} ${pageStyles.buttonPrimary}`} onClick={() => router.push('/imagethemepage')}>
+          <button
+            className={`${pageStyles.button} ${pageStyles.buttonPrimary}`}
+            onClick={() => {
+              console.log("✅ 테마 이미지 버튼 눌림!");
+              router.push("/imagethemepage");
+            }}
+          >
             테마 이미지
           </button>
-          <button 
+
+          <button
             className={`${pageStyles.button} ${pageStyles.buttonPrimary}`}
-            onClick={() => fileInputRef.current.click()}
+            onClick={() => {
+              console.log("✅ 내 파일 선택 버튼 눌림!");
+              if (fileInputRef.current) {
+                fileInputRef.current.click();
+              } else {
+                console.warn("⚠️ fileInputRef가 정의되지 않음!");
+              }
+            }}
             disabled={isLoading || selectedImageCount >= 4}
           >
             {isLoading ? "처리 중..." : "내 파일 선택"}
           </button>
+
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={(e) => {
+              console.log("✅ 파일 선택됨!", e.target.files);
+              handleImageSelect(e);
+            }}
+            ref={fileInputRef}
+            style={{ display: "none" }}
+          />
         </div>
 
-        <input
-          type="file"
-          accept="image/*"
-          multiple
-          onChange={handleImageSelect}
-          ref={fileInputRef}
-          style={{ display: "none" }}
-        />
-        
+        {/* 미리보기 */}
         <div className={pageStyles.previewGrid}>
           {images.map((url, index) => (
             <div key={index} className={pageStyles.slot}>
               {url ? (
                 <>
-                  <img src={url} alt={`선택된 이미지 ${index + 1}`} className={pageStyles.thumbnail} />
-                  <button className={pageStyles.deleteButton} onClick={() => handleDelete(index)}>×</button>
+                  <img
+                    src={url}
+                    alt={`선택된 이미지 ${index + 1}`}
+                    className={pageStyles.thumbnail}
+                  />
+                  <button
+                    className={pageStyles.deleteButton}
+                    onClick={() => handleDelete(index)}
+                  >
+                    ×
+                  </button>
                 </>
               ) : (
-                <div className={pageStyles.placeholder} onClick={() => !isLoading && fileInputRef.current.click()}>
+                <div
+                  className={pageStyles.placeholder}
+                  onClick={() => !isLoading && fileInputRef.current.click()}
+                >
                   +
                 </div>
               )}
@@ -140,10 +176,20 @@ export default function ImageSelectPage() {
         </div>
       </div>
 
-      {/* ✅ 하단 버튼 클래스명도 통일 */}
+      {/* 하단 네비게이션 */}
       <div className={pageStyles.navButtonContainer}>
-         <button onClick={handleBack} className={`${pageStyles.button} ${pageStyles.buttonPrimary}`}>뒤로가기</button>
-         <button onClick={handleNext} className={`${pageStyles.button} ${pageStyles.buttonPrimary}`}>다음으로</button>
+        <button
+          onClick={handleBack}
+          className={`${pageStyles.button} ${pageStyles.buttonPrimary}`}
+        >
+          뒤로가기
+        </button>
+        <button
+          onClick={handleNext}
+          className={`${pageStyles.button} ${pageStyles.buttonPrimary}`}
+        >
+          다음으로
+        </button>
       </div>
     </div>
   );
