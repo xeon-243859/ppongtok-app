@@ -8,41 +8,35 @@ import styles from "../src/styles/imageselectpage.module.css";
 
 // 앱 전체에서 사용할 일관된 키
 const getStorageKey = (index) => `ppong_image_${index}`;
-const NEW_THEME_IMAGE_KEY = 'newly_selected_theme_image'; // 테마페이지에서 받아오는 임시 키
+const NEW_THEME_IMAGE_KEY = 'newly_selected_theme_image';
 
 export default function ImageSelectPage() {
     const router = useRouter();
+    // 1. 파일 입력을 위한 ref 생성
     const fileInputRef = useRef(null);
+    
     const [images, setImages] = useState(Array(4).fill(null));
     const [isLoading, setIsLoading] = useState(false);
 
-    // 페이지가 로드될 때 실행되어 이미지 상태를 최종 설정합니다.
     useEffect(() => {
         try {
-            // 1. 기존에 영구 저장된 이미지를 불러옵니다.
             let currentImages = Array(4).fill(null).map((_, i) => localStorage.getItem(getStorageKey(i)));
-
-            // 2. [핵심 변경] 테마 페이지에서 새로 선택한 이미지가 있는지 확인합니다.
             const newThemeImage = localStorage.getItem(NEW_THEME_IMAGE_KEY);
+
             if (newThemeImage) {
-                // 비어있는 첫 번째 슬롯의 인덱스를 찾습니다.
                 const firstEmptyIndex = currentImages.findIndex(img => !img);
-                
                 if (firstEmptyIndex !== -1) {
-                    // 빈 슬롯이 있으면, 이미지를 채워넣고 영구 저장합니다.
                     currentImages[firstEmptyIndex] = newThemeImage;
                     localStorage.setItem(getStorageKey(firstEmptyIndex), newThemeImage);
                 } else {
                     alert("더 이상 이미지를 추가할 수 없습니다.");
                 }
-                
-                // 사용이 끝난 임시 키는 반드시 즉시 삭제합니다.
                 localStorage.removeItem(NEW_THEME_IMAGE_KEY);
             }
             setImages(currentImages);
         } catch (error) {
             console.error("이미지 로딩 중 오류:", error);
-            localStorage.removeItem(NEW_THEME_IMAGE_KEY); // 오류 시에도 임시키 삭제
+            localStorage.removeItem(NEW_THEME_IMAGE_KEY);
         }
     }, []);
 
@@ -61,8 +55,8 @@ export default function ImageSelectPage() {
             try {
                 const options = { maxSizeMB: 1, maxWidthOrHeight: 1920, useWebWorker: true };
                 const compressedFile = await imageCompression(file, options);
-                const reader = new FileReader();
                 return new Promise(resolve => {
+                    const reader = new FileReader();
                     reader.readAsDataURL(compressedFile);
                     reader.onloadend = () => resolve(reader.result);
                 });
@@ -108,13 +102,22 @@ export default function ImageSelectPage() {
                 </h1>
                 <div className={styles.buttonGroup}>
                     <button className={styles.button} onClick={() => router.push("/imagethemepage")}>테마 이미지 선택</button>
-                    {/* [수정] '내 파일 선택' 버튼 클릭 핸들러 수정 */}
+                    {/* 2. 버튼 클릭 시, 숨겨진 input 태그를 클릭하도록 연결 */}
                     <button className={styles.button} onClick={() => fileInputRef.current?.click()} disabled={isLoading || selectedImageCount >= 4}>
                         {isLoading ? "업로드 중..." : "내 파일 선택"}
                     </button>
                 </div>
-                {/* [수정] input 태그에 ref가 정확히 연결되도록 함 */}
-                <input type="file" accept="image/*" multiple ref={fileInputRef} style={{ display: "none" }} onChange={handleImageSelect} />
+                
+                {/* 3. ref를 실제 숨겨진 input 태그에 연결 (가장 중요!) */}
+                <input 
+                    type="file" 
+                    accept="image/*" 
+                    multiple 
+                    ref={fileInputRef} 
+                    style={{ display: "none" }} 
+                    onChange={handleImageSelect} 
+                />
+                
                 <div className={styles.previewGrid}>
                     {images.map((url, index) => (
                         <div key={index} className={styles.slot}>
@@ -124,6 +127,7 @@ export default function ImageSelectPage() {
                                     <button className={styles.deleteButton} onClick={() => handleDelete(index)}>×</button>
                                 </>
                             ) : (
+                                // placeholder 클릭 시에도 파일 선택 창이 열리도록 합니다.
                                 <div className={styles.placeholder} onClick={() => !isLoading && selectedImageCount < 4 && fileInputRef.current?.click()}>
                                     <span className={styles.plusIcon}>+</span>
                                 </div>
@@ -134,7 +138,6 @@ export default function ImageSelectPage() {
             </div>
             <div className={styles.navButtonContainer}>
                 <button onClick={() => router.push("/style-select")} className={`${styles.button} ${styles.navButton}`}>뒤로가기</button>
-                {/* [수정] '다음으로' 버튼 정상 작동 확인 */}
                 <button onClick={handleNext} className={`${styles.button} ${styles.navButton} ${styles.buttonPrimary}`} disabled={selectedImageCount === 0}>
                     다음으로
                 </button>
