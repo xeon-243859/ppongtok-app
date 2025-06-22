@@ -1,11 +1,13 @@
+// ppongtok-app/pages/imageselectpage.jsx
+
 import React, { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import imageCompression from "browser-image-compression";
 import { TypeAnimation } from "react-type-animation";
-import pageStyles from "../src/styles/imageselectpage.module.css";
+import styles from "../src/styles/imageselectpage.module.css"; // CSS 모듈 import
 
-// 로컬 스토리지 키 헬퍼
-const getStorageKey = (index) => `img-${index + 1}`;
+// 로컬 스토리지에 저장할 이미지 키
+const getStorageKey = (index) => `selected_image_${index}`;
 
 export default function ImageSelectPage() {
   const router = useRouter();
@@ -14,20 +16,28 @@ export default function ImageSelectPage() {
   const [isLoading, setIsLoading] = useState(false);
   const selectedImageCount = images.filter(Boolean).length;
 
+  // 페이지 로드 시 로컬 스토리지에서 이미지 불러오기
   useEffect(() => {
-    const loadedImages = Array(4)
-      .fill(null)
-      .map((_, i) => localStorage.getItem(getStorageKey(i)));
-    setImages(loadedImages);
+    try {
+      const loadedImages = Array(4)
+        .fill(null)
+        .map((_, i) => localStorage.getItem(getStorageKey(i)));
+      setImages(loadedImages);
+    } catch (error) {
+      console.error("로컬 스토리지 접근 중 오류 발생:", error);
+    }
   }, []);
 
+  // 이미지 선택 및 압축 처리 핸들러
   const handleImageSelect = async (e) => {
-    const emptySlots = images.filter((img) => !img).length;
-    const filesToProcess = Array.from(e.target.files).slice(0, emptySlots);
-    if (filesToProcess.length === 0) return;
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const availableSlots = 4 - selectedImageCount;
+    const filesToProcess = Array.from(files).slice(0, availableSlots);
 
     setIsLoading(true);
-    alert("이미지 압축을 시작합니다. 잠시만 기다려주세요...");
+    alert("이미지 최적화를 시작합니다. 잠시만 기다려주세요...");
 
     const compressionPromises = filesToProcess.map(async (file) => {
       try {
@@ -37,136 +47,116 @@ export default function ImageSelectPage() {
           useWebWorker: true,
         };
         const compressedFile = await imageCompression(file, options);
-        return URL.createObjectURL(compressedFile);
+        // Blob을 Base64로 변환하여 로컬 스토리지에 저장 (URL.createObjectURL의 휘발성 문제 해결)
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(compressedFile);
+          reader.onloadend = () => resolve(reader.result);
+          reader.onerror = reject;
+        });
       } catch (error) {
         console.error("이미지 압축 실패:", error);
         return null;
       }
     });
 
-    const compressedUrls = (await Promise.all(compressionPromises)).filter(Boolean);
+    const compressedBase64s = (await Promise.all(compressionPromises)).filter(Boolean);
     const newImages = [...images];
-    let urlIndex = 0;
+    let base64Index = 0;
 
-    for (let i = 0; i < newImages.length && urlIndex < compressedUrls.length; i++) {
+    for (let i = 0; i < newImages.length && base64Index < compressedBase64s.length; i++) {
       if (!newImages[i]) {
-        const url = compressedUrls[urlIndex];
-        newImages[i] = url;
-        localStorage.setItem(getStorageKey(i), url);
-        urlIndex++;
+        const base64Url = compressedBase64s[base64Index++];
+        newImages[i] = base64Url;
+        localStorage.setItem(getStorageKey(i), base64Url);
       }
     }
 
     setImages(newImages);
     setIsLoading(false);
-    e.target.value = null;
+    e.target.value = null; // 같은 파일 다시 선택 가능하도록 초기화
   };
 
+  // 이미지 삭제 핸들러
   const handleDelete = (index) => {
     const updatedImages = [...images];
-    URL.revokeObjectURL(updatedImages[index]);
     updatedImages[index] = null;
     setImages(updatedImages);
     localStorage.removeItem(getStorageKey(index));
   };
 
-  const setupLocalStorageForNextPage = (selectedImages) => {
-    localStorage.setItem("selected-type", "image");
-    localStorage.removeItem("selected-video");
-    localStorage.setItem("allow-music", "true");
-    localStorage.setItem("selected-images", JSON.stringify(selectedImages));
-  };
-
+  // 다음 페이지로 이동
   const handleNext = () => {
     const selectedImages = images.filter(Boolean);
     if (selectedImages.length === 0) {
       alert("최소 1장의 이미지를 선택해주세요.");
       return;
     }
-    setupLocalStorageForNextPage(selectedImages);
+    // 다음 페이지를 위해 로컬 스토리지 설정
+    localStorage.setItem("selected-type", "image");
+    localStorage.removeItem("selected-video"); // 비디오 선택값은 삭제
+
     router.push("/musicselectpage");
   };
 
   const handleBack = () => router.push("/style-select");
 
   return (
-    <div className={pageStyles.pageContainer}>
-      <div className={pageStyles.contentWrapper}>
-        <h2 className={pageStyles.title}>
+    <div className={styles.pageContainer}>
+      <div className={styles.contentWrapper}>
+        <h1 className={styles.title}>
           <TypeAnimation
             sequence={[
-              "배경으로 사용할 이미지를",
-              1000,
-              "배경으로 사용할 이미지를\n선택해 주세요",
+              "어떤 배경으로\n마음을 전해볼까요?",
+              2000,
+              "최대 4장의 이미지를\n선택해주세요.",
             ]}
             wrapper="span"
             speed={50}
             cursor={true}
-            style={{ whiteSpace: "pre-line" }}
+            style={{ whiteSpace: "pre-line", display: "inline-block" }}
+            repeat={Infinity}
           />
-        </h2>
+        </h1>
+        <p className={styles.subtitle}>이미지 배경 선택</p>
 
-        {/* 버튼 그룹 */}
-        <div className={pageStyles.buttonGroup}>
+        <div className={styles.buttonGroup}>
           <button
-            className={`${pageStyles.button} ${pageStyles.buttonPrimary}`}
-            onClick={() => {
-              console.log("✅ 테마 이미지 버튼 눌림!");
-              router.push("/imagethemepage");
-            }}
+            className={styles.button}
+            onClick={() => router.push("/imagethemepage")}
           >
-            테마 이미지
+            테마 이미지 선택
           </button>
-
           <button
-            className={`${pageStyles.button} ${pageStyles.buttonPrimary}`}
-            onClick={() => {
-              console.log("✅ 내 파일 선택 버튼 눌림!");
-              if (fileInputRef.current) {
-                try {
-                  fileInputRef.current.click();
-                } catch (err) {
-                  console.error("❌ fileInputRef 클릭 실패:", err);
-                }
-              } else {
-                console.warn("⚠️ fileInputRef가 정의되지 않음!");
-              }
-            }}
+            className={styles.button}
+            onClick={() => fileInputRef.current?.click()}
             disabled={isLoading || selectedImageCount >= 4}
           >
-            {isLoading ? "처리 중..." : "내 파일 선택"}
+            {isLoading ? "업로드 중..." : "내 파일 선택"}
           </button>
-
-          <input
-            type="file"
-            accept="image/*"
-            multiple
-            ref={fileInputRef}
-            style={{ display: "none" }}
-            onChange={(event) => {
-              if (event?.target?.files?.length > 0) {
-                console.log("✅ 파일 선택됨!", event.target.files);
-                handleImageSelect(event);
-              } else {
-                console.warn("❌ 파일이 선택되지 않음");
-              }
-            }}
-          />
         </div>
 
-        {/* 이미지 미리보기 */}
-        <div className={pageStyles.previewGrid}>
+        <input
+          type="file"
+          accept="image/*"
+          multiple
+          ref={fileInputRef}
+          style={{ display: "none" }}
+          onChange={handleImageSelect}
+        />
+
+        <div className={styles.previewGrid}>
           {images.map((url, index) => (
-            <div key={index} className={pageStyles.slot}>
+            <div key={index} className={styles.slot}>
               {url ? (
                 <>
                   <img
                     src={url}
                     alt={`선택된 이미지 ${index + 1}`}
-                    className={pageStyles.thumbnail}
+                    className={styles.thumbnail}
                   />
                   <button
-                    className={pageStyles.deleteButton}
+                    className={styles.deleteButton}
                     onClick={() => handleDelete(index)}
                   >
                     ×
@@ -174,12 +164,11 @@ export default function ImageSelectPage() {
                 </>
               ) : (
                 <div
-                  className={pageStyles.placeholder}
-                  onClick={() =>
-                    !isLoading && fileInputRef.current?.click()
-                  }
+                  className={styles.placeholder}
+                  onClick={() => !isLoading && fileInputRef.current?.click()}
                 >
-                  +
+                  <span className={styles.plusIcon}>+</span>
+                  <span>이미지 추가</span>
                 </div>
               )}
             </div>
@@ -187,17 +176,14 @@ export default function ImageSelectPage() {
         </div>
       </div>
 
-      {/* 하단 네비게이션 */}
-      <div className={pageStyles.navButtonContainer}>
-        <button
-          onClick={handleBack}
-          className={`${pageStyles.button} ${pageStyles.buttonPrimary}`}
-        >
+      <div className={styles.navButtonContainer}>
+        <button onClick={handleBack} className={`${styles.button} ${styles.navButton}`}>
           뒤로가기
         </button>
         <button
           onClick={handleNext}
-          className={`${pageStyles.button} ${pageStyles.buttonPrimary}`}
+          className={`${styles.button} ${styles.navButton} ${styles.buttonPrimary}`}
+          disabled={selectedImageCount === 0}
         >
           다음으로
         </button>
