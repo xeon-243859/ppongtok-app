@@ -1,0 +1,80 @@
+/* ppongtok-app/src/styles/musicthemepage.module.css (디자인 통일 완료) */
+
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding: 3rem 1.5rem; /* 페이지 상단 여백 */
+  background-color: #f8f9fa;
+  box-sizing: border-box;
+}
+
+.contentWrapper {
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #343a40;
+  margin-bottom: 0.5rem;
+}
+
+.musicList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem; /* 버튼 간 간격 */
+  width: 100%;
+}
+
+/* [수정] 요청하신 버튼 스타일 적용 */
+.musicButton {
+  background-color: #ffffff;
+  color: #4C6EF5; /* 파란색 글씨 */
+  border: 1px solid #dee2e6;
+  border-radius: 12px; /* 둥근 모서리 */
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  width: 100%;
+}
+
+.musicButton:hover {
+  transform: translateY(-2px);
+  border-color: #4C6EF5;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* [추가] 뒤로가기 버튼 스타일 */
+.navButtonContainer {
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.navButton {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: 100%;
+}
+
+.navButton:hover {
+  background-color: #5a6268;
+}
