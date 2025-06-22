@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useRouter } from "next/router";
-import styles from "../src/styles/ImageThemePage.module.css";
+import styles from "../src/styles/imagethemepage.module.css";
 
 // 이 페이지에서 보여줄 테마 이미지 목록
 const themeImages = [
