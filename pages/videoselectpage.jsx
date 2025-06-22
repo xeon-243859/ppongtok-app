@@ -1,4 +1,4 @@
-// ppongtok-app/pages/videoselectpage.jsx (로직 및 UI 문제 수정 완료)
+// ppongtok-app/pages/videoselectpage.jsx (라우터 이벤트 감지 로직으로 수정 완료)
 
 import React, { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -10,27 +10,29 @@ export default function VideoSelectPage() {
   const fileInputRef = useRef(null);
   const [selectedVideo, setSelectedVideo] = useState(null);
 
-  // [수정] 페이지가 다시 포커스될 때마다 localStorage를 확인하는 로직
+  // [수정] Next.js 라우터 이벤트를 감지하여 localStorage를 확인하는 가장 확실한 방법
   useEffect(() => {
     const checkLocalStorage = () => {
+      // console.log("경로 변경 완료, localStorage 확인 시작!");
       const storedVideo = localStorage.getItem("selected-video-theme");
       if (storedVideo) {
+        // console.log("테마 비디오 발견:", storedVideo);
         setSelectedVideo(storedVideo);
         localStorage.removeItem("selected-video-theme");
       }
     };
-    
-    // 페이지 첫 로드 시 확인
-    checkLocalStorage(); 
 
-    // 다른 페이지 갔다가 돌아왔을 때(focus) 다시 확인
-    window.addEventListener('focus', checkLocalStorage);
+    // 페이지에 처음 진입했을 때 한 번 실행
+    checkLocalStorage();
 
-    // 컴포넌트가 사라질 때 이벤트 리스너 제거
+    // 다른 경로로 이동했다가 이 페이지로 돌아오는 '경로 변경 완료' 이벤트를 감지
+    router.events.on('routeChangeComplete', checkLocalStorage);
+
+    // 컴포넌트가 언마운트될 때 이벤트 리스너를 반드시 정리해줘야 메모리 누수를 막을 수 있음
     return () => {
-      window.removeEventListener('focus', checkLocalStorage);
+      router.events.off('routeChangeComplete', checkLocalStorage);
     };
-  }, []); // 이 useEffect는 마운트/언마운트 시 한 번만 실행되어 이벤트 리스너를 설정/제거합니다.
+  }, [router.events]); // router.events가 변경될 일은 없지만, 의존성을 명시적으로 표시
 
 
   const handleMyFileClick = () => {
@@ -67,10 +69,6 @@ export default function VideoSelectPage() {
 
   return (
     <div className={styles.pageContainer}>
-      {/* 
-        [수정] contentWrapper가 모든 내용을 감싸도록 변경하여 
-        버튼 위치 문제를 해결합니다. 
-      */}
       <div className={styles.contentWrapper}>
         <h1 className={styles.title}>
             <TypeAnimation 
