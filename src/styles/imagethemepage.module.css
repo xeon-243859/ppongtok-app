@@ -1,67 +1,66 @@
-/* ✅ ImageThemePage.css 썸네일 정리 스타일 */
+/* ppongtok-app/src/styles/ImageThemePage.module.css */
 
 .image-theme-page {
-  padding: 24px;
+  padding: 2rem;
   text-align: center;
-  background-color: #f8f8f8;
+  background-color: #1a1a1a;
+  color: #f0f0f0;
   min-height: 100vh;
 }
 
+.image-theme-title {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.image-theme-subtitle {
+  font-size: 1.2rem;
+  color: #a0a0a0;
+  margin-bottom: 2.5rem;
+}
+
+/* [핵심 1] 이미지 그리드 기본 스타일 (데스크탑) */
 .image-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: center;
-  margin-top: 16px;
+  display: grid;
+  /* 데스크탑에서는 4열로 표시합니다. */
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .thumbnail {
   position: relative;
   cursor: pointer;
-  border: 4px solid transparent; /* 선택되지 않았을 때는 투명한 테두리 */
-  transition: border-color 0.2s ease-in-out;
-  border-radius: 8px;
+  border: 4px solid transparent;
+  transition: all 0.2s ease-in-out;
+  border-radius: 12px;
   overflow: hidden;
-}
-
-.thumbnail:hover {
-  opacity: 0.8;
-}
-/* 선택된 썸네일 스타일 */
-.thumbnail.selected {
-  border-color: #D4AF37; /* 금색 또는 원하는 하이라이트 색상 */
-  box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+  /* 이미지가 정사각형 비율을 유지하도록 합니다. */
+  aspect-ratio: 1 / 1;
 }
 
 .thumbnail img {
   width: 100%;
   height: 100%;
+  /* 이미지가 잘리더라도 비율에 맞게 꽉 차도록 설정합니다. */
   object-fit: cover;
-  display: block;
+  transition: transform 0.2s ease-in-out;
 }
 
-.checkmark-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  font-size: 3rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.thumbnail:hover img {
+  transform: scale(1.05);
 }
 
 .navigation-buttons {
-  margin-top: 2rem;
+  margin-top: 3rem;
   display: flex;
+  justify-content: center;
   gap: 1rem;
 }
 
 .button {
-  padding: 0.8rem 1.5rem;
+  padding: 0.8rem 2rem;
   font-size: 1rem;
   font-weight: 600;
   border-radius: 8px;
@@ -69,18 +68,32 @@
   background-color: #2a2a2a;
   color: #f0f0f0;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
 }
 
-.confirm-button {
-  background-color: #D4AF37;
-  color: #1a1a1a;
-  border-color: #D4AF37;
-}
+/* 
+================================================================
+▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 모바일 반응형을 위한 핵심 코드 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+================================================================
+*/
+@media (max-width: 768px) {
+  .image-theme-page {
+    /* 모바일에서는 여백을 줄입니다. */
+    padding: 1rem;
+  }
 
-.confirm-button:disabled {
-  background-color: #252525;
-  color: #555;
-  cursor: not-allowed;
-  border-color: #555;
+  .image-theme-title {
+    font-size: 2rem;
+  }
+
+  .image-theme-subtitle {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* [핵심 2] 모바일 화면에서는 그리드를 2열로 변경합니다. */
+  .image-grid {
+    /* 2열로 변경하고, 이미지 사이의 간격을 줄입니다. */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
 }
