@@ -10,24 +10,55 @@
   --border-radius: 12px;
   --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
-html,
+/* src/styles/globals.css (최종 수정안) */
+
+/* 
+  [문제 원인]
+  html과 body에 height: 100%와 overflow: hidden을 함께 사용하면
+  페이지 전체가 하나의 거대한 컨테이너처럼 동작하여 내부 요소의 
+  클릭 이벤트를 막는 경우가 발생합니다.
+  특히 Firebase 인증 iframe처럼 화면 밖에 생성되는 요소에 문제를 일으킵니다.
+*/
+html {
+  /* html 태그에는 특별한 높이/너비/overflow를 지정하지 않는 것이 안전합니다. */
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  
   /* 
-    아래 속성들이 클릭 이벤트를 막는 원인일 수 있으므로 
-    잠시 주석 처리하여 테스트합니다.
+    body의 최소 높이를 화면 높이(100vh)로 설정하여 항상 전체 화면을 채우도록 하되,
+    내용이 길어지면 스크롤이 가능하도록 height: 100% 대신 min-height: 100vh를 사용합니다.
+    이것이 훨씬 안정적인 방법입니다.
   */
-  /* 
-  width: 100%;
-  height: 100%;
-  overflow: hidden; 
-  position: relative;
-  */
+  min-height: 100vh; 
 }
+
+
+/* 
+  [이전 시도였던 pointer-events 코드는 이제 필요 없으므로 삭제하거나 주석 처리합니다.]
+
+  #__next, 
+  #__next > div {
+    pointer-events: none;
+  }
+  .pageContainer, .contentWrapper, button, a, input, span {
+    pointer-events: auto;
+  }
+*/
+
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 
 a {
   color: inherit; /* 링크 색상을 부모 요소에서 상속 */
