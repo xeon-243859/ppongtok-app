@@ -145,3 +145,4 @@ export default function ImageSelectPage() {
         </div>
     );
 }
+console.log("✅ 기존 유저 Firestore 확인됨");
