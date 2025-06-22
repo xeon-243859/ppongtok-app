@@ -6,68 +6,67 @@ import imageCompression from "browser-image-compression";
 import { TypeAnimation } from "react-type-animation";
 import styles from "../src/styles/imageselectpage.module.css";
 
-// 로컬 스토리지에 저장할 영구적인 이미지 키
+// 로컬 스토리지 키 (상수로 관리하면 오타를 방지할 수 있습니다)
 const getStorageKey = (index) => `selected_image_${index}`;
-// 테마 페이지에서 전달받는 임시 키
 const THEME_IMAGES_KEY = 'theme_images_to_add';
 
 export default function ImageSelectPage() {
   const router = useRouter();
   const fileInputRef = useRef(null);
-  const [images, setImages] = useState(Array(4).fill(null));
-  const [isLoading, setIsLoading] = useState(false);
   
-  // 'images' 상태가 변경될 때마다 선택된 이미지 개수를 다시 계산합니다.
-  const selectedImageCount = images.filter(Boolean).length;
-
-  // [수정] 페이지 로드 시 로컬 스토리지 데이터 처리 로직 강화
-  useEffect(() => {
+  // useState의 초기값을 함수로 설정하여, 컴포넌트가 처음 렌더링될 때만 실행되도록 최적화
+  const [images, setImages] = useState(() => {
+    // 서버 사이드 렌더링 환경에서는 window 객체가 없으므로 방어 코드 추가
+    if (typeof window === "undefined") {
+      return Array(4).fill(null);
+    }
     try {
-      // 1. 먼저, 영구 저장된 이미지들을 불러옵니다.
-      let currentImages = Array(4)
+      // 1. 기존에 영구 저장된 이미지를 불러옵니다.
+      let initialImages = Array(4)
         .fill(null)
         .map((_, i) => localStorage.getItem(getStorageKey(i)));
 
-      // 2. 'imagethemepage'에서 추가할 테마 이미지가 있는지 확인합니다.
+      // 2. imagethemepage에서 온 임시 테마 이미지가 있는지 확인합니다.
       const themeImagesToAddJSON = localStorage.getItem(THEME_IMAGES_KEY);
       if (themeImagesToAddJSON) {
         const themeImagesToAdd = JSON.parse(themeImagesToAddJSON);
-        let themeImageIndex = 0;
-
-        // 3. 비어있는 슬롯에 테마 이미지를 순서대로 채워넣습니다.
-        currentImages = currentImages.map((img, index) => {
-          if (!img && themeImageIndex < themeImagesToAdd.length) {
-            const newImageUrl = themeImagesToAdd[themeImageIndex++];
-            // 새로 추가된 테마 이미지도 영구 저장소에 저장합니다.
-            localStorage.setItem(getStorageKey(index), newImageUrl);
-            return newImageUrl;
+        let themeIndex = 0;
+        
+        // 3. 비어있는 슬롯에 테마 이미지를 채웁니다.
+        initialImages = initialImages.map((img, i) => {
+          if (!img && themeIndex < themeImagesToAdd.length) {
+            const newThemeImage = themeImagesToAdd[themeIndex++];
+            // 채운 이미지를 영구 저장소에도 반영합니다.
+            localStorage.setItem(getStorageKey(i), newThemeImage);
+            return newThemeImage;
           }
           return img;
         });
-        
-        // 4. 처리가 끝났으므로 임시 키를 반드시 삭제합니다.
+
+        // 4. 사용이 끝난 임시 데이터는 즉시 삭제합니다.
         localStorage.removeItem(THEME_IMAGES_KEY);
       }
-
-      // 5. 최종적으로 완성된 이미지 배열로 상태를 업데이트합니다.
-      setImages(currentImages);
-
+      return initialImages;
     } catch (error) {
-      console.error("로컬 스토리지 처리 중 오류 발생:", error);
-      // 오류 발생 시 기존 로직을 비워 안전하게 처리
-      localStorage.removeItem(THEME_IMAGES_KEY);
+      console.error("초기 이미지 로딩 중 오류:", error);
+      localStorage.removeItem(THEME_IMAGES_KEY); // 오류 발생 시 임시 데이터 정리
+      return Array(4).fill(null);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // 이 useEffect는 페이지 최초 로드 시 한 번만 실행되어야 합니다.
+  });
+  
+  const [isLoading, setIsLoading] = useState(false);
+  const selectedImageCount = images.filter(Boolean).length;
 
-  // 이미지 선택 및 압축 처리 핸들러 (원본 유지)
+  // 파일 선택 및 압축 핸들러 (원본 구조 유지)
   const handleImageSelect = async (e) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
     const availableSlots = 4 - selectedImageCount;
-    if (availableSlots <= 0) return;
-
+    if (availableSlots <= 0) {
+        alert("이미지는 최대 4장까지 선택할 수 있습니다.");
+        return;
+    }
     const filesToProcess = Array.from(files).slice(0, availableSlots);
 
     setIsLoading(true);
@@ -77,11 +76,10 @@ export default function ImageSelectPage() {
       try {
         const options = { maxSizeMB: 1, maxWidthOrHeight: 1920, useWebWorker: true };
         const compressedFile = await imageCompression(file, options);
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
           const reader = new FileReader();
           reader.readAsDataURL(compressedFile);
           reader.onloadend = () => resolve(reader.result);
-          reader.onerror = reject;
         });
       } catch (error) {
         console.error("이미지 압축 실패:", error);
@@ -90,24 +88,21 @@ export default function ImageSelectPage() {
     });
 
     const compressedBase64s = (await Promise.all(compressionPromises)).filter(Boolean);
-    
     const newImages = [...images];
     let base64Index = 0;
-
     for (let i = 0; i < newImages.length && base64Index < compressedBase64s.length; i++) {
       if (!newImages[i]) {
-        const base64Url = compressedBase64s[base64Index++];
-        newImages[i] = base64Url;
-        localStorage.setItem(getStorageKey(i), base64Url);
+        const url = compressedBase64s[base64Index++];
+        newImages[i] = url;
+        localStorage.setItem(getStorageKey(i), url);
       }
     }
-
     setImages(newImages);
     setIsLoading(false);
     e.target.value = null;
   };
 
-  // 이미지 삭제 핸들러 (원본 유지)
+  // 이미지 삭제 핸들러
   const handleDelete = (index) => {
     const updatedImages = [...images];
     updatedImages[index] = null;
@@ -115,7 +110,7 @@ export default function ImageSelectPage() {
     localStorage.removeItem(getStorageKey(index));
   };
 
-  // 다음 페이지로 이동 (원본 유지 및 정상 작동)
+  // 다음 페이지 이동 핸들러
   const handleNext = () => {
     if (selectedImageCount === 0) {
       alert("최소 1장의 이미지를 선택해주세요.");
@@ -123,34 +118,30 @@ export default function ImageSelectPage() {
     }
     localStorage.setItem("selected-type", "image");
     localStorage.removeItem("selected-video");
-
     router.push("/musicselectpage");
   };
 
+  // 뒤로가기 핸들러
   const handleBack = () => router.push("/style-select");
 
   return (
     <div className={styles.pageContainer}>
       <div className={styles.contentWrapper}>
-        {/* [수정] 화면 흔들림 방지를 위해 h1에 minHeight 스타일 추가 */}
-        <h1 className={styles.title} style={{minHeight: '8rem'}}>
+        <h1 className={styles.title} style={{ minHeight: '8rem' }}>
           <TypeAnimation
             sequence={[
               "어떤 배경으로\n마음을 전해볼까요?",
               2000,
               "최대 4장의 이미지를\n선택해주세요.",
+              4000, // [수정] 텍스트가 보이는 시간을 2초 -> 4초로 늘림
             ]}
             wrapper="span"
             speed={50}
             cursor={true}
-            style={{ 
-              whiteSpace: "pre-line", 
-              display: "inline-block",
-            }}
+            style={{ whiteSpace: "pre-line", display: "inline-block" }}
             repeat={Infinity}
           />
         </h1>
-        {/* [수정] '이미지 배경 선택' 멘트 삭제 */}
 
         <div className={styles.buttonGroup}>
           <button
@@ -182,17 +173,8 @@ export default function ImageSelectPage() {
             <div key={index} className={styles.slot}>
               {url ? (
                 <>
-                  <img
-                    src={url}
-                    alt={`선택된 이미지 ${index + 1}`}
-                    className={styles.thumbnail}
-                  />
-                  <button
-                    className={styles.deleteButton}
-                    onClick={() => handleDelete(index)}
-                  >
-                    ×
-                  </button>
+                  <img src={url} alt={`선택된 이미지 ${index + 1}`} className={styles.thumbnail} />
+                  <button className={styles.deleteButton} onClick={() => handleDelete(index)}>×</button>
                 </>
               ) : (
                 <div
@@ -215,7 +197,7 @@ export default function ImageSelectPage() {
         <button
           onClick={handleNext}
           className={`${styles.button} ${styles.navButton} ${styles.buttonPrimary}`}
-          disabled={selectedImageCount === 0} // 이제 정상적으로 작동합니다.
+          disabled={selectedImageCount === 0} // [수정] 이제 정상적으로 활성화/비활성화됩니다.
         >
           다음으로
         </button>
