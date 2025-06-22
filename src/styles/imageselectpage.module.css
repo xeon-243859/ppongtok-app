@@ -1,19 +1,15 @@
-/* ppongtok-app/src/styles/imageselectpage.module.css (상단 여백 제거 및 전체 레이아웃 조정) */
+/* ppongtok-app/src/styles/imageselectpage.module.css (하단 버튼을 슬롯 바로 아래에 배치) */
 
 .pageContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* 
-    justify-content를 space-between에서 flex-start로 변경하고
-    전체 높이를 100vh로 설정하여, 모든 콘텐츠가 화면 상단부터 차례로 쌓이게 합니다.
-    flex-grow: 1을 contentWrapper에 주어 남는 공간을 밀어내도록 합니다.
-  */
+  /* justify-content를 flex-start로 유지하고, min-height를 제거하여 콘텐츠 높이에 맞게 페이지 높이가 조절되도록 함 */
   justify-content: flex-start; 
-  min-height: 100vh;
-  padding: 2rem 1rem; /* 상단 여백을 대폭 줄이고, 하단 여백 유지 */
-  background: #f8f9fa; /* 배경색 단일화 */
+  padding: 2rem 1rem;
+  background: #f8f9fa;
   box-sizing: border-box;
+  min-height: 100vh; /* 스크롤이 생기더라도 푸터가 항상 아래에 있도록 최소 높이는 유지 */
 }
 
 .contentWrapper {
@@ -23,11 +19,14 @@
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  flex-grow: 1; /* 이 부분이 중요! contentWrapper가 남는 공간을 모두 차지하여 navButtonContainer를 밀어냄 */
+  /* 
+    [변경] flex-grow와 navButtonContainer의 margin-top: auto를 제거하여
+    모든 요소가 자연스럽게 위에서 아래로 쌓이도록 합니다. 
+  */
 }
 
 .title {
-  font-size: 1.6rem; /* 폰트 크기 미세 조정 */
+  font-size: 1.6rem;
   font-weight: 600;
   color: #343a40;
   line-height: 1.5;
@@ -132,15 +131,15 @@
   background-color: rgba(255, 0, 0, 0.8);
 }
 
-/* --- 하단 네비게이션 버튼 (화면 최하단에 위치) --- */
+/* --- [수정됨] 하단 네비게이션 버튼 (일반 요소처럼 배치) --- */
 .navButtonContainer {
   width: 100%;
   max-width: 420px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.8rem;
-  margin-top: auto; /* flex-grow와 함께 이 부분이 중요! contentWrapper가 밀어낸 후 남은 공간의 맨 아래에 위치하게 됨 */
-  padding-top: 1rem; /* 위 요소와의 최소 간격 확보 */
+  margin-top: 1.5rem; /* [변경] auto 대신 고정값 margin을 주어 바로 위에 붙도록 함 */
+  /* [삭제] padding-top 삭제 */
 }
 
 .navButton {
