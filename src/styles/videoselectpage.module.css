@@ -1,12 +1,12 @@
-/* ppongtok-app/src/styles/videoselectpage.module.css (디자인 및 UI/UX 개편 완료) */
+/* ppongtok-app/src/styles/videoselectpage.module.css (버튼 위치 문제 수정 완료) */
 
 .pageContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center; /* [수정] 콘텐츠를 수직 중앙에 배치 */
   min-height: 100vh;
-  padding: 15vh 1rem 2rem 1rem;
+  padding: 2rem 1rem; /* 상하 여백을 동일하게 주어 중앙 정렬 느낌 강화 */
   background: #f8f9fa;
   box-sizing: border-box;
 }
@@ -53,11 +53,10 @@
   transform: translateY(-1px);
 }
 
-/* --- 비디오 미리보기 영역 --- */
 .videoPreviewArea {
   width: 100%;
-  max-width: 360px; /* 비디오 크기 제한 */
-  aspect-ratio: 16 / 9; /* 16:9 비율 유지 */
+  max-width: 360px;
+  aspect-ratio: 16 / 9;
   margin-top: 1rem;
   border-radius: 16px;
   background-color: #e9ecef;
@@ -91,15 +90,15 @@
   font-size: 0.9rem;
 }
 
-/* --- 하단 네비게이션 버튼 --- */
+/* --- [수정] 하단 네비게이션 버튼 (일반 요소처럼 배치) --- */
 .navButtonContainer {
   width: 100%;
   max-width: 420px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.8rem;
-  margin-top: auto; /* 남은 공간을 밀어내고 하단에 위치 */
-  padding-top: 1.5rem;
+  margin-top: 1.5rem; /* [변경] auto 대신 고정값 margin을 주어 바로 위에 붙도록 함 */
+  /* [삭제] padding-top 삭제 */
 }
 
 .navButton {

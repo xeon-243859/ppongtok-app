@@ -1,4 +1,4 @@
-// ppongtok-app/pages/videoselectpage.jsx (디자인 및 UI/UX 개편 완료)
+// ppongtok-app/pages/videoselectpage.jsx (로직 및 UI 문제 수정 완료)
 
 import React, { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -10,16 +10,28 @@ export default function VideoSelectPage() {
   const fileInputRef = useRef(null);
   const [selectedVideo, setSelectedVideo] = useState(null);
 
-  // 페이지 로드 시, 테마 페이지에서 선택한 비디오가 있는지 확인
+  // [수정] 페이지가 다시 포커스될 때마다 localStorage를 확인하는 로직
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    const checkLocalStorage = () => {
       const storedVideo = localStorage.getItem("selected-video-theme");
       if (storedVideo) {
         setSelectedVideo(storedVideo);
-        localStorage.removeItem("selected-video-theme"); // 사용 후 삭제
+        localStorage.removeItem("selected-video-theme");
       }
-    }
-  }, []);
+    };
+    
+    // 페이지 첫 로드 시 확인
+    checkLocalStorage(); 
+
+    // 다른 페이지 갔다가 돌아왔을 때(focus) 다시 확인
+    window.addEventListener('focus', checkLocalStorage);
+
+    // 컴포넌트가 사라질 때 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener('focus', checkLocalStorage);
+    };
+  }, []); // 이 useEffect는 마운트/언마운트 시 한 번만 실행되어 이벤트 리스너를 설정/제거합니다.
+
 
   const handleMyFileClick = () => {
     fileInputRef.current.click();
@@ -28,7 +40,7 @@ export default function VideoSelectPage() {
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 10 * 1024 * 1024) { // 10MB 제한
+      if (file.size > 10 * 1024 * 1024) {
         alert("비디오 파일 크기는 10MB를 초과할 수 없습니다.");
         return;
       }
@@ -45,7 +57,7 @@ export default function VideoSelectPage() {
     if (typeof window !== "undefined") {
       localStorage.setItem("selected-video", selectedVideo);
       localStorage.setItem("selected-type", "video");
-      localStorage.removeItem("ppong_image_0"); // 이미지 선택 기록 삭제
+      localStorage.removeItem("ppong_image_0");
       localStorage.removeItem("ppong_image_1");
       localStorage.removeItem("ppong_image_2");
       localStorage.removeItem("ppong_image_3");
@@ -55,6 +67,10 @@ export default function VideoSelectPage() {
 
   return (
     <div className={styles.pageContainer}>
+      {/* 
+        [수정] contentWrapper가 모든 내용을 감싸도록 변경하여 
+        버튼 위치 문제를 해결합니다. 
+      */}
       <div className={styles.contentWrapper}>
         <h1 className={styles.title}>
             <TypeAnimation 
@@ -90,7 +106,7 @@ export default function VideoSelectPage() {
         <div className={styles.videoPreviewArea}>
           {selectedVideo ? (
             <video
-              key={selectedVideo} // src가 바뀔 때마다 비디오를 새로 렌더링하기 위함
+              key={selectedVideo}
               src={selectedVideo}
               autoPlay
               loop
@@ -105,15 +121,15 @@ export default function VideoSelectPage() {
             </div>
           )}
         </div>
-      </div>
 
-      <div className={styles.navButtonContainer}>
-        <button onClick={() => router.push('/style-select')} className={styles.navButton}>
-          뒤로가기
-        </button>
-        <button onClick={handleNext} className={`${styles.navButton} ${styles.primary}`} disabled={!selectedVideo}>
-          다음으로
-        </button>
+        <div className={styles.navButtonContainer}>
+          <button onClick={() => router.push('/style-select')} className={styles.navButton}>
+            뒤로가기
+          </button>
+          <button onClick={handleNext} className={`${styles.navButton} ${styles.primary}`} disabled={!selectedVideo}>
+            다음으로
+          </button>
+        </div>
       </div>
     </div>
   );
