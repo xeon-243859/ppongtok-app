@@ -1,31 +1,31 @@
-/* ppongtok-app/src/styles/musicselectpage.module.css (모바일 최적화 및 UI/UX 개선 완료) */
+/* ppongtok-app/src/styles/musicselectpage.module.css (모바일 UI/UX 전면 개편) */
 
 .pageContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start; /* 콘텐츠를 위에서부터 시작 */
   min-height: 100vh;
-  padding: 1.5rem; /* 전체적인 여백 축소 */
-  background-color: #f8f9fa;
+  padding: 20vh 1.2rem 2rem 1.2rem; /* 위쪽 여백을 20vh 주어 콘텐츠를 내림 */
+  background: linear-gradient(180deg, #e6e9f0 0%, #eef1f5 100%);
   box-sizing: border-box;
 }
 
 .contentWrapper {
   width: 100%;
-  max-width: 500px; /* 최대 너비 살짝 축소 */
-  text-align: center;
+  max-width: 420px;
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1.2rem; /* 요소 간 간격 조정 */
 }
 
 .title {
-  font-size: 1.8rem; /* 타이틀 폰트 크기 축소 */
+  font-size: 1.6rem; /* 글씨 크기 축소 */
   font-weight: 600;
-  color: #212529;
+  color: #343a40;
   line-height: 1.4;
-  margin-bottom: 0.2rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
 }
 
 .buttonGroup {
@@ -35,111 +35,137 @@
 }
 
 .button {
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(5px);
   color: #4C6EF5;
-  border: 1px solid #DEE2E6;
-  border-radius: 8px;
-  padding: 0.6rem 1.2rem; /* 버튼 내부 여백 축소 */
-  font-size: 0.9rem; /* 버튼 폰트 크기 축소 */
+  border: 1px solid #dee2e6;
+  border-radius: 20px; /* 더 둥글게 */
+  padding: 0.5rem 1.1rem; /* 크기 축소 */
+  font-size: 0.85rem; /* 글씨 크기 축소 */
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
-
 .button:hover {
-  background-color: #f1f3f5;
   border-color: #4C6EF5;
+  transform: translateY(-1px);
 }
 
-/* --- [새로운 스타일] 선택된 음악 표시 영역 --- */
-.selectionArea {
-  width: 100%;
-  min-height: 120px; /* 최소 높이를 주어 레이아웃 유지 */
+/* --- [새로운] 예쁜 음악 플레이어 --- */
+.playerCard {
+  background: #f1f3f7;
+  border-radius: 20px;
+  padding: 1.5rem;
+  margin-top: 1rem;
+  box-shadow: 
+    -7px -7px 20px rgba(255, 255, 255, 0.9),
+    7px 7px 20px rgba(163, 177, 198, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.albumArt {
+  width: 90px;
+  height: 90px;
+  border-radius: 16px;
+  background: #e9ecef;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 1rem;
-  background-color: #fff;
-  border-radius: 12px;
-  border: 1px dashed #ced4da;
-  padding: 1rem;
-  box-sizing: border-box;
+  font-size: 3rem;
+  color: #adb5bd;
+  box-shadow: inset 3px 3px 7px rgba(163, 177, 198, 0.6), inset -3px -3px 7px rgba(255, 255, 255, 0.9);
 }
 
-.placeholder {
+.musicDetails {
   text-align: center;
-  color: #868e96;
-}
-
-.placeholder p {
-  margin: 0;
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-
-.player {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.musicInfo {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  overflow: hidden; /* 제목이 길 경우 숨김 처리 */
-}
-
-.musicIcon {
-  font-size: 1.5rem;
 }
 
 .musicTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #343a40;
   margin: 0;
-  font-size: 1rem;
-  font-weight: 500;
-  white-space: nowrap; /* 제목이 길어도 한 줄로 표시 */
+  max-width: 250px;
+  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; /* ...으로 생략 */
-  text-align: left;
+  text-overflow: ellipsis;
+}
+
+.musicArtist {
+  font-size: 0.85rem;
+  color: #868e96;
+  margin: 0.2rem 0 0 0;
+}
+
+.progressBarContainer {
+  width: 100%;
+  height: 6px;
+  background-color: #d1d9e6;
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: inset 1px 1px 2px rgba(163, 177, 198, 0.7);
+}
+
+.progressBar {
+  height: 100%;
+  background-color: #4C6EF5;
+  border-radius: 3px;
+  transition: width 0.1s linear;
 }
 
 .playerControls {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  gap: 1.5rem;
 }
 
 .controlButton {
-  background-color: #f1f3f5;
   border: none;
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  font-size: 1.2rem;
-  color: #495057;
+  background: #f1f3f7;
+  box-shadow: -4px -4px 10px rgba(255, 255, 255, 0.8), 4px 4px 10px rgba(163, 177, 198, 0.5);
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease-in-out;
+  color: #5f6f81;
+}
+.controlButton:hover:not(:disabled) {
+  box-shadow: -2px -2px 5px rgba(255, 255, 255, 0.8), 2px 2px 5px rgba(163, 177, 198, 0.5);
+}
+.controlButton:active:not(:disabled) {
+  box-shadow: inset -2px -2px 5px rgba(255, 255, 255, 0.8), inset 2px 2px 5px rgba(163, 177, 198, 0.5);
+}
+.controlButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
-.controlButton:hover {
-  background-color: #e9ecef;
+.playButton {
+  width: 50px;
+  height: 50px;
+  font-size: 1.4rem;
 }
 
-/* --- 하단 네비게이션 버튼 --- */
+.removeButton {
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+}
+
+
+/* --- 하단 네비게이션 버튼 (플레이어 아래 위치) --- */
 .navButtonContainer {
   width: 100%;
-  max-width: 500px;
   display: flex;
   justify-content: space-between;
-  margin-top: 2rem;
-  padding-top: 1rem;
-  border-top: 1px solid #e9ecef;
+  margin-top: 1.5rem; /* 플레이어와의 간격 */
+  gap: 0.5rem;
 }
 
 .navButton {
@@ -147,13 +173,16 @@
   color: #495057;
   border: 1px solid #ced4da;
   border-radius: 8px;
-  padding: 0.7rem 0; /* 버튼 높이 축소 */
-  font-size: 0.95rem; /* 버튼 폰트 크기 축소 */
+  padding: 0.6rem 0; /* 크기 축소 */
+  font-size: 0.9rem; /* 글씨 크기 축소 */
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
   flex: 1;
-  margin: 0 0.4rem;
+}
+.navButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
 }
 
 .navButton.primary {
@@ -164,13 +193,8 @@
 }
 
 .navButton:disabled {
-  background-color: #f1f3f5;
+  background-color: #f8f9fa;
   color: #adb5bd;
+  border-color: #e9ecef;
   cursor: not-allowed;
-  border-color: #dee2e6;
-}
-
-.navButton:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
