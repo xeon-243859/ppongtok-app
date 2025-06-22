@@ -101,7 +101,7 @@ export default function ImageSelectPage() {
 
         {/* ✅ 버튼 클래스명 변경 */}
         <div className={pageStyles.buttonGroup}>
-          <button className={`${pageStyles.button} ${pageStyles.buttonSecondary}`} onClick={() => router.push('/imagethemepage')}>
+          <button className={`${pageStyles.button} ${pageStyles.buttonPrimary}`} onClick={() => router.push('/imagethemepage')}>
             테마 이미지
           </button>
           <button 
@@ -142,7 +142,7 @@ export default function ImageSelectPage() {
 
       {/* ✅ 하단 버튼 클래스명도 통일 */}
       <div className={pageStyles.navButtonContainer}>
-         <button onClick={handleBack} className={`${pageStyles.button} ${pageStyles.buttonSecondary}`}>뒤로가기</button>
+         <button onClick={handleBack} className={`${pageStyles.button} ${pageStyles.buttonPrimary}`}>뒤로가기</button>
          <button onClick={handleNext} className={`${pageStyles.button} ${pageStyles.buttonPrimary}`}>다음으로</button>
       </div>
     </div>
