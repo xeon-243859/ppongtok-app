@@ -1,4 +1,4 @@
-// ppongtok-app/pages/musicselectpage.jsx (모바일 UI/UX 전면 개편)
+// ppongtok-app/pages/musicselectpage.jsx (플레이어 축소 및 자동 재생 기능 적용)
 
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -12,30 +12,37 @@ export default function MusicSelectPage() {
   const audioRef = useRef(null);
   const fileInputRef = useRef(null);
 
-  // 테마 페이지에서 선택한 음악을 로드
+  // [수정됨] 테마 페이지에서 선택한 음악을 로드하고 자동 재생
   useEffect(() => {
     if (typeof window !== "undefined") {
       const themeSrc = localStorage.getItem("selected-music");
       const themeLabel = localStorage.getItem("selected-music-label");
 
       if (themeSrc && themeLabel) {
-        setSelectedMusic({ title: themeLabel, src: themeSrc });
+        const music = { title: themeLabel, src: themeSrc };
+        setSelectedMusic(music);
+        
+        // 오디오 소스 설정 후 바로 재생 시도
+        if (audioRef.current) {
+          // src를 설정하는 것을 명시적으로 분리
+          audioRef.current.src = music.src;
+          const playPromise = audioRef.current.play();
+          if (playPromise !== undefined) {
+            playPromise.then(() => {
+              setIsPlaying(true);
+            }).catch(error => {
+              console.error("자동 재생이 브라우저 정책에 의해 차단되었습니다:", error);
+              // 자동 재생이 실패하면 재생 상태를 false로 유지
+              setIsPlaying(false);
+            });
+          }
+        }
+        
         localStorage.removeItem("selected-music");
         localStorage.removeItem("selected-music-label");
       }
     }
-  }, []);
-
-  // 음악 소스가 변경되면 오디오 태그에 반영
-  useEffect(() => {
-    if (selectedMusic && audioRef.current) {
-      if (audioRef.current.src !== selectedMusic.src) {
-        audioRef.current.src = selectedMusic.src;
-        setProgress(0); // 새 음악이므로 프로그레스 리셋
-      }
-    }
-  }, [selectedMusic]);
-
+  }, []); // 이 useEffect는 페이지 첫 로드 시 한 번만 실행됩니다.
 
   const handlePlayPause = () => {
     if (!audioRef.current || !selectedMusic) return;
@@ -62,12 +69,29 @@ export default function MusicSelectPage() {
     fileInputRef.current?.click();
   };
 
+  // [수정됨] 내 파일을 선택했을 때 자동 재생
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       const fileSrc = URL.createObjectURL(file);
-      setSelectedMusic({ title: file.name, src: fileSrc });
-      setIsPlaying(false); // 새 파일 선택 시 재생은 멈춤
+      const music = { title: file.name, src: fileSrc };
+      setSelectedMusic(music);
+      
+      // 오디오 소스 설정 후 바로 재생 시도
+      if (audioRef.current) {
+        // src를 설정하는 것을 명시적으로 분리
+        audioRef.current.src = music.src;
+        const playPromise = audioRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            setIsPlaying(true);
+          }).catch(error => {
+            console.error("자동 재생이 브라우저 정책에 의해 차단되었습니다:", error);
+            // 자동 재생이 실패하면 재생 상태를 false로 유지
+            setIsPlaying(false);
+          });
+        }
+      }
     }
   };
 
@@ -97,7 +121,12 @@ export default function MusicSelectPage() {
       <audio 
         ref={audioRef} 
         onTimeUpdate={handleTimeUpdate}
-        onEnded={() => setIsPlaying(false)} 
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+        onEnded={() => {
+          setIsPlaying(false);
+          setProgress(0); // 재생이 끝나면 프로그레스 리셋
+        }} 
       />
       <input 
         type="file" 
@@ -155,7 +184,7 @@ export default function MusicSelectPage() {
             </div>
         </div>
 
-        {/* --- 하단 네비게이션 버튼 (위치 이동) --- */}
+        {/* --- 하단 네비게이션 버튼 (플레이어 아래 위치) --- */}
         <div className={styles.navButtonContainer}>
           <button onClick={() => router.push('/imageselectpage')} className={styles.navButton}>
             뒤로가기
