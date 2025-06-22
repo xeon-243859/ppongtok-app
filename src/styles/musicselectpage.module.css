@@ -1,142 +1,155 @@
-.music-select-page {
+/* ppongtok-app/src/styles/musicselectpage.module.css (최신 수정 완료) */
+
+.pageContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 40px;
+  justify-content: space-between;
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: #f0f4f8;
+  box-sizing: border-box;
 }
 
-/* 타이핑 텍스트 */
-.typing-text {
+.contentWrapper {
+  width: 100%;
+  max-width: 600px;
   text-align: center;
-  margin-top: 60px;
-  margin-bottom: 20px;
-  font-size: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.title {
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.button {
+  background-color: #ffffff;
+  color: #4a90e2;
+  border: 1px solid #4a90e2;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.button:hover {
+  background-color: #e9f2fc;
+  transform: translateY(-2px);
+}
+
+.musicList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.musicItem {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 0.8rem 1.2rem;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.musicItem.selected {
+  border-color: #4a90e2;
+  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
+}
+
+.playIcon {
+  font-size: 1.5rem;
+  color: #4a90e2;
+  cursor: pointer;
+  width: 40px;
+  text-align: center;
+  margin-right: 0.5rem;
+}
+
+.musicTitle {
+  flex-grow: 1;
+  text-align: left;
+  font-size: 1.1rem;
+  color: #333;
+  margin: 0;
+}
+
+.selectButton {
+  background-color: #e9ecef;
+  color: #495057;
+  border: none;
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+
+.musicItem.selected .selectButton {
+  background-color: #4a90e2;
+  color: white;
   font-weight: bold;
 }
 
-.typing-text .line1,
-.typing-text .line2 {
-  animation: typing 1.2s steps(20) forwards;
-  white-space: nowrap;
-  overflow: hidden;
-  border-right: none;
-}
-
-.typing-text .line2 {
-  animation-delay: 1.2s;
-}
-
-@keyframes typing {
-  from { width: 0; }
-  to { width: 100%; }
-}
-
-/* 🎵 상단 음악 선택 버튼 그룹 */
-.file-button-group {
+.navButtonContainer {
+  width: 100%;
+  max-width: 600px;
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: nowrap;
-  margin-bottom: 24px;
+  justify-content: space-between;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #ddd;
 }
 
-/* 🎵 개별 선택 버튼 (배경음악 파일 / 내 파일 선택) */
-.file-button-group button {
-  background-color: #ff6f91;
-  color: #fff;
-  border: none;
-  border-radius: 25px;
-  padding: 10px 24px;
-  font-size: 16px;
+.navButton {
+  background-color: #fff;
+  color: #555;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 0.8rem 0;
+  font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  white-space: nowrap;
-  flex-shrink: 0;
+  transition: all 0.2s ease;
+  flex: 1;
+  margin: 0 0.5rem;
 }
 
-.file-button-group button:hover {
-  background-color: #ff4d7e;
+.navButton.primary {
+  background-color: #4a90e2;
+  color: white;
+  border-color: #4a90e2;
+  font-weight: bold;
 }
 
-/* 🎵 음악 박스 전체 */
-.music-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-width: 500px;   /* PC에서는 최대 넓이 제한 */
-  margin: 20px auto;  /* 가운데 정렬 */
-  padding: 16px;
-  border-radius: 16px;
-  background-color: #fff0f4;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  gap: 16px;
+.navButton:disabled {
+  background-color: #e9ecef;
+  color: #adb5bd;
+  cursor: not-allowed;
+  border-color: #dee2e6;
 }
 
-/* 🎵 음악 제목 */
-.music-label {
-  font-size: 16px;
-  color: #444;
-  font-weight: 500;
+.navButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
-
-/* 🎵 오디오 컨트롤 박스 */
-.audio-wrapper {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.audio-wrapper audio {
-  width: 100%;
-  max-width: 400px; /* 실제 플레이어 크기 확장 */
-}
-
-.music-label {
-  font-size: 18px;
-  font-weight: 600;
-  color: #333;
-}
-
-/* ❌ 삭제 버튼 */
-.delete-button {
-  background-color: transparent;
-  color: #ff6f91;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-.delete-button:hover {
-  color: #ff4d7e;
-}
-
-
-/* 👣 하단 버튼 그룹 */
-.button-group {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  margin-top: 30px;
-}
-
-.button-group button {
-  background-color: #ff6f91;
-  color: #fff;
-  border: none;
-  border-radius: 25px;
-  padding: 10px 24px;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.button-group button:hover {
-  background-color: #ff4d7e;
-}
-
