@@ -88,7 +88,7 @@ export default function MusicSelectPage() {
         <div className={pageStyles.buttonGroup}>
           <button
             className={pageStyles.unifiedButton}
-            onClick={() => router.push("/imagethemepage")}
+            onClick={() => router.push("/musicthemepage")}
           >
             테마 이미지
           </button>
