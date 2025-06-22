@@ -1,5 +1,3 @@
-// ppongtok-app/pages/imageselectpage.jsx
-
 import React, { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import imageCompression from "browser-image-compression";
@@ -11,6 +9,7 @@ export default function MusicSelectPage() {
   const fileInputRef = useRef(null);
   const [images, setImages] = useState(Array(4).fill(null));
   const [isLoading, setIsLoading] = useState(false);
+  const selectedImageCount = images.filter(Boolean).length;
 
   useEffect(() => {
     const loadedImages = Array(4).fill(null);
@@ -39,11 +38,11 @@ export default function MusicSelectPage() {
     const newImages = [...images];
     let compressedIndex = 0;
     for (let i = 0; i < newImages.length; i++) {
-        if (!newImages[i] && compressedResults[compressedIndex]) {
-            newImages[i] = compressedResults[compressedIndex].url;
-            localStorage.setItem(`img-${i + 1}`, newImages[i]);
-            compressedIndex++;
-        }
+      if (!newImages[i] && compressedResults[compressedIndex]) {
+        newImages[i] = compressedResults[compressedIndex].url;
+        localStorage.setItem(`img-${i + 1}`, newImages[i]);
+        compressedIndex++;
+      }
     }
     setImages(newImages);
     setIsLoading(false);
@@ -60,25 +59,40 @@ export default function MusicSelectPage() {
 
   const handleNext = () => {
     const selectedImages = images.filter(Boolean);
-    if (selectedImages.length === 0) { alert("최소 1장의 이미지를 선택해주세요."); return; }
+    if (selectedImages.length === 0) {
+      alert("최소 1장의 이미지를 선택해주세요.");
+      return;
+    }
+
     localStorage.setItem("selected-type", "image");
     localStorage.setItem("allow-music", "true");
-    router.push("/musicselectpage");
+
+    // ✅ 예시용 고정 ID (나중에 Firestore 저장 후 생성된 ID로 대체 가능)
+    const dummyId = "temp-123";
+    router.push(`/view/${dummyId}`);
   };
 
-  const handleBack = () => router.push('/style-select');
-  const selectedImageCount = images.filter(Boolean).length;
+  const handleBack = () => router.push("/imageselectpage");
 
   return (
     <div className={pageStyles.pageContainer}>
       <div className={pageStyles.contentWrapper}>
         <h2 className={pageStyles.title}>
-          <TypeAnimation sequence={["배경으로 사용할 이미지를\n선택해 주세요"]} wrapper="span" cursor={false} />
+          <TypeAnimation
+            sequence={["배경으로 사용할 이미지를\n선택해 주세요"]}
+            wrapper="span"
+            cursor={false}
+          />
         </h2>
 
         <div className={pageStyles.buttonGroup}>
-          <button className={pageStyles.unifiedButton} onClick={() => router.push('/imagethemepage')}>테마 이미지</button>
-          <button 
+          <button
+            className={pageStyles.unifiedButton}
+            onClick={() => router.push("/imagethemepage")}
+          >
+            테마 이미지
+          </button>
+          <button
             className={pageStyles.unifiedButton}
             onClick={() => fileInputRef.current.click()}
             disabled={isLoading || selectedImageCount >= 4}
@@ -87,26 +101,51 @@ export default function MusicSelectPage() {
           </button>
         </div>
 
-        <input type="file" accept="image/*" multiple onChange={handleImageSelect} ref={fileInputRef} style={{ display: "none" }} />
-        
+        <input
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={handleImageSelect}
+          ref={fileInputRef}
+          style={{ display: "none" }}
+        />
+
         <div className={pageStyles.previewGrid}>
           {images.map((url, index) => (
             <div key={index} className={pageStyles.slot}>
               {url ? (
                 <>
-                  <img src={url} alt={`선택된 이미지 ${index + 1}`} className={pageStyles.thumbnail} />
-                  <button className={pageStyles.deleteButton} onClick={() => handleDelete(index)}>×</button>
+                  <img
+                    src={url}
+                    alt={`선택된 이미지 ${index + 1}`}
+                    className={pageStyles.thumbnail}
+                  />
+                  <button
+                    className={pageStyles.deleteButton}
+                    onClick={() => handleDelete(index)}
+                  >
+                    ×
+                  </button>
                 </>
               ) : (
-                <div className={pageStyles.placeholder} onClick={() => !isLoading && fileInputRef.current.click()}>+</div>
+                <div
+                  className={pageStyles.placeholder}
+                  onClick={() => !isLoading && fileInputRef.current.click()}
+                >
+                  +
+                </div>
               )}
             </div>
           ))}
         </div>
 
         <div className={pageStyles.navButtonContainer}>
-          <button onClick={handleBack} className={pageStyles.unifiedButton}>뒤로가기</button>
-          <button onClick={handleNext} className={pageStyles.unifiedButton}>다음으로</button>
+          <button onClick={handleBack} className={pageStyles.unifiedButton}>
+            뒤로가기
+          </button>
+          <button onClick={handleNext} className={pageStyles.unifiedButton}>
+            다음으로
+          </button>
         </div>
       </div>
     </div>
