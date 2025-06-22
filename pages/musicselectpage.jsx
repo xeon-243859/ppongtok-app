@@ -3,7 +3,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
 import styles from "../src/styles/musicselectpage.module.css";
-import { FaPlay, FaPause, FaCheck } from 'react-icons/fa';
+// =======================================================================
+// ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 문제의 원인이었던 아래 줄을 삭제합니다! ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+// import { FaPlay, FaPause, FaCheck } from 'react-icons/fa'; 
+// =======================================================================
+
 
 // 예시 테마 음악 데이터
 const themeMusic = [
@@ -20,7 +24,6 @@ export default function MusicSelectPage() {
   const audioRef = useRef(null);
 
   useEffect(() => {
-    // 페이지를 떠날 때 오디오 정지
     return () => {
       if (audioRef.current) {
         audioRef.current.pause();
@@ -57,7 +60,6 @@ export default function MusicSelectPage() {
       localStorage.removeItem('selected_music_src');
       localStorage.removeItem('selected_music_title');
     }
-    // 최종 데이터를 서버에 저장하고, 생성된 ID로 미리보기 페이지 이동
     const presentationId = `pres_${new Date().getTime()}`;
     router.push(`/view/${presentationId}`);
   };
@@ -77,10 +79,12 @@ export default function MusicSelectPage() {
               </div>
               <div className={styles.musicControls}>
                 <button onClick={() => handlePreview(music)} className={styles.controlButton}>
-                  {playingMusicId === music.id ? <FaPause /> : <FaPlay />}
+                  {/* [수정] 아이콘 대신 텍스트 문자로 대체 */}
+                  {playingMusicId === music.id ? '❚❚' : '▶'}
                 </button>
                 <button onClick={() => handleSelect(music)} className={styles.controlButton}>
-                  <FaCheck />
+                  {/* [수정] 아이콘 대신 텍스트 문자로 대체 */}
+                  ✔
                 </button>
               </div>
             </div>
