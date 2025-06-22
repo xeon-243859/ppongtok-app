@@ -1,12 +1,12 @@
-/* ppongtok-app/src/styles/imageselectpage.module.css (모바일 UI/UX 최적화 완료) */
+/* ppongtok-app/src/styles/imageselectpage.module.css (슬롯 크기 축소 및 모바일 최적화) */
 
 .pageContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between; /* 하단 버튼을 아래에 고정하기 위해 space-between 유지 */
+  justify-content: space-between;
   min-height: 100vh;
-  padding: 25vh 1rem 2rem 1rem; /* 상단 여백 25vh, 좌우/하단 여백 조정 */
+  padding: 20vh 1rem 2rem 1rem; /* 상단 여백을 살짝 줄여 공간 확보 */
   background: linear-gradient(180deg, #e6e9f0 0%, #ffffff 100%);
   box-sizing: border-box;
 }
@@ -17,16 +17,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.2rem;
+  gap: 1rem; /* 전체적인 세로 간격 축소 */
 }
 
 .title {
-  font-size: 1.7rem; /* 타이틀 폰트 크기 축소 */
+  font-size: 1.7rem;
   font-weight: 600;
   color: #343a40;
   line-height: 1.5;
   text-align: center;
-  min-height: 5rem; /* 2줄 높이 확보 */
+  min-height: 5rem;
   margin-bottom: 0.5rem;
 }
 
@@ -41,8 +41,8 @@
   color: #4C6EF5;
   border: 1px solid #dee2e6;
   border-radius: 20px;
-  padding: 0.6rem 1.2rem; /* 버튼 크기 축소 */
-  font-size: 0.85rem; /* 버튼 폰트 크기 축소 */
+  padding: 0.6rem 1.2rem;
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
@@ -57,21 +57,22 @@
   cursor: not-allowed;
 }
 
-/* --- 이미지 미리보기 그리드 --- */
+/* --- [수정됨] 이미지 미리보기 그리드 크기 축소 --- */
 .previewGrid {
-  width: 100%;
+  width: 90%; /* 그리드 컨테이너 자체의 너비를 줄임 */
+  max-width: 320px; /* 최대 너비를 제한하여 슬롯이 너무 커지지 않게 함 */
+  margin: 0.8rem auto 0; /* 위쪽 마진 줄이고, 좌우 auto로 중앙 정렬 */
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2x2 그리드 */
-  gap: 0.8rem; /* 그리드 간격 축소 */
-  margin-top: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem; /* 슬롯 간 간격 축소 */
 }
 
 .slot {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1; /* 정사각형 비율 유지 */
+  aspect-ratio: 1 / 1;
   border-radius: 12px;
-  overflow: hidden; /* 썸네일이 둥근 모서리를 넘지 않도록 */
+  overflow: hidden;
 }
 
 .placeholder {
@@ -92,7 +93,7 @@
 }
 
 .plusIcon {
-  font-size: 2.5rem; /* 아이콘 크기 조정 */
+  font-size: 2rem; /* 슬롯 크기에 맞춰 아이콘 크기 축소 */
   color: #adb5bd;
   font-weight: 300;
 }
@@ -100,20 +101,20 @@
 .thumbnail {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* 이미지가 꽉 차도록 */
+  object-fit: cover;
 }
 
 .deleteButton {
   position: absolute;
-  top: 0.4rem;
-  right: 0.4rem;
-  width: 28px; /* 버튼 크기 축소 */
-  height: 28px; /* 버튼 크기 축소 */
+  top: 0.3rem;
+  right: 0.3rem;
+  width: 24px; /* 버튼 크기 축소 */
+  height: 24px; /* 버튼 크기 축소 */
   border-radius: 50%;
   border: none;
   background-color: rgba(0, 0, 0, 0.6);
   color: white;
-  font-size: 1.1rem; /* 아이콘 크기 축소 */
+  font-size: 1rem; /* 아이콘 크기 축소 */
   font-weight: bold;
   cursor: pointer;
   display: flex;
@@ -133,7 +134,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.8rem;
-  margin-top: 2rem; /* contentWrapper와의 간격 */
+  margin-top: 1.5rem; /* contentWrapper와의 간격 축소 */
 }
 
 .navButton {
@@ -141,7 +142,7 @@
   color: #495057;
   border: 1px solid #ced4da;
   border-radius: 8px;
-  padding: 0.7rem 0; /* 버튼 높이 축소 */
+  padding: 0.7rem 0;
   font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
