@@ -1,152 +1,109 @@
-import React, { useRef, useState, useEffect } from "react";
+// ppongtok-app/pages/musicselectpage.jsx
+
+import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
-import imageCompression from "browser-image-compression";
-import { TypeAnimation } from "react-type-animation";
-import pageStyles from "../src/styles/musicselectpage.module.css";
+import styles from "../src/styles/musicselectpage.module.css";
+import { FaPlay, FaPause, FaCheck } from 'react-icons/fa';
+
+// 예시 테마 음악 데이터
+const themeMusic = [
+  { id: 'music1', title: '설레는 마음', src: '/music/spring.mp3' },
+  { id: 'music2', title: '잔잔한 파도처럼', src: '/music/night-sea.mp3' },
+  { id: 'music3', title: '우리의 행복한 날', src: '/music/happy.mp3' },
+  { id: 'music4', title: '아련한 기억 속에서', src: '/music/memory.mp3' },
+];
 
 export default function MusicSelectPage() {
   const router = useRouter();
-  const fileInputRef = useRef(null);
-  const [images, setImages] = useState(Array(4).fill(null));
-  const [isLoading, setIsLoading] = useState(false);
-  const selectedImageCount = images.filter(Boolean).length;
+  const [selectedMusic, setSelectedMusic] = useState(null);
+  const [playingMusicId, setPlayingMusicId] = useState(null);
+  const audioRef = useRef(null);
 
   useEffect(() => {
-    const loadedImages = Array(4).fill(null);
-    for (let i = 0; i < 4; i++) {
-      const storedImage = localStorage.getItem(`img-${i + 1}`);
-      if (storedImage) loadedImages[i] = storedImage;
-    }
-    setImages(loadedImages);
+    // 페이지를 떠날 때 오디오 정지
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
   }, []);
 
-  const handleImageSelect = async (e) => {
-    const emptySlots = images.filter(img => !img).length;
-    const filesToProcess = Array.from(e.target.files).slice(0, emptySlots);
-    if (filesToProcess.length === 0) return;
-
-    setIsLoading(true);
-    const compressionPromises = filesToProcess.map(async (file) => {
-      try {
-        const options = { maxSizeMB: 1, maxWidthOrHeight: 1920, useWebWorker: true };
-        const compressedFile = await imageCompression(file, options);
-        return { url: URL.createObjectURL(compressedFile) };
-      } catch (error) { return null; }
-    });
-
-    const compressedResults = await Promise.all(compressionPromises);
-    const newImages = [...images];
-    let compressedIndex = 0;
-    for (let i = 0; i < newImages.length; i++) {
-      if (!newImages[i] && compressedResults[compressedIndex]) {
-        newImages[i] = compressedResults[compressedIndex].url;
-        localStorage.setItem(`img-${i + 1}`, newImages[i]);
-        compressedIndex++;
+  const handlePreview = (music) => {
+    if (playingMusicId === music.id) {
+      audioRef.current.pause();
+      setPlayingMusicId(null);
+    } else {
+      if (audioRef.current) {
+        audioRef.current.src = music.src;
+        audioRef.current.play().catch(e => console.error("오디오 재생 오류:", e));
+        setPlayingMusicId(music.id);
       }
     }
-    setImages(newImages);
-    setIsLoading(false);
-    e.target.value = null;
   };
-
-  const handleDelete = (index) => {
-    const updatedImages = [...images];
-    URL.revokeObjectURL(updatedImages[index]);
-    updatedImages[index] = null;
-    setImages(updatedImages);
-    localStorage.removeItem(`img-${index + 1}`);
-  };
-
-  const handleNext = () => {
-    const selectedImages = images.filter(Boolean);
-    if (selectedImages.length === 0) {
-      alert("최소 1장의 이미지를 선택해주세요.");
-      return;
+  
+  const handleSelect = (music) => {
+    setSelectedMusic(music);
+    if (playingMusicId === music.id) {
+      audioRef.current.pause();
+      setPlayingMusicId(null);
     }
-
-    localStorage.setItem("selected-type", "image");
-    localStorage.setItem("allow-music", "true");
-
-    // ✅ 예시용 고정 ID (나중에 Firestore 저장 후 생성된 ID로 대체 가능)
-    const dummyId = "temp-123";
-    router.push(`/view/${dummyId}`);
   };
 
-  const handleBack = () => router.push("/imageselectpage");
+  const goToNextStep = () => {
+    if (selectedMusic) {
+      localStorage.setItem('selected_music_src', selectedMusic.src);
+      localStorage.setItem('selected_music_title', selectedMusic.title);
+    } else {
+      localStorage.removeItem('selected_music_src');
+      localStorage.removeItem('selected_music_title');
+    }
+    // 최종 데이터를 서버에 저장하고, 생성된 ID로 미리보기 페이지 이동
+    const presentationId = `pres_${new Date().getTime()}`;
+    router.push(`/view/${presentationId}`);
+  };
 
   return (
-    <div className={pageStyles.pageContainer}>
-      <div className={pageStyles.contentWrapper}>
-        <h2 className={pageStyles.title}>
-          <TypeAnimation
-            sequence={["배경으로 사용할 이미지를\n선택해 주세요"]}
-            wrapper="span"
-            cursor={false}
-          />
-        </h2>
+    <div className={styles.pageContainer}>
+      <audio ref={audioRef} onEnded={() => setPlayingMusicId(null)} />
+      <div className={styles.contentWrapper}>
+        <h1 className={styles.title}>배경음악을 선택해주세요</h1>
+        <p className={styles.subtitle}>음악을 추가하면 감동이 배가 됩니다.</p>
 
-        <div className={pageStyles.buttonGroup}>
-          <button
-            className={pageStyles.unifiedButton}
-            onClick={() => router.push("/musicthemepage")}
-          >
-            테마 이미지
-          </button>
-          <button
-            className={pageStyles.unifiedButton}
-            onClick={() => fileInputRef.current.click()}
-            disabled={isLoading || selectedImageCount >= 4}
-          >
-            {isLoading ? "처리 중..." : "내 파일 선택"}
-          </button>
-        </div>
-
-        <input
-          type="file"
-          accept="image/*"
-          multiple
-          onChange={handleImageSelect}
-          ref={fileInputRef}
-          style={{ display: "none" }}
-        />
-
-        <div className={pageStyles.previewGrid}>
-          {images.map((url, index) => (
-            <div key={index} className={pageStyles.slot}>
-              {url ? (
-                <>
-                  <img
-                    src={url}
-                    alt={`선택된 이미지 ${index + 1}`}
-                    className={pageStyles.thumbnail}
-                  />
-                  <button
-                    className={pageStyles.deleteButton}
-                    onClick={() => handleDelete(index)}
-                  >
-                    ×
-                  </button>
-                </>
-              ) : (
-                <div
-                  className={pageStyles.placeholder}
-                  onClick={() => !isLoading && fileInputRef.current.click()}
-                >
-                  +
-                </div>
-              )}
+        <div className={styles.musicList}>
+          {themeMusic.map((music) => (
+            <div key={music.id} className={`${styles.musicItem} ${selectedMusic?.id === music.id ? styles.selected : ''}`}>
+              <div className={styles.musicInfo}>
+                <p className={styles.musicTitle}>{music.title}</p>
+              </div>
+              <div className={styles.musicControls}>
+                <button onClick={() => handlePreview(music)} className={styles.controlButton}>
+                  {playingMusicId === music.id ? <FaPause /> : <FaPlay />}
+                </button>
+                <button onClick={() => handleSelect(music)} className={styles.controlButton}>
+                  <FaCheck />
+                </button>
+              </div>
             </div>
           ))}
         </div>
-
-        <div className={pageStyles.navButtonContainer}>
-          <button onClick={handleBack} className={pageStyles.unifiedButton}>
-            뒤로가기
-          </button>
-          <button onClick={handleNext} className={pageStyles.unifiedButton}>
-            다음으로
-          </button>
+        
+        <div className={styles.uploadSection}>
+            <button className={styles.button} onClick={() => router.push('/musicthemepage')}>
+                테마 음악 더보기
+            </button>
         </div>
+      </div>
+
+      <div className={styles.navButtonContainer}>
+        <button onClick={() => router.push('/imageselectpage')} className={`${styles.button} ${styles.navButton}`}>
+          뒤로가기
+        </button>
+        <button onClick={goToNextStep} className={`${styles.button} ${styles.navButton}`}>
+          건너뛰기
+        </button>
+        <button onClick={goToNextStep} className={`${styles.button} ${styles.navButton} ${styles.buttonPrimary}`}>
+          {selectedMusic ? "선택 완료" : "음악 없이 만들기"}
+        </button>
       </div>
     </div>
   );
