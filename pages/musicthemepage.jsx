@@ -1,24 +1,25 @@
-// ppongtok-app/pages/musicthemepage.jsx (실제 폴더 경로로 수정 완료)
+// ppongtok-app/pages/musicthemepage.jsx (데이터 형식 통일 완료)
 
 import React from "react";
 import { useRouter } from "next/router";
 import styles from "../src/styles/musicthemepage.module.css";
 
+// [수정] 데이터 형식을 { id, title, src } 형태로 통일합니다.
 const musicOptions = [
-  // ▼▼▼▼▼ [수정] 모든 경로를 실제 폴더 이름인 '/audio/' 로 수정합니다. ▼▼▼▼▼
-  { label: "봄의노래", value: "/audio/spring.mp3" },
-  { label: "설레임", value: "/audio/spring1.mp3" },
-  { label: "무언의 감정", value: "/audio/mueon.mp3" },
-  { label: "고요한 바람", value: "/audio/mueon1.mp3" }
-  // ▲▲▲▲▲ [수정] ▲▲▲▲▲
+  { id: 'theme1', title: "봄의 노래", src: "/audio/spring.mp3" },
+  { id: 'theme2', title: "설레임", src: "/audio/spring1.mp3" },
+  { id: 'theme3', title: "무언의 감정", src: "/audio/mueon.mp3" },
+  { id: 'theme4', title: "고요한 바람", src: "/audio/mueon1.mp3" },
+  // 여기에 더 많은 테마 음악을 추가할 수 있습니다.
 ];
 
 export default function MusicThemePage() {
   const router = useRouter();
 
-  const handleSelect = (value, label) => {
-    localStorage.setItem("selected-music", value);
-    localStorage.setItem("selected-music-label", label);
+  // [수정] handleSelect 함수에서 src와 title을 함께 넘겨줍니다.
+  const handleSelect = (src, title) => {
+    localStorage.setItem("selected-music", src);
+    localStorage.setItem("selected-music-label", title);
     router.push("/musicselectpage");
   };
 
@@ -29,11 +30,11 @@ export default function MusicThemePage() {
         <div className={styles.musicList}>
           {musicOptions.map((option) => (
             <button
-              key={option.value}
+              key={option.id} // key는 고유한 id 사용
               className={styles.musicButton}
-              onClick={() => handleSelect(option.value, option.label)}
+              onClick={() => handleSelect(option.src, option.title)} // src와 title을 전달
             >
-              {option.label}
+              {option.title} {/* 화면에는 title 표시 */}
             </button>
           ))}
         </div>

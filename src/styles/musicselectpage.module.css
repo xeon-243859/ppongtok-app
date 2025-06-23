@@ -197,3 +197,39 @@
   border-color: #e9ecef;
   cursor: not-allowed;
 }
+/* src/styles/musicselectpage.module.css 파일 맨 아래에 추가 */
+
+.musicList {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2열 그리드 */
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+.musicItem {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  color: #555;
+  border-radius: 8px;
+  padding: 0.8rem 0.5rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.musicItem:hover {
+  border-color: #4C6EF5;
+  color: #4C6EF5;
+}
+
+.musicItem.selected {
+  background-color: #4C6EF5;
+  color: white;
+  border-color: #4C6EF5;
+  font-weight: bold;
+}

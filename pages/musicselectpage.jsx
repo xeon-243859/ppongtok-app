@@ -1,8 +1,16 @@
-// ppongtok-app/pages/musicselectpage.jsx (경로 설정 수정 완료)
+// ppongtok-app/pages/musicselectpage.jsx (선택 목록 UI 복구 및 전체 기능 수정 완료)
 
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
 import styles from "../src/styles/musicselectpage.module.css";
+
+// [수정] 실제 음악 목록으로 교체하고 키 이름을 통일합니다.
+const themeMusicData = [
+  { id: 'theme1', title: '봄의 노래', src: '/audio/spring.mp3' },
+  { id: 'theme2', title: '설레임', src: '/audio/spring1.mp3' },
+  { id: 'theme3', title: '무언의 감정', src: '/audio/mueon.mp3' },
+  { id: 'theme4', title: '고요한 바람', src: '/audio/mueon1.mp3' },
+];
 
 export default function MusicSelectPage() {
   const router = useRouter();
@@ -11,16 +19,16 @@ export default function MusicSelectPage() {
   const [progress, setProgress] = useState(0);
   const audioRef = useRef(null);
   const fileInputRef = useRef(null);
-  
-  // (다른 함수들은 이전과 동일하게 유지)
+
+  // 로직을 이전의 가장 안정적인 버전으로 되돌립니다.
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const themeSrc = localStorage.getItem("selected-music-theme");
-      const themeLabel = localStorage.getItem("selected-music-theme-label");
+      const themeSrc = localStorage.getItem("selected-music");
+      const themeLabel = localStorage.getItem("selected-music-label");
       if (themeSrc && themeLabel) {
-        setSelectedMusic({ title: themeLabel, src: themeSrc });
-        localStorage.removeItem("selected-music-theme");
-        localStorage.removeItem("selected-music-theme-label");
+        setSelectedMusic({ id: 'theme_music', title: themeLabel, src: themeSrc });
+        localStorage.removeItem("selected-music");
+        localStorage.removeItem("selected-music-label");
       }
     }
   }, []);
@@ -41,13 +49,24 @@ export default function MusicSelectPage() {
     }
   }, [selectedMusic]);
   
-  const handlePlayPause = () => { if (!audioRef.current || !selectedMusic) return; if (isPlaying) { audioRef.current.pause(); } else { audioRef.current.play().catch(e => console.error("재생 오류:", e)); } };
-  const handleRemoveSelection = () => { setSelectedMusic(null); };
+  const handlePlayPause = () => {
+    if (!audioRef.current || !selectedMusic) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play().catch(e => console.error("재생 오류:", e));
+    }
+  };
+  
+  // [수정] 음악을 선택하는 핵심 함수
+  const handleSelect = (music) => {
+    setSelectedMusic(music);
+  };
+  
   const handleMyFileClick = () => { fileInputRef.current.click(); };
-  const handleFileChange = (event) => { const file = event.target.files[0]; if (file) { const fileSrc = URL.createObjectURL(file); setSelectedMusic({ title: file.name, src: fileSrc }); } };
+  const handleFileChange = (event) => { const file = event.target.files[0]; if (file) { const fileSrc = URL.createObjectURL(file); handleSelect({ id: 'my_music', title: file.name, src: fileSrc }); } };
   const handleTimeUpdate = () => { if (audioRef.current) { const { currentTime, duration } = audioRef.current; if (duration) { setProgress((currentTime / duration) * 100); } } };
 
-  // [수정] goToNextStep 함수
   const goToNextStep = (skip = false) => {
     if (skip || !selectedMusic) {
       localStorage.removeItem('selected_music_src');
@@ -56,8 +75,6 @@ export default function MusicSelectPage() {
       localStorage.setItem('selected_music_src', selectedMusic.src);
       localStorage.setItem('selected_music_title', selectedMusic.title);
     }
-    
-    // [중요] ID를 'preview'라는 고정값으로 넘깁니다.
     router.push('/view/preview');
   };
 
@@ -67,24 +84,40 @@ export default function MusicSelectPage() {
       <input type="file" accept="audio/*" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileChange}/>
       <div className={styles.contentWrapper}>
         <h1 className={styles.title}>배경으로 사용할 음악을<br />선택해 주세요</h1>
-        <div className={styles.buttonGroup}>
-          <button className={styles.button} onClick={() => router.push('/musicthemepage')}>배경음악파일</button>
-          <button className={styles.button} onClick={handleMyFileClick}>내 파일 선택</button>
-        </div>
+        
+        {/* 예쁜 플레이어 UI는 그대로 유지 */}
         <div className={styles.playerCard}>
           <div className={styles.albumArt}>{selectedMusic ? '🎵' : '❔'}</div>
           <div className={styles.musicDetails}>
-            <p className={styles.musicTitle}>{selectedMusic ? selectedMusic.title : '음악을 선택하세요'}</p>
-            <p className={styles.musicArtist}>{selectedMusic ? '선택된 음악' : '파일 선택 또는 테마 선택'}</p>
+            <p className={styles.musicTitle} title={selectedMusic?.title}>{selectedMusic ? selectedMusic.title : '음악을 선택하세요'}</p>
+            <p className={styles.musicArtist}>{selectedMusic ? '선택된 음악' : '아래 목록 또는 파일에서 선택'}</p>
           </div>
           <div className={styles.progressBarContainer}>
             <div className={styles.progressBar} style={{ width: `${progress}%` }}></div>
           </div>
           <div className={styles.playerControls}>
             <button onClick={handlePlayPause} className={`${styles.controlButton} ${styles.playButton}`} disabled={!selectedMusic}>{isPlaying ? '❚❚' : '▶'}</button>
-            <button onClick={handleRemoveSelection} className={`${styles.controlButton} ${styles.removeButton}`} disabled={!selectedMusic}>×</button>
           </div>
         </div>
+
+        {/* [복구] 음악 선택 목록 UI */}
+        <div className={styles.buttonGroup}>
+          <button className={styles.button} onClick={() => router.push('/musicthemepage')}>배경음악파일</button>
+          <button className={styles.button} onClick={handleMyFileClick}>내 파일 선택</button>
+        </div>
+
+        <div className={styles.musicList}>
+            {themeMusicData.map((music) => (
+                <button 
+                    key={music.id}
+                    className={`${styles.musicItem} ${selectedMusic?.id === music.id ? styles.selected : ''}`}
+                    onClick={() => handleSelect(music)}
+                >
+                    {music.title}
+                </button>
+            ))}
+        </div>
+
         <div className={styles.navButtonContainer}>
           <button onClick={() => router.push('/imageselectpage')} className={styles.navButton}>뒤로가기</button>
           <button onClick={() => goToNextStep(true)} className={styles.navButton}>건너뛰기</button>
