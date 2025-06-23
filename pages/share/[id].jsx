@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Script from 'next/script';
 import { QRCodeSVG } from 'qrcode.react';
-import styles from '../../src/styles/share.module.css';
+import styles from '../../src/styles/sharepage.module.css';
 
 function ShareButton({ icon, text, onClick, disabled = false }) { /* ... ShareButton 코드는 동일 ... */ return (<button onClick={onClick} className={styles.shareButton} disabled={disabled}><div className={`${styles.iconWrapper} ${styles[icon]}`}><span className={styles.icon}></span></div><span className={styles.buttonText}>{text}</span></button>); }
 
