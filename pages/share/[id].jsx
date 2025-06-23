@@ -109,3 +109,4 @@ export default function SharePage() {
         </>
     );
 }
+ console.log("Firestore에 저장 완료. 문서 ID: ", newId);
