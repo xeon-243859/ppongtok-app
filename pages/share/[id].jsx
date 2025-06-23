@@ -1,23 +1,11 @@
-// ppongtok-app/pages/share/[id].jsx (React 렌더링 오류 최종 수정)
+// ppongtok-app/pages/share/[id].jsx (에러 수정 및 기능 개선 완료)
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import Script from 'next/script';
-import { QRCodeSVG } from 'qrcode.react'; // [수정] 올바른 이름으로 import
-import styles from '../../src/styles/sharepage.module.css';
-
-// ShareButton 컴포넌트를 파일 상단으로 이동
-function ShareButton({ icon, text, onClick, disabled = false }) {
-    return (
-        <button onClick={onClick} className={styles.shareButton} disabled={disabled}>
-            <div className={`${styles.iconWrapper} ${styles[icon]}`}>
-                <span className={styles.icon}></span>
-            </div>
-            <span className={styles.buttonText}>{text}</span>
-        </button>
-    );
-}
+import Script from 'next/script'; // [수정] Next.js의 Script 컴포넌트 사용
+import QRCode from 'qrcode.react';
+import styles from '../../src/styles/share.module.css';
 
 export default function SharePage() {
     const router = useRouter();
@@ -32,28 +20,24 @@ export default function SharePage() {
     };
 
     useEffect(() => {
-        // id가 존재하고, 클라이언트 사이드에서 실행될 때만 pageUrl 설정
-        if (id && typeof window !== 'undefined') {
+        if (id) {
             const currentUrl = `${window.location.protocol}//${window.location.host}/present/${id}`;
             setPageUrl(currentUrl);
         }
     }, [id]);
     
+    // [수정] 카카오 SDK 로드 완료 시 실행될 함수
     const handleKakaoSdkLoad = () => {
-        if (window.Kakao) {
-            if (!window.Kakao.isInitialized()) {
-                // NEXT_PUBLIC_ 접두사가 붙은 환경 변수만 클라이언트에서 접근 가능
-                const KAKAO_KEY = process.env.NEXT_PUBLIC_KAKAO_JS_KEY;
-                if (!KAKAO_KEY) {
-                    console.error("카카오 JavaScript 키가 설정되지 않았습니다.");
-                    return;
-                }
-                window.Kakao.init(KAKAO_KEY);
-            }
+        if (window.Kakao && !window.Kakao.isInitialized()) {
+            const KAKAO_KEY = process.env.NEXT_PUBLIC_KAKAO_JS_KEY || '여기에_카카오_자바스크립트_키를_입력하세요';
+            window.Kakao.init(KAKAO_KEY);
+            setSdkLoaded(true);
+        } else if (window.Kakao && window.Kakao.isInitialized()) {
             setSdkLoaded(true);
         }
     };
     
+    // (핸들러 함수들은 그대로 유지)
     const handleKakaoShare = () => { if (!sdkLoaded || !pageUrl) return; window.Kakao.Share.sendDefault({ objectType: 'feed', content: { title: ogData.title, description: ogData.description, imageUrl: ogData.imageUrl, link: { mobileWebUrl: pageUrl, webUrl: pageUrl }, }, buttons: [{ title: '메시지 확인하기', link: { mobileWebUrl: pageUrl, webUrl: pageUrl } }], }); };
     const handleWebShare = async () => { if (navigator.share && pageUrl) { try { await navigator.share({ title: ogData.title, text: ogData.description, url: pageUrl }); } catch (error) { console.error('Web Share API 오류:', error); } } else { handleLinkCopy(); } };
     const handleLinkCopy = () => { if (!pageUrl) return; navigator.clipboard.writeText(pageUrl).then(() => alert("링크가 복사되었습니다!")).catch(err => alert("링크 복사에 실패했습니다.")); };
@@ -70,30 +54,18 @@ export default function SharePage() {
                 <meta property="og:type" content="website" />
             </Head>
 
+            {/* [수정] Next.js의 Script 컴포넌트로 SDK 로드, integrity 제거 */}
             <Script
                 src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
-                strategy="afterInteractive" // [수정] 로딩 전략 변경
+                strategy="lazyOnload"
                 onLoad={handleKakaoSdkLoad}
-                onError={(e) => console.error("카카오 SDK 로드 실패", e)}
             />
 
             <div className={styles.shareContainer}>
                 <div className={styles.shareBox}>
                     <h1 className={styles.title}>마음을 전해 보세요</h1>
                     <div className={styles.qrCodeWrapper}>
-                        {pageUrl ? (
-                             // [수정] 올바른 컴포넌트 이름으로 교체
-                            <QRCodeSVG
-                                value={pageUrl}
-                                size={128}
-                                bgColor="#ffffff"
-                                fgColor="#000000"
-                                level="L"
-                                includeMargin={false}
-                            />
-                        ) : (
-                            <div className={styles.qrPlaceholder}></div>
-                        )}
+                        {pageUrl ? <QRCode value={pageUrl} size={128} bgColor="#ffffff" fgColor="#000000" level="L" includeMargin={false} /> : <div className={styles.qrPlaceholder}></div>}
                     </div>
                     <p className={styles.subtitle}>화면의 QR 코드를 스캔하거나<br/>아래 버튼으로 공유해 보세요.</p>
                     <div className={styles.shareGrid}>
@@ -107,5 +79,14 @@ export default function SharePage() {
                 </div>
             </div>
         </>
+    );
+}
+
+function ShareButton({ icon, text, onClick, disabled = false }) {
+    return (
+        <button onClick={onClick} className={styles.shareButton} disabled={disabled}>
+            <div className={`${styles.iconWrapper} ${styles[icon]}`}><span className={styles.icon}></span></div>
+            <span className={styles.buttonText}>{text}</span>
+        </button>
     );
 }
