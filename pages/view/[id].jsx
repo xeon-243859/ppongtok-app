@@ -72,7 +72,7 @@ export default function ViewMessagePreviewPage() {
       });
       
       console.log("Firestore에 저장 완료. 문서 ID: ", newId);
-      alert("메시지가 저장되었습니다! 공유 페이지로 이동합니다.");
+    
       router.push(`/share/${newId}`);
 
     } catch (error) {
