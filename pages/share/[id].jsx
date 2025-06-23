@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Script from 'next/script'; // [수정] Next.js의 Script 컴포넌트 사용
 import QRCode from 'qrcode.react';
-import styles from '../../src/styles/share.module.css';
+import styles from '../../src/styles/sharepage.module.css';
 
 export default function SharePage() {
     const router = useRouter();
