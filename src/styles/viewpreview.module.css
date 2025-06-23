@@ -142,8 +142,34 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* 
+    [수정] 복잡한 투명도, 트랜지션 대신 fade-in 애니메이션만 적용하여
+    이미지가 바뀔 때 부드럽게 나타나도록 합니다. 
+  */
+  opacity: 1; /* 항상 보이도록 opacity를 1로 고정 */
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+/* [삭제 또는 주석처리] 더 이상 필요 없는 active 클래스 관련 스타일 */
+/*
+.slideImage:not(.active) {
   opacity: 0;
-  transition: opacity 1s ease-in-out;
+}
+.slideImage.active {
+  opacity: 1;
+  transition: opacity 1.5s ease-in-out;
+  z-index: 1;
+}
+*/
+
+/* [추가] 부드러운 전환을 위한 fadeIn 애니메이션 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 .slideImage.active {
   opacity: 1;
