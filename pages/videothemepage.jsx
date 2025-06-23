@@ -1,4 +1,4 @@
-// ppongtok-app/pages/videothemepage.jsx (최종 확인용)
+// ppongtok-app/pages/videothemepage.jsx (최종 정리 완료)
 
 import React from "react";
 import { useRouter } from "next/router";
@@ -15,7 +15,6 @@ export default function VideoThemePage() {
   const router = useRouter();
 
   const handleSelect = (src) => {
-    console.log(`[ThemePage] 비디오 선택: ${src}. localStorage에 'selected-video-theme' 키로 저장.`);
     localStorage.setItem("selected-video-theme", src);
     router.push("/videoselectpage");
   };
@@ -25,8 +24,18 @@ export default function VideoThemePage() {
       <h2 className={styles.videoThemeTitle}>영상 배경을 선택해주세요</h2>
       <div className={styles.videoGrid}>
         {videos.map((video) => (
-          <div key={video.id} className={styles.videoBox} onClick={() => handleSelect(video.src)}>
-            <video src={video.src} muted loop playsInline className={styles.videoThumb} />
+          <div
+            key={video.id}
+            className={styles.videoBox}
+            onClick={() => handleSelect(video.src)}
+          >
+            <video
+              src={video.src}
+              muted
+              loop
+              playsInline
+              className={styles.videoThumb}
+            />
             <p className={styles.videoLabel}>{video.label}</p>
           </div>
         ))}
