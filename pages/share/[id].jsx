@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import QRCode from 'qrcode.react'; // QR 코드 생성을 위해 import
-import styles from '../../src/styles/share.module.css';
+import styles from '../../src/styles/sharepage.module.css';
 
 // 카카오 SDK를 로드하는 커스텀 훅
 const useKakaoSdk = () => {
