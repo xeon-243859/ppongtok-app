@@ -1,19 +1,17 @@
-// ppongtok-app/pages/imagethemepage.jsx (UI 구조 복원 및 로직 수정 완료)
+// ppongtok-app/pages/imagethemepage.jsx (실제 파일 경로로 수정 완료)
 
 import React from "react";
 import { useRouter } from "next/router";
 import styles from "../src/styles/imagethemepage.module.css";
 
-// 이미지 목록은 그대로 유지
+// [수정] Xeon님의 실제 이미지 파일 목록으로 교체
 const themeImages = [
-  { id: 1, src: '/images/theme1.jpg', alt: '테마 이미지 1' },
-  { id: 2, src: '/images/theme2.jpg', alt: '테마 이미지 2' },
-  { id: 3, src: '/images/theme3.jpg', alt: '테마 이미지 3' },
-  { id: 4, src: '/images/theme4.jpg', alt: '테마 이미지 4' },
-  { id: 5, src: '/images/theme5.jpg', alt: '테마 이미지 5' },
-  { id: 6, src: '/images/theme6.jpg', alt: '테마 이미지 6' },
-  { id: 7, src: '/images/theme7.jpg', alt: '테마 이미지 7' },
-  { id: 8, src: '/images/theme8.jpg', alt: '테마 이미지 8' },
+  { id: 1, src: '/images/cosmos.jpg', alt: '코스모스' },
+  { id: 2, src: '/images/leaves.jpg', alt: '나뭇잎' },
+  { id: 3, src: '/images/road.jpg', alt: '길' },
+  { id: 4, src: '/images/water.jpg', alt: '물' },
+  // 만약 이미지가 더 있다면 아래 형식에 맞춰 추가하시면 됩니다.
+  // { id: 5, src: '/images/another_image.jpg', alt: '다른 이미지' },
 ];
 
 // 이미지를 Base64로 변환하는 헬퍼 함수
@@ -30,7 +28,6 @@ const toBase64 = (url) =>
 export default function ImageThemePage() {
   const router = useRouter();
 
-  // handleImageSelect 함수의 로직은 그대로 유지
   const handleImageSelect = async (imageSrc) => {
     try {
       const base64 = await toBase64(imageSrc);
@@ -42,7 +39,6 @@ export default function ImageThemePage() {
     }
   };
 
-  // [수정] JSX 렌더링 구조를 원래의 안정적인 버전으로 복원합니다.
   return (
     <div className={styles.pageContainer}>
       <div className={styles.contentWrapper}>
