@@ -1,16 +1,23 @@
-// ppongtok-app/pages/imagethemepage.jsx (Base64 변환 로직 추가)
+// ppongtok-app/pages/imagethemepage.jsx (UI 구조 복원 및 로직 수정 완료)
 
 import React from "react";
 import { useRouter } from "next/router";
 import styles from "../src/styles/imagethemepage.module.css";
 
-// (이미지 목록은 그대로 둡니다)
+// 이미지 목록은 그대로 유지
 const themeImages = [
-  // ...
+  { id: 1, src: '/images/theme1.jpg', alt: '테마 이미지 1' },
+  { id: 2, src: '/images/theme2.jpg', alt: '테마 이미지 2' },
+  { id: 3, src: '/images/theme3.jpg', alt: '테마 이미지 3' },
+  { id: 4, src: '/images/theme4.jpg', alt: '테마 이미지 4' },
+  { id: 5, src: '/images/theme5.jpg', alt: '테마 이미지 5' },
+  { id: 6, src: '/images/theme6.jpg', alt: '테마 이미지 6' },
+  { id: 7, src: '/images/theme7.jpg', alt: '테마 이미지 7' },
+  { id: 8, src: '/images/theme8.jpg', alt: '테마 이미지 8' },
 ];
 
 // 이미지를 Base64로 변환하는 헬퍼 함수
-const toBase64 = (url) => 
+const toBase64 = (url) =>
   fetch(url)
     .then(response => response.blob())
     .then(blob => new Promise((resolve, reject) => {
@@ -23,16 +30,11 @@ const toBase64 = (url) =>
 export default function ImageThemePage() {
   const router = useRouter();
 
-  // [수정] handleImageSelect 함수
+  // handleImageSelect 함수의 로직은 그대로 유지
   const handleImageSelect = async (imageSrc) => {
     try {
-      // 선택한 이미지 URL을 Base64 문자열로 변환
       const base64 = await toBase64(imageSrc);
-      
-      // newly_selected_theme_image 키에 Base64 데이터를 저장
       localStorage.setItem("newly_selected_theme_image", base64);
-      
-      // 이미지 선택 페이지로 돌아감
       router.push("/imageselectpage");
     } catch (error) {
       console.error("테마 이미지 변환 실패:", error);
@@ -40,23 +42,26 @@ export default function ImageThemePage() {
     }
   };
 
+  // [수정] JSX 렌더링 구조를 원래의 안정적인 버전으로 복원합니다.
   return (
     <div className={styles.pageContainer}>
-      <h1 className={styles.title}>테마 이미지 선택</h1>
-      <div className={styles.imageGrid}>
-        {themeImages.map((image) => (
-          <div
-            key={image.id}
-            className={styles.imageContainer}
-            onClick={() => handleImageSelect(image.src)}
-          >
-            <img src={image.src} alt={image.alt} className={styles.image} />
-          </div>
-        ))}
+      <div className={styles.contentWrapper}>
+        <h1 className={styles.title}>테마 이미지 선택</h1>
+        <div className={styles.imageGrid}>
+          {themeImages.map((image) => (
+            <div
+              key={image.id}
+              className={styles.imageContainer}
+              onClick={() => handleImageSelect(image.src)}
+            >
+              <img src={image.src} alt={image.alt} className={styles.image} />
+            </div>
+          ))}
+        </div>
+        <button className={styles.backButton} onClick={() => router.back()}>
+          뒤로가기
+        </button>
       </div>
-      <button className={styles.backButton} onClick={() => router.back()}>
-        뒤로가기
-      </button>
     </div>
   );
 }
