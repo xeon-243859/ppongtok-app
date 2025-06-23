@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Script from 'next/script';
 import { QRCodeSVG } from 'qrcode.react'; // [수정] 올바른 이름으로 import
-import styles from '../../src/styles/share.module.css';
+import styles from '../../src/styles/sharepage.module.css';
 
 // ShareButton 컴포넌트를 파일 상단으로 이동
 function ShareButton({ icon, text, onClick, disabled = false }) {
