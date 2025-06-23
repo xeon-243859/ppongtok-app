@@ -68,31 +68,37 @@ export default function SharePage() {
 
   // 3. 공유 핸들러들
   const shareKakao = () => {
-    if (!message || !window.Kakao?.Share) {
-      alert('카카오톡 공유 정보를 불러오는 중입니다. 잠시 후 다시 시도해주세요.');
-      return;
-    }
+  // 💥 먼저 message와 Kakao SDK가 준비됐는지 확인
+  if (!message || !window.Kakao?.Share) {
+    alert('카카오 공유 준비 중입니다. 잠시 후 다시 시도해 주세요.');
+    return;
+  }
 
-    window.Kakao.Share.sendDefault({
-      objectType: 'feed',
-      content: {
-        title: message.caption || '뿅!톡으로 특별한 메시지가 도착했어요',
-        description: '친구의 마음이 담긴 메시지를 지금 확인해보세요!',
-        imageUrl: ogImageUrl,
-        link: {
-          mobileWebUrl: shareUrl,
-          webUrl: shareUrl,
-        },
+  // ✅ message가 확실히 존재할 때만 caption 접근
+  const title = message.caption || '뿅!톡으로 특별한 메시지가 도착했어요';
+
+  window.Kakao.Share.sendDefault({
+    objectType: 'feed',
+    content: {
+      title, // 위에서 안전하게 추출한 title 사용
+      description: '친구의 마음이 담긴 메시지를 지금 확인해보세요!',
+      imageUrl: ogImageUrl,
+      link: {
+        mobileWebUrl: shareUrl,
+        webUrl: shareUrl,
       },
-      buttons: [{
+    },
+    buttons: [
+      {
         title: '메시지 보러가기',
         link: {
           mobileWebUrl: shareUrl,
           webUrl: shareUrl,
         },
-      }],
-    });
-  };
+      },
+    ],
+  });
+};
 
   const copyLink = async () => {
     try {
