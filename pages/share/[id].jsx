@@ -4,7 +4,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../src/firebase';
 import QRCode from 'qrcode.react'; // ✅ QR코드 라이브러리
 import appStyles from '../../src/styles/AppTheme.module.css';
-import shareStyles from '../../src/styles/SharePage.module.css';
+import shareStyles from '../../src/styles/sharepage.module.css';
 
 // ✅ 아이콘 경로를 확인해주세요. public 폴더 기준입니다.
 const ICON_PATHS = {
