@@ -4,13 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
 import styles from "../src/styles/musicselectpage.module.css";
 
-// [수정] 실제 음악 목록으로 교체하고 키 이름을 통일합니다.
-const themeMusicData = [
-  { id: 'theme1', title: '봄의 노래', src: '/audio/spring.mp3' },
-  { id: 'theme2', title: '설레임', src: '/audio/spring1.mp3' },
-  { id: 'theme3', title: '무언의 감정', src: '/audio/mueon.mp3' },
-  { id: 'theme4', title: '고요한 바람', src: '/audio/mueon1.mp3' },
-];
+
 
 export default function MusicSelectPage() {
   const router = useRouter();
@@ -106,17 +100,7 @@ export default function MusicSelectPage() {
           <button className={styles.button} onClick={handleMyFileClick}>내 파일 선택</button>
         </div>
 
-        <div className={styles.musicList}>
-            {themeMusicData.map((music) => (
-                <button 
-                    key={music.id}
-                    className={`${styles.musicItem} ${selectedMusic?.id === music.id ? styles.selected : ''}`}
-                    onClick={() => handleSelect(music)}
-                >
-                    {music.title}
-                </button>
-            ))}
-        </div>
+       
 
         <div className={styles.navButtonContainer}>
           <button onClick={() => router.push('/imageselectpage')} className={styles.navButton}>뒤로가기</button>

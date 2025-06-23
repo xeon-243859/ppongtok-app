@@ -108,7 +108,7 @@ export default function ViewMessagePreviewPage() {
           <audio src={previewData.music} controls autoPlay style={{ width: '90%', maxWidth: '500px', marginTop: '15px' }}/>
         )}
         <div className={styles["preview-button-group"]}>
-          <button className={styles["preview-button"]} onClick={() => router.back()}>수정하기</button>
+          <button className={styles["preview-button"]} onClick={() => router.back()}>뒤로가기</button>
           <button className={`${styles["preview-button"]} ${styles.highlight}`} onClick={handleShare} disabled={isSaving}>
             {isSaving ? '저장 중...' : '공유하기'}
           </button>

@@ -75,7 +75,11 @@
   font-size: 1.5rem;
   font-weight: bold;
   color: black;
-  animation: scroll-left var(--scroll-speed, 35s) linear infinite;
+   animation: scrollLeft 20s linear infinite;
+  animation-delay: 1s; /* [수정] 딜레이를 2~3초에서 1초로 줄입니다. */
+  text-shadow: 
+    0 0 5px rgba(0, 0, 0, 0.7),
+    0 0 10px rgba(0, 0, 0, 0.7);
   line-height: 2.5rem;
   left: 100%;
   text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.9);
