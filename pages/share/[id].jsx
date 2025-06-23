@@ -24,7 +24,7 @@ export default function SharePage() {
 
   // 1. 메시지 불러오기
   useEffect(() => {
-    if (!id) return;
+    if (!router.isReady || !id) return;
 
     const currentUrl = `${window.location.origin}/present/${id}`;
     setShareUrl(currentUrl);
@@ -36,7 +36,10 @@ export default function SharePage() {
         if (docSnap.exists()) {
           const data = docSnap.data();
           setMessage(data);
-          const imageUrl = data.type === 'video' ? data.videoUrl : (data.imageurls?.[0] || '');
+          
+           const imageUrl = data.type === 'video'
+           ? data.videoUrl
+           : Array.isArray(data.imageurls) ? data.imageurls[0] : '';
           setOgImageUrl(imageUrl);
         } else {
           alert('존재하지 않는 메시지입니다.');
