@@ -1,6 +1,8 @@
+// ppongtok-app/pages/videothemepage.jsx (디버깅 로그 추가)
+
 import React from "react";
-import { useRouter } from "next/router"; // ✅ useNavigate → useRouter
-import styles from "@/styles/VideoThemePage.module.css"; // ✅ module.css import
+import { useRouter } from "next/router";
+import styles from "@/styles/VideoThemePage.module.css"; // 이 경로는 그대로 유지합니다.
 
 const videos = [
   { id: 1, src: "/videos/flower.mp4", label: "꽃 배경" },
@@ -13,10 +15,10 @@ export default function VideoThemePage() {
   const router = useRouter();
 
   const handleSelect = (src) => {
-    localStorage.setItem("selected-video", src);
-    localStorage.setItem("selected-type", "video");
-    localStorage.removeItem("selected-images");
-    localStorage.setItem("video-theme-confirmed", "true");
+    // [로그 추가] 어떤 비디오를 localStorage에 저장하는지 확인
+    console.log(`[ThemePage] 비디오 선택: ${src}. localStorage에 'selected-video-theme' 키로 저장합니다.`);
+    
+    localStorage.setItem("selected-video-theme", src);
     router.push("/videoselectpage");
   };
 
