@@ -1,19 +1,22 @@
+// pages/view/[id].js (가정한 경로)
+
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import { db } from "../firebase"; // firebase 경로 확인 필요
 
-export default function ViewMessagePage({ message }) {
+// 이 페이지는 PresentPage와 거의 동일한 역할을 합니다.
+// 만약 사용하지 않는 페이지라면 삭제해도 무방합니다.
+// 여기서는 PresentPage와 동일한 로직으로 수정합니다.
+export default function ViewMessagePage() {
   const router = useRouter();
   const { id } = router.query;
-  const [localMessage, setLocalMessage] = useState(message || null);
-  
-  // ✨ 제가 수정한 부분 1: 이미지 슬라이드를 위한 state 추가
+  const [message, setMessage] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // ✨ 제가 수정한 부분 2: Firebase 메시지 불러오는 useEffect (완벽 수정본)
- useEffect(() => {
-    if (!id || localMessage) return;
+  // 1. 메시지 불러오기
+  useEffect(() => {
+    if (!id) return;
 
     const fetchMessage = async () => {
       try {
@@ -21,71 +24,58 @@ export default function ViewMessagePage({ message }) {
         const docSnap = await getDoc(docRef);
         
         if (docSnap.exists()) {
-          const messageData = docSnap.data();
-          
-          // 👇 이 부분이 핵심입니다!
-          console.log(
-            "🔥🔥🔥 이미지 주소 확인!! 🔥🔥🔥", 
-            JSON.stringify(messageData, null, 2)
-          );
-
-          setLocalMessage(messageData);
-
+          setMessage(docSnap.data());
         } else {
           console.warn("⚠️ 해당 ID의 메시지를 찾을 수 없습니다:", id);
+          router.push('/404');
         }
       } catch (error) {
         console.error("❌ 메시지를 불러오는 중 오류 발생:", error);
       }
     };
-
     fetchMessage();
-  }, [id, localMessage]);
+  }, [id, router]);
 
-  // ✨ 제가 수정한 부분 3: 이미지 슬라이드 쇼를 위한 useEffect 추가
+  // 2. 이미지 슬라이드 쇼
   useEffect(() => {
-    if (localMessage?.type === 'image' && localMessage.imageUrls?.length > 1) {
+    // ❗️ 핵심 수정: message.imageUrls로 접근
+    if (message?.type === 'image' && message.imageUrls?.length > 1) {
         const timer = setInterval(() => {
-            setCurrentImageIndex(prevIndex => (prevIndex + 1) % localMessage.imageUrls.length);
+            setCurrentImageIndex(prevIndex => (prevIndex + 1) % message.imageUrls.length);
         }, 3000);
         return () => clearInterval(timer);
     }
-  }, [localMessage]);
+  }, [message]);
 
-  // ✅ Kakao SDK 초기화 (기존 코드와 동일)
+  // 3. 카카오 SDK 초기화
   useEffect(() => {
-    const loadKakaoSdk = () => {
-      return new Promise((resolve, reject) => {
-        if (document.getElementById("kakao-sdk")) return resolve();
-        const script = document.createElement("script");
-        script.id = "kakao-sdk";
-        script.src = "https://developers.kakao.com/sdk/js/kakao.js";
-        script.onload = resolve;
-        script.onerror = reject;
-        document.head.appendChild(script);
-      });
-    };
-    loadKakaoSdk().then(() => {
+    if (document.getElementById('kakao-sdk')) return;
+    const script = document.createElement('script');
+    script.id = 'kakao-sdk';
+    script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
+    script.onload = () => {
       if (window.Kakao && !window.Kakao.isInitialized()) {
         window.Kakao.init("4abf45cca92e802defcd2c15a6615155");
       }
-    });
+    };
+    document.head.appendChild(script);
   }, []);
 
-  // ✅ 카카오 공유하기 함수 (기존 코드와 동일)
+  // 4. 카카오 공유하기 함수
   const handleKakaoShare = () => {
-    if (!window.Kakao || !window.Kakao.Share || !id || !localMessage) {
+    if (!window.Kakao?.Share || !id || !message) {
       alert("카카오톡 공유를 준비 중입니다. 잠시 후 다시 시도해주세요.");
       return;
     }
-    const imageUrl = localMessage?.imageUrls?.[0] || ""; // 첫 번째 이미지를 공유 썸네일로 사용
-    const shareUrl = `https://ppongtok-app.vercel.app/share/${id}`; // 배포된 주소로 변경
+    // ❗️ 핵심 수정: message.imageUrls로 접근
+    const imageUrl = message.imageUrls?.[0] || ""; 
+    const shareUrl = `${window.location.origin}/present/${id}`; // 최종 도착지는 present 페이지
 
     window.Kakao.Share.sendDefault({
       objectType: "feed",
       content: {
         title: "뿅!톡 메시지가 도착했어요!",
-        description: localMessage.message || "친구에게 온 마음을 확인해보세요.",
+        description: message.message || "친구에게 온 마음을 확인해보세요.",
         imageUrl: imageUrl,
         link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
       },
@@ -93,11 +83,11 @@ export default function ViewMessagePage({ message }) {
     });
   };
 
-  if (!localMessage) {
+  if (!message) {
     return <p style={{ padding: "20px", textAlign: "center" }}>메시지를 불러오는 중입니다...</p>;
   }
 
-  const { type, videoUrl, imageUrls, message: caption, music } = localMessage; // message를 caption으로 받음
+  const { type, videoUrl, imageUrls, message: caption, music } = message;
 
   return (
     <div style={{ padding: "20px", maxWidth: 700, margin: "0 auto" }}>
@@ -107,7 +97,7 @@ export default function ViewMessagePage({ message }) {
         <video src={videoUrl} controls autoPlay loop muted style={{ width: "100%", borderRadius: "12px" }} />
       )}
 
-      {/* ✨ 제가 수정한 부분 4: 이미지 표시 로직을 슬라이드 쇼 형태로 교체 */}
+      {/* 슬라이드 쇼 로직 (fade-in/out) */}
       {type === "image" && Array.isArray(imageUrls) && imageUrls.length > 0 && (
         <div style={{ position: "relative", width: "100%", aspectRatio: "1 / 1", overflow: "hidden", borderRadius: "12px", backgroundColor: "#000" }}>
           {imageUrls.map((url, index) => (
@@ -117,9 +107,7 @@ export default function ViewMessagePage({ message }) {
       )}
 
       {caption && (
-        <div style={{ marginTop: "20px", padding: "15px", backgroundColor: "#f0f0f0", borderRadius: "10px", fontSize: "18px", whiteSpace: "pre-wrap", textAlign: "center" }}>
-          {caption}
-        </div>
+        <div style={{ marginTop: "20px", padding: "15px", backgroundColor: "#f0f0f0", borderRadius: "10px", fontSize: "18px", whiteSpace: "pre-wrap", textAlign: "center" }}>{caption}</div>
       )}
 
       {music && (
