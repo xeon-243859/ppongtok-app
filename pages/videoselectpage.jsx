@@ -1,7 +1,7 @@
 ppongtok-app/pages/videoselectpage.jsx
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import styles from "@/styles/VideoSelectPage.module.css";
+import styles from "@/styles/videoselectpage.module.css";
 
 export default function VideoSelectPage() {
   const router = useRouter();
