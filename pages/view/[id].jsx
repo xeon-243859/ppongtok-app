@@ -15,6 +15,7 @@ export default function ViewMessagePreviewPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  // 데이터 불러오기
   useEffect(() => {
     if (!router.isReady || id !== "preview") return;
 
@@ -22,6 +23,7 @@ export default function ViewMessagePreviewPage() {
     const message = localStorage.getItem("message");
     const musicSrc = localStorage.getItem("selected_music_src");
     const videoUrl = localStorage.getItem("selected-video");
+
     const data = {
       type,
       message,
@@ -45,17 +47,21 @@ export default function ViewMessagePreviewPage() {
     setPreviewData(data);
   }, [router.isReady, id]);
 
+  // 이미지 슬라이드 타이머
   useEffect(() => {
     if (previewData?.type === "image" && previewData.imageUrls?.length > 1) {
       const intervalId = setInterval(() => {
-        setCurrentImageIndex(
-          (prevIndex) => (prevIndex + 1) % previewData.imageUrls.length
+        setCurrentImageIndex((prevIndex) =>
+          previewData.imageUrls.length
+            ? (prevIndex + 1) % previewData.imageUrls.length
+            : 0
         );
       }, 3000);
       return () => clearInterval(intervalId);
     }
   }, [previewData]);
 
+  // 공유 처리
   const handleShare = async () => {
     if (!previewData) return;
     setIsSaving(true);
@@ -86,54 +92,74 @@ export default function ViewMessagePreviewPage() {
     }
   };
 
+  // 로딩 중
   if (!previewData) {
     return <p className={styles.loadingText}>미리보기를 생성 중입니다...</p>;
   }
 
   return (
     <>
-      <Head><title>메시지 미리보기</title></Head>
+      <Head>
+        <title>메시지 미리보기</title>
+      </Head>
       <div className={styles["preview-container"]}>
         <h2 className={styles["preview-title"]}>✨ 생성된 메시지 미리보기</h2>
         <div className={styles["moving-box"]}>
-          {previewData.type === "video" && previewData.videoUrl && (
-            <video
-              src={previewData.videoUrl}
-              controls
-              autoPlay
-              loop
-              muted
-              className={styles["media-element"]}
-            />
+          {/* 영상 */}
+          {previewData?.type === "video" &&
+            previewData?.videoUrl && (
+              <video
+                src={previewData.videoUrl}
+                controls
+                autoPlay
+                loop
+                muted
+                className={styles["media-element"]}
+              />
           )}
-          {previewData.type === "image" && previewData.imageUrls?.length > 0 && (
-            <img
-              key={currentImageIndex}
-              src={previewData.imageUrls[currentImageIndex]}
-              alt={`slide-${currentImageIndex}`}
-              className={styles.slideImage}
-              style={{
-                width: "100%",
-                height: "auto",
-                maxHeight: "400px",
-                objectFit: "contain",
-              }}
-            />
+
+          {/* 이미지 */}
+          {previewData?.type === "image" &&
+            previewData?.imageUrls?.length > 0 &&
+            previewData.imageUrls[currentImageIndex] && (
+              <img
+                key={currentImageIndex}
+                src={previewData.imageUrls[currentImageIndex]}
+                alt={`slide-${currentImageIndex}`}
+                className={styles.slideImage}
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  maxHeight: "400px",
+                  objectFit: "contain",
+                }}
+              />
           )}
-          {previewData.message && (
+
+          {/* 자막 */}
+          {previewData?.message && (
             <div className={styles["caption-scroll-container"]}>
-              <div className={styles["caption-scroll"]}>{previewData.message}</div>
+              <div className={styles["caption-scroll"]}>
+                {previewData.message}
+              </div>
             </div>
           )}
         </div>
-        {previewData.music && (
+
+        {/* 음악 */}
+        {previewData?.music && (
           <audio
             src={previewData.music}
             controls
             autoPlay
-            style={{ width: "90%", maxWidth: "500px", marginTop: "15px" }}
+            style={{
+              width: "90%",
+              maxWidth: "500px",
+              marginTop: "15px",
+            }}
           />
         )}
+
         <div className={styles["preview-button-group"]}>
           <button
             className={styles["preview-button"]}
