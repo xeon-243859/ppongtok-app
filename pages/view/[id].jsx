@@ -95,27 +95,72 @@ export default function ViewMessagePreviewPage() {
         return <p className={styles.loadingText}>미리보기를 생성 중입니다...</p>;
     }
 
-    return (
-        <>
-            <Head><title>메시지 미리보기</title></Head>
-            <div className={styles["preview-container"]}>
-                <h2 className={styles["preview-title"]}>✨ 생성된 메시지 미리보기</h2>
-                <div className={styles["moving-box"]}>
-                    {previewData.type === "video" && previewData.videoUrl && <video src={previewData.videoUrl} controls autoPlay loop muted className={styles["media-element"]} />}
-                    {previewData.type === "image" && previewData.imageUrls?.length > 0 && (
-                        <img key={currentImageIndex} src={previewData.imageUrls[currentImageIndex]} alt={`slide-${currentImageIndex}`} className={styles.slideImage} />
-                    )}
-                    {previewData.message && <div className={styles["caption-scroll-container"]}><div className={styles["caption-scroll"]}>{previewData.message}</div></div>}
-                </div>
-                {previewData.music && <audio src={previewData.music} controls autoPlay style={{ width: '90%', maxWidth: '500px', marginTop: '15px' }}/>}
-                <div className={styles["preview-button-group"]}>
-                    <button className={styles["preview-button"]} onClick={() => router.back()}>뒤로가기</button>
-                    <button className={`${styles["preview-button"]} ${styles.highlight}`} onClick={handleShare} disabled={isSaving}>
-                        {isSaving ? '저장 중...' : '공유하기'}
-                    </button>
-                </div>
+  return (
+    <>
+        <Head><title>메시지 미리보기</title></Head>
+        <div className={styles["preview-container"]}>
+            <h2 className={styles["preview-title"]}>✨ 생성된 메시지 미리보기</h2>
+            <div className={styles["moving-box"]}>
+                {previewData.type === "video" && previewData.videoUrl && (
+                    <video
+                        src={previewData.videoUrl}
+                        controls
+                        autoPlay
+                        loop
+                        muted
+                        className={styles["media-element"]}
+                    />
+                )}
+                {previewData.type === "image" && previewData.imageUrls?.length > 0 && (
+                    <img
+                        key={currentImageIndex}
+                        src={previewData.imageUrls[currentImageIndex]}
+                        alt={`slide-${currentImageIndex}`}
+                        className={styles.slideImage}
+                        style={{
+                            width: '100%',
+                            height: 'auto',
+                            maxHeight: '400px',
+                            objectFit: 'contain'
+                        }}
+                    />
+                )}
+                {previewData.message && (
+                    <div className={styles["caption-scroll-container"]}>
+                        <div className={styles["caption-scroll"]}>
+                            {previewData.message}
+                        </div>
+                    </div>
+                )}
             </div>
+            {previewData.music && (
+                <audio
+                    src={previewData.music}
+                    controls
+                    autoPlay
+                    style={{
+                        width: '90%',
+                        maxWidth: '500px',
+                        marginTop: '15px'
+                    }}
+                />
+            )}
+            <div className={styles["preview-button-group"]}>
+                <button
+                    className={styles["preview-button"]}
+                    onClick={() => router.back()}
+                >
+                    뒤로가기
+                </button>
+                <button
+                    className={`${styles["preview-button"]} ${styles.highlight}`}
+                    onClick={handleShare}
+                    disabled={isSaving}
+                >
+                    {isSaving ? '저장 중...' : '공유하기'}
+                </button>
+            </div>
+        </div>
         </>
-    )
-}
-
+       );
+      } 

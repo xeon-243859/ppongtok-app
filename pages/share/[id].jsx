@@ -37,9 +37,10 @@ export default function SharePage() {
           const data = docSnap.data();
           setMessage(data);
           
-           const imageUrl = data.type === 'video'
-           ? data.videoUrl
-           : Array.isArray(data.imageurls) ? data.imageurls[0] : '';
+        const imageUrl = data.type === 'video'
+       ? data.videoUrl
+       : Array.isArray(data.imageUrls) ? data.imageUrls[0] : '';
+
           setOgImageUrl(imageUrl);
         } else {
           alert('존재하지 않는 메시지입니다.');
