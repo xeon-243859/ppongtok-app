@@ -7,13 +7,15 @@ import QRCode from "qrcode.react";
 import appStyles from "../../src/styles/AppTheme.module.css";
 import shareStyles from "../../src/styles/sharepage.module.css";
 
+// 아이콘 경로: 제공된 다섯 개 파일로 설정
 const ICON_PATHS = {
-kakao: "/icons/2.png",
+  kakao: "/icons/2.png",
   link: "/icons/104.png",
   facebook: "/icons/105.png",
   twitter: "/icons/106.png",
   more: "/icons/more.png",
 };
+
 export default function SharePage() {
   const router = useRouter();
   const { id } = router.query;
@@ -56,6 +58,7 @@ export default function SharePage() {
     fetchMessage();
   }, [id, router]);
 
+  // 카카오 SDK 초기화 (최초 한 번 실행)
   useEffect(() => {
     if (document.getElementById("kakao-sdk")) return;
     const script = document.createElement("script");
@@ -63,7 +66,7 @@ export default function SharePage() {
     script.src = "https://developers.kakao.com/sdk/js/kakao.js";
     script.onload = () => {
       if (window.Kakao && !window.Kakao.isInitialized()) {
-        window.Kakao.init("4abf45cca92e802defcd2c15a6615155"); // ← 본인 REST API 키로 변경
+        window.Kakao.init("4abf45cca92e802defcd2c15a6615155"); // 본인 REST API 키로 변경
       }
     };
     document.head.appendChild(script);
@@ -75,7 +78,8 @@ export default function SharePage() {
       return;
     }
 
-    const title = message.caption || message.message || "뿅!톡으로 특별한 메시지가 도착했어요";
+    const title =
+      message.caption || message.message || "뿅!톡으로 특별한 메시지가 도착했어요";
 
     window.Kakao.Share.sendDefault({
       objectType: "feed",
@@ -110,12 +114,18 @@ export default function SharePage() {
   };
 
   const shareFacebook = () => {
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, "_blank");
+    window.open(
+      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
+      "_blank"
+    );
   };
 
   const shareTwitter = () => {
     const text = "뿅!톡으로 특별한 메시지가 도착했어요! 💌";
-    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`, "_blank");
+    window.open(
+      `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`,
+      "_blank"
+    );
   };
 
   const nativeShare = async () => {
@@ -134,11 +144,13 @@ export default function SharePage() {
     }
   };
 
-  if (!message) return <div className={appStyles.pageContainer}>로딩 중...</div>;
+  if (!message)
+    return <div className={appStyles.pageContainer}>로딩 중...</div>;
 
   return (
     <div className={`${appStyles.pageContainer} ${shareStyles.shareContainer}`}>
       <h2 className={appStyles.pageTitle}>마음을 공유해보세요</h2>
+
       <div className={shareStyles.qrCodeBox}>
         <QRCode value={shareUrl} size={180} fgColor="#333" />
         <p>QR코드를 스캔해 메시지를 확인해보세요</p>
@@ -173,7 +185,10 @@ export default function SharePage() {
         </button>
       </div>
 
-      <div className={appStyles.navButtonContainer} style={{ marginTop: "40px" }}>
+      <div
+        className={appStyles.navButtonContainer}
+        style={{ marginTop: "40px" }}
+      >
         <button onClick={() => router.push("/")} className={appStyles.buttonPrimary}>
           🏠 처음으로
         </button>

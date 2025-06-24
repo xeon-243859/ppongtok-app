@@ -15,7 +15,7 @@ export default function ViewMessagePreviewPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // 데이터 불러오기
+  // 데이터 불러오기: localStorage에서 미리보기 데이터 읽어오기
   useEffect(() => {
     if (!router.isReady || id !== "preview") return;
 
@@ -47,7 +47,7 @@ export default function ViewMessagePreviewPage() {
     setPreviewData(data);
   }, [router.isReady, id]);
 
-  // 이미지 슬라이드 타이머
+  // 이미지 슬라이드 타이머: 안전하게 currentImageIndex 업데이트
   useEffect(() => {
     if (previewData?.type === "image" && previewData.imageUrls?.length > 1) {
       const intervalId = setInterval(() => {
@@ -61,7 +61,7 @@ export default function ViewMessagePreviewPage() {
     }
   }, [previewData]);
 
-  // 공유 처리
+  // 공유 처리: Firestore에 저장 후 공유 페이지로 이동
   const handleShare = async () => {
     if (!previewData) return;
     setIsSaving(true);
@@ -92,10 +92,17 @@ export default function ViewMessagePreviewPage() {
     }
   };
 
-  // 로딩 중
   if (!previewData) {
     return <p className={styles.loadingText}>미리보기를 생성 중입니다...</p>;
   }
+
+  // 안전한 이미지 URL 변수 (undefined 방지)
+  const safeImageUrl =
+    previewData?.type === "image" &&
+    previewData?.imageUrls &&
+    previewData.imageUrls[currentImageIndex]
+      ? previewData.imageUrls[currentImageIndex]
+      : null;
 
   return (
     <>
@@ -105,26 +112,22 @@ export default function ViewMessagePreviewPage() {
       <div className={styles["preview-container"]}>
         <h2 className={styles["preview-title"]}>✨ 생성된 메시지 미리보기</h2>
         <div className={styles["moving-box"]}>
-          {/* 영상 */}
-          {previewData?.type === "video" &&
-            previewData?.videoUrl && (
-              <video
-                src={previewData.videoUrl}
-                controls
-                autoPlay
-                loop
-                muted
-                className={styles["media-element"]}
-              />
+          {previewData?.type === "video" && previewData?.videoUrl && (
+            <video
+              src={previewData.videoUrl}
+              controls
+              autoPlay
+              loop
+              muted
+              className={styles["media-element"]}
+            />
           )}
-
-          {/* 이미지 */}
           {previewData?.type === "image" &&
             previewData?.imageUrls?.length > 0 &&
-            previewData.imageUrls[currentImageIndex] && (
+            safeImageUrl && (
               <img
                 key={currentImageIndex}
-                src={previewData.imageUrls[currentImageIndex]}
+                src={safeImageUrl}
                 alt={`slide-${currentImageIndex}`}
                 className={styles.slideImage}
                 style={{
@@ -135,8 +138,6 @@ export default function ViewMessagePreviewPage() {
                 }}
               />
           )}
-
-          {/* 자막 */}
           {previewData?.message && (
             <div className={styles["caption-scroll-container"]}>
               <div className={styles["caption-scroll"]}>
@@ -145,21 +146,14 @@ export default function ViewMessagePreviewPage() {
             </div>
           )}
         </div>
-
-        {/* 음악 */}
         {previewData?.music && (
           <audio
             src={previewData.music}
             controls
             autoPlay
-            style={{
-              width: "90%",
-              maxWidth: "500px",
-              marginTop: "15px",
-            }}
+            style={{ width: "90%", maxWidth: "500px", marginTop: "15px" }}
           />
         )}
-
         <div className={styles["preview-button-group"]}>
           <button
             className={styles["preview-button"]}
