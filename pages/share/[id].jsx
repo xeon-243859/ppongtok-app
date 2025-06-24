@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../src/firebase';
-import QRCode from 'qrcode.react';
+import { QRCode } from 'qrcode.react';
 
 import appStyles from '../../src/styles/AppTheme.module.css';
 import shareStyles from '../../src/styles/sharepage.module.css';
