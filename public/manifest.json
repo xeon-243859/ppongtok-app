@@ -1,0 +1,23 @@
+{
+  "name": "뿅!톡 - 마음을 전하는 영상편지",
+  "short_name": "뿅!톡",
+  "description": "영상과 이미지로 세상에 단 하나뿐인 특별한 메시지를 만들어보세요.",
+  "lang": "ko-KR",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#8A2BE2",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
