@@ -13,7 +13,7 @@ export default function PaymentPage() {
 
     if (!user) {
       alert("로그인 후 이용권을 구매할 수 있습니다!");
-      router.push("/login");
+      router.push("/loginpage");
       return;
     }
 
