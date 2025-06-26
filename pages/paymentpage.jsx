@@ -30,7 +30,7 @@ export default function PaymentPage() {
     });
 
     alert(`이용권이 ${passCount + bonus}장 충전되었습니다!`);
-    router.push("\/share/${[id]}");
+    router.push("\/share/${newid}");
   };
 
   return (
