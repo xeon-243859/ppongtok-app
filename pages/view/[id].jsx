@@ -6,6 +6,7 @@ import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import { db, storage } from "../../src/firebase";
 import styles from "../../src/styles/viewpreview.module.css";
 import { useAuth } from "../../src/contexts/AuthContext";
+
 export const dynamic = "force-dynamic";
 
 export default function ViewMessagePreviewPage() {
@@ -17,7 +18,6 @@ export default function ViewMessagePreviewPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // ✅ 1. previewData 복구 또는 생성
   useEffect(() => {
     if (!router.isReady) return;
 
@@ -51,9 +51,8 @@ export default function ViewMessagePreviewPage() {
       }
 
       setPreviewData(data);
-      localStorage.setItem("previewData", JSON.stringify(data)); // 🔐 저장
+      localStorage.setItem("previewData", JSON.stringify(data));
     } else {
-      // 공유 후 돌아온 경우 복구
       const saved = localStorage.getItem("previewData");
       if (saved) {
         console.log("🧪 previewData 로컬에서 복구됨");
@@ -65,7 +64,6 @@ export default function ViewMessagePreviewPage() {
     }
   }, [router.isReady, id, router]);
 
-  // ✅ 2. 이미지 자동 슬라이드
   useEffect(() => {
     if (previewData?.type === "image" && previewData.imageUrls?.length > 1) {
       const intervalId = setInterval(() => {
@@ -75,13 +73,12 @@ export default function ViewMessagePreviewPage() {
     }
   }, [previewData]);
 
-  // ✅ 3. 공유 처리
   const handleShare = async () => {
     setIsProcessing(true);
     console.log("🐛 공유 버튼 눌림");
     console.log("🐛 previewData:", previewData);
 
-    localStorage.setItem("previewData", JSON.stringify(previewData)); // 🔒 리디렉션 대비
+    localStorage.setItem("previewData", JSON.stringify(previewData));
 
     if (!user) {
       alert("메시지를 저장하고 공유하려면 로그인이 필요해요!");
@@ -113,35 +110,41 @@ export default function ViewMessagePreviewPage() {
     }
 
     try {
-       console.log("🛠️ handleShare 시작");
-       console.log("🛠️ 현재 previewData 상태:", previewData); 
+      console.log("🛠️ handleShare 시작");
+
       if (!previewData) throw new Error("미리보기 데이터가 없습니다.");
 
       const userRef = doc(db, "users", user.uid);
       await updateDoc(userRef, {
         freePassRemaining: dbUser.freePassRemaining - 1,
       });
-      console.log("✅ 이용권 1장 차감 완료");
+      console.log("✅ 이용권 차감 완료");
 
       const dataToSave = {
         ...previewData,
         authorUid: user.uid,
         authorName: user.displayName || "이름없음",
       };
+
       const newId = `msg_${Date.now()}`;
-      console.log("🔥 Firestore 저장 시작:", dataToSave);
+      console.log("🔥 Firestore 저장 시작:", newId);
+
       if (dataToSave.type === "image" && dataToSave.imageUrls.length > 0) {
         const downloadUrls = await Promise.all(
-          dataToSave.imageUrls.map((base64, index) => {
-            const imageRef = ref(storage, `messages/${newId}/image_${index}.jpg`);
-            return uploadString(imageRef, base64, "data_url").then(() =>
-              getDownloadURL(imageRef)
-            );
+          dataToSave.imageUrls.map(async (base64, index) => {
+            try {
+              const imageRef = ref(storage, `messages/${newId}/image_${index}.jpg`);
+              await uploadString(imageRef, base64, "data_url");
+              return await getDownloadURL(imageRef);
+            } catch (err) {
+              console.error(`이미지 ${index} 업로드 실패:`, err);
+              return null;
+            }
           })
         );
-        dataToSave.imageUrls = downloadUrls;
+        dataToSave.imageUrls = downloadUrls.filter(Boolean);
       }
-      
+
       const messageDocRef = doc(db, "messages", newId);
       await setDoc(messageDocRef, dataToSave);
       console.log("✅ Firestore에 메시지 저장 완료");
@@ -156,8 +159,7 @@ export default function ViewMessagePreviewPage() {
   };
 
   if (!previewData) {
-      console.error("❌ previewData가 없음");
-    
+    console.error("❌ previewData가 없음");
     return <p className={styles.loadingText}>미리보기를 생성 중입니다...</p>;
   }
 
