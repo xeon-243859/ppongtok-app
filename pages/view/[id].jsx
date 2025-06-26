@@ -65,7 +65,8 @@ export default function ViewMessagePreviewPage() {
     // 🔥 3. 여기가 핵심! '공유하기' 버튼의 로직을 완전히 교체했습니다.
     const handleShare = async () => {
         setIsProcessing(true);
-
+         console.log("🐛 공유 버튼 눌림");
+  console.log("🐛 previewData:", previewData);
         // --- 조건 1: 로그인 여부 확인 ---
         if (!user) {
             alert("메시지를 저장하고 공유하려면 로그인이 필요해요!");
@@ -142,7 +143,7 @@ export default function ViewMessagePreviewPage() {
             router.push(`/share/${newId}`);
 
         } catch (error) {
-            console.error("🔥 최종 저장/공유 단계 오류:", error);
+             console.error("🔥 최종 저장/공유 단계 오류:", error.message, error);
             alert("메시지를 저장하는 데 실패했습니다. 다시 시도해주세요. 문제가 계속되면 문의 바랍니다.");
             // 참고: 여기서 실패 시 차감된 이용권을 롤백하는 로직을 추가하면 더 완벽합니다.
         } finally {
@@ -151,6 +152,7 @@ export default function ViewMessagePreviewPage() {
     };
 
     if (!previewData) {
+          console.error("❌ previewData가 없음");
         return <p className={styles.loadingText}>미리보기를 생성 중입니다...</p>;
     }
 
