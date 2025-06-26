@@ -8,9 +8,9 @@ const firebaseConfig = {
   authDomain: "ppongtok-project.firebaseapp.com",
   projectId: "ppongtok-project",
   storageBucket: "ppongtok-project.firebasestorage.app",
-  messagingSenderId: "183327414536",
+  messagingSenderId: "183327414536", 
   appId: "1:183327414536:web:f2442c9799b3ba150ef4bd"
-};
+};        
 
 
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];

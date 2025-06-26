@@ -73,33 +73,44 @@ export default function ViewMessagePreviewPage() {
     }
   }, [previewData]);
 
-  const handleShare = async () => {
-    setIsProcessing(true);
-    console.log("🐛 공유 버튼 눌림");
-    console.log("🐛 previewData:", previewData);
+    const handleShare = async () => {
+  setIsProcessing(true);
+  console.log("🐛 공유 버튼 눌림");
+  console.log("🐛 previewData:", previewData);
 
-    localStorage.setItem("previewData", JSON.stringify(previewData));
+  // 🔒 previewData 없는 경우 에러 방지
+  if (!previewData) {
+    alert("미리보기 데이터가 아직 준비되지 않았어요. 다시 시도해주세요.");
+    console.error("❌ previewData 없음!");
+    setIsProcessing(false);
+    return;
+  }
 
-    if (!user) {
-      alert("메시지를 저장하고 공유하려면 로그인이 필요해요!");
-      localStorage.setItem("afterLoginRedirect", router.asPath);
-      router.push("/loginpage");
-      setIsProcessing(false);
-      return;
-    }
+  // localStorage에 저장 (로그인 후 리다이렉트용)
+  localStorage.setItem("previewData", JSON.stringify(previewData));
 
-    if (loading) {
-      alert("사용자 정보를 확인 중입니다. 잠시 후 다시 시도해주세요.");
-      setIsProcessing(false);
-      return;
-    }
+  // 로그인 검사
+  if (!user) {
+    alert("메시지를 저장하고 공유하려면 로그인이 필요해요!");
+    localStorage.setItem("afterLoginRedirect", router.asPath);
+    router.push("/loginpage");
+    setIsProcessing(false);
+    return;
+  }
 
-    if (!dbUser) {
-      alert("사용자 정보를 불러오는데 실패했습니다. 다시 로그인해주세요.");
-      router.push("/loginpage");
-      setIsProcessing(false);
-      return;
-    }
+  if (loading) {
+    alert("사용자 정보를 확인 중입니다. 잠시 후 다시 시도해주세요.");
+    setIsProcessing(false);
+    return;
+  }
+
+  if (!dbUser) {
+    alert("사용자 정보를 불러오는데 실패했습니다. 다시 로그인해주세요.");
+    router.push("/loginpage");
+    setIsProcessing(false);
+    return;
+  }
+
 
     const hasTickets = dbUser.freePassRemaining > 0;
     if (!hasTickets) {
@@ -211,12 +222,12 @@ export default function ViewMessagePreviewPage() {
             뒤로가기
           </button>
           <button
-            className={`${styles["preview-button"]} ${styles.highlight}`}
-            onClick={handleShare}
-            disabled={isProcessing}
-          >
-            {isProcessing ? "처리 중..." : "공유하기"}
-          </button>
+          className={`${styles["preview-button"]} ${styles.highlight}`}
+          onClick={handleShare}
+          disabled={isProcessing || !previewData || loading}
+>
+           {isProcessing ? "처리 중..." : "공유하기"}
+           </button>
         </div>
       </div>
     </>
