@@ -19,7 +19,7 @@ export default function ViewMessagePage({ message }) {
       try {
         const docRef = doc(db, "messages", id);
         const docSnap = await getDoc(docRef);
-        
+         console.log("✅ Firestore 저장 성공");
         if (docSnap.exists()) {
           const messageData = docSnap.data();
           
@@ -36,6 +36,7 @@ export default function ViewMessagePage({ message }) {
         }
       } catch (error) {
         console.error("❌ 메시지를 불러오는 중 오류 발생:", error);
+        console.error("❌ Firestore 저장 실패", e);
       }
     };
 

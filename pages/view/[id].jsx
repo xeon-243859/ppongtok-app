@@ -55,6 +55,7 @@ export default function ViewMessagePreviewPage() {
       // 공유 후 돌아온 경우 복구
       const saved = localStorage.getItem("previewData");
       if (saved) {
+        console.log("🧪 previewData 로컬에서 복구됨");
         setPreviewData(JSON.parse(saved));
       } else {
         alert("미리보기 데이터를 불러올 수 없습니다. 처음부터 다시 시도해주세요.");
@@ -111,6 +112,8 @@ export default function ViewMessagePreviewPage() {
     }
 
     try {
+       console.log("🛠️ handleShare 시작");
+       console.log("🛠️ 현재 previewData 상태:", previewData); 
       if (!previewData) throw new Error("미리보기 데이터가 없습니다.");
 
       const userRef = doc(db, "users", user.uid);
@@ -125,7 +128,7 @@ export default function ViewMessagePreviewPage() {
         authorName: user.displayName || "이름없음",
       };
       const newId = `msg_${Date.now()}`;
-
+      console.log("🔥 Firestore 저장 시작:", dataToSave);
       if (dataToSave.type === "image" && dataToSave.imageUrls.length > 0) {
         const downloadUrls = await Promise.all(
           dataToSave.imageUrls.map((base64, index) => {
@@ -137,7 +140,7 @@ export default function ViewMessagePreviewPage() {
         );
         dataToSave.imageUrls = downloadUrls;
       }
-
+      
       const messageDocRef = doc(db, "messages", newId);
       await setDoc(messageDocRef, dataToSave);
       console.log("✅ Firestore에 메시지 저장 완료");
@@ -152,7 +155,8 @@ export default function ViewMessagePreviewPage() {
   };
 
   if (!previewData) {
-    console.error("❌ previewData가 없음");
+     console.error("❌ previewData가 try 블록 안에서 undefined 상태임");
+      throw new Error("미리보기 데이터가 없습니다.");
     return <p className={styles.loadingText}>미리보기를 생성 중입니다...</p>;
   }
 
