@@ -12,9 +12,9 @@ import shareStyles from '../../src/styles/sharepage.module.css';
 // ✅ 'public' 폴더 기준의 절대 경로입니다.
 const ICON_PATHS = {
   kakao: '/icons/2.png',
-  link: '/icons/link.png',
-  facebook: '/icons/facebook.png',
-  twitter: '/icons/twitter.png',
+  link: '/icons/104.png',
+  facebook: '/icons/105.png',
+  twitter: '/icons/106.png',
   more: '/icons/more.png',
 };
 
