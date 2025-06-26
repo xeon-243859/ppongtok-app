@@ -1,3 +1,5 @@
+// pages/loginpage.jsx
+
 import { useAuth } from "../src/contexts/AuthContext";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
@@ -10,7 +12,7 @@ export default function LoginPage() {
 
   const handleLogin = async () => {
     try {
-      await login(); // AuthContext의 popup 로그인 함수
+      await login();
     } catch (err) {
       console.error("❌ 로그인 요청 실패:", err);
     }
