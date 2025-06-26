@@ -6,6 +6,7 @@ import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import { db, storage } from "../../src/firebase";
 import styles from "../../src/styles/viewpreview.module.css";
 import { useAuth } from "../../src/contexts/AuthContext";
+export const dynamic = "force-dynamic";
 
 export default function ViewMessagePreviewPage() {
   const router = useRouter();
@@ -155,8 +156,8 @@ export default function ViewMessagePreviewPage() {
   };
 
   if (!previewData) {
-     console.error("❌ previewData가 try 블록 안에서 undefined 상태임");
-      throw new Error("미리보기 데이터가 없습니다.");
+      console.error("❌ previewData가 없음");
+    
     return <p className={styles.loadingText}>미리보기를 생성 중입니다...</p>;
   }
 
