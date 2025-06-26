@@ -159,3 +159,4 @@ export default function SharePage() {
     </>
   );
 }
+ console.log("🐛 공유 버튼 눌림");
