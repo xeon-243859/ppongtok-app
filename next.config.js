@@ -1,4 +1,4 @@
-// next.config.js (PWA 비활성화 테스트용)
+
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -19,4 +19,5 @@ const nextConfig = {
 };
 
 // withPWA로 감싸지 않고, 순수한 Next.js 설정만 내보냅니다.
+// 이렇게 하면 PWA 관련 모든 기능이 빌드 과정에서 제외됩니다.
 module.exports = nextConfig;
