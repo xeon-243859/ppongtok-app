@@ -1,4 +1,3 @@
-ppongtok-app/pages/videothemepage.jsx
 
 import React from "react";
 import { useRouter } from "next/router"; // ✅ useNavigate → useRouter
