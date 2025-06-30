@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../src/firebase';
-import QRCode from 'qrcode.react';
+import { QRCodeSVG } from 'qrcode.react';
 import appStyles from '../../src/styles/AppTheme.module.css';
 import shareStyles from '../../src/styles/sharepage.module.css';
 
@@ -155,7 +155,7 @@ export default function SharePage() {
       <div className={`${appStyles.pageContainer} ${shareStyles.shareContainer}`}>
         <h2 className={appStyles.pageTitle}>마음을 공유해보세요</h2>
         <div className={shareStyles.qrCodeBox}>
-          <QRCode value={shareUrl} size={180} fgColor="#333" />
+          <QRCodeSVG  value={shareUrl} size={180} fgColor="#333" />
           <p>QR코드를 스캔하여 바로 확인할 수 있어요</p>
         </div>
         <div className={shareStyles.buttonGrid}>
