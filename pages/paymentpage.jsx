@@ -29,8 +29,16 @@ export default function PaymentPage() {
       freePassCount: currentPass + passCount + bonus,
     });
 
-    alert(`이용권이 ${passCount + bonus}장 충전되었습니다!`);
-    router.push("\/share/${test01}");
+    // --- 여기부터가 수정된 부분입니다 ---
+
+    // 1. 사용자에게 더 친절한 안내 메시지를 보여줍니다.
+    alert(`이용권이 ${passCount + bonus}장 충전되었습니다. 이전 페이지로 돌아가 공유를 계속 진행해주세요.`);
+
+    // 2. 특정 경로로 이동하는 대신, 이전 페이지로 돌아갑니다.
+    // 이렇게 하면 '공유하기'를 눌렀다가 결제하러 온 사용자가 원래 있던 미리보기 페이지로 돌아갈 수 있습니다.
+    router.back();
+
+    // --- 여기까지 수정 ---
   };
 
   return (
@@ -43,5 +51,3 @@ export default function PaymentPage() {
     </div>
   );
 }
-console.log("🐛 공유 페이지 도착");
-console.log("🆔 받은 id 값:", id);
