@@ -43,5 +43,4 @@ const nextConfig = {
 // 3. withPWA 함수로 기존 설정을 감싸서 PWA 기능을 통합한 최종 설정을 내보냅니다.
 // 이렇게 하면 Next.js가 PWA 설정과 기본 설정을 모두 인지하고 빌드를 진행합니다.
 module.exports = withPWA(nextConfig);
-content_copydownload
 
