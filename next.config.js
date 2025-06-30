@@ -1,5 +1,3 @@
-
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // 개발 모드에서 React StrictMode를 비활성화합니다.
@@ -18,6 +16,5 @@ const nextConfig = {
   },
 };
 
-// withPWA로 감싸지 않고, 순수한 Next.js 설정만 내보냅니다.
-// 이렇게 하면 PWA 관련 모든 기능이 빌드 과정에서 제외됩니다.
+// withPWA로 감싸는 부분 없이, 순수한 Next.js 설정만 내보냅니다.
 module.exports = nextConfig;

@@ -18,8 +18,7 @@ export default function MyApp({ Component, pageProps }) {
         
         {/* --- PWA 필수 메타 태그 --- */}
         
-        {/* 1. manifest.json 연결: PWA의 명세서를 브라우저에 알려줍니다. */}
-        <link rel="manifest" href="/manifest.json" />
+       
 
         {/* 2. 테마 색상 지정: 앱의 상단 바(툴바) 색상을 지정합니다. */}
         <meta name="theme-color" content="#8A2BE2" />
