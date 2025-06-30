@@ -1,8 +1,8 @@
-// ppongtok-app/pages/videothemepage.jsx (최종 정리 완료)
+ppongtok-app/pages/videothemepage.jsx
 
 import React from "react";
-import { useRouter } from "next/router";
-import styles from "@/styles/VideoThemePage.module.css"; 
+import { useRouter } from "next/router"; // ✅ useNavigate → useRouter
+import styles from "@/styles/VideoThemePage.module.css"; // ✅ module.css import
 
 const videos = [
   { id: 1, src: "/videos/flower.mp4", label: "꽃 배경" },
@@ -15,7 +15,10 @@ export default function VideoThemePage() {
   const router = useRouter();
 
   const handleSelect = (src) => {
-    localStorage.setItem("selected-video-theme", src);
+    localStorage.setItem("selected-video", src);
+    localStorage.setItem("selected-type", "video");
+    localStorage.removeItem("selected-images");
+    localStorage.setItem("video-theme-confirmed", "true");
     router.push("/videoselectpage");
   };
 
@@ -43,3 +46,5 @@ export default function VideoThemePage() {
     </div>
   );
 }
+
+

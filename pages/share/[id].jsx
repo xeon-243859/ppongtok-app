@@ -9,7 +9,6 @@ import QRCode from 'qrcode.react';
 import appStyles from '../../src/styles/AppTheme.module.css';
 import shareStyles from '../../src/styles/sharepage.module.css';
 
-// ✅ 'public' 폴더 기준의 절대 경로입니다.
 const ICON_PATHS = {
   kakao: '/icons/2.png',
   link: '/icons/104.png',
@@ -23,12 +22,11 @@ export default function SharePage() {
   const { id } = router.query;
   const [messageData, setMessageData] = useState(null);
   const [shareUrl, setShareUrl] = useState('');
-  const [ogImageUrl, setOgImageUrl] = useState('/default-og-image.png'); // 기본 OG 이미지
+  const [ogImageUrl, setOgImageUrl] = useState('/default-og-image.png');
 
   useEffect(() => {
     if (!router.isReady || !id) return;
 
-    // 최종 공유될 URL (실제 메시지를 볼 수 있는 페이지)
     const currentUrl = `${window.location.origin}/present/${id}`;
     setShareUrl(currentUrl);
 
@@ -37,23 +35,23 @@ export default function SharePage() {
         const docRef = doc(db, 'messages', String(id));
         const docSnap = await getDoc(docRef);
 
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          setMessageData(data);
-          
-          // 🔥 핵심 수정: `imageurls` (오타) -> `imageUrls` (정상)
-          const imageUrlForOg = data.type === 'video'
-             ? data.videoUrl
-             : (Array.isArray(data.imageUrls) && data.imageUrls.length > 0) 
-               ? data.imageUrls[0] 
-               : '/default-og-image.png'; // 이미지가 없으면 기본 이미지 사용
-          
-          setOgImageUrl(imageUrlForOg);
-
-        } else {
+        if (!docSnap.exists()) {
           alert('존재하지 않는 메시지입니다.');
           router.push('/');
+          return;
         }
+
+        const data = docSnap.data();
+        setMessageData(data);
+
+        const imageUrlForOg =
+          data.type === 'video'
+            ? data.videoUrl
+            : Array.isArray(data.imageUrls) && data.imageUrls.length > 0
+            ? data.imageUrls[0]
+            : '/default-og-image.png';
+
+        setOgImageUrl(imageUrlForOg);
       } catch (err) {
         console.error('메시지 불러오기 실패:', err);
         alert('오류가 발생했습니다.');
@@ -74,7 +72,6 @@ export default function SharePage() {
     script.async = true;
     script.onload = () => {
       if (window.Kakao && !window.Kakao.isInitialized()) {
-        // .env.local 파일에 키를 보관하는 것이 안전합니다.
         window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY || '본인의 카카오 JavaScript 키');
       }
     };
@@ -82,12 +79,14 @@ export default function SharePage() {
   }, []);
 
   const shareKakao = () => {
+    console.log("🐛 공유 버튼 눌림");
+    console.log("🐛 previewData:", messageData); // 추가된 디버깅 로그
+
     if (!messageData || !window.Kakao?.Share) {
       alert('공유 기능이 아직 준비되지 않았습니다. 잠시 후 다시 시도해 주세요.');
       return;
     }
 
-    // 🔥 핵심 수정: `message.caption` -> `messageData.message`
     const title = messageData.message || '뿅!톡으로 특별한 메시지가 도착했어요';
 
     window.Kakao.Share.sendDefault({
@@ -98,10 +97,12 @@ export default function SharePage() {
         imageUrl: ogImageUrl,
         link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
       },
-      buttons: [{
-        title: '메시지 보러가기',
-        link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
-      }],
+      buttons: [
+        {
+          title: '메시지 보러가기',
+          link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
+        },
+      ],
     });
   };
 
@@ -114,13 +115,25 @@ export default function SharePage() {
       alert('링크 복사에 실패했습니다.');
     }
   };
-  
-  // ... 나머지 공유 함수들 ...
-  const shareFacebook = () => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank');
-  const shareTwitter = () => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent('뿅!톡으로 특별한 메시지가 도착했어요! 💌')}&url=${encodeURIComponent(shareUrl)}`, '_blank');
+
+  const shareFacebook = () =>
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank');
+
+  const shareTwitter = () =>
+    window.open(
+      `https://twitter.com/intent/tweet?text=${encodeURIComponent('뿅!톡으로 특별한 메시지가 도착했어요! 💌')}&url=${encodeURIComponent(
+        shareUrl
+      )}`,
+      '_blank'
+    );
+
   const nativeShare = async () => {
     if (navigator.share) {
-      await navigator.share({ title: '뿅!톡 메시지', text: '친구의 마음이 담긴 메시지를 확인해보세요!', url: shareUrl });
+      await navigator.share({
+        title: '뿅!톡 메시지',
+        text: '친구의 마음이 담긴 메시지를 확인해보세요!',
+        url: shareUrl,
+      });
     } else {
       alert('이 브라우저는 공유 기능을 지원하지 않습니다.');
     }
@@ -146,17 +159,35 @@ export default function SharePage() {
           <p>QR코드를 스캔하여 바로 확인할 수 있어요</p>
         </div>
         <div className={shareStyles.buttonGrid}>
-          <button onClick={shareKakao} className={shareStyles.shareButton}><img src={ICON_PATHS.kakao} alt="카카오톡" /><span>카카오톡</span></button>
-          {typeof navigator !== 'undefined' && navigator.share && (<button onClick={nativeShare} className={shareStyles.shareButton}><img src={ICON_PATHS.more} alt="더보기" /><span>더보기</span></button>)}
-          <button onClick={copyLink} className={shareStyles.shareButton}><img src={ICON_PATHS.link} alt="링크 복사" /><span>링크 복사</span></button>
-          <button onClick={shareFacebook} className={shareStyles.shareButton}><img src={ICON_PATHS.facebook} alt="페이스북" /><span>페이스북</span></button>
-          <button onClick={shareTwitter} className={shareStyles.shareButton}><img src={ICON_PATHS.twitter} alt="트위터" /><span>트위터</span></button>
+          <button onClick={shareKakao} className={shareStyles.shareButton}>
+            <img src={ICON_PATHS.kakao} alt="카카오톡" />
+            <span>카카오톡</span>
+          </button>
+          {typeof navigator !== 'undefined' && navigator.share && (
+            <button onClick={nativeShare} className={shareStyles.shareButton}>
+              <img src={ICON_PATHS.more} alt="더보기" />
+              <span>더보기</span>
+            </button>
+          )}
+          <button onClick={copyLink} className={shareStyles.shareButton}>
+            <img src={ICON_PATHS.link} alt="링크 복사" />
+            <span>링크 복사</span>
+          </button>
+          <button onClick={shareFacebook} className={shareStyles.shareButton}>
+            <img src={ICON_PATHS.facebook} alt="페이스북" />
+            <span>페이스북</span>
+          </button>
+          <button onClick={shareTwitter} className={shareStyles.shareButton}>
+            <img src={ICON_PATHS.twitter} alt="트위터" />
+            <span>트위터</span>
+          </button>
         </div>
         <div className={appStyles.navButtonContainer} style={{ marginTop: '40px' }}>
-          <button onClick={() => router.push('/')} className={appStyles.buttonPrimary}>🏠 처음으로</button>
+          <button onClick={() => router.push('/')} className={appStyles.buttonPrimary}>
+            🏠 처음으로
+          </button>
         </div>
       </div>
     </>
   );
 }
- console.log("🐛 공유 버튼 눌림");
