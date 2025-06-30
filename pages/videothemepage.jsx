@@ -2,7 +2,7 @@ ppongtok-app/pages/videothemepage.jsx
 
 import React from "react";
 import { useRouter } from "next/router"; // ✅ useNavigate → useRouter
-import styles from "@/styles/videothemepage.module.css"; // ✅ module.css import
+import styles from '../../src/styles/videothemepage.module.css';
 
 const videos = [
   { id: 1, src: "/videos/flower.mp4", label: "꽃 배경" },
