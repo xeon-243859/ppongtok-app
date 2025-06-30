@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router"; // ✅ react-router-dom → next/router
-import styles from "@/styles/VideoEntryPage.module.css"; // ✅ CSS 모듈화
+import styles from "@/styles/videoentrypage.module.css"; // ✅ CSS 모듈화
 
 export default function VideoEntryPage() {
   const router = useRouter();

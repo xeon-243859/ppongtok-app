@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router"; // ✅ useNavigate → useRouter
-import styles from "@/styles/VideoBackgroundPage.module.css"; // ✅ module.css import
+import styles from "@/styles/videobackgroundpage.module.css"; // ✅ module.css import
 
 const videos = [
   "/videos/flower.mp4",
