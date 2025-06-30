@@ -43,3 +43,5 @@ export default function PaymentPage() {
     </div>
   );
 }
+console.log("🐛 공유 페이지 도착");
+console.log("🆔 받은 id 값:", id);
