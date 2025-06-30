@@ -1,4 +1,4 @@
-// next.config.js
+// next.config.js (PWA 비활성화 테스트용)
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -18,17 +18,5 @@ const nextConfig = {
   },
 };
 
-// PWA 관련 설정을 별도로 정의합니다.
-const pwaConfig = {
-  dest: 'public',
-  register: true,
-  skipWaiting: true,
-  disable: process.env.NODE_ENV === 'development',
-};
-
-// next-pwa 라이브러리를 불러옵니다.
-const withPWA = require('next-pwa')(pwaConfig);
-
-// withPWA 함수로 Next.js 설정을 감싸서 최종적으로 내보냅니다.
-// 이 구조는 이전과 동일하지만, 설정을 분리하여 가독성과 안정성을 높입니다.
-module.exports = withPWA(nextConfig);
+// withPWA로 감싸지 않고, 순수한 Next.js 설정만 내보냅니다.
+module.exports = nextConfig;
