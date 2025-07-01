@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from "next/router";
 
-  export default function HomePage() {
+export default function HomePage() {
   const router = useRouter();
 
   return (
@@ -18,7 +18,7 @@ import { useRouter } from "next/router";
       <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🎉 뿅!톡에 오신것을</h1>
       <h1 style={{ fontSize: '2rem', marginBottom: '2rem' }}>환영합니다 🎉</h1>
       <button
-        onClick={() => navigate('/messages')}
+        onClick={() => router.push('/select-category')}
         style={{
           backgroundColor: '#4FC3F7',
           border: 'none',
@@ -39,5 +39,3 @@ import { useRouter } from "next/router";
     </div>
   );
 }
-
-
