@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // 개발 모드에서 React StrictMode를 비활성화합니다.
-  reactStrictMode: false,
+    reactStrictMode: true,
   
   // SWC 컴파일러를 사용하여 빌드 속도를 높입니다.
   swcMinify: true,
@@ -18,3 +18,5 @@ const nextConfig = {
 
 // withPWA로 감싸는 부분 없이, 순수한 Next.js 설정만 내보냅니다.
 module.exports = nextConfig;
+
+
