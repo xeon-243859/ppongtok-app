@@ -39,3 +39,4 @@ export default function HomePage() {
     </div>
   );
 }
+// AuthProvider로 앱 전체를 감싸서 로그인 상태를 공유합니다.
