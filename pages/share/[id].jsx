@@ -1,190 +1,217 @@
-// pages/share/[id].js
+// pages/share/view/[id].jsx
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../../src/firebase';
-import { QRCodeSVG } from 'qrcode.react';
-import appStyles from '../../src/styles/AppTheme.module.css';
-import shareStyles from '../../src/styles/sharepage.module.css';
+import { doc, setDoc, updateDoc } from 'firebase/firestore';
+import { ref, uploadString, getDownloadURL } from 'firebase/storage';
+import { db, storage } from '../../../src/firebase';
+import styles from '../../../src/styles/viewpreview.module.css';
+import { useAuth } from '../../../src/contexts/AuthContext';
 
-const ICON_PATHS = {
-  kakao: '/icons/2.png',
-  link: '/icons/104.png',
-  facebook: '/icons/105.png',
-  twitter: '/icons/106.png',
-  more: '/icons/more.png',
-};
+export const dynamic = 'force-dynamic';
 
-export default function SharePage() {
+export default function ViewMessagePreviewPage() {
   const router = useRouter();
-  const { id } = router.query;
-  const [messageData, setMessageData] = useState(null);
-  const [shareUrl, setShareUrl] = useState('');
-  const [ogImageUrl, setOgImageUrl] = useState('/default-og-image.png');
+  // ✨ [수정] 쿼리 파라미터에서 continue_share를 읽어옵니다. 로그인/결제 후 자동 공유를 위한 신호입니다.
+  const { id, continue_share } = router.query;
+  const { user, dbUser, loading } = useAuth();
 
+  const [previewData, setPreviewData] = useState(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // ✨ [수정] 페이지 로드 시 자동으로 공유를 재시도하는 로직
   useEffect(() => {
-    if (!router.isReady || !id) return;
+    // 1. URL에 'continue_share=true' 신호가 있고,
+    // 2. 사용자 정보 로딩이 끝났으며 (중요!),
+    // 3. 사용자가 로그인 되어 있는지 확인합니다.
+    if (continue_share === 'true' && !loading && user && dbUser) {
+      console.log('🚀 로그인/결제 후 자동 공유를 시작합니다.');
+      
+      const savedData = localStorage.getItem('previewData');
+      if (savedData) {
+        // 이전에 저장해 둔 미리보기 데이터를 가지고 handleShare를 바로 실행합니다.
+        handleShare(JSON.parse(savedData));
+      } else {
+        alert('자동 공유에 필요한 데이터를 찾을 수 없습니다. 다시 시도해주세요.');
+      }
+    }
+  }, [continue_share, loading, user, dbUser, router]); // 의존성 배열에 필요한 모든 값 추가
 
-    const currentUrl = `${window.location.origin}/present/${id}`;
-    setShareUrl(currentUrl);
+  // 페이지에 처음 진입하여 미리보기 데이터를 생성하는 로직
+  useEffect(() => {
+    if (!router.isReady) return;
 
-    const fetchMessage = async () => {
-      try {
-        const docRef = doc(db, 'messages', String(id));
-        const docSnap = await getDoc(docRef);
-
-        if (!docSnap.exists()) {
-          alert('존재하지 않는 메시지입니다.');
-          router.push('/');
-          return;
-        }
-
-        const data = docSnap.data();
-        setMessageData(data);
-
-        const imageUrlForOg =
-          data.type === 'video'
-            ? data.videoUrl
-            : Array.isArray(data.imageUrls) && data.imageUrls.length > 0
-            ? data.imageUrls[0]
-            : '/default-og-image.png';
-
-        setOgImageUrl(imageUrlForOg);
-      } catch (err) {
-        console.error('메시지 불러오기 실패:', err);
-        alert('오류가 발생했습니다.');
+    // 'preview' 경로로 들어왔을 때만 localStorage의 데이터를 조합해 미리보기를 만듭니다.
+    if (id === 'preview') {
+      const type = localStorage.getItem('selected-type');
+      const message = localStorage.getItem('message');
+      if (!type) {
+        alert('필수 정보가 없어 메시지를 생성할 수 없습니다. 처음부터 다시 시도해주세요.');
         router.push('/');
+        return;
       }
-    };
 
-    fetchMessage();
-  }, [id, router]);
+      const data = {
+        type,
+        message: message || '',
+        music: localStorage.getItem('selected_music_src'),
+        imageUrls: [],
+        videoUrl: null,
+        createdAt: new Date(),
+      };
 
+      if (type === 'image') {
+        const images = [];
+        for (let i = 0; i < 4; i++) {
+          const img = localStorage.getItem(`ppong_image_${i}`);
+          if (img) images.push(img);
+        }
+        data.imageUrls = images;
+      } else if (type === 'video') {
+        data.videoUrl = localStorage.getItem('selected-video');
+      }
+
+      setPreviewData(data);
+      // 🔥 미리보기 데이터를 localStorage에 저장하여 자동 공유 시 재사용합니다.
+      localStorage.setItem('previewData', JSON.stringify(data));
+    }
+  }, [router.isReady, id]);
+
+  // 이미지 슬라이드 효과를 위한 로직
   useEffect(() => {
-    const kakaoSdk = document.getElementById('kakao-sdk');
-    if (kakaoSdk) return;
+    if (previewData?.type === 'image' && previewData.imageUrls?.length > 1) {
+      const intervalId = setInterval(() => {
+        setCurrentImageIndex((prev) => (prev + 1) % previewData.imageUrls.length);
+      }, 3000);
+      return () => clearInterval(intervalId);
+    }
+  }, [previewData]);
 
-    const script = document.createElement('script');
-    script.id = 'kakao-sdk';
-    script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
-    script.async = true;
-    script.onload = () => {
-      if (window.Kakao && !window.Kakao.isInitialized()) {
-        window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY || '본인의 카카오 JavaScript 키');
-      }
-    };
-    document.head.appendChild(script);
-  }, []);
+  // [수정] handleShare 함수가 미리보기 데이터를 인자로 받을 수 있도록 변경
+  const handleShare = async (dataFromAutoFlow = null) => {
+    // 자동 공유 시에는 인자로 받은 데이터를, 직접 클릭 시에는 state 데이터를 사용합니다.
+    const finalData = dataFromAutoFlow || previewData;
+    setIsProcessing(true);
 
-  const shareKakao = () => {
-    console.log("🐛 공유 버튼 눌림");
-    console.log("🐛 previewData:", messageData); // 추가된 디버깅 로그
-
-    if (!messageData || !window.Kakao?.Share) {
-      alert('공유 기능이 아직 준비되지 않았습니다. 잠시 후 다시 시도해 주세요.');
+    if (!finalData) {
+      alert('공유할 데이터가 없습니다. 처음부터 다시 시도해주세요.');
+      setIsProcessing(false);
       return;
     }
 
-    const title = messageData.message || '뿅!톡으로 특별한 메시지가 도착했어요';
+    // [1단계: 로그인 검사]
+    if (!user || !dbUser) {
+      alert('메시지를 저장하고 공유하려면 로그인이 필요해요!');
+      // ✨ [수정] 로그인 후 돌아올 때 '자동 공유'를 실행하라는 신호를 쿼리 파라미터로 추가합니다.
+      router.push(`/loginpage?redirect=${router.asPath}&auto_share=true`);
+      setIsProcessing(false);
+      return;
+    }
+    
+    // [2단계: 이용권 검사]
+    const hasTickets = dbUser.freePassRemaining > 0;
+    if (!hasTickets) {
+      alert('이용권이 모두 소진되었어요. 이용권을 먼저 구매해주세요!');
+      // ✨ [수정] 결제 후 돌아올 때도 '자동 공유' 신호를 추가합니다.
+      router.push(`/paymentpage?redirect=${router.asPath}&auto_share=true`);
+      setIsProcessing(false);
+      return;
+    }
 
-    window.Kakao.Share.sendDefault({
-      objectType: 'feed',
-      content: {
-        title: title,
-        description: '친구의 마음이 담긴 메시지를 지금 확인해보세요!',
-        imageUrl: ogImageUrl,
-        link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
-      },
-      buttons: [
-        {
-          title: '메시지 보러가기',
-          link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
-        },
-      ],
-    });
-  };
-
-  const copyLink = async () => {
-    if (!shareUrl) return;
+    // [3단계: 모든 검사 통과, 메시지 생성 및 공유]
     try {
-      await navigator.clipboard.writeText(shareUrl);
-      alert('링크가 복사되었습니다! 원하는 곳에 붙여넣어 공유하세요.');
-    } catch {
-      alert('링크 복사에 실패했습니다.');
-    }
-  };
+      console.log('🛠️ 공유 로직 실행 중...');
 
-  const shareFacebook = () =>
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank');
-
-  const shareTwitter = () =>
-    window.open(
-      `https://twitter.com/intent/tweet?text=${encodeURIComponent('뿅!톡으로 특별한 메시지가 도착했어요! 💌')}&url=${encodeURIComponent(
-        shareUrl
-      )}`,
-      '_blank'
-    );
-
-  const nativeShare = async () => {
-    if (navigator.share) {
-      await navigator.share({
-        title: '뿅!톡 메시지',
-        text: '친구의 마음이 담긴 메시지를 확인해보세요!',
-        url: shareUrl,
+      const userRef = doc(db, 'users', user.uid);
+      await updateDoc(userRef, {
+        freePassRemaining: dbUser.freePassRemaining - 1,
       });
-    } else {
-      alert('이 브라우저는 공유 기능을 지원하지 않습니다.');
+
+      const dataToSave = {
+        ...finalData,
+        authorUid: user.uid,
+        authorName: user.displayName || '이름없음',
+      };
+      const newId = `msg_${Date.now()}`;
+
+      if (dataToSave.type === 'image' && dataToSave.imageUrls.length > 0) {
+        const downloadUrls = await Promise.all(
+          dataToSave.imageUrls.map(async (base64, index) => {
+            const imageRef = ref(storage, `messages/${newId}/image_${index}.jpg`);
+            await uploadString(imageRef, base64, 'data_url');
+            return getDownloadURL(imageRef);
+          })
+        );
+        dataToSave.imageUrls = downloadUrls.filter(Boolean);
+      }
+      
+      const messageDocRef = doc(db, 'messages', newId);
+      await setDoc(messageDocRef, dataToSave);
+      
+      console.log('✅ 최종 공유 페이지로 이동합니다:', `/share/${newId}`);
+
+      // ✨ 자동 공유 작업이 끝났으므로, 관련 localStorage 데이터를 정리합니다.
+      localStorage.removeItem('previewData');
+      
+      // `replace`를 사용해 브라우저 히스토리에 현재 페이지를 남기지 않고 이동합니다.
+      // (사용자가 뒤로가기를 눌렀을 때 이 미리보기 페이지로 다시 오지 않도록 하기 위함)
+      router.replace(`/share/${newId}`);
+
+    } catch (error) {
+      console.error('🔥 최종 저장/공유 단계 오류:', error);
+      alert('메시지를 저장하는 데 실패했습니다. 다시 시도해주세요.');
+    } finally {
+      setIsProcessing(false);
     }
   };
 
-  if (!messageData) return <div className={appStyles.pageContainer}>로딩 중...</div>;
+  if (!previewData && id === "preview") {
+    return <p className={styles.loadingText}>미리보기를 생성 중입니다...</p>;
+  }
 
   return (
     <>
       <Head>
-        <title>마음 공유하기</title>
-        <meta property="og:title" content={messageData.message || '뿅!톡으로 특별한 메시지가 도착했어요'} />
-        <meta property="og:description" content="친구의 마음이 담긴 메시지를 지금 확인해보세요!" />
-        <meta property="og:image" content={ogImageUrl} />
-        <meta property="og:url" content={shareUrl} />
-        <meta property="og:type" content="website" />
+        <title>메시지 미리보기</title>
       </Head>
+      <div className={styles['preview-container']}>
+        <h2 className={styles['preview-title']}>✨ 생성된 메시지 미리보기</h2>
 
-      <div className={`${appStyles.pageContainer} ${shareStyles.shareContainer}`}>
-        <h2 className={appStyles.pageTitle}>마음을 공유해보세요</h2>
-        <div className={shareStyles.qrCodeBox}>
-          <QRCodeSVG  value={shareUrl} size={180} fgColor="#333" />
-          <p>QR코드를 스캔하여 바로 확인할 수 있어요</p>
-        </div>
-        <div className={shareStyles.buttonGrid}>
-          <button onClick={shareKakao} className={shareStyles.shareButton}>
-            <img src={ICON_PATHS.kakao} alt="카카오톡" />
-            <span>카카오톡</span>
-          </button>
-          {typeof navigator !== 'undefined' && navigator.share && (
-            <button onClick={nativeShare} className={shareStyles.shareButton}>
-              <img src={ICON_PATHS.more} alt="더보기" />
-              <span>더보기</span>
-            </button>
+        <div className={styles['moving-box']}>
+          {previewData?.type === 'video' && previewData.videoUrl && (
+            <video src={previewData.videoUrl} controls autoPlay loop muted className={styles['media-element']} />
           )}
-          <button onClick={copyLink} className={shareStyles.shareButton}>
-            <img src={ICON_PATHS.link} alt="링크 복사" />
-            <span>링크 복사</span>
-          </button>
-          <button onClick={shareFacebook} className={shareStyles.shareButton}>
-            <img src={ICON_PATHS.facebook} alt="페이스북" />
-            <span>페이스북</span>
-          </button>
-          <button onClick={shareTwitter} className={shareStyles.shareButton}>
-            <img src={ICON_PATHS.twitter} alt="트위터" />
-            <span>트위터</span>
-          </button>
+          {previewData?.type === 'image' && previewData.imageUrls.length > 0 && (
+            <img
+              key={currentImageIndex}
+              src={previewData.imageUrls[currentImageIndex]}
+              alt={`slide-${currentImageIndex}`}
+              className={styles.slideImage}
+            />
+          )}
+          {previewData?.message && (
+            <div className={styles['caption-scroll-container']}>
+              <div className={styles['caption-scroll']}>{previewData.message}</div>
+            </div>
+          )}
         </div>
-        <div className={appStyles.navButtonContainer} style={{ marginTop: '40px' }}>
-          <button onClick={() => router.push('/')} className={appStyles.buttonPrimary}>
-            🏠 처음으로
+
+        {previewData?.music && (
+          <audio src={previewData.music} controls autoPlay style={{ width: '90%', maxWidth: '500px', marginTop: '15px' }} />
+        )}
+
+        <div className={styles['preview-button-group']}>
+          <button className={styles['preview-button']} onClick={() => router.back()}>
+            뒤로가기
+          </button>
+          <button
+            className={`${styles['preview-button']} ${styles.highlight}`}
+            onClick={() => handleShare(null)} // 사용자가 직접 클릭 시에는 null을 넘겨 state 데이터를 사용하게 함
+            disabled={isProcessing || !previewData || loading}
+          >
+            {isProcessing ? '처리 중...' : '공유하기'}
           </button>
         </div>
       </div>
