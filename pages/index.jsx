@@ -26,7 +26,7 @@ export default function HomePage() {
       <button
         onClick={() => {
           console.log("🚀 시작하기 버튼 클릭됨");
-          router.push("/select-category");
+          router.push("/intro");
         }}
         style={{
           backgroundColor: '#4FC3F7',
