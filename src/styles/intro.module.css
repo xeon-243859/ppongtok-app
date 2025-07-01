@@ -2,106 +2,78 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 2px dashed red;
-  justify-content: flex-start; 
+  justify-content: flex-start;
   height: 100vh;
-  padding-top: 40px;        /* ✅ 화면 위쪽 여백 */
-  padding-bottom: 24px;     /* 하단도 적당히 */
+  padding: 40px 20px 24px;
   background-color: #fffdf9;
   text-align: center;
+  font-family: 'Nanum Pen Script', cursive;
 }
 
 .intro-image {
   width: 120px;
   height: auto;
-  margin-top: 30px;
-  animation: pop 1.5s ease-in-out;
+  margin-bottom: 20px;
+  animation: pop 1s ease-in-out infinite alternate;
 }
 
 @keyframes pop {
   0% {
-    transform: scale(0.8);
-    opacity: 0;
+    transform: scale(1);
   }
   100% {
-    transform: scale(1);
-    opacity: 1;
+    transform: scale(1.1);
   }
 }
 
 .intro-text {
-  margin-top: 20px;
+  margin-bottom: 30px;
 }
 
 .intro-title-line1 {
-  font-family: 'Nanum Pen Script', cursive;
-  font-size: 3.5rem;
-  font-weight: 400;
-  color: #ff6b81;
-  margin-bottom: 10px;
-  letter-spacing: 1px;
+  font-size: 2.5rem;
+  color: #ff7eb3;
+  margin: 0;
 }
-
-
 
 .intro-title-line2 {
   font-size: 2.2rem;
-  color: #444;
-  margin-bottom: 8px;
+  color: #ffb347;
+  margin: 0;
+  margin-bottom: 16px;
 }
 
-.intro-subtitle {
-  font-size: 1.1rem;
-  color: #777;
-  margin-top: 5px;
+.philosophy-quote {
+  font-size: 1.2rem;
+  color: #555;
+  line-height: 1.8;
 }
 
 .start-button {
-  padding: 14px 28px;
-  font-size: 1.2rem;
-  background-color: #ff91a4;
+  background-color: #ff7eb3;
   color: white;
+  font-size: 1.3rem;
   border: none;
   border-radius: 30px;
+  padding: 12px 32px;
   cursor: pointer;
-  margin-bottom: 40px;
-  box-shadow: 0 4px 12px rgba(255, 105, 135, 0.3);
-  transition: all 0.3s ease;
+  margin-top: 30px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .start-button:hover {
-  background-color: #ff6f8e;
-  transform: translateY(-2px);
-}
-
-.app-credit {
-  margin-top: 1.5rem;
-  font-size: 0.9rem;
-  color: #888;
-  text-align: center;
-  font-style: italic;
+  background-color: #ff5fa2;
 }
 
 .app-slogan {
-  margin-top: 8px; /* 너무 크면 줄이기 */
-  text-align: center;
-  font-size: 14px;
+  margin-top: 40px;
+  font-size: 1rem;
+  color: #999;
 }
 
 .app-credit {
-  margin-top: 8px; /* 필요시 조절 */
-  text-align: center;
-  font-size: 12px;
-  color: #888;
-}
-
-
-
-.philosophy-quote {
-  margin-top: 1.2rem;
-  font-size: 0.95rem;
-  color: #666;
-  text-align: center;
-  line-height: 1.7;
-  font-style: italic;
+  margin-top: 4px;
+  font-size: 0.9rem;
+  color: #ccc;
 }
