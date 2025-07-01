@@ -54,3 +54,5 @@ export default function HomePage() {
     </div>
   );
 }
+console.log("✅ HomePage 컴포넌트 마운트 완료");
+    console.log("📍 router 객체:", router);
