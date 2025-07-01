@@ -18,7 +18,7 @@ export default function HomePage() {
       <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🎉 뿅!톡에 오신것을</h1>
       <h1 style={{ fontSize: '2rem', marginBottom: '2rem' }}>환영합니다 🎉</h1>
       <button
-        onClick={() => router.push('/intro')}
+        onClick={() => router.push("/select-category")}
         style={{
           backgroundColor: '#4FC3F7',
           border: 'none',
