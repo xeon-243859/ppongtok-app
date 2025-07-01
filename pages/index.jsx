@@ -1,40 +1,41 @@
-// pages/intro.jsx
+import React from 'react';
 import { useRouter } from "next/router";
-import styles from "../src/styles/intro.module.css";
 
-export default function HomePage() { 
+  export default function HomePage() {
   const router = useRouter();
 
-  const handleStart = () => {
-    router.push("/select-category"); // 다음 페이지 경로
-  };
-
   return (
-    <div className={styles["intro-container"]}>
-      {/* 상단 하트 + 뿅 효과 이미지 */}
-      <img
-        src="/images/heart-effect.png"
-        alt="하트 뿅 효과"
-        className={styles["intro-image"]}
-      />
-
-      {/* 텍스트 영역 */}
-      <div className={styles["intro-text"]}>
-        <p className={styles["intro-title-line1"]}>뿅!톡</p>
-        <p className={styles["intro-title-line2"]}>환영합니다</p>
-        <p className={styles["philosophy-quote"]}>
-          추억을 만들며 사랑을 고백하고,<br />
-          축하하고, 또 잘못한 일은 사과하고,<br />
-          감사하며 사는 인생.
-        </p>
-      </div>
-
-      {/* 시작하기 버튼 */}
-      <button className={styles["start-button"]} onClick={handleStart}>
-        시작하기
+    <div style={{
+      fontFamily: 'Arial, sans-serif',
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      backgroundColor: '#ffffff',
+      paddingTop: '20%',
+    }}>
+      <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🎉 뿅!톡에 오신것을</h1>
+      <h1 style={{ fontSize: '2rem', marginBottom: '2rem' }}>환영합니다 🎉</h1>
+      <button
+        onClick={() => navigate('/messages')}
+        style={{
+          backgroundColor: '#4FC3F7',
+          border: 'none',
+          borderRadius: '25px',
+          padding: '0.8rem 2rem',
+          fontSize: '1rem',
+          color: '#fff',
+          cursor: 'pointer',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+          marginTop: '2rem',
+          transition: 'background-color 0.3s ease'
+        }}
+        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#42a5f5'}
+        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#4FC3F7'}
+      >
+        시작하기 🚀
       </button>
-      <p className={styles["app-slogan"]}>for love, for courage, for memories.</p>
-      <p className={styles["app-credit"]}>by boribori & Xeon</p>
     </div>
   );
 }
