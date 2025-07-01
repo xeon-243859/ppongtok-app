@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from "next/router";
 
 export default function HomePage() {
   const router = useRouter();
+
+  useEffect(() => {
+    console.log("✅ HomePage 컴포넌트 마운트 완료");
+    console.log("📍 router 객체:", router);
+  }, []);
 
   return (
     <div style={{
@@ -17,8 +22,12 @@ export default function HomePage() {
     }}>
       <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🎉 뿅!톡에 오신것을</h1>
       <h1 style={{ fontSize: '2rem', marginBottom: '2rem' }}>환영합니다 🎉</h1>
+      
       <button
-        onClick={() => router.push("/select-category")}
+        onClick={() => {
+          console.log("🚀 시작하기 버튼 클릭됨");
+          router.push("/select-category");
+        }}
         style={{
           backgroundColor: '#4FC3F7',
           border: 'none',
@@ -31,12 +40,17 @@ export default function HomePage() {
           marginTop: '2rem',
           transition: 'background-color 0.3s ease'
         }}
-        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#42a5f5'}
-        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#4FC3F7'}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.backgroundColor = '#42a5f5';
+          console.log("🖱 마우스 오버됨");
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.backgroundColor = '#4FC3F7';
+          console.log("👋 마우스 나감");
+        }}
       >
         시작하기 🚀
       </button>
     </div>
   );
 }
-// AuthProvider로 앱 전체를 감싸서 로그인 상태를 공유합니다.
