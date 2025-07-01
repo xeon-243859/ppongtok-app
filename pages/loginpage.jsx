@@ -64,3 +64,4 @@ export default function LoginPage() {
     </div>
   );
 }
+// ✨ [수정] URL 쿼리에서 돌아갈 주소(redirect)와 자동 공유 신호(auto_share)를 읽습니다.
