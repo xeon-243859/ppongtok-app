@@ -54,3 +54,4 @@ export default function HomePage() {
     </div>
   );
 }
+ // 만약 이미지가 더 있다면 아래 형식에 맞춰 추가하시면 됩니다.
