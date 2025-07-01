@@ -1,8 +1,7 @@
-// pages/intro.jsx
 import { useRouter } from "next/router";
 import styles from "../src/styles/intro.module.css";
 
-export default function HomePage() { 
+export default function Intro() { 
   const router = useRouter();
 
   const handleStart = () => {
@@ -23,7 +22,7 @@ export default function HomePage() {
         <p className={styles["intro-title-line1"]}>뿅!톡</p>
         <p className={styles["intro-title-line2"]}>환영합니다</p>
         <p className={styles["philosophy-quote"]}>
-          추억을 만들며 사랑을 고백하고,<br />
+          추억을 만들며, 사랑을 고백하고,<br />
           축하하고, 또 잘못한 일은 사과하고,<br />
           감사하며 사는 인생.
         </p>
@@ -38,5 +37,3 @@ export default function HomePage() {
     </div>
   );
 }
-
-
